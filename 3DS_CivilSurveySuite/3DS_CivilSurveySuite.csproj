@@ -76,6 +76,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="PointLabelRotate.cs" />
     <Compile Include="Test.cs" />
+    <Compile Include="Traverse.cs" />
     <Compile Include="TrunkSize.cs" />
     <Page Include="Traverse.xaml">
       <Generator>MSBuild:Compile</Generator>

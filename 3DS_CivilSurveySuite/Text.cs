@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Autodesk.AutoCAD.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Text))]
 namespace _3DS_CivilSurveySuite
 {
-    class Text
+    public class Text
     {
         public void StripAlphaCharactersFromText()
         { }
