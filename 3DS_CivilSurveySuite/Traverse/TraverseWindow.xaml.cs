@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace _3DS_CivilSurveySuite
+namespace _3DS_CivilSurveySuite.Traverse
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -52,7 +52,7 @@ namespace _3DS_CivilSurveySuite
             int index = lstView.SelectedIndex;
 
             double distance = TraverseItems[index].Distance;
-            TraverseItems[index].Distance = Traverse.ConvertFeetToMeters(distance);
+            TraverseItems[index].Distance = TraverseBase.ConvertFeetToMeters(distance);
         }
 
         private void btnLinksToMeters_Click(object sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ namespace _3DS_CivilSurveySuite
             if (lstView.SelectedIndex < 0) return;
 
             double distance = TraverseItems[lstView.SelectedIndex].Distance;
-            TraverseItems[lstView.SelectedIndex].Distance = Traverse.ConvertLinkToMeters(distance);
+            TraverseItems[lstView.SelectedIndex].Distance = TraverseBase.ConvertLinkToMeters(distance);
         }
 
         private void btnAddRow_Click(object sender, RoutedEventArgs e)
@@ -86,7 +86,7 @@ namespace _3DS_CivilSurveySuite
         public double Bearing { get => bearing; 
             set 
             {
-                if (Traverse.IsValid(value))
+                if (TraverseBase.IsValid(value))
                 {
                     bearing = value;
                     NotifyPropertyChanged();

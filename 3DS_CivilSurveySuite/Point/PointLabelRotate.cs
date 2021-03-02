@@ -8,8 +8,8 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.PointLabelRotate))]
-namespace _3DS_CivilSurveySuite
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Point.PointLabelRotate))]
+namespace _3DS_CivilSurveySuite.Point
 {
     public class PointLabelRotate : CivilBase
     {

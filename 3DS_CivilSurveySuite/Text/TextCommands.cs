@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Text))]
-namespace _3DS_CivilSurveySuite
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Text.TextCommands))]
+namespace _3DS_CivilSurveySuite.Text
 {
-    public class Text
+    public class TextCommands
     {
         public void StripAlphaCharactersFromText()
         { }

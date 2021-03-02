@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace _3DS_CivilSurveySuite
+namespace _3DS_CivilSurveySuite.Traverse
 {
-    public class Traverse
+    public class TraverseBase
     {
         /// <summary>
         /// Degrees, minutes and seconds object

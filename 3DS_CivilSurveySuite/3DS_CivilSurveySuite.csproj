@@ -74,18 +74,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers.cs" />
-    <Compile Include="PointLabelRotate.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="Traverse.cs" />
-    <Compile Include="TrunkSize.cs" />
-    <Page Include="Traverse.xaml">
+    <Compile Include="Point\PointLabelRotate.cs" />
+    <Compile Include="Traverse\TraverseCommands.cs" />
+    <Compile Include="Traverse\TraverseBase.cs" />
+    <Compile Include="Point\TrunkSize.cs" />
+    <Page Include="Traverse\TraverseWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="CivilBase.cs" />
-    <Compile Include="Text.cs" />
-    <Compile Include="Traverse.xaml.cs">
-      <DependentUpon>Traverse.xaml</DependentUpon>
+    <Compile Include="Text\TextCommands.cs" />
+    <Compile Include="Traverse\TraverseWindow.xaml.cs">
+      <DependentUpon>TraverseWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
