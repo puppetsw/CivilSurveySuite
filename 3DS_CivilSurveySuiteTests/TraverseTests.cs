@@ -196,7 +196,6 @@ namespace _3DS_CivilSurveySuiteTests
         private double ConvertLinkToMeters(double link)
         {
             const double linkConversion = 0.201168;
-
             return link * linkConversion;
         }
 
