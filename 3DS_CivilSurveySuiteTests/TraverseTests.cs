@@ -152,6 +152,75 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedResult, actual);
         }
 
+        [TestMethod]
+        public void TestFeetConversion1()
+        {
+            var feetExpect = 47.244;
+            var inchExpect = 0.1524;
+            double expectedResult = feetExpect + inchExpect;
+
+            var result = ConvertFeetToMeters(155.06);
+
+            Assert.AreEqual(expectedResult, Math.Round(result, 4));
+        }
+
+        [TestMethod]
+        public void TestFeetConversion2()
+        {
+            var feetExpect = 47.244;
+            var inchExpect = 0.254;
+            double expectedResult = feetExpect + inchExpect;
+
+            var result = ConvertFeetToMeters(155.10);
+
+            Assert.AreEqual(expectedResult, Math.Round(result, 4));
+        }
+
+        [TestMethod]
+        public void TestLinkConversion1()
+        {
+            var expected = 20.1168;
+            var link = 100;
+
+            var result = ConvertLinkToMeters(link);
+
+            Assert.AreEqual(expected, result);
+
+        }
+
+        /// <summary>
+        /// Converts link to meters
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        private double ConvertLinkToMeters(double link)
+        {
+            const double linkConversion = 0.201168;
+
+            return link * linkConversion;
+        }
+
+
+        /// <summary>
+        /// Converts feet and inches to meters
+        /// </summary>
+        /// <param name="feetAndInches">
+        /// Feet and inches represented as decimal. 5feet 2inch 5.02.
+        /// Inches less than 10 must have a preceeding 0. 
+        /// </param>
+        /// <returns></returns>
+        private double ConvertFeetToMeters(double feetAndInches)
+        {
+            const double feetConversion = 0.3048;
+            const double inchConversion = 0.0254;
+
+            var feet = Math.Truncate(feetAndInches) * feetConversion;
+            var inch1 = feetAndInches - Math.Truncate(feetAndInches);
+            var inch2 = (inch1 * 100) * inchConversion;
+
+            return feet + inch2;
+        }
+
         private DMS BearingAddition(double bearing1, double bearing2)
         {
             var dms1 = ParseBearing(bearing1);

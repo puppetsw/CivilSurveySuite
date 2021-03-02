@@ -5,44 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite"
         mc:Ignorable="d"
-        Title="TraverseWindow" Height="450" Width="800" ShowInTaskbar="False">
-    <Grid>
-        <ListView x:Name="lstView" ItemsSource="{Binding}">
+        Title="Traverse" Height="450" Width="800" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False">
+    <Window.Resources>
+        <local:IndexConverter x:Key="IndexConvert" />
+    </Window.Resources>
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button x:Name="btnAddRow" Click="btnAddRow_Click">
+                    Add
+                </Button>
+                <Button x:Name="btnRemoveRow" Click="btnRemoveRow_Click">
+                    Remove
+                </Button>
+                <Button Command="" Content="Closure" />
+                <Button Command="" Content="Draw" />
+                <Button x:Name="btnFeetToMeters" Content="Feet to Meters" Click="btnFeetToMeters_Click" />
+                <Button x:Name="btnLinksToMeters" Content="Links to Meters" Click="btnLinksToMeters_Click" />
+            </ToolBar>
+        </ToolBarTray>
+        <ListView DockPanel.Dock="Bottom" x:Name="lstView" ItemsSource="{Binding}" SelectionMode="Single">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="IsSelected" Value="True" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="From">
+                        <GridViewColumn Header="ID" Width="50"
+                                DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConvert}}" />
+                        <GridViewColumn Header="Bearing" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=From}"/>
+                                    <TextBox x:Name="txtBearing" Text="{Binding Path=Bearing}" Width="80"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="To">
+                        <GridViewColumn Header="Distance" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=To}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Bearing">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Bearing}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Distance">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Distance}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Units">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding Path=Unit}"/>
+                                    <TextBox x:Name="txtDistance" Text="{Binding Path=Distance}" Width="80"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -50,5 +57,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-    </Grid>
+    </DockPanel>
 </Window>
