@@ -86,6 +86,7 @@
     </Page>
     <Compile Include="CivilBase.cs" />
     <Compile Include="Text\TextCommands.cs" />
+    <Compile Include="Traverse\TraverseItem.cs" />
     <Compile Include="Traverse\TraversePalette.xaml.cs">
       <DependentUpon>TraversePalette.xaml</DependentUpon>
       <SubType>Code</SubType>

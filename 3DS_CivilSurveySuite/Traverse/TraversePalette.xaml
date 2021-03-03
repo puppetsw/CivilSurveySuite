@@ -6,9 +6,6 @@
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Traverse" 
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <local:IndexConverter x:Key="IndexConvert" />
-    </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
@@ -21,26 +18,26 @@
                 <Button x:Name="btnClosure" Click="btnClosure_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/office-chart-polar.png" Width="16" Height="16"/>
-                        <TextBlock Text="Closure" />
+                        <TextBlock Text=" Closure" />
                     </StackPanel>
                 </Button>
                 <Button>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/draw-freehand.png" Width="16" Height="16"/>
-                        <TextBlock Text="Draw" />
+                        <TextBlock Text=" Draw" />
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
                 <Button x:Name="btnFeetToMeters"  Click="btnFeetToMeters_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-horizontal-rule.png" Width="16" Height="16"/>
-                        <TextBlock Text="Feet To Meters" />
+                        <TextBlock Text=" Feet To Meters" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="btnLinksToMeters"  Click="btnLinksToMeters_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-link-2.png" Width="16" Height="16"/>
-                        <TextBlock Text="Links To Meters" />
+                        <TextBlock Text=" Links To Meters" />
                     </StackPanel>
                 </Button>
             </ToolBar>
@@ -58,8 +55,13 @@
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="ID" Width="50"
-                                DisplayMemberBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Converter={StaticResource IndexConvert}}" />
+                        <GridViewColumn Header="ID" Width="50">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Index}" Width="30"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Bearing" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

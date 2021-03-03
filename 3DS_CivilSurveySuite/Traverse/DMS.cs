@@ -41,7 +41,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         }
 
         /// <summary>
-        /// Returns true if the DMS object contains a valid bearing
+        /// Returns true if the <see cref="DMS"/> object contains a valid bearing
         /// </summary>
         /// <param name="dMS"><see cref="DMS"/> object to check</param>
         /// <returns></returns>
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         }
 
         /// <summary>
-        /// Returns true if the DMS object contains a valid bearing
+        /// Returns true if the <see cref="DMS"/> object contains a valid bearing
         /// </summary>
         /// <param name="bearing"></param>
         /// <returns></returns>
@@ -104,6 +104,24 @@ namespace _3DS_CivilSurveySuite.Traverse
                 minutes += 60;
             }
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+        }
+
+
+        public override string ToString()
+        {
+            string fmins, fsecs;
+
+            if (Minutes < 10)
+                fmins = "0" + Minutes; //add the 0 in front if its less than 10.
+            else
+                fmins = Minutes.ToString();
+
+            if (Seconds < 10)
+                fsecs = "0" + Seconds; //add the 0 in front if its less than 10.
+            else
+                fsecs = Seconds.ToString();
+
+            return Degrees + "." + fmins + fsecs;
         }
     }
 }

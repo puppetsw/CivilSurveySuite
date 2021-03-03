@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Autodesk.AutoCAD.Geometry;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -35,12 +31,20 @@ namespace _3DS_CivilSurveySuite.Traverse
 
             TraverseItems.Add(new TraverseItem()
             {
+                Index = 0,
                 Bearing = 354.5020,
                 Distance = 34.21,
             });
             TraverseItems.Add(new TraverseItem()
             {
-                Bearing = 54.5020,
+                Index = 1,
+                Bearing = 84.5020,
+                Distance = 20.81,
+            });
+            TraverseItems.Add(new TraverseItem()
+            {
+                Index = 2,
+                Bearing = 174.5020,
                 Distance = 20.81,
             });
         }
@@ -67,8 +71,9 @@ namespace _3DS_CivilSurveySuite.Traverse
 
         private void btnAddRow_Click(object sender, RoutedEventArgs e)
         {
-            TraverseItems.Add(new TraverseItem()); 
+            TraverseItems.Add(new TraverseItem());
             //hack: add index property and update method
+            TraverseItem.UpdateIndex(TraverseItems);
         }
 
         private void btnRemoveRow_Click(object sender, RoutedEventArgs e)
@@ -77,58 +82,24 @@ namespace _3DS_CivilSurveySuite.Traverse
             var index = lstView.SelectedIndex;
 
             TraverseItems.Remove(TraverseItems[index]);
+            TraverseItem.UpdateIndex(TraverseItems);
         }
 
         private void btnClosure_Click(object sender, RoutedEventArgs e)
         {
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(0,0));
 
+            Point2d lastCoord = coordinates[coordinates.Count - 1];
+            Point2d firstCoord = coordinates[0];
+
+            var distance = MathHelpers.DistanceBetweenPoints(firstCoord.X, lastCoord.X, firstCoord.Y, lastCoord.Y);
+            var angle = MathHelpers.AngleBetweenPoints(lastCoord.X, firstCoord.X, lastCoord.Y, firstCoord.Y);
+
+            string message = string.Format("{0} {1}", distance, angle.ToString());
+
+            MessageBox.Show(message);
         }
 
         #endregion
-    }
-
-    public class TraverseItem : INotifyPropertyChanged
-    {
-        private double bearing;
-        private double distance;
-
-        public double Bearing { get => bearing; 
-            set 
-            {
-                if (DMS.IsValid(value))
-                {
-                    bearing = value;
-                    NotifyPropertyChanged();
-                }
-                else bearing = 0;
-            } 
-        }
-        public double Distance { get => distance; set { distance = value; NotifyPropertyChanged(); } }
-
-        public TraverseItem() { }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-    }
-
-    public class IndexConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            ListViewItem item = (ListViewItem)value;
-            ListView listView = ItemsControl.ItemsControlFromItemContainer(item) as ListView;
-            int index = listView.ItemContainerGenerator.IndexFromContainer(item);
-            return index.ToString();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

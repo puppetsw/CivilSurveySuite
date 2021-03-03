@@ -112,6 +112,8 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(distance, distanceBetween);
 
+
+
             var angleRad = Math.Atan2(coordinates[firstIndex].x - coordinates[lastIndex].x, coordinates[firstIndex].y - coordinates[lastIndex].y);
 
             if (angleRad < 0)
@@ -141,7 +143,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestDecimalDegreeToDMS()
         {
             var decimalDegree = 57.2094;
-            var expectedDMS = new DMS() { Degrees = 57, Minutes = 12, Seconds = 33 }; //seconds should be 34
+            var expectedDMS = new DMS() { Degrees = 57, Minutes = 12, Seconds = 34 }; //seconds should be 34
 
             var result = DecimalDegreesToDMS(decimalDegree);
 
@@ -161,8 +163,8 @@ namespace _3DS_CivilSurveySuiteTests
 
         private static double DMSToDecimalDegrees(DMS dMS)
         {
-            double minutes = Convert.ToDouble(dMS.Minutes) / 60;
-            double seconds = Convert.ToDouble(dMS.Seconds) / 3600;
+            double minutes = (double)dMS.Minutes / 60;
+            double seconds = (double)dMS.Seconds / 3600;
 
             double decimalDegree = dMS.Degrees + minutes + seconds;
 
@@ -186,12 +188,12 @@ namespace _3DS_CivilSurveySuiteTests
             //result.Minutes = (int)Math.Floor(seconds / 60.0);
             //delta = delta * 3600.0 - seconds;
 
-            int degrees = (int)Math.Floor(decimalDegrees);
-            var delta = decimalDegrees - degrees;
+            //int degrees = (int)Math.Floor(decimalDegrees);
+            //var delta = decimalDegrees - degrees;
 
-            var secondsTemp = (int)Math.Floor(3600.0 * delta);
-            int seconds = secondsTemp % 60;
-            int minutes = (int)Math.Floor(secondsTemp / 60.0);
+            //var secondsTemp = (int)Math.Floor(3600.0 * delta);
+            //int seconds = secondsTemp % 60;
+            //int minutes = (int)Math.Floor(secondsTemp / 60.0);
 
             //double degrees = Math.Truncate(decimalDegrees);
             //double minutes = (decimalDegrees - Math.Floor(decimalDegrees)) * 60.0;
@@ -200,7 +202,60 @@ namespace _3DS_CivilSurveySuiteTests
             //minutes = Math.Floor(minutes);
             //seconds = Math.Floor(seconds);
 
+            var degrees = Math.Floor(decimalDegrees);
+            var minutes = Math.Floor((decimalDegrees - degrees) * 60);
+            var seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
+
             return new DMS() { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
+        }
+
+
+        [TestMethod]
+        public void TestDeciamlRounding()
+        {
+            const double dec = 156.742;
+            const double expectedDeg = 156;
+            const double expectedMin = 44;
+            const double expectedSec = 31;
+
+            /*The whole number is degrees.So 156.742 gives you 156 degrees.
+            Multiply the remaining decimal by 60.
+            0.742 * 60 = 44.52, so the whole number 44 equals minutes.
+            Multiply the remaining decimal by 60.
+            0.52 * 60 = 31.2, so the whole number 31 equals seconds.
+            Decimal degrees 156.742 converts to 156 degrees, 44 minutes and 31 seconds, or 156° 44' 31".
+            Be sure to follow math rules of rounding when calculating seconds by hand.
+            If your resulting seconds is something like 31.9 you may round up to 32.*/
+
+
+            var degrees = Math.Floor(dec);
+            Assert.AreEqual(expectedDeg, degrees);
+
+            var minutes = Math.Floor((dec - degrees) * 60);
+            Assert.AreEqual(expectedMin, minutes);
+
+            var seconds = Math.Round((((dec - degrees) * 60) - minutes) * 60, 0);
+            Assert.AreEqual(expectedSec, seconds);
+
+        }
+
+        [TestMethod]
+        public void TestDeciamlRounding2()
+        {
+            const double dec = 57.2094;
+            const double expectedDeg = 57;
+            const double expectedMin = 12;
+            const double expectedSec = 34;
+
+            var degrees = Math.Floor(dec);
+            Assert.AreEqual(expectedDeg, degrees);
+
+            var minutes = Math.Floor((dec - degrees) * 60);
+            Assert.AreEqual(expectedMin, minutes);
+
+            var seconds = Math.Round((((dec - degrees) * 60) - minutes) * 60, 0);
+            Assert.AreEqual(expectedSec, seconds);
+
         }
 
     }
