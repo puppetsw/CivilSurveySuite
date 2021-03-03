@@ -1,27 +1,48 @@
-﻿<Window x:Class="_3DS_CivilSurveySuite.Traverse.TraverseWindow"
+﻿<UserControl x:Class="_3DS_CivilSurveySuite.Traverse.TraversePalette"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Traverse" d:DataContext="{d:DesignInstance Type=local:TraverseItem}"
+        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Traverse" 
         mc:Ignorable="d"
-        Title="Traverse" Height="450" Width="800" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False">
-    <Window.Resources>
+        d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
         <local:IndexConverter x:Key="IndexConvert" />
-    </Window.Resources>
+    </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
                 <Button x:Name="btnAddRow" Click="btnAddRow_Click">
-                    Add
+                    <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/dialog-more.png" Width="16" Height="16"/>
                 </Button>
                 <Button x:Name="btnRemoveRow" Click="btnRemoveRow_Click">
-                    Remove
+                    <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/window-close.png" Width="16" Height="16"/>
                 </Button>
-                <Button Command="" Content="Closure" />
-                <Button Command="" Content="Draw" />
-                <Button x:Name="btnFeetToMeters" Content="Feet to Meters" Click="btnFeetToMeters_Click" />
-                <Button x:Name="btnLinksToMeters" Content="Links to Meters" Click="btnLinksToMeters_Click" />
+                <Button x:Name="btnClosure" Click="btnClosure_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/office-chart-polar.png" Width="16" Height="16"/>
+                        <TextBlock Text="Closure" />
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/draw-freehand.png" Width="16" Height="16"/>
+                        <TextBlock Text="Draw" />
+                    </StackPanel>
+                </Button>
+                <Separator IsTabStop="False" />
+                <Button x:Name="btnFeetToMeters"  Click="btnFeetToMeters_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-horizontal-rule.png" Width="16" Height="16"/>
+                        <TextBlock Text="Feet To Meters" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="btnLinksToMeters"  Click="btnLinksToMeters_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-link-2.png" Width="16" Height="16"/>
+                        <TextBlock Text="Links To Meters" />
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
         <ListView DockPanel.Dock="Bottom" x:Name="lstView" ItemsSource="{Binding}" SelectionMode="Single">
@@ -58,4 +79,4 @@
             </ListView.View>
         </ListView>
     </DockPanel>
-</Window>
+</UserControl>

@@ -70,9 +70,10 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestClosure()
         {
             var dmsList = new List<DMS>();
-            var coordinates = new List<Coordinate>();
-
-            coordinates.Add(new Coordinate() { x = 0, y = 0 });
+            var coordinates = new List<Coordinate>
+            {
+                new Coordinate() { x = 0, y = 0 }
+            };
 
             double distance = 50;
 
@@ -82,7 +83,8 @@ namespace _3DS_CivilSurveySuiteTests
 
             int i = 0;
 
-            foreach (var dms in dmsList)
+            //calculate coordinates from bearing and distance
+            foreach (DMS dms in dmsList)
             {
                 var dec = DMSToDecimalDegrees(dms);
                 var rad = DecimalDegreesToRadians(dec);

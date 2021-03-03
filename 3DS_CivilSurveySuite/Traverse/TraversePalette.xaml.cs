@@ -22,11 +22,11 @@ namespace _3DS_CivilSurveySuite.Traverse
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class TraverseWindow : Window
+    public partial class TraversePalette : UserControl
     {
         public ObservableCollection<TraverseItem> TraverseItems { get; set; }
 
-        public TraverseWindow()
+        public TraversePalette()
         {
             InitializeComponent();
 
@@ -44,6 +44,8 @@ namespace _3DS_CivilSurveySuite.Traverse
                 Distance = 20.81,
             });
         }
+
+        #region Button Events
 
         private void btnFeetToMeters_Click(object sender, RoutedEventArgs e)
         {
@@ -76,6 +78,13 @@ namespace _3DS_CivilSurveySuite.Traverse
 
             TraverseItems.Remove(TraverseItems[index]);
         }
+
+        private void btnClosure_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 
     public class TraverseItem : INotifyPropertyChanged
@@ -96,9 +105,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         }
         public double Distance { get => distance; set { distance = value; NotifyPropertyChanged(); } }
 
-        public TraverseItem()
-        {
-        }
+        public TraverseItem() { }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

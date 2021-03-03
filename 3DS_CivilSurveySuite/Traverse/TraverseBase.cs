@@ -108,7 +108,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         {
             const double linkConversion = 0.201168;
 
-            return link * linkConversion;
+            return Math.Round(link * linkConversion, 4);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace _3DS_CivilSurveySuite.Traverse
             var inch1 = feetAndInches - Math.Truncate(feetAndInches);
             var inch2 = (inch1 * 100) * inchConversion;
 
-            return feet + inch2;
+            return Math.Round(feet + inch2, 4);
         }
     }
 }
