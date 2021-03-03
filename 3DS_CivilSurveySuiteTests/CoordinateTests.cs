@@ -17,7 +17,6 @@ namespace _3DS_CivilSurveySuiteTests
             var distance = 206.306;
             var decimalDegree = 305.9922;
             var radians = DecimalDegreesToRadians(decimalDegree);
-            var dms = DecimalDegreesToDMS(decimalDegree);
 
             double depature = distance * Math.Sin(radians);
             double latitude = distance * Math.Cos(radians);
@@ -41,7 +40,6 @@ namespace _3DS_CivilSurveySuiteTests
             double startCoordx = 0;
             double startCoordy = 0;
 
-            double bearing = 354.5020;
             double distance = 50;
 
             double expectedX = -4.4978;
@@ -105,7 +103,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             //work out last bearing and distance
             int lastIndex = coordinates.Count - 1;
-            int firstIndex = 0; 
+            int firstIndex = 0;
 
             var x = Math.Abs(coordinates[lastIndex].x - coordinates[firstIndex].x);
             var y = Math.Abs(coordinates[lastIndex].y - coordinates[firstIndex].y);
@@ -202,7 +200,7 @@ namespace _3DS_CivilSurveySuiteTests
             //minutes = Math.Floor(minutes);
             //seconds = Math.Floor(seconds);
 
-            return new DMS() { Degrees=Convert.ToInt32(degrees), Minutes= Convert.ToInt32(minutes), Seconds= Convert.ToInt32(seconds) };
+            return new DMS() { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
         }
 
     }

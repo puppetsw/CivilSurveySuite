@@ -76,8 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Point\PointLabelRotate.cs" />
+    <Compile Include="Traverse\DMS.cs" />
+    <Compile Include="Traverse\MathHelpers.cs" />
     <Compile Include="Traverse\TraverseCommands.cs" />
-    <Compile Include="Traverse\TraverseBase.cs" />
     <Compile Include="Point\TrunkSize.cs" />
     <Page Include="Traverse\TraversePalette.xaml">
       <Generator>MSBuild:Compile</Generator>

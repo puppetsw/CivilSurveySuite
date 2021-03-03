@@ -54,7 +54,7 @@ namespace _3DS_CivilSurveySuite.Traverse
             int index = lstView.SelectedIndex;
 
             double distance = TraverseItems[index].Distance;
-            TraverseItems[index].Distance = TraverseBase.ConvertFeetToMeters(distance);
+            TraverseItems[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
         }
 
         private void btnLinksToMeters_Click(object sender, RoutedEventArgs e)
@@ -62,7 +62,7 @@ namespace _3DS_CivilSurveySuite.Traverse
             if (lstView.SelectedIndex < 0) return;
 
             double distance = TraverseItems[lstView.SelectedIndex].Distance;
-            TraverseItems[lstView.SelectedIndex].Distance = TraverseBase.ConvertLinkToMeters(distance);
+            TraverseItems[lstView.SelectedIndex].Distance = MathHelpers.ConvertLinkToMeters(distance);
         }
 
         private void btnAddRow_Click(object sender, RoutedEventArgs e)
@@ -95,7 +95,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         public double Bearing { get => bearing; 
             set 
             {
-                if (TraverseBase.IsValid(value))
+                if (DMS.IsValid(value))
                 {
                     bearing = value;
                     NotifyPropertyChanged();
