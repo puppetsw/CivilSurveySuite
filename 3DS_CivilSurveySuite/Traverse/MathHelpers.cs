@@ -45,6 +45,9 @@ namespace _3DS_CivilSurveySuite.Traverse
         /// <returns></returns>
         public static double DMSToDecimalDegrees(DMS dMS)
         {
+            if (dMS == null)
+                return 0;
+
             double minutes = (double)dMS.Minutes / 60;
             double seconds = (double)dMS.Seconds / 3600;
 

@@ -126,6 +126,65 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void TestClosure2()
+        {
+            var dmsList = new List<DMS>();
+            var coordinates = new List<Coordinate>
+            {
+                new Coordinate() { x = 0, y = 0 }
+            };
+
+            double distance = 50;
+
+            dmsList.Add(new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS() { Degrees = 84, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
+
+
+            int i = 0;
+
+            //calculate coordinates from bearing and distance
+            foreach (DMS dms in dmsList)
+            {
+                var dec = DMSToDecimalDegrees(dms);
+                var rad = DecimalDegreesToRadians(dec);
+
+                double depature = distance * Math.Sin(rad);
+                double latitude = distance * Math.Cos(rad);
+
+                var startingX = coordinates[i].x;
+                var startingY = coordinates[i].y;
+
+                double newEast = Math.Round(startingX + depature, 4);
+                double newNorth = Math.Round(startingY + latitude, 4);
+
+                coordinates.Add(new Coordinate() { x = newEast, y = newNorth });
+
+                i++;
+            }
+
+            //work out last bearing and distance
+            int lastIndex = coordinates.Count - 1;
+            int firstIndex = 0;
+
+            var x = Math.Abs(coordinates[lastIndex].x - coordinates[firstIndex].x);
+            var y = Math.Abs(coordinates[lastIndex].y - coordinates[firstIndex].y);
+
+            var distanceBetween = Math.Round(Math.Sqrt((x * x) + (y * y)), 4);
+
+            var angleRad = Math.Atan2(coordinates[firstIndex].x - coordinates[lastIndex].x, coordinates[firstIndex].y - coordinates[lastIndex].y);
+
+            if (angleRad < 0)
+                angleRad += 2 * Math.PI; // if radians is less than 0 add 2PI
+
+            var decDeg = Math.Abs(angleRad) * 180 / Math.PI;
+            var resultDMS = DecimalDegreesToDMS(decDeg);
+        }
+
+        [TestMethod]
         public void TestDMStoDecimalDegrees()
         {
             var dms = new DMS();
