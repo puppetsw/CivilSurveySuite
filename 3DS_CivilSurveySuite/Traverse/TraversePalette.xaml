@@ -25,6 +25,12 @@
                 <Button x:Name="btnRemoveRow" Command="{Binding RemoveRowCommand}">
                     <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/window-close.png" Width="16" Height="16"/>
                 </Button>
+                <Button x:Name="btnClear" Command="{Binding ClearCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/edit-clear-2.png" Width="16" Height="16" />
+                        <TextBlock Text=" Clear" />
+                    </StackPanel>    
+                </Button>
                 <Button x:Name="btnClosure" Command="{Binding ClosureCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/office-chart-polar.png" Width="16" Height="16"/>

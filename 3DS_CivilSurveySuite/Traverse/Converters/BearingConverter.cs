@@ -45,8 +45,7 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
 
                 return result.ToDouble();
             }
-
-            var dms = new DMS(bearing);
+            var dms = new DMS(StringHelpers.StripDMSSymbols(bearing));
             return dms.ToDouble();
         }
     }

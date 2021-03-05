@@ -19,24 +19,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         public TraverseViewModel()
         {
             TraverseItems = new ObservableCollection<TraverseItem>();
-            TraverseItems.Add(new TraverseItem()
-            {
-                Index = 0,
-                Bearing = 354.5020,
-                Distance = 34.21,
-            });
-            TraverseItems.Add(new TraverseItem()
-            {
-                Index = 1,
-                Bearing = 84.5020,
-                Distance = 20.81,
-            });
-            TraverseItems.Add(new TraverseItem()
-            {
-                Index = 2,
-                Bearing = 174.5020,
-                Distance = 20.81,
-            });
+            AddStubItems();
         }
         #endregion
 
@@ -44,6 +27,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
+        public RelayCommand ClearRowCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
         public RelayCommand ClosureCommand => new RelayCommand((_) => CloseTraverse(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
@@ -66,6 +50,12 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 
             TraverseItems.Remove(SelectedTraverseItem);
             TraverseItem.UpdateIndex(TraverseItems);
+        }
+
+        private void ClearTraverse()
+        {
+            TraverseItems.Clear();
+            AddStubItems();
         }
 
         private void CloseTraverse()
@@ -141,5 +131,33 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         }
 
         #endregion
+
+        private void AddStubItems()
+        {
+            TraverseItems.Add(new TraverseItem()
+            {
+                Index = 0,
+                Bearing = 0,
+                Distance = 0,
+            });
+            TraverseItems.Add(new TraverseItem()
+            {
+                Index = 1,
+                Bearing = 0,
+                Distance = 0,
+            });
+            TraverseItems.Add(new TraverseItem()
+            {
+                Index = 2,
+                Bearing = 0,
+                Distance = 0,
+            });
+            TraverseItems.Add(new TraverseItem()
+            {
+                Index = 3,
+                Bearing = 0,
+                Distance = 0,
+            });
+        }
     }
 }

@@ -5,13 +5,23 @@ Add Suffix
 Remove AlphaCharacters
 Math commands
 
+ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
+
 Point Difference between surface
 
 Insert picture(s) tool
 
+Settings
+----------------
 Properties.Settings.Default.MyConnection);
-ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
 
+
+Traverse
+----------------
+Add clear button to traverse
+Move to next cell on enter press
+Add (work out a way) of doing angles
+Start with 4 blank rows
 
 Completed
 ----------------
