@@ -1,21 +1,19 @@
 ﻿Text Commands
+-------------------
 Add Prefix
 Add Suffix
 Remove AlphaCharacters
 Math commands
 
-Traverse
-with math commands on bearings and distances
-
-
 Point Difference between surface
-
 
 Insert picture(s) tool
 
+Properties.Settings.Default.MyConnection);
+ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
 
-CommandClass(typeof )
 
- Properties.Settings.Default.MyConnection);
+Completed
+----------------
+Traverse (with math commands on bearings and distances)
 
- ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)

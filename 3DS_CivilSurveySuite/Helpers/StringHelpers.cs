@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace _3DS_CivilSurveySuite.Helpers
 {
@@ -19,7 +21,7 @@ namespace _3DS_CivilSurveySuite.Helpers
             return cleanedString;
         }
 
-        private static string ReplaceFirst(string text, string search, string replace)
+        public static string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);
             if (pos < 0)
@@ -29,7 +31,7 @@ namespace _3DS_CivilSurveySuite.Helpers
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
-        private static string RemoveAlphaCharacters(string source)
+        public static string RemoveAlphaCharacters(string source)
         {
             var numbers = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             var chars = new[] { '.', };
@@ -37,6 +39,15 @@ namespace _3DS_CivilSurveySuite.Helpers
             return new string(source
                     .Where(x => numbers.Contains(x) || chars.Contains(x))
                     .ToArray()).Trim(chars);
+        }
+
+        public static double ExtractDoubleFromString(string str)
+        {
+            Regex digits = new Regex(@"^\D*?((-?(\d+(\.\d+)?))|(-?\.\d+)).*");
+            Match mx = digits.Match(str);
+            //Console.WriteLine("Input {0} - Digits {1} {2}", str, mx.Success, mx.Groups);
+
+            return mx.Success ? Convert.ToDouble(mx.Groups[1].Value) : 0;
         }
     }
 }

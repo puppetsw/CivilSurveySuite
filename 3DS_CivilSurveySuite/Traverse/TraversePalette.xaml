@@ -14,6 +14,7 @@
         <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
         <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
         <converter:BearingConverter x:Key="BearingConverter"/>
+        <converter:DistanceConverter x:Key="DistanceConverter"/>
     </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
@@ -64,8 +65,8 @@
                   >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="40" />
-                <DataGridTextColumn Header="Bearing" Binding="{Binding Bearing, Converter={StaticResource BearingConverter}}" Width="100"/>
-                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, StringFormat=N3}" Width="100"/>
+                <DataGridTextColumn Header="Bearing" Binding="{Binding Bearing, Converter={StaticResource BearingConverter}, FallbackValue=0}" Width="100"/>
+                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, Converter={StaticResource DistanceConverter}, StringFormat=N3, FallbackValue=0}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
