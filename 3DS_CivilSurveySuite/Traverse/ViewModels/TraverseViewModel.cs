@@ -1,5 +1,8 @@
 ﻿using _3DS_CivilSurveySuite.Helpers;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil.DatabaseServices;
 using System.Collections.ObjectModel;
 
 namespace _3DS_CivilSurveySuite.Traverse.ViewModels
@@ -42,7 +45,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
         public RelayCommand ClosureCommand => new RelayCommand((_) => CloseTraverse(), (_) => true);
-
+        public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
 
@@ -78,6 +81,43 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
             string message = string.Format("Closure results: distance {0}, bearing {1}\n", distance, angle.ToString());
 
             WriteMessage(message);
+        }
+
+        private void DrawTraverse()
+        {
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            //get basepoints
+            PromptPointOptions ppo = new PromptPointOptions("\n3DS Traverse: Pick base point");
+            PromptPointResult ppr = Editor.GetPoint(ppo);
+
+            if (ppr.Value == null)
+                return;
+
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(ppr.Value.X, ppr.Value.Y));
+
+            using (Acaddoc.LockDocument())
+            {
+                using (Transaction tr = startTransaction())
+                {
+                    int i = 1;
+                    foreach (Point2d point in coordinates)
+                    {
+                        BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                        BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                        Line ln;
+
+                        if (coordinates.Count == i)
+                            break; //ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[0].X, coordinates[0].Y, 0));
+                        else
+                            ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
+
+                        btr.AppendEntity(ln);
+                        tr.AddNewlyCreatedDBObject(ln, true);
+                        i++;
+                    }
+                    tr.Commit();
+                }
+            }
         }
 
         private void FeetToMeters()
