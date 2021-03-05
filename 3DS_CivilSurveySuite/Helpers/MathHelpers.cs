@@ -1,8 +1,9 @@
-﻿using Autodesk.AutoCAD.Geometry;
+﻿using _3DS_CivilSurveySuite.Traverse;
+using Autodesk.AutoCAD.Geometry;
 using System;
 using System.Collections.Generic;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Helpers
 {
     public class MathHelpers
     {
