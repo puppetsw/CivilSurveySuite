@@ -77,14 +77,14 @@
   <ItemGroup>
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Point\PointLabelRotate.cs" />
-    <Compile Include="Traverse\Converters\BearingConverter.cs" />
+    <Compile Include="Traverse\BearingConverter.cs" />
     <Compile Include="Traverse\DMS.cs" />
-    <Compile Include="Helpers\MathHelpers.cs" />
-    <Compile Include="Traverse\ViewModels\DesignViewModel.cs" />
-    <Compile Include="Helpers\StringHelpers.cs" />
+    <Compile Include="Traverse\MathHelpers.cs" />
+    <Compile Include="Traverse\DesignViewModel.cs" />
+    <Compile Include="Traverse\StringHelpers.cs" />
     <Compile Include="Traverse\TraverseCommands.cs" />
     <Compile Include="Point\TrunkSize.cs" />
-    <Compile Include="Traverse\ViewModels\TraverseViewModel.cs" />
+    <Compile Include="Traverse\TraverseViewModel.cs" />
     <Page Include="Traverse\TraversePalette.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

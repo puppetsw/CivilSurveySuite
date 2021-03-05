@@ -1,5 +1,4 @@
-﻿using _3DS_CivilSurveySuite.Traverse.ViewModels;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace _3DS_CivilSurveySuite.Traverse
 {
