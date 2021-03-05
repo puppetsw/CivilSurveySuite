@@ -4,11 +4,15 @@ namespace _3DS_CivilSurveySuite.Traverse
 {
     public class DMS
     {
+        #region Properties
         public int Degrees { get; set; }
         public int Minutes { get; set; }
         public int Seconds { get; set; }
+        #endregion
 
+        #region Constructors
         public DMS() { }
+
         public DMS(double bearing)
         {
             var dms = Parse(bearing);
@@ -17,6 +21,17 @@ namespace _3DS_CivilSurveySuite.Traverse
             Minutes = dms.Minutes;
             Seconds = dms.Seconds;
         }
+
+        public DMS(string bearing)
+        {
+            double b = Convert.ToDouble(bearing);
+            var dms = Parse(b);
+
+            Degrees = dms.Degrees;
+            Minutes = dms.Minutes;
+            Seconds = dms.Seconds;
+        }
+        #endregion
 
         /// <summary>
         /// Converts a bearing of degrees, minutes, seconds in decimal format to a <see cref="DMS"/> object
@@ -81,6 +96,11 @@ namespace _3DS_CivilSurveySuite.Traverse
                 degrees++;
             }
 
+            if (degrees > 360)
+            {
+                degrees -= 360;
+            }
+
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
@@ -103,9 +123,12 @@ namespace _3DS_CivilSurveySuite.Traverse
                 degrees--;
                 minutes += 60;
             }
+
+            if (degrees < 0)
+                degrees += 360;
+
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
-
 
         public override string ToString()
         {
@@ -121,7 +144,13 @@ namespace _3DS_CivilSurveySuite.Traverse
             else
                 fsecs = Seconds.ToString();
 
-            return Degrees + "." + fmins + fsecs;
+            return string.Format(Degrees + "°" + fmins + "'" + fsecs + "\"");
+        }
+
+        public double ToDouble()
+        {
+            double bearing = Degrees + ((double)Minutes / 100) + ((double)Seconds / 10000);
+            return bearing;
         }
     }
 }
