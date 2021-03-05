@@ -8,10 +8,50 @@
         d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <local:DesignViewModel x:Key="mockViewModel"/>
-        <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
-        <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
-        <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
-        <local:BearingConverter x:Key="BearingConverter"/>
+        <Style x:Key="textBoxStyle" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="HorizontalContentAlignment" Value="Center"/>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="{Binding}"/>
+                    <Setter Property="BorderThickness" Value="0" />
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderThickness" Value="1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="listView" TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="#ffffeb" />
+        </Style>
+        <Style x:Key="listViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0,-1,0,-1"/>
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="23px" />
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderBrush" Value="#7f9db9" />
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="BorderBrush" Value="#7f9db9" />
+                </Trigger>
+                <!--<Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#000000" />
+                    <Setter Property="BorderBrush" Value="#FFFFFF" />
+                </Trigger>-->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#FFbbe9fd" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="IsSelected" Value="True" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
@@ -47,24 +87,39 @@
                         <TextBlock Text=" Links To Meters" />
                     </StackPanel>
                 </Button>
-                <Separator IsTabStop="False" />
-                <Button x:Name="btnShowHelp" Command="{Binding ShowHelp}">
-                    <StackPanel Orientation="Horizontal" ToolTip="Help">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/help.png" Width="16" Height="16"/>
-                    </StackPanel>
-                </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
-                  SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="All" AutoGenerateColumns="False" 
-                  HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
-                  Background="{StaticResource YellowBackground}" 
-                  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="40" />
-                <DataGridTextColumn Header="Bearing" Binding="{Binding Bearing, Converter={StaticResource BearingConverter}}" Width="100"/>
-                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, StringFormat=N3}" Width="100"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ListView BorderThickness="0" DockPanel.Dock="Bottom" x:Name="lstView" d:DataContext="{d:DesignInstance Type=local:DesignViewModel, IsDesignTimeCreatable=True}" 
+                  ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" SelectionMode="Single"  
+                  AlternationCount="2" ItemContainerStyle="{StaticResource listViewItemStyle}" Style="{StaticResource listView}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="ID" Width="50">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    
+                                    <TextBlock Text="{Binding Path=Index}" Width="30" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Bearing" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox x:Name="txtBearing" Text="{Binding Path=Bearing}" Width="80" Style="{StaticResource textBoxStyle}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Distance" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox x:Name="txtDistance" Text="{Binding Path=Distance}" Width="80" Style="{StaticResource textBoxStyle}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </DockPanel>
 </UserControl>
