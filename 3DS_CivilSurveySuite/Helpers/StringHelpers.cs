@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Helpers
 {
     public class StringHelpers
     {
