@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
-        public RelayCommand ClearRowCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
+        public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
         public RelayCommand ClosureCommand => new RelayCommand((_) => CloseTraverse(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
