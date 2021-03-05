@@ -1,8 +1,9 @@
-﻿using System;
+﻿using _3DS_CivilSurveySuite.Helpers;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Traverse.Converters
 {
     public class BearingConverter : IValueConverter
     {

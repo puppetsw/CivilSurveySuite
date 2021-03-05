@@ -2,7 +2,7 @@
 using Autodesk.AutoCAD.Geometry;
 using System.Collections.ObjectModel;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 {
     public class TraverseViewModel : CivilBase
     {
