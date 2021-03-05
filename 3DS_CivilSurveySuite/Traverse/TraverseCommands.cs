@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         [CommandMethod("3DSShowTraversePalette")]
         public void ShowTraversePalette()
         {
-            WriteMessage("Showing Traverse Palette");
+            //WriteMessage("Showing Traverse Palette");
             TraversePalette tw = new TraversePalette();
 
             if (m_PalSet == null)
@@ -20,11 +20,11 @@ namespace _3DS_CivilSurveySuite.Traverse
                 m_PalSet = new PaletteSet("3DS Traverse", new Guid("39663E77-EAC7-409A-87E4-4E6E15A5D05A"));
                 m_PalSet.AddVisual("TraverseWindow", tw);
 
-                m_PalSet.StateChanged += (s, e) =>
-                {
-                    if (e.NewState == StateEventIndex.Hide)
-                        WriteMessage("Closing Traverse Palette\n");
-                };
+                //m_PalSet.StateChanged += (s, e) =>
+                //{
+                //    if (e.NewState == StateEventIndex.Hide)
+                //        WriteMessage("Closing Traverse Palette\n");
+                //};
 
                 m_PalSet.EnableTransparency(true);
                 m_PalSet.KeepFocus = true;
