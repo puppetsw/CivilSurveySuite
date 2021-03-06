@@ -30,8 +30,8 @@ namespace _3DS_CivilSurveySuite.Traverse
                 {
                     bearing = 0;
                     DMSBearing = new DMS();
-                    NotifyPropertyChanged();
                 }
+                NotifyPropertyChanged();
             }
         }
         public double Distance { get => distance; set { distance = value; NotifyPropertyChanged(); } }

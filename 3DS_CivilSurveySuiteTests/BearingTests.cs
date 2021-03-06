@@ -53,6 +53,24 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedBearing, result);
         }
 
+        [TestMethod]
+        public void OppositeAngleTest()
+        {
+            // (alpha + 180) % 360
+            double testAngle = 84.5020;
+            double oppositeAngle = 95.0940;
+
+            var dms1 = new DMS() { Degrees = 84, Minutes = 50, Seconds = 20 };
+            var dms2 = new DMS() { Degrees = 180, Minutes = 0, Seconds = 0 };
+
+            var dmsExpected = new DMS() { Degrees = 95, Minutes = 9, Seconds = 40 };
+
+            var dmsResult = BearingSubtraction(180, testAngle);
+            var result = Math.Round((double)dmsResult.Degrees + ((double)dmsResult.Minutes / 100) + ((double)dmsResult.Seconds / 10000),4);
+
+            Assert.AreEqual(oppositeAngle, result);
+
+        }
 
         public static string StripDMSSymbols(string bearingWithSymbols)
         {

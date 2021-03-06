@@ -17,9 +17,9 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
         {
             string distStr = (string)value;
 
-            string[] splitDistance;
             if (distStr.Contains("+"))
             {
+                string[] splitDistance;
                 splitDistance = distStr.Split('+');
                 double dist1 = StringHelpers.ExtractDoubleFromString(splitDistance[0]);
                 double dist2 = StringHelpers.ExtractDoubleFromString(splitDistance[1]);
@@ -28,6 +28,7 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
             }
             else if (distStr.Contains("-"))
             {
+                string[] splitDistance;
                 splitDistance = distStr.Split('-');
                 double dist1 = StringHelpers.ExtractDoubleFromString(splitDistance[0]);
                 double dist2 = StringHelpers.ExtractDoubleFromString(splitDistance[1]);

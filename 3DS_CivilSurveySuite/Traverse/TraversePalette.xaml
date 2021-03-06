@@ -56,6 +56,12 @@
                         <TextBlock Text=" Links To Meters" />
                     </StackPanel>
                 </Button>
+                <Button x:Name="btnFlipBearing" Command="{Binding FlipBearingCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/object-flip-horizontal-2.png" Width="16" Height="16"/>
+                        <TextBlock Text=" Flip Bearing" />
+                    </StackPanel>
+                </Button>
                 <Separator IsTabStop="False" />
                 <Button x:Name="btnShowHelp" Command="{Binding ShowHelp}">
                     <StackPanel Orientation="Horizontal" ToolTip="Help">

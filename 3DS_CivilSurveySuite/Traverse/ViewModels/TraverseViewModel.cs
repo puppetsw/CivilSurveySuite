@@ -2,7 +2,6 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.Civil.DatabaseServices;
 using System.Collections.ObjectModel;
 
 namespace _3DS_CivilSurveySuite.Traverse.ViewModels
@@ -32,6 +31,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
+        public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
 
         #endregion
 
@@ -128,6 +128,18 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 
             double distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
+        }
+
+        private void FlipBearing()
+        {
+            if (SelectedTraverseItem == null) return;
+            
+            int index = TraverseItems.IndexOf(SelectedTraverseItem);
+            var dms180 = new DMS(180.0000);
+
+            var dms = dms180 - SelectedTraverseItem.DMSBearing;
+
+            TraverseItems[index].Bearing = dms.ToDouble();
         }
 
         #endregion
