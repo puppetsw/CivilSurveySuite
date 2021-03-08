@@ -18,13 +18,8 @@ Properties.Settings.Default.MyConnection);
 
 Traverse
 ----------------
-Add clear button to traverse
-Move to next cell on enter press
 Add (work out a way) of doing angles
-Start with 4 blank rows
-add mirror angle 
+Cleanup Converters
 
-Completed
-----------------
-Traverse (with math commands on bearings and distances)
+
 

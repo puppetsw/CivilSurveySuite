@@ -75,6 +75,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\EnterKeyTraversal.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Point\PointLabelRotate.cs" />
     <Compile Include="Traverse\Converters\BearingConverter.cs" />

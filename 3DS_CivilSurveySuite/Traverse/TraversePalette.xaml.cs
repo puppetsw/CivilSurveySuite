@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.Traverse
         {
             InitializeComponent();
             DataContext = new TraverseViewModel();
-
         }
     }
 }
+

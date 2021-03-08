@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Traverse"
         xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.Traverse.ViewModels"
         xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Traverse.Converters"
+        xmlns:helper="clr-namespace:_3DS_CivilSurveySuite.Helpers"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -13,8 +14,10 @@
         <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
         <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
         <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
+        <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
         <converter:BearingConverter x:Key="BearingConverter"/>
         <converter:DistanceConverter x:Key="DistanceConverter"/>
+        <helper:EnterKeyTraversal x:Key="EnterKeyTraversal" />
     </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
@@ -70,15 +73,15 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
-                  SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="All" AutoGenerateColumns="False" 
+        <DataGrid x:Name="dataGrid" d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
+                  SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
-                  Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False"
-                  >
+                  Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                  helper:EnterKeyTraversal.IsEnabled="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="40" />
-                <DataGridTextColumn Header="Bearing" Binding="{Binding Bearing, Converter={StaticResource BearingConverter}, FallbackValue=0}" Width="100"/>
-                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, Converter={StaticResource DistanceConverter}, StringFormat=N3, FallbackValue=0}" Width="100"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="60" IsReadOnly="True" />
+                <DataGridTextColumn Header="Bearing" Binding="{Binding Bearing, Converter={StaticResource BearingConverter}, FallbackValue=0}" Width="150"/>
+                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, Converter={StaticResource DistanceConverter}, StringFormat=N3, FallbackValue=0}" Width="150"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
