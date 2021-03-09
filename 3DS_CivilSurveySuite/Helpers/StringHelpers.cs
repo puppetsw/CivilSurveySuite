@@ -49,5 +49,10 @@ namespace _3DS_CivilSurveySuite.Helpers
 
             return mx.Success ? Convert.ToDouble(mx.Groups[1].Value) : 0;
         }
+
+        public static string RemoveWhitespace(string targetString)
+        {
+            return string.Concat(targetString.Where(c => !char.IsWhiteSpace(c)));
+        }
     }
 }

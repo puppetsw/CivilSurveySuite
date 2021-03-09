@@ -12,6 +12,7 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
             var bearing = (double)value;
             var dms = new DMS(bearing);
             return dms.ToString();
+            //return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -19,7 +20,18 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
             //350°50'10"; //HACK: please fix all this
             // look for + and - symbols first
             var bearing = (string)value;
-            
+            //var nows = StringHelpers.RemoveWhitespace(bearing);
+            //var noaplha = StringHelpers.RemoveAlphaCharacters(nows);
+
+            //Regex regex = new Regex(@"([\d.]+)(?:[\+\-\*\/])([\d.]+)");
+
+            //if (regex.IsMatch(noaplha))
+            //{
+            //    var regString = regex.Split(noaplha);
+            //}
+
+            //return value;
+
             if (bearing.Contains("+"))
             {
                 var splitString = bearing.Split('+');
@@ -32,7 +44,7 @@ namespace _3DS_CivilSurveySuite.Traverse.Converters
                 var result = dms1 + dms2;
 
                 return result.ToDouble();
-            } 
+            }
             else if (bearing.Contains("-"))
             {
                 var splitString = bearing.Split('-');
