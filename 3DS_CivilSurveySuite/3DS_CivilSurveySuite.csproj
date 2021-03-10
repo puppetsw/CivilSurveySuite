@@ -77,24 +77,25 @@
   <ItemGroup>
     <Compile Include="Helpers\EnterKeyTraversal.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Point\PointLabelRotate.cs" />
-    <Compile Include="Traverse\Converters\BearingConverter.cs" />
-    <Compile Include="Traverse\Converters\DistanceConverter.cs" />
-    <Compile Include="Traverse\DMS.cs" />
+    <Compile Include="Commands\PointLabelRotate.cs" />
+    <Compile Include="Tests\TestTransientGraphics.cs" />
+    <Compile Include="Converters\BearingConverter.cs" />
+    <Compile Include="Converters\DistanceConverter.cs" />
+    <Compile Include="Models\DMS.cs" />
     <Compile Include="Helpers\MathHelpers.cs" />
-    <Compile Include="Traverse\ViewModels\DesignViewModel.cs" />
+    <Compile Include="ViewModels\DesignViewModel.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
-    <Compile Include="Traverse\TraverseCommands.cs" />
-    <Compile Include="Point\TrunkSize.cs" />
-    <Compile Include="Traverse\ViewModels\TraverseViewModel.cs" />
-    <Page Include="Traverse\TraversePalette.xaml">
+    <Compile Include="Commands\Traverse.cs" />
+    <Compile Include="Commands\TrunkSize.cs" />
+    <Compile Include="ViewModels\TraverseViewModel.cs" />
+    <Page Include="Views\TraversePalette.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="CivilBase.cs" />
-    <Compile Include="Text\TextCommands.cs" />
-    <Compile Include="Traverse\TraverseItem.cs" />
-    <Compile Include="Traverse\TraversePalette.xaml.cs">
+    <Compile Include="Helpers\CivilBase.cs" />
+    <Compile Include="Commands\TextUtils.cs" />
+    <Compile Include="Models\TraverseItem.cs" />
+    <Compile Include="Views\TraversePalette.xaml.cs">
       <DependentUpon>TraversePalette.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -168,5 +169,9 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\object-flip-horizontal-2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\insert-object.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

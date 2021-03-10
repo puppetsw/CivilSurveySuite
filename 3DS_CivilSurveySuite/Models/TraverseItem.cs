@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Models
 {
     public class TraverseItem : INotifyPropertyChanged
     {

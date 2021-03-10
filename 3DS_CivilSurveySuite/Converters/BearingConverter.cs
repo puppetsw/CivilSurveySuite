@@ -1,9 +1,10 @@
 ﻿using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Models;
 using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace _3DS_CivilSurveySuite.Traverse.Converters
+namespace _3DS_CivilSurveySuite.Converters
 {
     public class BearingConverter : IValueConverter
     {

@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 using _3DS_CivilSurveySuite.Helpers;
 
-namespace _3DS_CivilSurveySuite.Traverse.Converters
+namespace _3DS_CivilSurveySuite.Converters
 {
     public class DistanceConverter : IValueConverter
     {

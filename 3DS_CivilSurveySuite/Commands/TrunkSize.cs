@@ -1,9 +1,10 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
+using _3DS_CivilSurveySuite.Helpers;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Point.TrunkSize))]
-namespace _3DS_CivilSurveySuite.Point
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Commands.TrunkSize))]
+namespace _3DS_CivilSurveySuite.Commands
 {
     public class TrunkSize : CivilBase
     {

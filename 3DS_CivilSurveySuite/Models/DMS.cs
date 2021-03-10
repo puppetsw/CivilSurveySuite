@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _3DS_CivilSurveySuite.Traverse
+namespace _3DS_CivilSurveySuite.Models
 {
     public class DMS
     {

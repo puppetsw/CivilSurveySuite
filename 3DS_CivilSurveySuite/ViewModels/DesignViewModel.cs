@@ -1,6 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using _3DS_CivilSurveySuite.Models;
+using System.Collections.ObjectModel;
 
-namespace _3DS_CivilSurveySuite.Traverse.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     public class DesignViewModel
     {

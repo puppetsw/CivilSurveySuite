@@ -1,24 +1,38 @@
 ﻿using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.GraphicsInterface;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
-namespace _3DS_CivilSurveySuite.Traverse.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     public class TraverseViewModel : CivilBase
     {
+        #region Private Members
+
+        DBObjectCollection _markers = null;
+        Point3d m_basePoint;
+        bool m_basePointFlag = false;
+
+        #endregion
+
         #region Properties
         public ObservableCollection<TraverseItem> TraverseItems { get; set; }
 
         public TraverseItem SelectedTraverseItem { get; set; }
         #endregion
 
-        #region Constructor
+        #region Constructor/Deconstructor
         public TraverseViewModel()
         {
             TraverseItems = new ObservableCollection<TraverseItem>();
-            AddStubItems();
+        }
+
+        ~TraverseViewModel()
+        {
         }
         #endregion
 
@@ -29,6 +43,7 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
         public RelayCommand ClosureCommand => new RelayCommand((_) => CloseTraverse(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
+        public RelayCommand SetBasePointCommand => new RelayCommand((_) => SetBasePoint(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
@@ -39,7 +54,10 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
 
         private void AddRow()
         {
-            TraverseItems.Add(new TraverseItem());
+            var ti = new TraverseItem();
+            //ti.PropertyChanged += Ti_PropertyChanged;
+
+            TraverseItems.Add(ti);
             //hack: add index property and update method
             TraverseItem.UpdateIndex(TraverseItems);
         }
@@ -55,7 +73,6 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         private void ClearTraverse()
         {
             TraverseItems.Clear();
-            AddStubItems();
         }
 
         private void CloseTraverse()
@@ -77,13 +94,10 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
         {
             Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
             //get basepoints
-            PromptPointOptions ppo = new PromptPointOptions("\n3DS Traverse: Pick base point");
-            PromptPointResult ppr = Editor.GetPoint(ppo);
+            if (!m_basePointFlag)
+                SetBasePoint();
 
-            if (ppr.Value == null)
-                return;
-
-            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(ppr.Value.X, ppr.Value.Y));
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
 
             using (Acaddoc.LockDocument())
             {
@@ -142,34 +156,80 @@ namespace _3DS_CivilSurveySuite.Traverse.ViewModels
             TraverseItems[index].Bearing = dms.ToDouble();
         }
 
+        private void SetBasePoint()
+        {
+            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select a base point: ");
+            PromptPointResult ppr = Editor.GetPoint(ppo);
+
+            if (ppr.Status != PromptStatus.OK) return; //if we have a valid point
+
+            m_basePoint = ppr.Value;
+            m_basePointFlag = true;
+
+            WriteMessage("Base point set: X:" + m_basePoint.X + " Y:" + m_basePoint.Y);
+        }
+
         #endregion
 
-        private void AddStubItems()
+        private void DrawTransientTraverse()
         {
-            TraverseItems.Add(new TraverseItem()
+            if (!m_basePointFlag)
+                return;
+
+            ClearTransientGraphics();
+            _markers = new DBObjectCollection();
+            using (Transaction tr = startTransaction())
             {
-                Index = 0,
-                Bearing = 0,
-                Distance = 0,
-            });
-            TraverseItems.Add(new TraverseItem()
+                var coords = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
+                int i = 1;
+                foreach (Point2d point in coords)
+                {
+                    //draw the coordlines
+                    Line ln;
+                    if (coords.Count == i)
+                        break;
+                    else
+                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coords[i].X, coords[i].Y, 0));
+
+                    _markers.Add(ln);
+
+                    TransientManager tm = TransientManager.CurrentTransientManager;
+                    IntegerCollection intCol = new IntegerCollection();
+                    tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
+
+                    i++;
+                }
+                Acaddoc.TransactionManager.QueueForGraphicsFlush();
+                tr.Commit();
+            }
+            //Editor.Regen();
+
+        }
+
+        /// <summary>
+        /// Clear all Transient Graphics
+        /// </summary>
+        public void ClearTransientGraphics()
+        {
+            TransientManager tm = TransientManager.CurrentTransientManager;
+            IntegerCollection intCol = new IntegerCollection();
+            //tm.EraseTransients(TransientDrawingMode.Highlight, 128, intCol);
+
+            if (_markers != null)
             {
-                Index = 1,
-                Bearing = 0,
-                Distance = 0,
-            });
-            TraverseItems.Add(new TraverseItem()
-            {
-                Index = 2,
-                Bearing = 0,
-                Distance = 0,
-            });
-            TraverseItems.Add(new TraverseItem()
-            {
-                Index = 3,
-                Bearing = 0,
-                Distance = 0,
-            });
+                foreach (DBObject marker in _markers)
+                {
+                    tm.EraseTransient(marker, intCol);
+                    marker.Dispose();
+                }
+            }
+        }
+
+
+        private void Ti_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            DrawTransientTraverse();
         }
     }
 }

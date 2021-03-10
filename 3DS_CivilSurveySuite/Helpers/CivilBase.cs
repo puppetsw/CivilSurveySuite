@@ -4,9 +4,8 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 // Civil 3D References
 using Autodesk.Civil.ApplicationServices;
-using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite
+namespace _3DS_CivilSurveySuite.Helpers
 {
     /// <summary>
     /// Base class for all sample command extensions.
