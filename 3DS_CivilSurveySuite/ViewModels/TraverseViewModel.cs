@@ -1,12 +1,14 @@
 ﻿// 3DS_CivilSurveySuite References
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Models;
+using Autodesk.AutoCAD.Colors;
 // AutoCAD References
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
+using System;
 using System.Collections.Generic;
 // System References
 using System.Collections.ObjectModel;
@@ -15,7 +17,7 @@ using System.Collections.Specialized;
 namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
-    /// Traverse ViewModel for TraversePalette view
+    /// ViewModel for TraversePalette view
     /// </summary>
     public class TraverseViewModel : ViewModelBase
     {
@@ -27,6 +29,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private string closeDistance = "0.000";
         private string closeBearing = "0°00'00\"";
+
+        private bool m_commandRunning = false;
 
         #endregion
 
@@ -130,33 +134,56 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (!m_basePointFlag)
                 SetBasePoint(); //set basepoint
 
+            if (!m_commandRunning)
+                m_commandRunning = true;
+            else
+                return; //exit if command running
+
             //lock acad document
             using (Acaddoc.LockDocument())
             {
                 //get coordinates based on traverse data
                 var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
                 //draw transient graphics
-                DrawTransientTraverse(coordinates);
 
-                PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse? ");
-                pko.AppendKeywordsToMessage = true;
-                pko.Keywords.Add("Accept");
-                pko.Keywords.Add("Cancel");
-
-                PromptResult result = Editor.GetKeywords(pko);
-
-                if (result.Status != PromptStatus.OK || result.StringResult == "Cancel")
+                using (Transaction tr = startTransaction())
                 {
-                    //clear graphics and return
+                    try
+                    {
+                        DrawTransientTraverse(coordinates);
+                    }
+                    catch (Exception ex)
+                    {
+                        m_commandRunning = false;
+                        ClearTransientGraphics();
+                        Editor.WriteMessage(ex.Message);
+                        throw ex;
+                    }
+
+                    PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ");
+                    pko.AppendKeywordsToMessage = true;
+                    pko.Keywords.Add("Accept");
+                    pko.Keywords.Add("Cancel");
+
+                    PromptResult result = Editor.GetKeywords(pko);
+
+                    if (result.Status != PromptStatus.OK || result.StringResult == "Cancel")
+                    {
+                        //clear graphics and return
+                        m_commandRunning = false;
+                        ClearTransientGraphics();
+                        return;
+                    }
+
+                    //draw the autocad entities
+                    DrawTraverseLinework(tr, coordinates);
+
+                    //clear the transient graphics at the end
                     ClearTransientGraphics();
-                    return;
+
+                    tr.Commit();
                 }
-
-                //draw the autocad entities
-                DrawTraverseLinework(coordinates);
-
-                //clear the transient graphics at the end
-                ClearTransientGraphics();
+                m_commandRunning = false;
             }
         }
 
@@ -223,27 +250,23 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
-        private void DrawTraverseLinework(List<Point2d> coordinates)
+        private void DrawTraverseLinework(Transaction tr, List<Point2d> coordinates)
         {
-            using (Transaction tr = startTransaction())
+            int i = 1;
+            foreach (Point2d point in coordinates)
             {
-                int i = 1;
-                foreach (Point2d point in coordinates)
-                {
-                    BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
-                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                    Line ln;
+                BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                Line ln;
 
-                    if (coordinates.Count == i)
-                        break; //ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[0].X, coordinates[0].Y, 0));
-                    else
-                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
+                if (coordinates.Count == i)
+                    break; //ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[0].X, coordinates[0].Y, 0));
+                else
+                    ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
 
-                    btr.AppendEntity(ln);
-                    tr.AddNewlyCreatedDBObject(ln, true);
-                    i++;
-                }
-                tr.Commit();
+                btr.AppendEntity(ln);
+                tr.AddNewlyCreatedDBObject(ln, true);
+                i++;
             }
         }
 
@@ -251,32 +274,87 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         #region TransientGraphics
 
+        /// <summary>
+        /// Draws the traverse as transient graphics
+        /// </summary>
+        /// <param name="coordinates"></param>
         private void DrawTransientTraverse(List<Point2d> coordinates)
         {
+            //TODO: add text and marker style
+            //HACK: move transient stuff into try catch
             _markers = new DBObjectCollection();
-            using (Transaction tr = startTransaction())
+            int i = 1;
+            foreach (Point2d point in coordinates)
             {
-                int i = 1;
-                foreach (Point2d point in coordinates)
+                //draw the coordlines
+                Line ln;
+                DBText tx;
+
+                TransientManager tm = TransientManager.CurrentTransientManager;
+                IntegerCollection intCol = new IntegerCollection();
+
+                if (coordinates.Count == i)
                 {
-                    //draw the coordlines
-                    Line ln;
-                    if (coordinates.Count == i)
-                        break;
-                    else
-                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
+                    //draw boxes on last and first points
+                    var box1 = CalculateBox(point);
+                    var box2 = CalculateBox(coordinates[0]);
+                    box1.Color = Color.FromColor(System.Drawing.Color.Yellow);
+                    box2.Color = Color.FromColor(System.Drawing.Color.Yellow);
+                    _markers.Add(box1);
+                    _markers.Add(box2);
+                    tm.AddTransient(box1, TransientDrawingMode.Main, 128, intCol);
+                    tm.AddTransient(box2, TransientDrawingMode.Main, 128, intCol);
+                    //break;
+                }
+                else
+                {
+                    ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
+                    tx = new DBText();
+                    tx.Position = new Point3d(point.X + 0.2, point.Y + 0.2, 0);
+                    tx.TextString = i.ToString();
+                    tx.Justify = AttachmentPoint.BottomLeft;
+                    tx.Height = 0.5;
 
                     _markers.Add(ln);
-
-                    TransientManager tm = TransientManager.CurrentTransientManager;
-                    IntegerCollection intCol = new IntegerCollection();
+                    _markers.Add(tx);
                     tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
-
-                    i++;
+                    tm.AddTransient(tx, TransientDrawingMode.Highlight, 128, intCol);
                 }
-                Acaddoc.TransactionManager.QueueForGraphicsFlush();
-                tr.Commit();
+
+                i++;
             }
+            Acaddoc.TransactionManager.QueueForGraphicsFlush();
+        }
+
+        private Autodesk.AutoCAD.DatabaseServices.Polyline CalculateBox(Point2d basePoint)
+        {
+            var pointTopLeft = new Point2d(basePoint.X - 0.5, basePoint.Y + 0.5);
+            var pointTopRight = new Point2d(basePoint.X + 0.5, basePoint.Y + 0.5);
+            var pointBottomRight = new Point2d(basePoint.X + 0.5, basePoint.Y - 0.5);
+            var pointBottomLeft = new Point2d(basePoint.X - 0.5, basePoint.Y - 0.5);
+
+            //var pline = new Polyline2d(Poly2dType.SimplePoly, new Point3dCollection(new Point3d[] { pointTopLeft, pointTopRight, pointBottomRight, pointBottomLeft }), 0, false, 0, 0, new DoubleCollection());
+            var pline = new Autodesk.AutoCAD.DatabaseServices.Polyline();
+            pline.AddVertexAt(0, pointTopLeft, 0, 0, 0);
+            pline.AddVertexAt(1, pointTopRight, 0, 0, 0);
+            pline.AddVertexAt(2, pointBottomRight, 0, 0, 0);
+            pline.AddVertexAt(3, pointBottomLeft, 0, 0, 0);
+            pline.AddVertexAt(4, pointTopLeft, 0, 0, 0);
+            pline.AddVertexAt(5, pointBottomRight, 0, 0, 0);
+            pline.AddVertexAt(6, pointBottomLeft, 0, 0, 0);
+            pline.AddVertexAt(7, pointTopRight, 0, 0, 0);
+
+            return pline;
+        }
+
+        /// <summary>
+        /// Draws transient text to the screen at the specified position
+        /// </summary>
+        /// <remarks>Call inside a <see cref="Transaction"/></remarks>
+        /// <param name="text"></param>
+        private void DrawTransientText(string text, Point3d point)
+        {
+
         }
 
         /// <summary>
