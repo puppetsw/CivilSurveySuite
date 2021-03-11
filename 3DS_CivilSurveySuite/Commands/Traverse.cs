@@ -22,16 +22,16 @@ namespace _3DS_CivilSurveySuite.Traverse
                 m_PalSet.Style = PaletteSetStyles.ShowCloseButton;
                 m_PalSet.AddVisual("TraverseWindow", tw);
 
-                m_PalSet.StateChanged += (s, e) =>
-                {
-                    if (e.NewState == StateEventIndex.Hide)
-                    {
-                        //WriteMessage("Closing Traverse Palette\n");
-                        m_PalSet.Close();
-                        m_PalSet = null;
-                        return;
-                    }
-                };
+                //m_PalSet.StateChanged += (s, e) =>
+                //{
+                //    if (e.NewState == StateEventIndex.Hide)
+                //    {
+                //        //WriteMessage("Closing Traverse Palette\n");
+                //        m_PalSet.Close();
+                //        m_PalSet = null;
+                //        return;
+                //    }
+                //};
 
                 m_PalSet.EnableTransparency(true);
                 m_PalSet.KeepFocus = true;

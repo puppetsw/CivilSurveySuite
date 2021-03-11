@@ -16,10 +16,10 @@ namespace _3DS_CivilSurveySuite.Views
             dataContext = new TraverseViewModel();
 
             //HACK: No EventToCommand?
-            Unloaded += (s, e) => {
-                if (dataContext != null)
-                    dataContext.ClearTransientGraphics();
-            };
+            //Unloaded += (s, e) => {
+            //    if (dataContext != null)
+            //        dataContext.ClearTransientGraphics();
+            //};
 
             DataContext = dataContext;
         }

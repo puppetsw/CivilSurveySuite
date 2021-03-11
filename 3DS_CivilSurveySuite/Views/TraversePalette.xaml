@@ -9,7 +9,6 @@
              mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <vm:DesignViewModel x:Key="mockViewModel"/>
         <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
         <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
         <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
@@ -17,6 +16,7 @@
         <converter:BearingConverter x:Key="BearingConverter"/>
         <converter:DistanceConverter x:Key="DistanceConverter"/>
         <helper:EnterKeyTraversal x:Key="EnterKeyTraversal" />
+        <vm:DesignViewModel x:Key="mockViewModel"/>
     </UserControl.Resources>
 
     <DockPanel>
@@ -35,13 +35,13 @@
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
-                <Button Command="{Binding SetBasePointCommand}">
+                <!--<Button Command="{Binding SetBasePointCommand}">
                     <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-object.png" Width="16" Height="16"/>
-                </Button>
+                </Button>-->
                 <Button Command="{Binding DrawCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/draw-freehand.png" Width="16" Height="16"/>
-                        <TextBlock Text=" Draw" />
+                        <TextBlock Text=" Draw Traverse" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding ClosureCommand}">
@@ -78,9 +78,10 @@
             </ToolBar>
         </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom" Height="23">
-            <StatusBarItem Content="Test">
-                
-            </StatusBarItem>
+            <StatusBarItem Content="Closure: distance = "/>
+            <StatusBarItem Content="{Binding CloseDistance}" />
+            <StatusBarItem Content="bearing = "/>
+            <StatusBarItem Content="{Binding CloseBearing}" />
         </StatusBar>
         <DataGrid DockPanel.Dock="Bottom" x:Name="dataGrid" d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
                   SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 

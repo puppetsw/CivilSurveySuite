@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Models
@@ -59,15 +58,5 @@ namespace _3DS_CivilSurveySuite.Models
         }
 
         #endregion
-
-        public static void UpdateIndex(ICollection<TraverseItem> collection)
-        {
-            int i = 0;
-            foreach (TraverseItem item in collection)
-            {
-                item.Index = i;
-                i++;
-            }
-        }
     }
 }

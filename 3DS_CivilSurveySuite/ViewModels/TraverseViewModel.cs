@@ -4,12 +4,17 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
+using Autodesk.AutoCAD.Internal;
+
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
-    public class TraverseViewModel : CivilBase
+    /// <summary>
+    /// Traverse ViewModel for TraversePalette view
+    /// </summary>
+    public class TraverseViewModel : ViewModelBase
     {
         #region Private Members
 
@@ -17,18 +22,27 @@ namespace _3DS_CivilSurveySuite.ViewModels
         Point3d m_basePoint;
         bool m_basePointFlag = false;
 
+        private string closeDistance = "0.000";
+        private string closeBearing = "0°00'00\"";
+
         #endregion
 
         #region Properties
         public ObservableCollection<TraverseItem> TraverseItems { get; set; }
 
         public TraverseItem SelectedTraverseItem { get; set; }
+
+        public string CloseDistance { get => closeDistance; set { closeDistance = value; NotifyPropertyChanged(); } }
+
+        public string CloseBearing { get => closeBearing; set { closeBearing = value; NotifyPropertyChanged(); } }
+
         #endregion
 
         #region Constructor/Deconstructor
         public TraverseViewModel()
         {
             TraverseItems = new ObservableCollection<TraverseItem>();
+            TraverseItems.CollectionChanged += TraverseItems_CollectionChanged;
         }
 
         ~TraverseViewModel()
@@ -50,16 +64,29 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         #endregion
 
+        #region Events
+
+        private void TraverseItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (TraverseItem item in e.NewItems)
+                    item.PropertyChanged += (s, ev) => CloseTraverse();
+
+            if (e.OldItems != null)
+                foreach (TraverseItem item in e.OldItems)
+                    item.PropertyChanged -= (s, ev) => CloseTraverse();
+        }
+
+        #endregion
+
         #region Command Methods
 
         private void AddRow()
         {
             var ti = new TraverseItem();
-            //ti.PropertyChanged += Ti_PropertyChanged;
-
             TraverseItems.Add(ti);
             //hack: add index property and update method
-            TraverseItem.UpdateIndex(TraverseItems);
+            UpdateIndex();
         }
 
         private void RemoveRow()
@@ -67,7 +94,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (SelectedTraverseItem == null) return;
 
             TraverseItems.Remove(SelectedTraverseItem);
-            TraverseItem.UpdateIndex(TraverseItems);
+            UpdateIndex();
         }
 
         private void ClearTraverse()
@@ -77,6 +104,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void CloseTraverse()
         {
+            if (TraverseItems.Count < 2)
+                return;
+            
             var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(0,0));
 
             Point2d lastCoord = coordinates[coordinates.Count - 1];
@@ -85,9 +115,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
             var distance = MathHelpers.DistanceBetweenPoints(firstCoord.X, lastCoord.X, firstCoord.Y, lastCoord.Y);
             var angle = MathHelpers.AngleBetweenPoints(lastCoord.X, firstCoord.X, lastCoord.Y, firstCoord.Y);
 
-            string message = string.Format("Closure results: distance {0}, bearing {1}\n", distance, angle.ToString());
-
-            WriteMessage(message);
+            CloseDistance = string.Format("{0:0.000}", distance);
+            CloseBearing = angle.ToString();
         }
 
         private void DrawTraverse()
@@ -158,7 +187,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void SetBasePoint()
         {
-            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
+            Utils.SetFocusToDwgView();
             PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select a base point: ");
             PromptPointResult ppr = Editor.GetPoint(ppo);
 
@@ -167,10 +196,27 @@ namespace _3DS_CivilSurveySuite.ViewModels
             m_basePoint = ppr.Value;
             m_basePointFlag = true;
 
-            WriteMessage("Base point set: X:" + m_basePoint.X + " Y:" + m_basePoint.Y);
+            WriteMessage("Base point set: X:" + m_basePoint.X + " Y:" + m_basePoint.Y + "\n");
         }
 
         #endregion
+
+        #region Private Methods
+
+        private void UpdateIndex()
+        {
+            int i = 0;
+            foreach (TraverseItem item in TraverseItems)
+            {
+                item.Index = i;
+                i++;
+            }
+        }
+
+        #endregion
+
+
+        #region TransientGraphics
 
         private void DrawTransientTraverse()
         {
@@ -226,10 +272,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
-
-        private void Ti_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            DrawTransientTraverse();
-        }
+        #endregion
     }
 }

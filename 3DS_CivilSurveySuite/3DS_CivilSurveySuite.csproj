@@ -78,6 +78,7 @@
     <Compile Include="Helpers\EnterKeyTraversal.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Tests\TestTransientGraphics.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
