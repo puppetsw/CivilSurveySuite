@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
-    public class DesignViewModel : ViewModelBase
+    public class DesignViewModel
     {
         public ObservableCollection<TraverseItem> TraverseItems
         {
