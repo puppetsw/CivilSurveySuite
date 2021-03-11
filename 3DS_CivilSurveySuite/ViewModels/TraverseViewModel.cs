@@ -1,11 +1,14 @@
-﻿using _3DS_CivilSurveySuite.Helpers;
+﻿// 3DS_CivilSurveySuite References
+using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Models;
+// AutoCAD References
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
-
+using System.Collections.Generic;
+// System References
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -121,35 +124,39 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void DrawTraverse()
         {
-            Autodesk.AutoCAD.Internal.Utils.SetFocusToDwgView();
-            //get basepoints
+            //set focus to acad window
+            Utils.SetFocusToDwgView();
+            //if no basepoint set
             if (!m_basePointFlag)
-                SetBasePoint();
+                SetBasePoint(); //set basepoint
 
-            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
-
+            //lock acad document
             using (Acaddoc.LockDocument())
             {
-                using (Transaction tr = startTransaction())
+                //get coordinates based on traverse data
+                var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
+                //draw transient graphics
+                DrawTransientTraverse(coordinates);
+
+                PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse? ");
+                pko.AppendKeywordsToMessage = true;
+                pko.Keywords.Add("Accept");
+                pko.Keywords.Add("Cancel");
+
+                PromptResult result = Editor.GetKeywords(pko);
+
+                if (result.Status != PromptStatus.OK || result.StringResult == "Cancel")
                 {
-                    int i = 1;
-                    foreach (Point2d point in coordinates)
-                    {
-                        BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
-                        BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                        Line ln;
-
-                        if (coordinates.Count == i)
-                            break; //ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[0].X, coordinates[0].Y, 0));
-                        else
-                            ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
-
-                        btr.AppendEntity(ln);
-                        tr.AddNewlyCreatedDBObject(ln, true);
-                        i++;
-                    }
-                    tr.Commit();
+                    //clear graphics and return
+                    ClearTransientGraphics();
+                    return;
                 }
+
+                //draw the autocad entities
+                DrawTraverseLinework(coordinates);
+
+                //clear the transient graphics at the end
+                ClearTransientGraphics();
             }
         }
 
@@ -203,6 +210,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         #region Private Methods
 
+        /// <summary>
+        /// Updates the index property based on collection position
+        /// </summary>
         private void UpdateIndex()
         {
             int i = 0;
@@ -213,30 +223,48 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
-        #endregion
+        private void DrawTraverseLinework(List<Point2d> coordinates)
+        {
+            using (Transaction tr = startTransaction())
+            {
+                int i = 1;
+                foreach (Point2d point in coordinates)
+                {
+                    BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                    BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                    Line ln;
 
+                    if (coordinates.Count == i)
+                        break; //ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[0].X, coordinates[0].Y, 0));
+                    else
+                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
+
+                    btr.AppendEntity(ln);
+                    tr.AddNewlyCreatedDBObject(ln, true);
+                    i++;
+                }
+                tr.Commit();
+            }
+        }
+
+        #endregion
 
         #region TransientGraphics
 
-        private void DrawTransientTraverse()
+        private void DrawTransientTraverse(List<Point2d> coordinates)
         {
-            if (!m_basePointFlag)
-                return;
-
-            ClearTransientGraphics();
             _markers = new DBObjectCollection();
             using (Transaction tr = startTransaction())
             {
-                var coords = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
                 int i = 1;
-                foreach (Point2d point in coords)
+                foreach (Point2d point in coordinates)
                 {
                     //draw the coordlines
                     Line ln;
-                    if (coords.Count == i)
+                    if (coordinates.Count == i)
                         break;
                     else
-                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coords[i].X, coords[i].Y, 0));
+                        ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
 
                     _markers.Add(ln);
 
@@ -249,8 +277,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 Acaddoc.TransactionManager.QueueForGraphicsFlush();
                 tr.Commit();
             }
-            //Editor.Regen();
-
         }
 
         /// <summary>

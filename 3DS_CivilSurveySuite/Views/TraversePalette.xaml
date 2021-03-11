@@ -35,9 +35,12 @@
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
-                <!--<Button Command="{Binding SetBasePointCommand}">
-                    <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-object.png" Width="16" Height="16"/>
-                </Button>-->
+                <Button Command="{Binding SetBasePointCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-object.png" Width="16" Height="16"/>
+                        <TextBlock Text=" Set Basepoint" />
+                    </StackPanel>
+                </Button>
                 <Button Command="{Binding DrawCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/draw-freehand.png" Width="16" Height="16"/>
