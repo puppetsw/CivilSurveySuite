@@ -1,6 +1,7 @@
 ﻿// 3DS_CivilSurveySuite References
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
+using _3DS_CivilSurveySuite.Helpers.Wpf;
 using _3DS_CivilSurveySuite.Models;
 using Autodesk.AutoCAD.Colors;
 // AutoCAD References
