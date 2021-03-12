@@ -11,7 +11,12 @@ namespace _3DS_CivilSurveySuite.Models
         #endregion
 
         #region Constructors
-        public DMS() { }
+        public DMS() 
+        {
+            Degrees = 0;
+            Minutes = 0;
+            Seconds = 0;
+        }
 
         public DMS(double bearing)
         {
@@ -144,7 +149,7 @@ namespace _3DS_CivilSurveySuite.Models
             else
                 fsecs = Seconds.ToString();
 
-            return string.Format(Degrees + "°" + fmins + "'" + fsecs + "\"");
+            return string.Format(Degrees + "°" + fmins + "'" + fsecs + '"');
         }
 
         public double ToDouble()

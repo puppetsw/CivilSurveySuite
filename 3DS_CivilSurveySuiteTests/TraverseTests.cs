@@ -293,6 +293,23 @@ namespace _3DS_CivilSurveySuiteTests
             public int Degrees;
             public int Minutes;
             public int Seconds;
+
+            public override string ToString()
+            {
+                string fmins, fsecs;
+
+                if (Minutes < 10)
+                    fmins = "0" + Minutes; //add the 0 in front if its less than 10.
+                else
+                    fmins = Minutes.ToString();
+
+                if (Seconds < 10)
+                    fsecs = "0" + Seconds; //add the 0 in front if its less than 10.
+                else
+                    fsecs = Seconds.ToString();
+
+                return string.Format(Degrees + "°" + fmins + "'" + fsecs + '"');
+            }
         }
 
         /// <summary>

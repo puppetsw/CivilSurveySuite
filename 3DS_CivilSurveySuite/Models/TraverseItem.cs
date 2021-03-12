@@ -38,7 +38,7 @@ namespace _3DS_CivilSurveySuite.Models
 
         #region Constructors
 
-        public TraverseItem() { }
+        public TraverseItem() { DMSBearing = new DMS(); Bearing = 0; }
 
         public TraverseItem(double bearing, double distance)
         {
