@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 // AutoCAD References
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;

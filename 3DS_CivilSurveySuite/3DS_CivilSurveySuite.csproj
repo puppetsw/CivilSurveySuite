@@ -78,12 +78,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\LockedTransaction.cs" />
+    <Compile Include="Helpers\AutoCAD\LockedTransaction.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />
     <Compile Include="Helpers\SelectAllFocusBehavior.cs" />
     <Compile Include="Helpers\TakeFocusAction.cs" />
-    <Compile Include="Helpers\TransactionExtensions.cs" />
+    <Compile Include="Helpers\AutoCAD\TransactionExtensions.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Tests\TestTransientGraphics.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
@@ -98,7 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Helpers\CivilBase.cs" />
+    <Compile Include="Helpers\AutoCAD\CivilBase.cs" />
     <Compile Include="Commands\TextUtils.cs" />
     <Compile Include="Models\TraverseItem.cs" />
     <Compile Include="Views\TraversePalette.xaml.cs">

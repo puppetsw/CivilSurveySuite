@@ -14,7 +14,6 @@
         <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
         <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
         <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
-        <converter:BearingConverter x:Key="BearingConverter"/>
         <converter:DistanceConverter x:Key="DistanceConverter"/>
         <vm:DesignViewModel x:Key="mockViewModel"/>
     </UserControl.Resources>

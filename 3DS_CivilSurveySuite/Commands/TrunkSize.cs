@@ -1,7 +1,7 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
-using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Commands.TrunkSize))]
 namespace _3DS_CivilSurveySuite.Commands

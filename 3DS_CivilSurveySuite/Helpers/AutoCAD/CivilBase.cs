@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.EditorInput;
 // Civil 3D References
 using Autodesk.Civil.ApplicationServices;
 
-namespace _3DS_CivilSurveySuite.Helpers
+namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
 {
     /// <summary>
     /// Base class for all sample command extensions.
