@@ -88,14 +88,14 @@ namespace _3DS_CivilSurveySuite.Models
             var seconds = dms1.Seconds + dms2.Seconds;
 
             //work out seconds first, carry over to minutes
-            if (seconds > 60)
+            if (seconds >= 60)
             {
                 seconds -= 60;
                 minutes++;
             }
 
             //work out minutes, carry over to degrees
-            if (minutes > 60)
+            if (minutes >= 60)
             {
                 minutes -= 60;
                 degrees++;
@@ -129,7 +129,7 @@ namespace _3DS_CivilSurveySuite.Models
                 minutes += 60;
             }
 
-            if (degrees < 0)
+            if (degrees <= 0)
                 degrees += 360;
 
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };

@@ -78,6 +78,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Helpers\AutoCAD\LockedTransaction.cs" />
     <Compile Include="Helpers\Wpf\RelayCommand.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />

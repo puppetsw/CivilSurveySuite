@@ -97,6 +97,23 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void TestBearingAddition2()
+        {
+            double bearing1 = 90.30;
+            double bearing2 = 90.30;
+
+            double expectedResultDegrees = 181;
+            double expectedResultMinutes = 0;
+            double expectedResultSeconds = 0;
+
+            var result = BearingAddition(bearing1, bearing2);
+
+            Assert.AreEqual(expectedResultDegrees, result.Degrees);
+            Assert.AreEqual(expectedResultMinutes, result.Minutes);
+            Assert.AreEqual(expectedResultSeconds, result.Seconds);
+        }
+
+        [TestMethod]
         public void TestBearingSubtraction()
         {
             double bearing1 = 85.1537;
@@ -247,14 +264,14 @@ namespace _3DS_CivilSurveySuiteTests
             var seconds = dms1.Seconds + dms2.Seconds;
 
             //work out seconds first, carry over to minutes
-            if (seconds > 60)
+            if (seconds >= 60)
             {
                 seconds -= 60;
                 minutes++;
             }
 
             //work out minutes, carry over to degrees
-            if (minutes > 60)
+            if (minutes >= 60)
             {
                 minutes -= 60;
                 degrees++;
