@@ -1,18 +1,12 @@
 ﻿using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.Models;
-using _3DS_CivilSurveySuite.Traverse;
-using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Runtime;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Tests.TestTransientGraphics))]
 namespace _3DS_CivilSurveySuite.Tests

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 // System References
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -70,6 +71,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
+        
+        public RelayCommand LostFocusEvent => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
 
         #endregion
 
@@ -94,6 +97,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
         {
             var ti = new TraverseItem();
             TraverseItems.Add(ti);
+
+            //ti.PropertyChanged += Ti_PropertyChanged;
+
             //hack: add index property and update method
             UpdateIndex();
         }
@@ -101,6 +107,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void RemoveRow()
         {
             if (SelectedTraverseItem == null) return;
+            //SelectedTraverseItem.PropertyChanged -= Ti_PropertyChanged;
 
             TraverseItems.Remove(SelectedTraverseItem);
             UpdateIndex();
@@ -240,6 +247,26 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         #region Private Methods
 
+        private void DrawTransientPreview()
+        {
+            //if no basepoint set
+            if (!m_basePointFlag)
+                return;
+            //set focus to acad window
+            //Utils.SetFocusToDwgView();
+
+            //get coordinates based on traverse data
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
+
+            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            {
+                ClearTransientGraphics();
+                DrawTransientTraverse(coordinates);
+                tr.Commit();
+            }
+            Editor.Regen();
+        }
+
         /// <summary>
         /// Updates the index property based on collection position
         /// </summary>
@@ -356,16 +383,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             pline.AddVertexAt(7, pointTopRight, 0, 0, 0);
 
             return pline;
-        }
-
-        /// <summary>
-        /// Draws transient text to the screen at the specified position
-        /// </summary>
-        /// <remarks>Call inside a <see cref="Transaction"/></remarks>
-        /// <param name="text"></param>
-        private void DrawTransientText(string text, Point3d point)
-        {
-
         }
 
         /// <summary>

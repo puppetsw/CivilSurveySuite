@@ -93,18 +93,18 @@
     <Compile Include="Helpers\MathHelpers.cs" />
     <Compile Include="ViewModels\DesignViewModel.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
-    <Compile Include="Commands\Traverse.cs" />
+    <Compile Include="Helpers\PaletteFactory.cs" />
     <Compile Include="Commands\TrunkSize.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
-    <Page Include="Views\TraversePalette.xaml">
+    <Page Include="Views\TraverseView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Helpers\AutoCAD\CivilBase.cs" />
     <Compile Include="Commands\TextUtils.cs" />
     <Compile Include="Models\TraverseItem.cs" />
-    <Compile Include="Views\TraversePalette.xaml.cs">
-      <DependentUpon>TraversePalette.xaml</DependentUpon>
+    <Compile Include="Views\TraverseView.xaml.cs">
+      <DependentUpon>TraverseView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
