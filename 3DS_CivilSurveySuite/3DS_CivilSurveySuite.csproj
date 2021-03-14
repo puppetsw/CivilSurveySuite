@@ -181,6 +181,8 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\insert-object.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\edit-redo-6.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

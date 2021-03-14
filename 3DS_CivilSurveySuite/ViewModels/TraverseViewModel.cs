@@ -15,18 +15,17 @@ using System.Collections.Generic;
 // System References
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
-    /// ViewModel for TraversePalette view
+    /// ViewModel for TraverseView
     /// </summary>
     public class TraverseViewModel : ViewModelBase
     {
         #region Private Members
 
-        DBObjectCollection _markers = null;
+        DBObjectCollection _transientGraphics = null;
         Point3d m_basePoint;
         bool m_basePointFlag = false;
 
@@ -71,7 +70,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
-        
+        public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
+
         public RelayCommand LostFocusEvent => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
 
         #endregion
@@ -98,8 +98,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             var ti = new TraverseItem();
             TraverseItems.Add(ti);
 
-            //ti.PropertyChanged += Ti_PropertyChanged;
-
             //hack: add index property and update method
             UpdateIndex();
         }
@@ -107,10 +105,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void RemoveRow()
         {
             if (SelectedTraverseItem == null) return;
-            //SelectedTraverseItem.PropertyChanged -= Ti_PropertyChanged;
 
             TraverseItems.Remove(SelectedTraverseItem);
             UpdateIndex();
+
+            DrawTransientPreview();
         }
 
         private void ClearTraverse()
@@ -163,6 +162,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             //lock acad document and start transaction
             using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
             {
+                ClearTransientGraphics();
                 //draw first transient traverse
                 DrawTransientTraverse(coordinates);
                 bool cancelled = false;
@@ -241,31 +241,16 @@ namespace _3DS_CivilSurveySuite.ViewModels
             m_basePointFlag = true;
 
             WriteMessage("Base point set: X:" + m_basePoint.X + " Y:" + m_basePoint.Y + "\n");
+
+
+            if (TraverseItems.Count < 1) return;
+
+            DrawTransientPreview();
         }
 
         #endregion
 
         #region Private Methods
-
-        private void DrawTransientPreview()
-        {
-            //if no basepoint set
-            if (!m_basePointFlag)
-                return;
-            //set focus to acad window
-            //Utils.SetFocusToDwgView();
-
-            //get coordinates based on traverse data
-            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
-
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
-            {
-                ClearTransientGraphics();
-                DrawTransientTraverse(coordinates);
-                tr.Commit();
-            }
-            Editor.Regen();
-        }
 
         /// <summary>
         /// Updates the index property based on collection position
@@ -304,6 +289,25 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         #region TransientGraphics
 
+        private void DrawTransientPreview()
+        {
+            //if no basepoint set
+            if (!m_basePointFlag)
+                return;
+
+            //get coordinates based on traverse data
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
+
+            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            {
+                ClearTransientGraphics();
+                DrawTransientTraverse(coordinates);
+                tr.Commit();
+                //Refresh ACAD screen to display changes
+                Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
+            }
+        }
+
         /// <summary>
         /// Draws the traverse as transient graphics
         /// </summary>
@@ -314,7 +318,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             {
                 //TODO: add text and marker style
                 //HACK: move transient stuff into try catch
-                _markers = new DBObjectCollection();
+                _transientGraphics = new DBObjectCollection();
                 int i = 1;
                 //draw the coordlines
                 foreach (Point2d point in coordinates)
@@ -332,8 +336,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
                         var box2 = CalculateBox(coordinates[0]);
                         box1.Color = Color.FromColor(System.Drawing.Color.Yellow);
                         box2.Color = Color.FromColor(System.Drawing.Color.Yellow);
-                        _markers.Add(box1);
-                        _markers.Add(box2);
+                        _transientGraphics.Add(box1);
+                        _transientGraphics.Add(box2);
                         tm.AddTransient(box1, TransientDrawingMode.Main, 128, intCol);
                         tm.AddTransient(box2, TransientDrawingMode.Main, 128, intCol);
                     }
@@ -346,7 +350,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                         //tx.Justify = AttachmentPoint.BottomLeft;
                         //tx.Height = 0.5;
 
-                        _markers.Add(ln);
+                        _transientGraphics.Add(ln);
                         //_markers.Add(tx);
                         tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
                         //tm.AddTransient(tx, TransientDrawingMode.Highlight, 128, intCol);
@@ -392,14 +396,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
         {
             TransientManager tm = TransientManager.CurrentTransientManager;
             IntegerCollection intCol = new IntegerCollection();
-            //tm.EraseTransients(TransientDrawingMode.Highlight, 128, intCol);
 
-            if (_markers != null)
+            if (_transientGraphics != null)
             {
-                foreach (DBObject marker in _markers)
+                foreach (DBObject graphic in _transientGraphics)
                 {
-                    tm.EraseTransient(marker, intCol);
-                    marker.Dispose();
+                    tm.EraseTransient(graphic, intCol);
+                    graphic.Dispose();
                 }
             }
         }

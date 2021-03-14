@@ -3,7 +3,7 @@
 namespace _3DS_CivilSurveySuite.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TraverseView.xaml
     /// </summary>
     public partial class TraverseView : UserControl
     {

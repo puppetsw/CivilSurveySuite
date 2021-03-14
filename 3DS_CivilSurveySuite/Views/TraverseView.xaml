@@ -38,7 +38,12 @@
                 <Button Command="{Binding SetBasePointCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-object.png" Width="16" Height="16"/>
-                        <!--<TextBlock Text=" Set Basepoint" />-->
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding RefreshTraverseCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/edit-redo-6.png" Width="16" Height="16"/>
+                        <TextBlock Text=" Refresh"/>
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding DrawCommand}">
@@ -54,7 +59,7 @@
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
-                <Button x:Name="btnFeetToMeters" Command="{Binding FeetToMetersCommand}">
+                <Button Command="{Binding FeetToMetersCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-horizontal-rule.png" Width="16" Height="16"/>
                         <TextBlock Text=" Feet To Meters" />
