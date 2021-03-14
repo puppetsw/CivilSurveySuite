@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace _3DS_CivilSurveySuite.Helpers.Wpf
+namespace _3DS_CivilSurveySuite.Helpers.Wpf.Behaviors
 {
     /// <summary>
     /// https://www.codeproject.com/Tips/1249276/WPF-Select-All-Focus-Behavior
@@ -19,13 +19,9 @@ namespace _3DS_CivilSurveySuite.Helpers.Wpf
             frameworkElement.SetValue(EnableProperty, value);
         }
 
-        public static readonly DependencyProperty EnableProperty =
-                 DependencyProperty.RegisterAttached("Enable",
-                    typeof(bool), typeof(SelectAllFocusBehavior),
-                    new FrameworkPropertyMetadata(false, OnEnableChanged));
+        public static readonly DependencyProperty EnableProperty = DependencyProperty.RegisterAttached("Enable",typeof(bool), typeof(SelectAllFocusBehavior), new FrameworkPropertyMetadata(false, OnEnableChanged));
 
-        private static void OnEnableChanged
-                   (DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var frameworkElement = d as FrameworkElement;
             if (frameworkElement == null) return;

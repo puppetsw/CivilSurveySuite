@@ -1,5 +1,8 @@
 ﻿using _3DS_CivilSurveySuite.ViewModels;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace _3DS_CivilSurveySuite.Views
 {
@@ -8,21 +11,19 @@ namespace _3DS_CivilSurveySuite.Views
     /// </summary>
     public partial class TraversePalette : UserControl
     {
-        TraverseViewModel dataContext;
-
         public TraversePalette()
         {
             InitializeComponent();
-            dataContext = new TraverseViewModel();
-
-            //HACK: No EventToCommand?
-            //Unloaded += (s, e) => {
-            //    if (dataContext != null)
-            //        dataContext.ClearTransientGraphics();
-            //};
-
-            DataContext = dataContext;
+            DataContext = new TraverseViewModel();
         }
+
+        //private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        //{
+        //    Regex regex = new Regex("[^0-9.+-]+");
+        //    e.Handled = regex.IsMatch(e.Text) && ((Regex.Matches(e.Text, "+").Count <= 1) || (Regex.Matches(e.Text, "-").Count <= 1));
+
+        //    //e.Handled = e.Text.
+        //}
     }
 }
 

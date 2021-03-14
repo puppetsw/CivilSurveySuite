@@ -80,9 +80,10 @@
   <ItemGroup>
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Helpers\AutoCAD\LockedTransaction.cs" />
+    <Compile Include="Helpers\Wpf\Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Helpers\Wpf\RelayCommand.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />
-    <Compile Include="Helpers\Wpf\SelectAllFocusBehavior.cs" />
+    <Compile Include="Helpers\Wpf\Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Helpers\Wpf\TakeFocusAction.cs" />
     <Compile Include="Helpers\AutoCAD\TransactionExtensions.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

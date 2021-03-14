@@ -7,6 +7,7 @@
             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.ViewModels" 
             xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Converters" 
             xmlns:helper="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf"
+            xmlns:behavior="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf.Behaviors"
             mc:Ignorable="d"
             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -108,24 +109,42 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox helper:SelectAllFocusBehavior.Enable="True">
+                            <TextBox behavior:SelectAllFocusBehavior.Enable="True" behavior:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
                                         <helper:TakeFocusAction />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>
-                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}" ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True">
-                                        <!--<Binding.ValidationRules>
-                                            <converter:BearingValidation ValidatesOnTargetUpdated="True" />
-                                        </Binding.ValidationRules>-->
-                                    </Binding>
+                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}" 
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True"/>
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Distance" Binding="{Binding Distance, Converter={StaticResource DistanceConverter}, StringFormat=N3, FallbackValue=0}" Width="150"/>
+                <DataGridTemplateColumn Header="Distance" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Distance, StringFormat=N3}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox behavior:SelectAllFocusBehavior.Enable="True" behavior:SimpleCalculationTextBoxBehavior.Enable="True">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <helper:TakeFocusAction />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="Distance" Converter="{StaticResource DistanceConverter}" StringFormat="N3"
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True"/>
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
