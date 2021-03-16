@@ -18,10 +18,3 @@ Properties.Settings.Default.MyConnection);
 
 Traverse
 ----------------
-Add (work out a way) of doing angles
-Cleanup Converters
-
-
-Complete rectangle
-
-

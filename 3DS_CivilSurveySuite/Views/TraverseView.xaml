@@ -11,76 +11,117 @@
             mc:Ignorable="d"
             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
-        <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
-        <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
-        <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
-        <converter:DistanceConverter x:Key="DistanceConverter"/>
-        <converter:BearingConverter x:Key="BearingConverter"/>
-        <vm:DesignViewModel x:Key="mockViewModel"/>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
+            <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
+            <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
+            <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
+            <converter:DistanceConverter x:Key="DistanceConverter"/>
+            <converter:BearingConverter x:Key="BearingConverter"/>
+            <vm:TraverseDesignViewModel x:Key="mockViewModel"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/ToolTips.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
+                <ToolBar.Resources>
+                    <Style TargetType="ToolTip">
+                        <Setter Property="ToolTipService.ShowDuration" Value="6000"/>
+                    </Style>
+                </ToolBar.Resources>
                 <Button Command="{Binding AddRowCommand}">
-                    <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/dialog-more.png" Width="16" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource AddRowToolTipContent}"/>
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource AddRowToolbarIcon}" Width="16" Height="16"/>
                 </Button>
                 <Button Command="{Binding RemoveRowCommand}">
-                    <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/window-close.png" Width="16" Height="16"/>
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource RemoveRowToolTipContent}"/>
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource RemoveRowToolbarIcon}" Width="16" Height="16"/>
                 </Button>
                 <Button Command="{Binding ClearCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/edit-clear-2.png" Width="16" Height="16" />
-                        <TextBlock Text=" Clear" />
-                    </StackPanel>
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ClearToolTipContent}"/>
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
                 </Button>
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding SetBasePointCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-object.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/>
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding RefreshTraverseCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource RefreshToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/edit-redo-6.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource RefreshTraverseToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Refresh"/>
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding DrawCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource DrawToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/draw-freehand.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource DrawTraverseToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Draw Traverse" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding ClosureCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ClosureToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/office-chart-polar.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource ClosureToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Closure Report" />
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding FeetToMetersCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource FeetToMetersToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-horizontal-rule.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource FeetToMetersToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Feet To Meters" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding LinksToMetersCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource LinksToMetersToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/insert-link-2.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource LinksToMetersToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Links To Meters" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding FlipBearingCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/object-flip-horizontal-2.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource FlipBearingToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Flip Bearing" />
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
-                <Button Command="{Binding ShowHelp}">
+                <Button Command="{Binding ShowHelpCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ShowHelpToolTipContent}" />
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal" ToolTip="Help">
-                        <Image Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/help.png" Width="16" Height="16"/>
+                        <Image Source="{StaticResource HelpToolbarIcon}" Width="16" Height="16"/>
                     </StackPanel>
                 </Button>
             </ToolBar>

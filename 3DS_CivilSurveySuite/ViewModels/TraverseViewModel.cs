@@ -15,6 +15,7 @@ using System.Collections.Generic;
 // System References
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -71,6 +72,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
         public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
+        public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
 
         public RelayCommand LostFocusEvent => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
 
@@ -115,6 +117,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void ClearTraverse()
         {
             TraverseItems.Clear();
+            ClearTransientGraphics();
         }
 
         private void CloseTraverse()
@@ -251,6 +254,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
         #endregion
 
         #region Private Methods
+
+        private void ShowHelp()
+        {
+            Process.Start(@"Resources\3DSCivilSurveySuite.chm");
+        }
 
         /// <summary>
         /// Updates the index property based on collection position
