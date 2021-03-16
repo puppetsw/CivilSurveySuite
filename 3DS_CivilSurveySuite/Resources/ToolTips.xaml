@@ -23,16 +23,31 @@
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="SetBasePointToolTipContent">
-        
+        <StackPanel>
+            <TextBlock Text="Set Basepoint" FontWeight="Bold"/>
+            <TextBlock Text="Sets a basepoint for the traverse to calculate from."/>
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="RefreshToolTipContent">
-
+        <StackPanel>
+            <TextBlock Text="Refresh Traverse" FontWeight="Bold"/>
+            <TextBlock Text="Refreshes the temporary traverse linework."/>
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="DrawToolTipContent">
-
+        <StackPanel>
+            <TextBlock Text="Draw Traverse" FontWeight="Bold"/>
+            <TextBlock Text="Converts the calculated traverse data into AutoCAD LINE entities."/>
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="ClosureToolTipContent">
-
+        <StackPanel>
+            <TextBlock Text="Closure Report" FontWeight="Bold"/>
+            <TextBlock> 
+                Creates a MTEXT entity with inverse results between <LineBreak/>
+                last point and starting point of the traverse.
+            </TextBlock>
+        </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="FeetToMetersToolTipContent">
         <StackPanel>
@@ -79,7 +94,7 @@
     <DataTemplate x:Key="ShowHelpToolTipContent">
         <StackPanel>
             <TextBlock Text="Help" FontWeight="Bold"/>
-            <TextBlock Text="Display the help file."/>
+            <TextBlock Text="Display the 3DS Civil Survey Suite help file."/>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
