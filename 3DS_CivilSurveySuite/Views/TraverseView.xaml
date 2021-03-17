@@ -142,6 +142,9 @@
                 <i:EventTrigger EventName="TargetUpdated">
                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
                 </i:EventTrigger>
+                <i:EventTrigger EventName="SourceUpdated">
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
+                </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="60" IsReadOnly="True" />
@@ -167,9 +170,9 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>
-                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}" 
-                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True"
-                                             NotifyOnTargetUpdated="True" UpdateSourceTrigger="LostFocus"
+                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}"
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" 
+                                             NotifyOnTargetUpdated="True" UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True"
                                              />
                                 </TextBox.Text>
                             </TextBox>

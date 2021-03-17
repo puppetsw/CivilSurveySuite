@@ -44,8 +44,8 @@
         <StackPanel>
             <TextBlock Text="Closure Report" FontWeight="Bold"/>
             <TextBlock> 
-                Creates a MTEXT entity with inverse results between <LineBreak/>
-                last point and starting point of the traverse.
+                Creates a table with closure results of <LineBreak/>
+                the traverse.
             </TextBlock>
         </StackPanel>
     </DataTemplate>

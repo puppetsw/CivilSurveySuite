@@ -6,7 +6,7 @@ namespace _3DS_CivilSurveySuite.Models
     public class TraverseItem : INotifyPropertyChanged
     {
         #region Private Members
-        private double index;
+        private int index;
         private double bearing;
         private double distance;
         private DMS dms;
@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuite.Models
         #region Properties
         public DMS DMSBearing { get => dms; private set { dms = value; NotifyPropertyChanged(); } }
 
-        public double Index { get => index; set { index = value; NotifyPropertyChanged(); } }
+        public int Index { get => index; set { index = value; NotifyPropertyChanged(); } }
 
         public double Bearing { get => bearing; 
             set 

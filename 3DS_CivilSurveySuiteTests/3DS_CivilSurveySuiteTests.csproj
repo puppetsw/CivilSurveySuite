@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BearingConverterTests.cs" />
     <Compile Include="BearingTests.cs" />
+    <Compile Include="ClosureTests.cs" />
     <Compile Include="CoordinateTests.cs" />
     <Compile Include="MathStringTests.cs" />
     <Compile Include="TraverseTests.cs" />

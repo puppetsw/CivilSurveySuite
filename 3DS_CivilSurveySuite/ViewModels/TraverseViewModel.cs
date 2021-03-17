@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Text;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -65,7 +66,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
         public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
-        public RelayCommand ClosureCommand => new RelayCommand((_) => CloseTraverse(), (_) => true);
+        public RelayCommand ClosureCommand => new RelayCommand((_) => ClosureReport(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand SetBasePointCommand => new RelayCommand((_) => SetBasePoint(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
@@ -135,6 +136,117 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             CloseDistance = string.Format("{0:0.000}", distance);
             CloseBearing = angle.ToString();
+        }
+
+        private void ClosureReport()
+        {
+            //from, easting, northing, bearing, distance, to
+            //2d area, misclose bearing and distance
+
+            //set focus to acad window
+            Utils.SetFocusToDwgView();
+
+            if (!m_commandRunning)
+                m_commandRunning = true;
+            else
+                return; //exit if command running
+
+            PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select location for report text: ");
+            PromptPointResult ppr = Editor.GetPoint(ppo);
+
+            if (ppr.Status != PromptStatus.OK) return; //if we have a valid point
+
+            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            {
+                var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(m_basePoint.X, m_basePoint.Y));
+
+                double rowHeight = 8;
+                double colWidth = 30;
+                double textHeight = 3;
+
+                Table tb = new Table();
+                tb.TableStyle = Acaddoc.Database.Tablestyle;
+                tb.SetSize(1, 6);
+                tb.SetColumnWidth(colWidth);
+                tb.SetRowHeight(rowHeight);
+                tb.Position = ppr.Value;
+
+                tb.Cells[0, 0].TextString = "Closure Report";
+                tb.Cells[0, 0].TextHeight = textHeight;
+
+                tb.InsertRows(tb.Rows.Count, rowHeight, 1);
+                int rowIndex = tb.Rows.Count - 1;
+                string[] headerData = { "From", "Easting", "Northing", "Bearing", "Distance", "To" };
+
+                //create header
+                for (int i = 0; i < headerData.Length; i++)
+                {
+                    var cell = tb.Cells[rowIndex, i];
+                    cell.TextString = headerData[i];
+                    cell.TextHeight = textHeight;
+                    cell.Alignment = CellAlignment.MiddleCenter;
+                }
+
+                double area = 0;
+                using (var point = new Autodesk.AutoCAD.DatabaseServices.Polyline())
+                {
+                    for (int i = 0; i < coordinates.Count - 1; i++)
+                    {
+                        //add point to polyline to calculate area
+                        point.AddVertexAt(i, coordinates[i], 0, 0, 0);
+
+                        //form report text
+                        string from = TraverseItems[i].Index.ToString();
+                        string easting = string.Format("{0:#,0.000}", coordinates[i].X);
+                        string northing = string.Format("{0:#,0.000}", coordinates[i].Y);
+                        string bearing = TraverseItems[i].DMSBearing.ToString();
+                        string distance = string.Format("{0:#,0.000}", TraverseItems[i].Distance);
+                        string to = "";
+
+                        if (i != coordinates.Count - 2) //-2 there is always going to be 1 less bearing/distance
+                            to = TraverseItems[i + 1].Index.ToString();
+
+                        tb.InsertRows(tb.Rows.Count, rowHeight, 1);
+                        rowIndex = tb.Rows.Count - 1;
+
+                        string[] rowData = { from, easting, northing, bearing, distance, to };
+
+                        for (int j = 0; j < rowData.Length; j++)
+                        {
+                            var cell = tb.Cells[rowIndex, j];
+                            cell.TextString = rowData[j];
+                            cell.TextHeight = textHeight;
+                            cell.Alignment = CellAlignment.MiddleCenter;
+                        }
+                    }
+                    area = Math.Round(point.Area, 3);
+
+                    tb.InsertRows(tb.Rows.Count, rowHeight, 1);
+                    rowIndex = tb.Rows.Count - 1;
+
+                    //create base of report
+                    var cellRange = CellRange.Create(tb, rowIndex, 0, rowIndex, tb.Columns.Count - 1);
+                    tb.MergeCells(cellRange);
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine(string.Format("Closure Distance: {0}", CloseDistance));
+                    sb.AppendLine(string.Format("Closure Bearing: {0}", CloseBearing));
+                    sb.AppendLine(string.Format("2D Area: {0}m²", area));
+
+                    tb.Cells[rowIndex, 0].TextString = sb.ToString();
+                    tb.Cells[rowIndex, 0].TextHeight = textHeight;
+                    tb.Cells[rowIndex, 0].Alignment = CellAlignment.MiddleLeft;
+                }
+
+                BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                BlockTableRecord ms = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                ms.AppendEntity(tb);
+                tr.AddNewlyCreatedDBObject(tb, true);
+
+                // Finally we commit our transaction
+                tr.Commit();
+            }
+            m_commandRunning = false;
         }
 
         private void DrawTraverse()
@@ -312,7 +424,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 DrawTransientTraverse(coordinates);
                 tr.Commit();
                 //Refresh ACAD screen to display changes
-                Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
+                //Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
+                Editor.Regen();
             }
         }
 

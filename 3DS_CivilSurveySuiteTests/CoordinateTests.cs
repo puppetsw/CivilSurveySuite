@@ -58,7 +58,7 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedY, newNorth);
         }
 
-        private struct Coordinate
+        public struct Coordinate
         {
             public double x;
             public double y;
