@@ -139,9 +139,6 @@
                   RowHeight="22" HorizontalContentAlignment="Center" 
                   >
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="TargetUpdated">
-                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
-                </i:EventTrigger>
                 <i:EventTrigger EventName="SourceUpdated">
                     <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
                 </i:EventTrigger>
@@ -172,7 +169,7 @@
                                 <TextBox.Text>
                                     <Binding Path="Bearing" Converter="{StaticResource BearingConverter}"
                                              ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" 
-                                             NotifyOnTargetUpdated="True" UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True"
+                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True"
                                              />
                                 </TextBox.Text>
                             </TextBox>
@@ -196,7 +193,7 @@
                                 <TextBox.Text>
                                     <Binding Path="Distance" Converter="{StaticResource DistanceConverter}" StringFormat="N3"
                                              ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" 
-                                             NotifyOnTargetUpdated="True" UpdateSourceTrigger="LostFocus"
+                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True"
                                              />
                                 </TextBox.Text>
                             </TextBox>

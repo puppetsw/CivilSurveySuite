@@ -205,12 +205,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
                         if (i != coordinates.Count - 2) //-2 there is always going to be 1 less bearing/distance
                             to = TraverseItems[i + 1].Index.ToString();
+                        else
+                            to = TraverseItems[0].Index.ToString(); //if it's last one assign starting id.
 
                         tb.InsertRows(tb.Rows.Count, rowHeight, 1);
                         rowIndex = tb.Rows.Count - 1;
 
                         string[] rowData = { from, easting, northing, bearing, distance, to };
-
                         for (int j = 0; j < rowData.Length; j++)
                         {
                             var cell = tb.Cells[rowIndex, j];
@@ -424,8 +425,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 DrawTransientTraverse(coordinates);
                 tr.Commit();
                 //Refresh ACAD screen to display changes
-                //Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
-                Editor.Regen();
+                Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
+                //Editor.Regen();
             }
         }
 
