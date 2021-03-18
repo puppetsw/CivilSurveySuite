@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 // AutoCAD References
 using Autodesk.AutoCAD.DatabaseServices;
@@ -10,8 +9,8 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Commands.PointLabelRotate))]
-namespace _3DS_CivilSurveySuite.Commands
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACADCommands.Point.PointLabelRotate))]
+namespace _3DS_CivilSurveySuite.ACADCommands.Point
 {
     public class PointLabelRotate : CivilBase
     {

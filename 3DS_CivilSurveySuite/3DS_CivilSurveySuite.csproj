@@ -78,11 +78,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACADCommands\PointGroup\PointGroupUtils.cs" />
+    <Compile Include="ACADCommands\Point\PointUtils.cs" />
+    <Compile Include="ACADCommands\Surface\SurfaceUtils.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Helpers\AutoCAD\LockedTransaction.cs" />
     <Compile Include="Helpers\Wpf\Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Helpers\Wpf\RelayCommand.cs" />
-    <Compile Include="Commands\PointLabelRotate.cs" />
+    <Compile Include="ACADCommands\Point\PointLabelRotate.cs" />
     <Compile Include="Helpers\Wpf\Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Helpers\Wpf\TakeFocusAction.cs" />
     <Compile Include="Helpers\AutoCAD\TransactionExtensions.cs" />
@@ -93,8 +96,8 @@
     <Compile Include="Helpers\MathHelpers.cs" />
     <Compile Include="ViewModels\TraverseDesignViewModel.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
-    <Compile Include="Helpers\PaletteFactory.cs" />
-    <Compile Include="Commands\TrunkSize.cs" />
+    <Compile Include="Palettes\PaletteFactory.cs" />
+    <Compile Include="ACADCommands\Point\TrunkSize.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
     <Resource Include="Resources\Icons.xaml">
       <SubType>Designer</SubType>
@@ -109,7 +112,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Helpers\AutoCAD\CivilBase.cs" />
-    <Compile Include="Commands\TextUtils.cs" />
+    <Compile Include="ACADCommands\Text\TextUtils.cs" />
     <Compile Include="Models\TraverseItem.cs" />
     <Compile Include="Views\TraverseView.xaml.cs">
       <DependentUpon>TraverseView.xaml</DependentUpon>
@@ -195,5 +198,6 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\edit-redo-6.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

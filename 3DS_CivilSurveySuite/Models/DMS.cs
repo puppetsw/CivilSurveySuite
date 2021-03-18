@@ -52,15 +52,6 @@ namespace _3DS_CivilSurveySuite.Models
         }
 
         /// <summary>
-        /// Check if <see cref="DMS"/> is empty;
-        /// </summary>
-        /// <returns>True if all values are 0, otherwise false.</returns>
-        public bool IsEmpty()
-        {
-            return Degrees == 0 && Minutes == 0 && Seconds == 0;
-        }
-
-        /// <summary>
         /// Returns true if the <see cref="DMS"/> object contains a valid bearing
         /// </summary>
         /// <param name="dMS"><see cref="DMS"/> object to check</param>
@@ -78,7 +69,7 @@ namespace _3DS_CivilSurveySuite.Models
         public static bool IsValid(double bearing)
         {
             var dMS = Parse(bearing);
-            return dMS.Degrees < 360 && dMS.Minutes < 60 && dMS.Seconds < 60;
+            return IsValid(dMS);
         }
 
         public static DMS operator +(DMS dms1, DMS dms2)

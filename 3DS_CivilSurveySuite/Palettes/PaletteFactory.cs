@@ -5,8 +5,8 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 using System;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Helpers.PaletteFactory))]
-namespace _3DS_CivilSurveySuite.Helpers
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
+namespace _3DS_CivilSurveySuite.Palettes
 {
     /// <summary>
     /// PaletteFactory class for hooking up Views and ViewModels to be
