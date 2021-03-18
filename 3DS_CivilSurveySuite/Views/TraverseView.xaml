@@ -5,6 +5,7 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.ViewModels" 
+            xmlns:vmd="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design" 
             xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Converters" 
             xmlns:helper="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf"
             xmlns:behavior="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf.Behaviors"
@@ -18,7 +19,7 @@
             <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
             <converter:DistanceConverter x:Key="DistanceConverter"/>
             <converter:BearingConverter x:Key="BearingConverter"/>
-            <vm:TraverseDesignViewModel x:Key="mockViewModel"/>
+            <vmd:TraverseDesignViewModel x:Key="mockViewModel"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/ToolTips.xaml" />

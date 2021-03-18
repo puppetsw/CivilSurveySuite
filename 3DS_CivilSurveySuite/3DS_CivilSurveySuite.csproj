@@ -89,12 +89,15 @@
     <Compile Include="Helpers\Wpf\Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Helpers\Wpf\TakeFocusAction.cs" />
     <Compile Include="Helpers\AutoCAD\TransactionExtensions.cs" />
+    <Compile Include="Models\DescriptionKey.cs" />
+    <Compile Include="ViewModels\Design\ConnectLineworkDesignViewModel.cs" />
+    <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Tests\TestTransientGraphics.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
     <Compile Include="Models\DMS.cs" />
     <Compile Include="Helpers\MathHelpers.cs" />
-    <Compile Include="ViewModels\TraverseDesignViewModel.cs" />
+    <Compile Include="ViewModels\Design\TraverseDesignViewModel.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Palettes\PaletteFactory.cs" />
     <Compile Include="ACADCommands\Point\TrunkSize.cs" />
@@ -107,6 +110,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Page Include="Views\ConnectLineworkView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TraverseView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,6 +121,9 @@
     <Compile Include="Helpers\AutoCAD\CivilBase.cs" />
     <Compile Include="ACADCommands\Text\TextUtils.cs" />
     <Compile Include="Models\TraverseItem.cs" />
+    <Compile Include="Views\ConnectLineworkView.xaml.cs">
+      <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TraverseView.xaml.cs">
       <DependentUpon>TraverseView.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -198,6 +208,17 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\edit-redo-6.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Sample\samepl4.png" />
+    <None Include="Resources\Sample\sample1.png" />
+    <None Include="Resources\Sample\sample2.png" />
+    <None Include="Resources\Sample\sample3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\document-export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\document-open.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

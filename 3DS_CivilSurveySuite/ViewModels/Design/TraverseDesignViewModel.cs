@@ -1,7 +1,7 @@
 ﻿using _3DS_CivilSurveySuite.Models;
 using System.Collections.ObjectModel;
 
-namespace _3DS_CivilSurveySuite.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels.Design
 {
     public class TraverseDesignViewModel
     {

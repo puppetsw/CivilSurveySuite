@@ -7,13 +7,13 @@
     <DataTemplate x:Key="AddRowToolTipContent">
         <StackPanel>
             <TextBlock Text="Add Row" FontWeight="Bold"/>
-            <TextBlock Text="Add new row to traverse table."/>
+            <TextBlock Text="Add new row to the table."/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="RemoveRowToolTipContent">
         <StackPanel>
             <TextBlock Text="Remove Row" FontWeight="Bold"/>
-            <TextBlock Text="Removes selected row from the traverse table."/>
+            <TextBlock Text="Removes selected row from the table."/>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="ClearToolTipContent">
@@ -95,6 +95,20 @@
         <StackPanel>
             <TextBlock Text="Help" FontWeight="Bold"/>
             <TextBlock Text="Display the 3DS Civil Survey Suite help file."/>
+        </StackPanel>
+    </DataTemplate>
+    
+    <!--ToolTips for ConnectLineworkView-->
+    <DataTemplate x:Key="OpenDocumentToolTipContent">
+        <StackPanel>
+            <TextBlock Text="Load Description Key Set" FontWeight="Bold"/>
+            <TextBlock Text="Loads a description key set from a file."/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="SaveDocumentToolTipContent">
+        <StackPanel>
+            <TextBlock Text="Save Description Key Set" FontWeight="Bold"/>
+            <TextBlock Text="Saves a description key set to a file."/>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
