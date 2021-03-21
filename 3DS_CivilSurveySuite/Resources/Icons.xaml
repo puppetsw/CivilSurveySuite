@@ -16,4 +16,6 @@
     <BitmapImage x:Key="OpenDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/document-open.png"/>
     <BitmapImage x:Key="SaveDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/document-export.png"/>
 
+    <BitmapImage x:Key="AcceptToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/dialog-ok-apply.png"/>
+
 </ResourceDictionary>

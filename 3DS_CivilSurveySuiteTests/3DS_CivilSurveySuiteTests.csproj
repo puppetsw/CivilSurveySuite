@@ -53,6 +53,7 @@
     <Compile Include="BearingTests.cs" />
     <Compile Include="ClosureTests.cs" />
     <Compile Include="CoordinateTests.cs" />
+    <Compile Include="JsonTests.cs" />
     <Compile Include="MathStringTests.cs" />
     <Compile Include="TraverseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -43,37 +43,40 @@
                     <Image Source="{StaticResource RemoveRowToolbarIcon}"/>
                 </Button>
                 <Separator/>
-                <Button Command="{Binding LoadDocument}">
+                <Button Click="Load_Click">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource OpenDocumentToolTipContent}"/>
                     </Button.ToolTip>
                     <Image Source="{StaticResource OpenDocumentToolbarIcon}"/>
                 </Button>
-                <Button Command="{Binding SaveDocument}">
+                <Button Click="Save_Click">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource SaveDocumentToolTipContent}"/>
                     </Button.ToolTip>
                     <Image Source="{StaticResource SaveDocumentToolbarIcon}"/>
                 </Button>
+                <Separator/>
+                <Button>
+                    <Image Source="{StaticResource AcceptToolbarIcon}"/>
+                </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding DescriptionKeys}" 
-                  GridLinesVisibility="All" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
+        <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding DescriptionKeys}" SelectedItem="{Binding SelectedKey}"
+                  GridLinesVisibility="All" AutoGenerateColumns="False" CanUserAddRows="false" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}" Background="{StaticResource YellowBackground}" 
                   RowHeight="22" HorizontalContentAlignment="Center"
                   >
+            <DataGrid.Resources>
+                <Style x:Key="HeaderCenter" TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Key" Width="80" Binding="{Binding Key}"/>
-                <DataGridTemplateColumn Header="Layer" Width="150">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.Layers}" SelectedItem="{Binding Layer}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Layer" Width="150" Binding="{Binding Layer}"/>
                 <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
-                <DataGridCheckBoxColumn Header="2D" Width="50" Binding="{Binding Draw2D}"/>
-                <DataGridCheckBoxColumn Header="3D" Width="50" Binding="{Binding Draw3D}"/>
+                <DataGridCheckBoxColumn Header="2D" Width="50" Binding="{Binding Draw2D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HeaderStyle="{StaticResource HeaderCenter}"/>
+                <DataGridCheckBoxColumn Header="3D" Width="50" Binding="{Binding Draw3D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HeaderStyle="{StaticResource HeaderCenter}"/>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

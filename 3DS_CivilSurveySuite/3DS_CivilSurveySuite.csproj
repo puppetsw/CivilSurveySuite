@@ -83,6 +83,7 @@
     <Compile Include="ACADCommands\Surface\SurfaceUtils.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Helpers\AutoCAD\LockedTransaction.cs" />
+    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Helpers\Wpf\Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Helpers\Wpf\RelayCommand.cs" />
     <Compile Include="ACADCommands\Point\PointLabelRotate.cs" />
@@ -147,6 +148,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -219,6 +221,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\document-open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\dialog-ok-apply.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,30 +1,94 @@
-﻿using _3DS_CivilSurveySuite.Models;
+﻿// 3DS_CivilSurveySuite References
+using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Helpers.Wpf;
+using _3DS_CivilSurveySuite.Models;
+// AutoCAD References
+
+// System References
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
-    /// ViewModel for ConnectLineView.xaml
+    /// ViewModel for ConnectLineworkView.xaml
     /// </summary>
     public class ConnectLineworkViewModel : ViewModelBase
     {
+        #region Private Members
+
+
+        #endregion
+
+        #region Properties
+
         public ObservableCollection<DescriptionKey> DescriptionKeys { get; set; }
-        public ObservableCollection<string> Layers { get; set; }
+
+        public DescriptionKey SelectedKey { get; set; }
+
+        #endregion
+
+        #region Constructor
 
         public ConnectLineworkViewModel()
         {
-            DescriptionKeys = new ObservableCollection<DescriptionKey>
-            {
-                new DescriptionKey() { Key = "BB#*", Description = "Bottom of bank", Layer = "SVY-BOB", Draw2D = false, Draw3D = true },
-                new DescriptionKey() { Key = "BD#*", Description = "Building", Layer = "SVY-BLD", Draw2D = true, Draw3D = false }
-            };
-
-            Layers = new ObservableCollection<string>
-            {
-                "SVY-BOB",
-                "SVY-BLD",
-                "SVY-NATURAL"
-            };
+            LoadSettings();
         }
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
+        public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
+
+        #endregion
+
+        #region Command Methods
+
+        private void AddRow()
+        {
+            DescriptionKeys.Add(new DescriptionKey());
+        }
+
+        private void RemoveRow()
+        {
+            if (SelectedKey != null)
+                DescriptionKeys.Remove(SelectedKey);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Get the last xml file loaded from settings
+        /// </summary>
+        private void LoadSettings()
+        {
+            string fileName = Properties.Settings.Default.ConnectLineworkFileName;
+
+            if (File.Exists(fileName))
+            {
+                Load(fileName);
+            } else
+            {
+                DescriptionKeys = new ObservableCollection<DescriptionKey>();
+            }
+        }
+
+        public void Load(string fileName)
+        {
+            DescriptionKeys = XmlHelper.ReadFromXmlFile<ObservableCollection<DescriptionKey>>(fileName);
+        }
+
+        public void Save(string fileName)
+        {
+            XmlHelper.WriteToXmlFile(fileName, DescriptionKeys);
+            Properties.Settings.Default.ConnectLineworkFileName = fileName;
+            Properties.Settings.Default.Save();
+        }
+
+        #endregion
     }
 }

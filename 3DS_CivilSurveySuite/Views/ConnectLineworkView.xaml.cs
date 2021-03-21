@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Win32;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace _3DS_CivilSurveySuite.Views
 {
@@ -10,6 +12,28 @@ namespace _3DS_CivilSurveySuite.Views
         public ConnectLineworkView()
         {
             InitializeComponent();
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                string destinationFilePath = dialog.FileName;
+                (DataContext as ViewModels.ConnectLineworkViewModel)?.Load(destinationFilePath);
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                string destinationFilePath = dialog.FileName;
+                (DataContext as ViewModels.ConnectLineworkViewModel)?.Save(destinationFilePath);
+            }
         }
     }
 }
