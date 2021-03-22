@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources\\3DS_DescriptionKeys.xml")]
         public string ConnectLineworkFileName {
             get {
                 return ((string)(this["ConnectLineworkFileName"]));

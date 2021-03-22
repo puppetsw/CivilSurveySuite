@@ -11,7 +11,7 @@ namespace _3DS_CivilSurveySuite.Models
         #endregion
 
         #region Constructors
-        public DMS() 
+        public DMS()
         {
             Degrees = 0;
             Minutes = 0;
@@ -21,7 +21,7 @@ namespace _3DS_CivilSurveySuite.Models
         public DMS(double bearing)
         {
             var dms = Parse(bearing);
-            
+
             Degrees = dms.Degrees;
             Minutes = dms.Minutes;
             Seconds = dms.Seconds;

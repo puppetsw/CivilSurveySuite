@@ -56,7 +56,7 @@
                     <Image Source="{StaticResource SaveDocumentToolbarIcon}"/>
                 </Button>
                 <Separator/>
-                <Button>
+                <Button Command="{Binding ConnectCommand}">
                     <Image Source="{StaticResource AcceptToolbarIcon}"/>
                 </Button>
             </ToolBar>
@@ -64,7 +64,7 @@
         <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding DescriptionKeys}" SelectedItem="{Binding SelectedKey}"
                   GridLinesVisibility="All" AutoGenerateColumns="False" CanUserAddRows="false" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}" Background="{StaticResource YellowBackground}" 
-                  RowHeight="22" HorizontalContentAlignment="Center"
+                  RowHeight="22" HorizontalContentAlignment="Center" 
                   >
             <DataGrid.Resources>
                 <Style x:Key="HeaderCenter" TargetType="DataGridColumnHeader">
@@ -72,9 +72,9 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Key" Width="80" Binding="{Binding Key}"/>
-                <DataGridTextColumn Header="Layer" Width="150" Binding="{Binding Layer}"/>
-                <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="Key" Width="80" Binding="{Binding Key, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Layer" Width="150" Binding="{Binding Layer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="2D" Width="50" Binding="{Binding Draw2D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HeaderStyle="{StaticResource HeaderCenter}"/>
                 <DataGridCheckBoxColumn Header="3D" Width="50" Binding="{Binding Draw3D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HeaderStyle="{StaticResource HeaderCenter}"/>
             </DataGrid.Columns>

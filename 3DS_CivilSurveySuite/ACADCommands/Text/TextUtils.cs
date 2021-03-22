@@ -32,7 +32,7 @@ namespace _3DS_CivilSurveySuite.ACADCommands.Text
         /// <summary>
         /// Converts the selected text to lowercase
         /// </summary>
-        public void TextToLower() 
+        public void TextToLower()
         { }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuite.ACADCommands.Text
         /// <summary>
         /// Adds a number to a text entity if it is a valid number
         /// </summary>
-        public void AddNumberToText() 
+        public void AddNumberToText()
         { }
 
         /// <summary>
@@ -63,13 +63,13 @@ namespace _3DS_CivilSurveySuite.ACADCommands.Text
         /// <summary>
         /// Multiplies the text by a number
         /// </summary>
-        public void MultiplyTextByNumber() 
+        public void MultiplyTextByNumber()
         { }
 
         /// <summary>
         /// Divides the text by a number
         /// </summary>
-        public void DivideTextByNumber() 
+        public void DivideTextByNumber()
         { }
     }
 }

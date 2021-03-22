@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static _3DS_CivilSurveySuiteTests.TraverseTests;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -66,7 +62,7 @@ namespace _3DS_CivilSurveySuiteTests
             var dmsExpected = new DMS() { Degrees = 95, Minutes = 9, Seconds = 40 };
 
             var dmsResult = BearingSubtraction(180, testAngle);
-            var result = Math.Round((double)dmsResult.Degrees + ((double)dmsResult.Minutes / 100) + ((double)dmsResult.Seconds / 10000),4);
+            var result = Math.Round((double)dmsResult.Degrees + ((double)dmsResult.Minutes / 100) + ((double)dmsResult.Seconds / 10000), 4);
 
             Assert.AreEqual(oppositeAngle, result);
 

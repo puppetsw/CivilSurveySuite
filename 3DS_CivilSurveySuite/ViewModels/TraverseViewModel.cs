@@ -125,8 +125,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
         {
             if (TraverseItems.Count < 2)
                 return;
-            
-            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(0,0));
+
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(0, 0));
 
             Point2d lastCoord = coordinates[coordinates.Count - 1];
             Point2d firstCoord = coordinates[0];
@@ -336,7 +336,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void FlipBearing()
         {
             if (SelectedTraverseItem == null) return;
-            
+
             int index = TraverseItems.IndexOf(SelectedTraverseItem);
             var dms180 = new DMS(180.0000);
 
@@ -481,7 +481,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                     i++;
                 }
                 Acaddoc.TransactionManager.QueueForGraphicsFlush();
-            } 
+            }
             catch (Exception ex)
             {
                 ClearTransientGraphics();

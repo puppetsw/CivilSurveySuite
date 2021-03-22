@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
+﻿using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 // AutoCAD References
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -8,6 +7,7 @@ using Autodesk.AutoCAD.Runtime;
 // Civil 3D References
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
+using System.Collections.Generic;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACADCommands.Point.PointLabelRotate))]
 namespace _3DS_CivilSurveySuite.ACADCommands.Point

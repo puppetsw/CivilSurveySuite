@@ -52,7 +52,8 @@ namespace _3DS_CivilSurveySuite.Helpers.Wpf.Behaviors
 
                 if (textBox.Text.Contains("+") || textBox.Text.Contains("-"))
                     e.Handled = true;
-            } else
+            }
+            else
                 e.Handled = regex.IsMatch(e.Text);
         }
 

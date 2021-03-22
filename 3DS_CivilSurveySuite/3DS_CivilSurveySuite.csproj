@@ -225,5 +225,10 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\dialog-ok-apply.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3DS_DescriptionKeys.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

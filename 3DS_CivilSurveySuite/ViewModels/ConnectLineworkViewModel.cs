@@ -16,13 +16,14 @@ namespace _3DS_CivilSurveySuite.ViewModels
     public class ConnectLineworkViewModel : ViewModelBase
     {
         #region Private Members
+        private ObservableCollection<DescriptionKey> descriptionKeys;
 
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<DescriptionKey> DescriptionKeys { get; set; }
+        public ObservableCollection<DescriptionKey> DescriptionKeys { get => descriptionKeys; set { descriptionKeys = value; NotifyPropertyChanged(); } }
 
         public DescriptionKey SelectedKey { get; set; }
 
@@ -41,6 +42,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
+        public RelayCommand ConnectCommand => new RelayCommand((_) => ConnectLinework(), (_) => true);
 
         #endregion
 
@@ -57,9 +59,16 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 DescriptionKeys.Remove(SelectedKey);
         }
 
+        private void ConnectLinework()
+        {
+
+        }
+
         #endregion
 
         #region Private Methods
+
+
 
         /// <summary>
         /// Get the last xml file loaded from settings
@@ -71,7 +80,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (File.Exists(fileName))
             {
                 Load(fileName);
-            } else
+            }
+            else
             {
                 DescriptionKeys = new ObservableCollection<DescriptionKey>();
             }

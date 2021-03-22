@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using _3DS_CivilSurveySuite.ViewModels;
+using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +22,7 @@ namespace _3DS_CivilSurveySuite.Views
             if (dialog.ShowDialog() == true)
             {
                 string destinationFilePath = dialog.FileName;
-                (DataContext as ViewModels.ConnectLineworkViewModel)?.Load(destinationFilePath);
+                (DataContext as ConnectLineworkViewModel)?.Load(destinationFilePath);
             }
         }
 
@@ -32,7 +33,7 @@ namespace _3DS_CivilSurveySuite.Views
             if (dialog.ShowDialog() == true)
             {
                 string destinationFilePath = dialog.FileName;
-                (DataContext as ViewModels.ConnectLineworkViewModel)?.Save(destinationFilePath);
+                (DataContext as ConnectLineworkViewModel)?.Save(destinationFilePath);
             }
         }
     }

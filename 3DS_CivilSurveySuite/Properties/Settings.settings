@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectLineworkFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Resources\3DS_DescriptionKeys.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

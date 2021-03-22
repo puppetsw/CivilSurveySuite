@@ -17,8 +17,10 @@ namespace _3DS_CivilSurveySuite.Models
 
         public int Index { get => index; set { index = value; NotifyPropertyChanged(); } }
 
-        public double Bearing { get => bearing; 
-            set 
+        public double Bearing
+        {
+            get => bearing;
+            set
             {
                 if (DMS.IsValid(value))
                 {

@@ -19,7 +19,7 @@ namespace _3DS_CivilSurveySuite.Helpers.Wpf.Behaviors
             frameworkElement.SetValue(EnableProperty, value);
         }
 
-        public static readonly DependencyProperty EnableProperty = DependencyProperty.RegisterAttached("Enable",typeof(bool), typeof(SelectAllFocusBehavior), new FrameworkPropertyMetadata(false, OnEnableChanged));
+        public static readonly DependencyProperty EnableProperty = DependencyProperty.RegisterAttached("Enable", typeof(bool), typeof(SelectAllFocusBehavior), new FrameworkPropertyMetadata(false, OnEnableChanged));
 
         private static void OnEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

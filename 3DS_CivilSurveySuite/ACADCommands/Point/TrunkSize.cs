@@ -1,7 +1,7 @@
-﻿using Autodesk.AutoCAD.Runtime;
+﻿using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACADCommands.Point.TrunkSize))]
 namespace _3DS_CivilSurveySuite.ACADCommands.Point

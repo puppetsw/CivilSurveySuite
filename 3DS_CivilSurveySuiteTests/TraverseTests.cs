@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -120,7 +119,7 @@ namespace _3DS_CivilSurveySuiteTests
             double bearing2 = 46.2245;
 
             double expectedResultDegrees = 38;
-            double expectedResultMinutes =52;
+            double expectedResultMinutes = 52;
             double expectedResultSeconds = 52;
 
             var result = BearingSubtraction(bearing1, bearing2);
@@ -342,12 +341,14 @@ namespace _3DS_CivilSurveySuiteTests
                 var minutes = Convert.ToInt32(bearing.Substring(4, 2));
                 var seconds = Convert.ToInt32(bearing.Substring(6));
                 return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
-            } else if (bearing.Length == 6)
+            }
+            else if (bearing.Length == 6)
             {
                 var degrees = Convert.ToInt32(bearing.Substring(0, 3));
                 var minutes = Convert.ToInt32(bearing.Substring(4));
                 return new DMS() { Degrees = degrees, Minutes = minutes };
-            } else if (bearing.Length == 3)
+            }
+            else if (bearing.Length == 3)
             {
                 var degrees = Convert.ToInt32(bearing);
                 return new DMS() { Degrees = degrees };
