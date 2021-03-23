@@ -4,7 +4,9 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 // Civil 3D References
 using Autodesk.Civil.ApplicationServices;
+// System References
 using System;
+
 
 namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
 {
@@ -20,15 +22,24 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         /// </summary>
         protected Document Acaddoc
         {
-            get
-            {
-                if (null == m_AcadDocument)
-                {
-                    m_AcadDocument = Application.DocumentManager.MdiActiveDocument;
-                    //TODO: Fix problem with document switching
-                }
-                return m_AcadDocument;
-            }
+            //get
+            //{
+            //    if (null == m_AcadDocument)
+            //    {
+            //        m_AcadDocument = Application.DocumentManager.MdiActiveDocument;
+            //        //TODO: Fix problem with document switching
+            //    }
+            //    return m_AcadDocument;
+            //}
+            get { return Application.DocumentManager.MdiActiveDocument; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected DocumentCollection AcaddocManager
+        {
+            get { return Application.DocumentManager; }
         }
 
         /// <summary>
@@ -36,14 +47,15 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         /// </summary>
         protected CivilDocument Civildoc
         {
-            get
-            {
-                if (null == m_CivilDocument)
-                {
-                    m_CivilDocument = CivilApplication.ActiveDocument;
-                }
-                return m_CivilDocument;
-            }
+            //get
+            //{
+            //    if (null == m_CivilDocument)
+            //    {
+            //        m_CivilDocument = CivilApplication.ActiveDocument;
+            //    }
+            //    return m_CivilDocument;
+            //}
+            get { return CivilApplication.ActiveDocument; }
         }
 
         /// <summary>
@@ -64,7 +76,7 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         /// read, and modified objects in the database.
         /// </summary>
         /// <returns>Returns a new database transaction.</returns>
-        protected Transaction startTransaction()
+        protected Transaction StartTransaction()
         {
             return Acaddoc.TransactionManager.StartTransaction();
         }
@@ -82,8 +94,8 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         {
         }
 
-        private Document m_AcadDocument = null;
-        private CivilDocument m_CivilDocument = null;
+        //private Document m_AcadDocument = null;
+        //private CivilDocument m_CivilDocument = null;
     }
 }
 

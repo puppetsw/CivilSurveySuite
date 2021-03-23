@@ -65,7 +65,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            var doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            using (Transaction tr = doc.TransactionManager.StartLockedTransaction())
             {
                 var ptList = new List<CogoPoint>();
 

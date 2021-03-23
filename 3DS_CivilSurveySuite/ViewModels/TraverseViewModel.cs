@@ -54,6 +54,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
         {
             TraverseItems = new ObservableCollection<TraverseItem>();
             TraverseItems.CollectionChanged += TraverseItems_CollectionChanged;
+
+            //HACK: clear graphics on drawing switch
+            AcaddocManager.DocumentToBeDeactivated += (s, e) => ClearTransientGraphics(); 
         }
 
         ~TraverseViewModel()

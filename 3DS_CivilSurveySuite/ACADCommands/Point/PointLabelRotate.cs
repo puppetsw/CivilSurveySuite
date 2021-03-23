@@ -133,7 +133,7 @@ namespace _3DS_CivilSurveySuite.ACADCommands.Point
 
             if (psrPoints.Value == null) return;
 
-            using (Transaction tr = startTransaction())
+            using (Transaction tr = StartTransaction())
             {
                 double angle = 0;
                 double textAngle = 0;

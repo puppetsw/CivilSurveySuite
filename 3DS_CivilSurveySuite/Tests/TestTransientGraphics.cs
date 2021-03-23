@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuite.Tests
                 new TraverseItem(270, 10)
             };
 
-            using (Transaction tr = startTransaction())
+            using (Transaction tr = StartTransaction())
             {
                 var coords = MathHelpers.BearingAndDistanceToCoordinates(dmsList, new Point2d(ppr.Value.X, ppr.Value.Y));
                 int i = 1;

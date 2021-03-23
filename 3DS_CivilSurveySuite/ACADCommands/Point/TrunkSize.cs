@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.ACADCommands.Point
             //TODO: Use settings to determine codes for TRNK and TRE
             int counter = 0;
 
-            using (Transaction tr = startTransaction())
+            using (Transaction tr = StartTransaction())
             {
                 foreach (ObjectId pointId in Civildoc.CogoPoints)
                 {

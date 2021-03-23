@@ -1,9 +1,14 @@
-﻿using _3DS_CivilSurveySuite.Helpers.AutoCAD;
+﻿// 3DS_CivilSurveySuite References
+using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite.Views;
+// AutoCAD References
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+// System References
 using System;
+using System.Collections.Generic;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
 namespace _3DS_CivilSurveySuite.Palettes
@@ -12,10 +17,61 @@ namespace _3DS_CivilSurveySuite.Palettes
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class PaletteFactory : CivilBase
+    public class PaletteFactory : CivilBase, IExtensionApplication
     {
-        static PaletteSet m_TraversePalSet = null;
-        static PaletteSet m_ConnectLinePalSet = null;
+        #region Private Members
+        private bool m_PaletteVisible;
+        private static PaletteSet m_CivilSurveySuitePalSet = null;
+        private static readonly List<Type> m_Palettes = new List<Type>();
+        #endregion
+
+        #region IExtensionApplication
+        public void Initialize()
+        {
+            //hookup events
+            AcaddocManager.DocumentActivated += AcaddocManager_DocumentActivated;
+            AcaddocManager.DocumentCreated += AcaddocManager_DocumentCreated;
+            AcaddocManager.DocumentToBeDeactivated += AcaddocManager_DocumentToBeDeactivated;
+            AcaddocManager.DocumentToBeDestroyed += AcaddocManager_DocumentToBeDestroyed;
+        }
+
+        public void Terminate()
+        {
+            //unhook events
+            AcaddocManager.DocumentActivated -= AcaddocManager_DocumentActivated;
+            AcaddocManager.DocumentCreated -= AcaddocManager_DocumentCreated;
+            AcaddocManager.DocumentToBeDeactivated -= AcaddocManager_DocumentToBeDeactivated;
+            AcaddocManager.DocumentToBeDestroyed -= AcaddocManager_DocumentToBeDestroyed;
+        }
+        #endregion
+
+        #region Document Events
+
+        private void AcaddocManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        {
+            m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
+            if (AcaddocManager.Count == 1)
+                m_CivilSurveySuitePalSet.Visible = false;
+        }
+
+        private void AcaddocManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        {
+            m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
+        }
+
+        private void AcaddocManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+        {
+            m_CivilSurveySuitePalSet.Visible = m_PaletteVisible;
+        }
+
+        private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
+        {
+            m_CivilSurveySuitePalSet.Visible = e.Document != null && m_PaletteVisible;
+        }
+
+        #endregion
+
+        #region Show Palettes
 
         [CommandMethod("3DSShowTraversePalette")]
         public void ShowTraversePalette()
@@ -24,25 +80,23 @@ namespace _3DS_CivilSurveySuite.Palettes
             TraverseViewModel vm = new TraverseViewModel();
             view.DataContext = vm;
 
-            if (m_TraversePalSet == null)
-            {
-                m_TraversePalSet = new PaletteSet("3DS Traverse", new Guid("39663E77-EAC7-409A-87E4-4E6E15A5D05A"));
-                m_TraversePalSet.Style = PaletteSetStyles.ShowCloseButton | PaletteSetStyles.ShowPropertiesMenu | PaletteSetStyles.ShowAutoHideButton;
-                m_TraversePalSet.AddVisual("TraverseView", view);
+            if (m_CivilSurveySuitePalSet == null)
+                CreatePaletteSet();
 
-                m_TraversePalSet.StateChanged += (s, e) =>
+            if (!m_Palettes.Contains(view.GetType()))
+            {
+                m_CivilSurveySuitePalSet.AddVisual("Traverse", view);
+                m_Palettes.Add(view.GetType());
+                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
+                m_CivilSurveySuitePalSet.StateChanged += (s, e) =>
                 {
                     if (e.NewState == StateEventIndex.Hide)
-                    {
                         vm.ClearTransientGraphics();
-                    }
                 };
-
-                m_TraversePalSet.EnableTransparency(true);
-                m_TraversePalSet.KeepFocus = true;
             }
 
-            m_TraversePalSet.Visible = true;
+            if (!m_CivilSurveySuitePalSet.Visible)
+                m_CivilSurveySuitePalSet.Visible = true;
         }
 
         [CommandMethod("3DSShowConnectLinePalette")]
@@ -52,16 +106,35 @@ namespace _3DS_CivilSurveySuite.Palettes
             ConnectLineworkViewModel vm = new ConnectLineworkViewModel();
             view.DataContext = vm;
 
-            if (m_ConnectLinePalSet == null)
+            if (m_CivilSurveySuitePalSet == null)
+                CreatePaletteSet();
+
+            if (!m_Palettes.Contains(view.GetType()))
             {
-                m_ConnectLinePalSet = new PaletteSet("3DS Connect Linework", new Guid("6F0020E1-19CB-42AD-AB4F-D81D0C4731AF"));
-                m_ConnectLinePalSet.Style = PaletteSetStyles.ShowCloseButton;
-                m_ConnectLinePalSet.AddVisual("ConnectLineView", view);
-                m_ConnectLinePalSet.EnableTransparency(true);
-                m_ConnectLinePalSet.KeepFocus = true;
+                m_CivilSurveySuitePalSet.AddVisual("Linework", view);
+                m_Palettes.Add(view.GetType());
+                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
             }
 
-            m_ConnectLinePalSet.Visible = true;
+            if (!m_CivilSurveySuitePalSet.Visible)
+                m_CivilSurveySuitePalSet.Visible = true;
         }
+
+        #endregion
+
+        #region Private Methods
+
+        private void CreatePaletteSet()
+        {
+            m_CivilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
+            m_CivilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton | 
+                                             PaletteSetStyles.ShowPropertiesMenu | 
+                                             PaletteSetStyles.ShowAutoHideButton; 
+            m_CivilSurveySuitePalSet.EnableTransparency(true);
+            m_CivilSurveySuitePalSet.KeepFocus = false;
+        }
+
+        #endregion
+
     }
 }
