@@ -4,13 +4,14 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 // Civil 3D References
 using Autodesk.Civil.ApplicationServices;
+using System;
 
 namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
 {
     /// <summary>
     /// Base class for all sample command extensions.
     /// </summary>
-    public class CivilBase
+    public class CivilBase : IDisposable
     {
         #region Documents and Database Access
 
@@ -23,8 +24,8 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
             {
                 if (null == m_AcadDocument)
                 {
-                    m_AcadDocument =
-                        Application.DocumentManager.MdiActiveDocument;
+                    m_AcadDocument = Application.DocumentManager.MdiActiveDocument;
+                    //TODO: Fix problem with document switching
                 }
                 return m_AcadDocument;
             }
@@ -75,6 +76,10 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         protected void WriteMessage(string message)
         {
             Editor.WriteMessage("\n3DS> {0}", message);
+        }
+
+        public void Dispose()
+        {
         }
 
         private Document m_AcadDocument = null;

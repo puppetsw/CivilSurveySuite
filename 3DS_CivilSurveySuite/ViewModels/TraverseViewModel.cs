@@ -3,16 +3,16 @@ using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.Helpers.Wpf;
 using _3DS_CivilSurveySuite.Models;
-using Autodesk.AutoCAD.Colors;
 // AutoCAD References
+using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
+// System References
 using System;
 using System.Collections.Generic;
-// System References
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;

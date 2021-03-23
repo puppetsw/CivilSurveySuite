@@ -1,10 +1,14 @@
 ﻿// 3DS_CivilSurveySuite References
 using _3DS_CivilSurveySuite.Helpers;
+using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.Helpers.Wpf;
 using _3DS_CivilSurveySuite.Models;
 // AutoCAD References
-
+using Autodesk.AutoCAD.DatabaseServices;
+// Civil3D References
+using Autodesk.Civil.DatabaseServices;
 // System References
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -61,14 +65,31 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
+            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            {
+                var ptList = new List<CogoPoint>();
 
+                foreach (ObjectId pointId in Civildoc.CogoPoints)
+                {
+                    CogoPoint cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
+                    ptList.Add(cogoPoint);
+                }
+
+                ptList.Sort((a, b) => a.RawDescription.CompareTo(b.RawDescription));
+
+                tr.Commit();
+            }
         }
 
         #endregion
 
         #region Private Methods
 
+        private void Draw2DPolyline()
+        { }
 
+        private void Draw3DPolyline()
+        { }
 
         /// <summary>
         /// Get the last xml file loaded from settings
@@ -87,11 +108,19 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
+        /// <summary>
+        /// Load XML file
+        /// </summary>
+        /// <param name="fileName"></param>
         public void Load(string fileName)
         {
             DescriptionKeys = XmlHelper.ReadFromXmlFile<ObservableCollection<DescriptionKey>>(fileName);
         }
 
+        /// <summary>
+        /// Save XML file
+        /// </summary>
+        /// <param name="fileName"></param>
         public void Save(string fileName)
         {
             XmlHelper.WriteToXmlFile(fileName, DescriptionKeys);

@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             if (m_TraversePalSet == null)
             {
                 m_TraversePalSet = new PaletteSet("3DS Traverse", new Guid("39663E77-EAC7-409A-87E4-4E6E15A5D05A"));
-                m_TraversePalSet.Style = PaletteSetStyles.ShowCloseButton;
+                m_TraversePalSet.Style = PaletteSetStyles.ShowCloseButton | PaletteSetStyles.ShowPropertiesMenu | PaletteSetStyles.ShowAutoHideButton;
                 m_TraversePalSet.AddVisual("TraverseView", view);
 
                 m_TraversePalSet.StateChanged += (s, e) =>
