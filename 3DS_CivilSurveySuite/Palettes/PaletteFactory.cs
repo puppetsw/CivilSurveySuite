@@ -49,6 +49,7 @@ namespace _3DS_CivilSurveySuite.Palettes
 
         private void AcaddocManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
+            if (m_CivilSurveySuitePalSet == null) return;
             m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
             if (AcaddocManager.Count == 1)
                 m_CivilSurveySuitePalSet.Visible = false;
@@ -56,16 +57,19 @@ namespace _3DS_CivilSurveySuite.Palettes
 
         private void AcaddocManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
         {
+            if (m_CivilSurveySuitePalSet == null) return;
             m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
         }
 
         private void AcaddocManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
+            if (m_CivilSurveySuitePalSet == null) return;
             m_CivilSurveySuitePalSet.Visible = m_PaletteVisible;
         }
 
         private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
+            if (m_CivilSurveySuitePalSet == null) return;
             m_CivilSurveySuitePalSet.Visible = e.Document != null && m_PaletteVisible;
         }
 

@@ -91,6 +91,7 @@
     <Compile Include="Helpers\Wpf\TakeFocusAction.cs" />
     <Compile Include="Helpers\AutoCAD\TransactionExtensions.cs" />
     <Compile Include="Models\DescriptionKey.cs" />
+    <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="ViewModels\Design\ConnectLineworkDesignViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

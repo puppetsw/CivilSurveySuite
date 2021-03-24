@@ -57,6 +57,7 @@
     <Compile Include="MathStringTests.cs" />
     <Compile Include="TraverseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WildcardTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
