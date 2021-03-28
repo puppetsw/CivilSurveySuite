@@ -28,6 +28,13 @@
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
   </DescriptionKey>
+    <DescriptionKey>
+    <Key>ER#*</Key>
+    <Layer>EDGE OF ROAD</Layer>
+    <Description>Edge of road</Description>
+    <Draw2D>false</Draw2D>
+    <Draw3D>true</Draw3D>
+  </DescriptionKey>
   <DescriptionKey>
     <Key>FC#*</Key>
     <Layer>TICK FENCE</Layer>
