@@ -28,36 +28,36 @@ namespace _3DS_CivilSurveySuite.Models
         /// <summary>
         /// Gets the line number from the <paramref name="cogoPoint"/>'s <see cref="CogoPoint.RawDescription"/>
         /// </summary>
-        /// <param name="cogoPoint"></param>
+        /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
         /// <returns></returns>
-        public static string LineNumber(CogoPoint cogoPoint, DescriptionKey descriptionKey)
+        public static string LineNumber(string rawDescription, DescriptionKey descriptionKey)
         {
-            Match regMatch = Regex.Match(cogoPoint.RawDescription, BuildPattern(descriptionKey));
+            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
             return regMatch.Success ? regMatch.Groups[2].Value : string.Empty;
         }
 
         /// <summary>
         /// Gets the description from the <paramref name="cogoPoint"/>'s <see cref="CogoPoint.RawDescription"/>
         /// </summary>
-        /// <param name="cogoPoint"></param>
+        /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
         /// <returns></returns>
-        public static string Description(CogoPoint cogoPoint, DescriptionKey descriptionKey)
+        public static string Description(string rawDescription, DescriptionKey descriptionKey)
         {
-            Match regMatch = Regex.Match(cogoPoint.RawDescription, BuildPattern(descriptionKey));
+            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
             return regMatch.Success ? regMatch.Groups[1].Value : string.Empty;
         }
 
         /// <summary>
         /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="Models.DescriptionKey"/>
         /// </summary>
-        /// <param name="cogoPoint"></param>
+        /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
         /// <returns></returns>
-        public static bool IsMatch(CogoPoint cogoPoint, DescriptionKey descriptionKey)
+        public static bool IsMatch(string rawDescription, DescriptionKey descriptionKey)
         {
-            Match regMatch = Regex.Match(cogoPoint.RawDescription, BuildPattern(descriptionKey));
+            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
             return regMatch.Success;
         }
 

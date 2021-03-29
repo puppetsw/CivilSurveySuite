@@ -8,14 +8,10 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 // Civil3D References
 using Autodesk.Civil.DatabaseServices;
-using System;
 // System References
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -70,16 +66,12 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
-            var doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            using (Transaction tr = doc.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
             {
                 Dictionary<string, DescriptionKeyMatch> desMapping = new Dictionary<string, DescriptionKeyMatch>();
 
                 foreach (ObjectId pointId in Civildoc.CogoPoints)
                 {
-                    //TODO: Clean-up, seems a bit hacky.
-                    //HACK: this is so bad, need to fix.
-                    //FIXED: Doesn't add single line number codes eg. all TK1, or leaves off FP7 in example.
                     //BUG: Seems like there could be a problem with the keys and stuff if they don't match up
                     //TODO: add way to check for special codes e.g. SL or RECT
                     CogoPoint cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
@@ -88,56 +80,22 @@ namespace _3DS_CivilSurveySuite.ViewModels
                      */
                     foreach (DescriptionKey descriptionKey in DescriptionKeys)
                     {
-                        if (DescriptionKeyMatch.IsMatch(cogoPoint, descriptionKey))
+                        if (DescriptionKeyMatch.IsMatch(cogoPoint.RawDescription, descriptionKey))
                         {
-                            string description = DescriptionKeyMatch.Description(cogoPoint, descriptionKey);
-                            string lineNumber = DescriptionKeyMatch.LineNumber(cogoPoint, descriptionKey);
+                            string description = DescriptionKeyMatch.Description(cogoPoint.RawDescription, descriptionKey);
+                            string lineNumber = DescriptionKeyMatch.LineNumber(cogoPoint.RawDescription, descriptionKey);
 
                             DescriptionKeyMatch deskeyMatch = null;
-                            if (!desMapping.ContainsKey(description))
+                            if (desMapping.ContainsKey(description))
+                                deskeyMatch = desMapping[description];
+                            else
                             {
                                 deskeyMatch = new DescriptionKeyMatch(descriptionKey);
                                 desMapping.Add(description, deskeyMatch);
                             }
-                            else
-                                deskeyMatch = desMapping[description];
 
                             deskeyMatch.AddCogoPoint(cogoPoint, lineNumber);
                         }
-
-                        //string pattern = "^(" + descriptionKey.Key.Replace("#", ")(\\d\\d?\\d?)").Replace("*", ".*?");
-                        //Match regMatch = Regex.Match(cogoPoint.RawDescription, pattern);
-
-                        //if (regMatch.Success)
-                        //{
-                        //    string currentDescription = regMatch.Groups[1].Value;
-                        //    string currentLineNumber = regMatch.Groups[2].Value;
-
-                        //    DescriptionKeyMatch keyMatch = null;
-                        //    if (!desMapping.ContainsKey(currentDescription))
-                        //    {
-                        //        keyMatch = new DescriptionKeyMatch();
-                        //        keyMatch.DescriptionKey = descriptionKey;
-                        //        desMapping.Add(currentDescription, keyMatch);
-                        //    }
-                        //    else
-                        //        keyMatch = desMapping[currentDescription];
-
-                        //    /* check if the DescriptionKeyMatch joinablepoints contains the current linenumber and point
-                        //       if it does, add the current point to that dictiionary using the key
-                        //       else, create a new list of points and add it using the key.
-                        //     */
-                        //    if (keyMatch.JoinablePoints.ContainsKey(currentLineNumber))
-                        //        keyMatch.JoinablePoints[currentLineNumber].Add(cogoPoint);
-                        //    else
-                        //    {
-                        //        List<CogoPoint> cogoPoints = new List<CogoPoint>();
-                        //        cogoPoints.Add(cogoPoint);
-                        //        keyMatch.JoinablePoints.Add(currentLineNumber, cogoPoints);
-                        //    }
-
-                        //    break; //break after a key match
-                        //}
                     }
                 }
 
@@ -170,7 +128,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 tr.Commit();
             }
         }
-
 
         #endregion
 
