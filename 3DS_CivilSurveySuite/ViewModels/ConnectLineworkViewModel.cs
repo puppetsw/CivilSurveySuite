@@ -73,194 +73,126 @@ namespace _3DS_CivilSurveySuite.ViewModels
             var doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             using (Transaction tr = doc.TransactionManager.StartLockedTransaction())
             {
-                var drawingCogoPoints = new List<CogoPoint>();
+                Dictionary<string, DescriptionKeyMatch> desMapping = new Dictionary<string, DescriptionKeyMatch>();
+
                 foreach (ObjectId pointId in Civildoc.CogoPoints)
                 {
+                    //TODO: Clean-up, seems a bit hacky.
+                    //HACK: this is so bad, need to fix.
+                    //FIXED: Doesn't add single line number codes eg. all TK1, or leaves off FP7 in example.
+                    //BUG: Seems like there could be a problem with the keys and stuff if they don't match up
+                    //TODO: add way to check for special codes e.g. SL or RECT
                     CogoPoint cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
-                    drawingCogoPoints.Add(cogoPoint);
-                }
-
-                //TODO: Clean-up, seems a bit hacky.
-                //HACK: this is so bad, need to fix.
-                //BUG: Doesn't add single line number codes eg. all TK1, or leaves off FP7 in example.
-                List<CogoPoint> sortedCogoPoints = drawingCogoPoints.OrderBy(x => x.RawDescription).ThenBy(x => x.PointNumber).ToList();
-                List<DescriptionKeyMatch> matchKeys = new List<DescriptionKeyMatch>();
-                Dictionary<string, DescriptionKeyMatch> mapKeys = new Dictionary<string, DescriptionKeyMatch>();
-
-                /*
-                 * in each descriptionkeymatch add a collection of joinable points seperated by line number.
-                 * using dictionaries with the key being the raw description and then the line number.?
-                */
-                foreach (CogoPoint cogoPoint in drawingCogoPoints)
-                {
+                    /* in each descriptionkeymatch add a collection of joinable points seperated by line number.
+                       using dictionaries with the key being the raw description and then the line number.?
+                     */
                     foreach (DescriptionKey descriptionKey in DescriptionKeys)
                     {
-                        string pattern = "^(" + descriptionKey.Key.Replace("#", ")(\\d\\d?\\d?)").Replace("*", ".*?");
-                        Match regMatch = Regex.Match(cogoPoint.RawDescription, pattern);
-
-                        if (regMatch.Success)
+                        if (DescriptionKeyMatch.IsMatch(cogoPoint, descriptionKey))
                         {
-                            string currentDescription = regMatch.Groups[1].Value;
-                            string currentLineNumber = regMatch.Groups[2].Value;
+                            string description = DescriptionKeyMatch.Description(cogoPoint, descriptionKey);
+                            string lineNumber = DescriptionKeyMatch.LineNumber(cogoPoint, descriptionKey);
 
-                            DescriptionKeyMatch match = null;
-                            bool noMatch = false;
-
-                            if (!mapKeys.ContainsKey(currentDescription))
+                            DescriptionKeyMatch deskeyMatch = null;
+                            if (!desMapping.ContainsKey(description))
                             {
-                                match = new DescriptionKeyMatch();
-                                match.DescriptionKey = descriptionKey;
-                                noMatch = true;
+                                deskeyMatch = new DescriptionKeyMatch(descriptionKey);
+                                desMapping.Add(description, deskeyMatch);
                             }
                             else
-                                match = mapKeys[currentDescription];
+                                deskeyMatch = desMapping[description];
 
-                            if (match.MatchCollection.ContainsKey(currentLineNumber))
-                                match.MatchCollection[currentLineNumber].Add(cogoPoint);
-                            else
-                            {
-                                List<CogoPoint> cogoPoints = new List<CogoPoint>();
-                                cogoPoints.Add(cogoPoint);
-                                match.MatchCollection.Add(currentLineNumber, cogoPoints);
-                            }
-
-                            if (noMatch)
-                                mapKeys.Add(currentDescription, match);
-
-                            break;
+                            deskeyMatch.AddCogoPoint(cogoPoint, lineNumber);
                         }
+
+                        //string pattern = "^(" + descriptionKey.Key.Replace("#", ")(\\d\\d?\\d?)").Replace("*", ".*?");
+                        //Match regMatch = Regex.Match(cogoPoint.RawDescription, pattern);
+
+                        //if (regMatch.Success)
+                        //{
+                        //    string currentDescription = regMatch.Groups[1].Value;
+                        //    string currentLineNumber = regMatch.Groups[2].Value;
+
+                        //    DescriptionKeyMatch keyMatch = null;
+                        //    if (!desMapping.ContainsKey(currentDescription))
+                        //    {
+                        //        keyMatch = new DescriptionKeyMatch();
+                        //        keyMatch.DescriptionKey = descriptionKey;
+                        //        desMapping.Add(currentDescription, keyMatch);
+                        //    }
+                        //    else
+                        //        keyMatch = desMapping[currentDescription];
+
+                        //    /* check if the DescriptionKeyMatch joinablepoints contains the current linenumber and point
+                        //       if it does, add the current point to that dictiionary using the key
+                        //       else, create a new list of points and add it using the key.
+                        //     */
+                        //    if (keyMatch.JoinablePoints.ContainsKey(currentLineNumber))
+                        //        keyMatch.JoinablePoints[currentLineNumber].Add(cogoPoint);
+                        //    else
+                        //    {
+                        //        List<CogoPoint> cogoPoints = new List<CogoPoint>();
+                        //        cogoPoints.Add(cogoPoint);
+                        //        keyMatch.JoinablePoints.Add(currentLineNumber, cogoPoints);
+                        //    }
+
+                        //    break; //break after a key match
+                        //}
                     }
-
-
                 }
-
-
-                //foreach (DescriptionKey deskey in DescriptionKeys)
-                //{
-                //    DescriptionKeyMatch match = new DescriptionKeyMatch();
-                //    match.DescriptionKey = deskey;
-
-                //    string pattern = "^(" + deskey.Key.Replace("#", ")(\\d\\d?\\d?)").Replace("*", ".*?");
-                //    Match regexMatch = null; //initalise regexmatch
-
-                //    string nextDescription = string.Empty;
-                //    string nextLineNumber = string.Empty;
-
-                //    for (int i = 0; i < sortedCogoPoints.Count; i++)
-                //    {
-                //        CogoPoint point = sortedCogoPoints[i];
-                //        CogoPoint nextPoint = null;
-
-                //        if (i + 1 < sortedCogoPoints.Count)
-                //            nextPoint = sortedCogoPoints[i + 1];
-
-                //        //create regex matching pattern
-                //        // \A anchor start of string, \d digit, \d? optional digital x2, .* wildcard
-                //        regexMatch = Regex.Match(point.RawDescription, pattern);
-
-                //        if (regexMatch.Success)
-                //        {
-                //            string currentDescription = regexMatch.Groups[1].Value;
-                //            string currentLineNumber = regexMatch.Groups[2].Value;
-
-                //            if (match.DescriptionKey == null)
-                //                match.DescriptionKey = deskey;
-
-                //            if (match.LineNumber == string.Empty)
-                //                match.LineNumber = currentLineNumber;
-                              
-                //            //succesful, add point
-                //            match.CogoPoints.Add(point);
-
-                //            if (nextPoint != null)
-                //            {
-                //                string patternNext = "^(\\w\\w\\w?)(\\d\\d?\\d?).*?";
-                //                Match regexMatchNext = Regex.Match(nextPoint.RawDescription, patternNext);
-                //                if (regexMatch.Success)
-                //                {
-                //                    nextDescription = regexMatchNext.Groups[1].Value;
-                //                    nextLineNumber = regexMatchNext.Groups[2].Value;
-
-                //                    if (nextLineNumber != currentLineNumber || nextDescription != currentDescription)
-                //                    {
-                //                        matchKeys.Add(match);
-                //                        match = new DescriptionKeyMatch();
-                //                    }
-                //                }
-                //            }
-
-                //            if (i + 1 == sortedCogoPoints.Count)
-                //                matchKeys.Add(match);
-                //        }
-                //    }
-                //}
 
                 BlockTable bt = (BlockTable)tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
                 BlockTableRecord btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-
-                foreach (KeyValuePair<string, DescriptionKeyMatch> keyValue in mapKeys)
+                
+                //TODO: add special code checks in here?
+                foreach (KeyValuePair<string, DescriptionKeyMatch> desKey in desMapping)
                 {
-                    foreach (KeyValuePair<string, List<CogoPoint>> cogoValue in keyValue.Value.MatchCollection)
+                    DescriptionKeyMatch deskeyMatch = desKey.Value;
+
+                    foreach (KeyValuePair<string, List<CogoPoint>> joinablePoints in deskeyMatch.JoinablePoints)
                     {
                         Point3dCollection points = new Point3dCollection();
-                        foreach (CogoPoint point in cogoValue.Value)
+                        foreach (CogoPoint point in joinablePoints.Value)
                             points.Add(point.Location);
 
-                        if (keyValue.Value.DescriptionKey.Draw2D)
-                        {
-                            Polyline2d pline2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null);
-                            pline2d.Layer = keyValue.Value.DescriptionKey.Layer;
-                            btr.AppendEntity(pline2d);
-                            tr.AddNewlyCreatedDBObject(pline2d, true);
-                        }
-                        //BUG: if layer doesn't exist throws error
-                        if (keyValue.Value.DescriptionKey.Draw3D)
-                        {
-                            Polyline3d pline3d = new Polyline3d(Poly3dType.SimplePoly, points, false);
-                            pline3d.Layer = keyValue.Value.DescriptionKey.Layer;
-                            btr.AppendEntity(pline3d);
-                            tr.AddNewlyCreatedDBObject(pline3d, true);
-                        }
+                        string layerName = deskeyMatch.DescriptionKey.Layer;
+
+                        //Check if the layer exists, if not create it.
+                        if (!HasLayer(layerName, tr))
+                            CreateLayer(layerName, tr);
+
+                        if (deskeyMatch.DescriptionKey.Draw2D)
+                            Draw2DPolyline(tr, btr, points, layerName);
+                        if (deskeyMatch.DescriptionKey.Draw3D)
+                            Draw3DPolyline(tr, btr, points, layerName);
                     }
                 }
-
-                //foreach (DescriptionKeyMatch key in matchKeys)
-                //{
-                //    Point3dCollection pointCollection = new Point3dCollection();
-                //    foreach (CogoPoint point in key.CogoPoints)
-                //        pointCollection.Add(point.Location);
-
-                //    //BUG: if layer doesn't exist throws error
-                //    if (key.DescriptionKey.Draw2D)
-                //    {
-                //        Polyline2d pline2d = new Polyline2d(Poly2dType.SimplePoly, pointCollection, 0, false, 0, 0, null);
-                //        pline2d.Layer = key.DescriptionKey.Layer;
-                //        btr.AppendEntity(pline2d);
-                //        tr.AddNewlyCreatedDBObject(pline2d, true);
-                //    }
-                //    //BUG: if layer doesn't exist throws error
-                //    if (key.DescriptionKey.Draw3D)
-                //    {
-                //        Polyline3d pline3d = new Polyline3d(Poly3dType.SimplePoly, pointCollection, false);
-                //        pline3d.Layer = key.DescriptionKey.Layer;
-                //        btr.AppendEntity(pline3d);
-                //        tr.AddNewlyCreatedDBObject(pline3d, true);
-                //    }
-                //}
-
                 tr.Commit();
             }
         }
+
 
         #endregion
 
         #region Private Methods
 
-        private void Draw2DPolyline()
-        { }
+        private static void Draw3DPolyline(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        {
+            Polyline3d pline3d = new Polyline3d(Poly3dType.SimplePoly, points, false);
+            pline3d.Layer = layerName;
+            btr.AppendEntity(pline3d);
+            tr.AddNewlyCreatedDBObject(pline3d, true);
+        }
 
-        private void Draw3DPolyline()
-        { }
+        private static void Draw2DPolyline(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        {
+            Polyline2d pline2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null);
+            Polyline pline = new Polyline();
+            pline.ConvertFrom(pline2d, false);
+            pline.Layer = layerName;
+            btr.AppendEntity(pline);
+            tr.AddNewlyCreatedDBObject(pline, true);
+        }
 
         /// <summary>
         /// Get the last xml file loaded from settings

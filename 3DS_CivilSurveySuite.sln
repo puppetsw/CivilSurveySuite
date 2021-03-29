@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", ".\3DS_CivilSurveySuite\3DS_CivilSurveySuite.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", "3DS_CivilSurveySuite\3DS_CivilSurveySuite.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteTests", ".\3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteTests", "3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
