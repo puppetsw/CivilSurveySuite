@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite.Models
+namespace _3DS_CivilSurveySuite.DesKeys
 {
     public class DescriptionKey : INotifyPropertyChanged
     {

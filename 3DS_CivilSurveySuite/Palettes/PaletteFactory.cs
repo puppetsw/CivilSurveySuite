@@ -124,6 +124,28 @@ namespace _3DS_CivilSurveySuite.Palettes
                 m_CivilSurveySuitePalSet.Visible = true;
         }
 
+        [CommandMethod("3DSShowDMSCalculatorPalette")]
+        public void ShowDMSCalculatorPalette()
+        {
+            DMSCalculatorView view = new DMSCalculatorView();
+            DMSCalculatorViewModel vm = new DMSCalculatorViewModel();
+            view.DataContext = vm;
+
+            if (m_CivilSurveySuitePalSet == null)
+                CreatePaletteSet();
+
+            if (!m_Palettes.Contains(view.GetType()))
+            {
+                m_CivilSurveySuitePalSet.AddVisual("Calculator", view);
+                m_Palettes.Add(view.GetType());
+                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
+            }
+
+            if (!m_CivilSurveySuitePalSet.Visible)
+                m_CivilSurveySuitePalSet.Visible = true;
+        }
+
+
         #endregion
 
         #region Private Methods

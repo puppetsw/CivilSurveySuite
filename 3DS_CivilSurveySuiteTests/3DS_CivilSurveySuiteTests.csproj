@@ -53,6 +53,7 @@
     <Compile Include="BearingTests.cs" />
     <Compile Include="ClosureTests.cs" />
     <Compile Include="CoordinateTests.cs" />
+    <Compile Include="DMSCalculatorTests.cs" />
     <Compile Include="JsonTests.cs" />
     <Compile Include="MathStringTests.cs" />
     <Compile Include="TraverseTests.cs" />
@@ -61,6 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
+      <Project>{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}</Project>
+      <Name>3DS_CivilSurveySuite.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

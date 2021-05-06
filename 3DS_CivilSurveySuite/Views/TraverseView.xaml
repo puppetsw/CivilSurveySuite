@@ -133,11 +133,11 @@
             <StatusBarItem Content="distance = "/>
             <StatusBarItem Content="{Binding CloseDistance}" />
         </StatusBar>
-        <DataGrid DockPanel.Dock="Bottom" x:Name="dataGrid" d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
+        <DataGrid x:Name="dgTraverse" DockPanel.Dock="Bottom" d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding TraverseItems}" SelectedItem="{Binding SelectedTraverseItem}" 
                   SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
                   Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
-                  RowHeight="22" HorizontalContentAlignment="Center" 
+                  RowHeight="22" HorizontalContentAlignment="Center" PreviewKeyDown="dgTraverse_PreviewKeyDown"
                   >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SourceUpdated">

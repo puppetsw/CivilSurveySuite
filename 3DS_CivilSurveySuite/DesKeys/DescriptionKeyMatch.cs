@@ -4,7 +4,7 @@ using Autodesk.Civil.DatabaseServices;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace _3DS_CivilSurveySuite.Models
+namespace _3DS_CivilSurveySuite.DesKeys
 {
     /// <summary>
     /// DescriptionKeyMatch class

@@ -1,5 +1,5 @@
 ﻿using _3DS_CivilSurveySuite.Helpers;
-using _3DS_CivilSurveySuite.Models;
+using _3DS_CivilSurveySuite.Model;
 using System;
 using System.Globalization;
 using System.Windows.Data;

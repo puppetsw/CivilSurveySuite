@@ -62,8 +62,6 @@ namespace _3DS_CivilSurveySuiteTests
 
             var area = PolygonArea(coords);
             Assert.AreEqual(expectedArea, area);
-
-
         }
 
         double PolygonArea(List<Coordinate> polygon)

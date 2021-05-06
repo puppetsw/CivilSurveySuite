@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", "3DS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteTests", "3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.Model", "3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj", "{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

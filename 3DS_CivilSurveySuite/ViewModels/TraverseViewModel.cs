@@ -2,7 +2,8 @@
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.Helpers.Wpf;
-using _3DS_CivilSurveySuite.Models;
+using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.Model;
 // AutoCAD References
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -77,7 +78,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
         public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
         public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
-
         public RelayCommand LostFocusEvent => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
 
         #endregion
@@ -316,7 +316,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             m_commandRunning = false;
         }
 
-        private void FeetToMeters()
+        private void FeetToMeters() //BUG: Doesn't update transient graphics
         {
             if (SelectedTraverseItem == null) return;
 
@@ -326,7 +326,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             TraverseItems[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
         }
 
-        private void LinksToMeters()
+        private void LinksToMeters() //BUG: Doesn't update transient graphics
         {
             if (SelectedTraverseItem == null) return;
 
@@ -336,7 +336,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             TraverseItems[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
         }
 
-        private void FlipBearing()
+        private void FlipBearing() //BUG: Doesn't update transient graphics
         {
             if (SelectedTraverseItem == null) return;
 
@@ -370,6 +370,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
         #endregion
 
         #region Private Methods
+
+        //TODO: Add a button to select the bearing from an existing line, pline segment.
 
         private void ShowHelp()
         {

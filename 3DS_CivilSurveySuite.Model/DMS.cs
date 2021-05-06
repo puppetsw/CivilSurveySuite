@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace _3DS_CivilSurveySuite.Models
+namespace _3DS_CivilSurveySuite.Model
 {
-    public class DMS
+    public class DMS : IEquatable<DMS>
     {
         #region Properties
         public int Degrees { get; set; }
@@ -148,5 +148,30 @@ namespace _3DS_CivilSurveySuite.Models
             double bearing = Degrees + ((double)Minutes / 100) + ((double)Seconds / 10000);
             return bearing;
         }
+
+        #region IEqutable
+
+        public bool Equals(DMS other)
+        {
+            return (this.Degrees == other.Degrees)
+                && (this.Minutes == other.Minutes)
+                && (this.Seconds == other.Seconds);
+        }
+
+        public override bool Equals(object other)
+        {
+            if (other is DMS)
+                return this.Equals((DMS)other);
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Degrees.GetHashCode() ^ this.Minutes.GetHashCode() ^ this.Seconds.GetHashCode();
+        }
+
+
+        #endregion
     }
 }
