@@ -23,6 +23,23 @@ namespace _3DS_CivilSurveySuite.Views
         public DMSCalculatorView()
         {
             InitializeComponent();
+            txtInput.PreviewKeyDown += TxtInput_PreviewKeyDown; 
+        }
+
+        private void TxtInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Enter:
+                    BtnEnter.Command.Execute(null);
+                    break;
+                case Key.OemPlus:
+                    BtnAdd.Command.Execute(null);
+                    break;
+                case Key.OemMinus:
+                    BtnSubtract.Command.Execute(null);
+                    break;
+            }
         }
     }
 }

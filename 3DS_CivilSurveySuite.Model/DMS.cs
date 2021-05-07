@@ -45,10 +45,14 @@ namespace _3DS_CivilSurveySuite.Model
         /// <returns><see cref="DMS"/>object containing the parsed values</returns>
         private static DMS Parse(double bearing)
         {
-            var degrees = Convert.ToInt32(Math.Truncate(bearing));
-            var minutes = Convert.ToInt32((bearing - degrees) * 100);
-            var seconds = Convert.ToInt32((((bearing - degrees) * 100) - minutes) * 100);
-            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+            try {
+                var degrees = Convert.ToInt32(Math.Truncate(bearing));
+                var minutes = Convert.ToInt32((bearing - degrees) * 100);
+                var seconds = Convert.ToInt32((((bearing - degrees) * 100) - minutes) * 100);
+                return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+            } catch {
+                throw new Exception("Error parsing bearing");
+            }
         }
 
         /// <summary>
@@ -149,6 +153,52 @@ namespace _3DS_CivilSurveySuite.Model
             return bearing;
         }
 
+        public static DMS Add(DMS dms1, DMS dms2)
+        {
+            var degrees = dms1.Degrees + dms2.Degrees;
+            var minutes = dms1.Minutes + dms2.Minutes;
+            var seconds = dms1.Seconds + dms2.Seconds;
+
+            //work out seconds first, carry over to minutes
+            if (seconds >= 60)
+            {
+                seconds -= 60;
+                minutes++;
+            }
+
+            //work out minutes, carry over to degrees
+            if (minutes >= 60)
+            {
+                minutes -= 60;
+                degrees++;
+            }
+
+            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+        }
+
+        public static DMS Subtract(DMS dms1, DMS dms2)
+        {
+            var degrees = dms1.Degrees - dms2.Degrees;
+            var minutes = dms1.Minutes - dms2.Minutes;
+            var seconds = dms1.Seconds - dms2.Seconds;
+
+            //work out seconds first, carry over to minutes
+            if (dms1.Seconds < dms2.Seconds)
+            {
+                minutes--;
+                seconds += 60;
+            }
+
+            //work out minutes, carry over to degrees
+            if (dms1.Minutes < dms2.Minutes)
+            {
+                degrees--;
+                minutes += 60;
+            }
+
+            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+        }
+
         #region IEqutable
 
         public bool Equals(DMS other)
@@ -160,8 +210,8 @@ namespace _3DS_CivilSurveySuite.Model
 
         public override bool Equals(object other)
         {
-            if (other is DMS)
-                return this.Equals((DMS)other);
+            if (other is DMS dMS)
+                return this.Equals(dMS);
             else
                 return false;
         }
@@ -170,7 +220,6 @@ namespace _3DS_CivilSurveySuite.Model
         {
             return this.Degrees.GetHashCode() ^ this.Minutes.GetHashCode() ^ this.Seconds.GetHashCode();
         }
-
 
         #endregion
     }

@@ -49,7 +49,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test2dArea3()
         {
-            double expectedArea = 839.8103;
+            double expectedArea = 839.8114;
             List<Coordinate> coords = new List<Coordinate>
             {
                 new Coordinate() { x = 0, y = 0 },
@@ -61,24 +61,24 @@ namespace _3DS_CivilSurveySuiteTests
             };
 
             var area = PolygonArea(coords);
-            Assert.AreEqual(expectedArea, area);
+            Assert.AreEqual(expectedArea, Math.Round(area, 4));
         }
 
         double PolygonArea(List<Coordinate> polygon)
         {
-            double area = 0;
+            var array = polygon.ToArray();
 
-            for (int i = 0; i < polygon.Count - 1; i++)
+            double area = 0;
+            var j = array.Length - 1;
+
+            for (int i = 0; i < array.Length; i++)
             {
-                area +=
-                    (polygon[i + 1].x - polygon[i].x) *
-                    (polygon[i + 1].y + polygon[i].y) / 2;
+                area += (polygon[j].x + polygon[i].x) * (polygon[j].y - polygon[i].y);
+                j = i;
             }
 
-            return area;
+            return area / 2;
         }
-
-
 
         private static double CalculateArea(List<Coordinate> coords)
         {
