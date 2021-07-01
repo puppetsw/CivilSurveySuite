@@ -1,7 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: ClosureTests.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -10,8 +19,8 @@ namespace _3DS_CivilSurveySuiteTests
     {
         private struct Coordinate
         {
-            public double x;
-            public double y;
+            public double X;
+            public double Y;
         }
 
         [TestMethod]
@@ -20,13 +29,13 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedArea = 300;
             List<Coordinate> coords = new List<Coordinate>
             {
-                new Coordinate() { x = 0, y = 0 },
-                new Coordinate() { x = 0, y = 30 },
-                new Coordinate() { x = 10, y = 30 },
-                new Coordinate() { x = 10, y = 0 }
+                new Coordinate() { X = 0, Y = 0 },
+                new Coordinate() { X = 0, Y = 30 },
+                new Coordinate() { X = 10, Y = 30 },
+                new Coordinate() { X = 10, Y = 0 }
             };
 
-            var area = Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].x - p.x) * (coords[i + 1].y + p.y)).Sum() / 2);
+            var area = Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].X - p.X) * (coords[i + 1].Y + p.Y)).Sum() / 2);
             Assert.AreEqual(expectedArea, area);
         }
 
@@ -36,10 +45,10 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedArea = 300;
             List<Coordinate> coords = new List<Coordinate>
             {
-                new Coordinate() { x = 0, y = 0 },
-                new Coordinate() { x = 0, y = 10 },
-                new Coordinate() { x = 30, y = 10 },
-                new Coordinate() { x = 30, y = 0 }
+                new Coordinate() { X = 0, Y = 0 },
+                new Coordinate() { X = 0, Y = 10 },
+                new Coordinate() { X = 30, Y = 10 },
+                new Coordinate() { X = 30, Y = 0 }
             };
 
             var area = CalculateArea(coords);
@@ -52,12 +61,12 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedArea = 839.8114;
             List<Coordinate> coords = new List<Coordinate>
             {
-                new Coordinate() { x = 0, y = 0 },
-                new Coordinate() { x = -4.2429, y = 23.4555 },
-                new Coordinate() { x = 10.1496, y = 37.6785 },
-                new Coordinate() { x = 27.9531, y = 22.7901 },
-                new Coordinate() { x = 16.1396, y = -6.4877 },
-                new Coordinate() { x = 7.9866, y = 2.3289 }
+                new Coordinate() { X = 0, Y = 0 },
+                new Coordinate() { X = -4.2429, Y = 23.4555 },
+                new Coordinate() { X = 10.1496, Y = 37.6785 },
+                new Coordinate() { X = 27.9531, Y = 22.7901 },
+                new Coordinate() { X = 16.1396, Y = -6.4877 },
+                new Coordinate() { X = 7.9866, Y = 2.3289 }
             };
 
             var area = PolygonArea(coords);
@@ -73,7 +82,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             for (int i = 0; i < array.Length; i++)
             {
-                area += (polygon[j].x + polygon[i].x) * (polygon[j].y - polygon[i].y);
+                area += (polygon[j].X + polygon[i].X) * (polygon[j].Y - polygon[i].Y);
                 j = i;
             }
 
@@ -85,7 +94,7 @@ namespace _3DS_CivilSurveySuiteTests
             if (coords.Count < 3)
                 return -1;
 
-            return Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].x - p.x) * (coords[i + 1].y + p.y)).Sum() / 2);
+            return Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].X - p.X) * (coords[i + 1].Y + p.Y)).Sum() / 2);
         }
     }
 }

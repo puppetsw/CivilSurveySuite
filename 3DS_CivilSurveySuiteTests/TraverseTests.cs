@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -304,29 +305,29 @@ namespace _3DS_CivilSurveySuiteTests
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        public struct DMS
-        {
-            public int Degrees;
-            public int Minutes;
-            public int Seconds;
+        //public struct DMS
+        //{
+        //    public int Degrees;
+        //    public int Minutes;
+        //    public int Seconds;
 
-            public override string ToString()
-            {
-                string fmins, fsecs;
+        //    public override string ToString()
+        //    {
+        //        string fmins, fsecs;
 
-                if (Minutes < 10)
-                    fmins = "0" + Minutes; //add the 0 in front if its less than 10.
-                else
-                    fmins = Minutes.ToString();
+        //        if (Minutes < 10)
+        //            fmins = "0" + Minutes; //add the 0 in front if its less than 10.
+        //        else
+        //            fmins = Minutes.ToString();
 
-                if (Seconds < 10)
-                    fsecs = "0" + Seconds; //add the 0 in front if its less than 10.
-                else
-                    fsecs = Seconds.ToString();
+        //        if (Seconds < 10)
+        //            fsecs = "0" + Seconds; //add the 0 in front if its less than 10.
+        //        else
+        //            fsecs = Seconds.ToString();
 
-                return string.Format(Degrees + "°" + fmins + "'" + fsecs + '"');
-            }
-        }
+        //        return string.Format(Degrees + "°" + fmins + "'" + fsecs + '"');
+        //    }
+        //}
 
         /// <summary>
         /// 

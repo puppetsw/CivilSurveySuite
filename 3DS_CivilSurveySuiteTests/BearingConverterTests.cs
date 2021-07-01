@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static _3DS_CivilSurveySuiteTests.TraverseTests;
+﻿using _3DS_CivilSurveySuite.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -9,11 +9,9 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestBearingString()
         {
-            DMS dms = new DMS() { Degrees = 225, Minutes = 21, Seconds = 57 };
+            DMS dms = new DMS { Degrees = 225, Minutes = 21, Seconds = 57 };
             string bearing = dms.ToString();
 
         }
-
-
     }
 }

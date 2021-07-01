@@ -34,19 +34,11 @@
         </Grid.RowDefinitions>
 
         <ListBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" ItemsSource="{Binding DMSList}" />
-        <TextBox x:Name="txtInput" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding InputBearing, Mode=TwoWay, NotifyOnTargetUpdated=True}" VerticalContentAlignment="Center"/>
+        <TextBox Margin="5" x:Name="txtInput" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" 
+                 Text="{Binding InputBearing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalContentAlignment="Center" />
 
-        <Button Grid.Column="5" Grid.Row="2" >
-            <StackPanel Margin="0,0,10,4">
-                <Viewbox Height="35">
-                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Fill="#FF000000" StrokeThickness="1" Stroke="#FF000000">
-                        <Path.Data>
-                            <PathGeometry Figures="m 42.367187 40.90625 c 3.587891 0 5.521485 -1.91211 5.521485 -5.521485 V 8.851562 c 0 -3.609375 -1.933594 -5.521484 -5.521485 -5.521484 H 24.578125 c -2.277344 0 -3.824219 0.34375 -5.306641 1.847656 L 5.9511719 18.669922 C 4.8125 19.787109 4.3828125 20.796875 4.3828125 22.042969 c 0 1.224609 0.4082031 2.255859 1.5683594 3.373047 L 19.271484 38.5 c 1.503907 1.482422 3.029297 2.40625 5.306641 2.40625 z m -0.06445 -1.052735 H 24.578125 c -1.847656 0 -3.222656 -0.751953 -4.554688 -2.083984 L 6.7246094 24.685547 C 5.8222656 23.783203 5.5 23.009766 5.5 22.042969 c 0 -0.945313 0.34375 -1.71875 1.2246094 -2.621094 L 20.023437 5.908203 c 1.332032 -1.332031 2.707032 -1.525391 4.554688 -1.525391 h 17.724609 c 2.986328 0 4.533203 1.525391 4.533203 4.511719 v 26.447266 c 0 2.964843 -1.546875 4.511718 -4.533203 4.511718 z M 37.490237 30.25 c 0.300782 0 0.53711 -0.257813 0.53711 -0.53711 0 -0.15039 -0.06445 -0.257812 -0.171875 -0.365234 l -7.240235 -7.240234 7.240235 -7.21875 c 0.107422 -0.107422 0.171875 -0.236328 0.171875 -0.365235 0 -0.322265 -0.214844 -0.537109 -0.53711 -0.537109 -0.128906 0 -0.257812 0.04297 -0.365234 0.150391 l -7.240234 7.240234 -7.240235 -7.240234 c -0.107425 -0.107422 -0.193362 -0.150391 -0.365237 -0.150391 -0.257813 0 -0.515625 0.236328 -0.515625 0.537109 0 0.128907 0.04297 0.257813 0.15039 0.365235 l 7.240235 7.21875 -7.240235 7.240234 c -0.107421 0.107422 -0.15039 0.214844 -0.15039 0.365234 0 0.300782 0.236328 0.53711 0.515625 0.53711 0.171875 0 0.300781 -0.08594 0.365234 -0.150391 L 29.884766 22.859375 37.125 30.099609 C 37.232422 30.185549 37.361328 30.25 37.490234 30.25 Z" FillRule="NonZero"/>
-                        </Path.Data>
-                    </Path>
-                </Viewbox>
-            </StackPanel>
-        </Button>
+        <Button Grid.Column="3" Grid.Row="2" Content="DEL" />
 
         <Button Grid.Column="1" Grid.Row="1" Content="CE" />
         <Button Grid.Column="0" Grid.Row="1" Content="C" />

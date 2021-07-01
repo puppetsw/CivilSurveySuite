@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 using static _3DS_CivilSurveySuiteTests.TraverseTests;
 
 namespace _3DS_CivilSurveySuiteTests

@@ -1,13 +1,8 @@
-// AutoCAD References
+using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-// Civil 3D References
 using Autodesk.Civil.ApplicationServices;
-// System References
-using System;
-
-
 
 namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
 {
@@ -18,57 +13,23 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
     {
         #region Documents and Database Access
 
+        protected DocumentCollection AcaddocManager => Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager;
+
         /// <summary>
         /// Returns instance to active AutoCAD document.
         /// </summary>
-        protected Document Acaddoc
-        {
-            //get
-            //{
-            //    if (null == m_AcadDocument)
-            //    {
-            //        m_AcadDocument = Application.DocumentManager.MdiActiveDocument;
-            //        //TODO: Fix problem with document switching
-            //    }
-            //    return m_AcadDocument;
-            //}
-            get { return Application.DocumentManager.MdiActiveDocument; }
-        }
+        protected Document Acaddoc => AcaddocManager.MdiActiveDocument;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        protected DocumentCollection AcaddocManager
-        {
-            get { return Application.DocumentManager; }
-        }
 
         /// <summary>
         /// Returns instance to active Civil 3D document.
         /// </summary>
-        protected CivilDocument Civildoc
-        {
-            //get
-            //{
-            //    if (null == m_CivilDocument)
-            //    {
-            //        m_CivilDocument = CivilApplication.ActiveDocument;
-            //    }
-            //    return m_CivilDocument;
-            //}
-            get { return CivilApplication.ActiveDocument; }
-        }
+        protected CivilDocument Civildoc => CivilApplication.ActiveDocument;
 
         /// <summary>
         /// Returns the document's editor instance.
         /// </summary>
-        protected Editor Editor
-        {
-            get
-            {
-                return Acaddoc.Editor;
-            }
-        }
+        protected Editor Editor => Acaddoc.Editor;
 
         #endregion
 
@@ -77,30 +38,26 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         /// read, and modified objects in the database.
         /// </summary>
         /// <returns>Returns a new database transaction.</returns>
-        protected Transaction StartTransaction()
-        {
-            return Acaddoc.TransactionManager.StartTransaction();
-        }
+        protected Transaction StartTransaction() => Acaddoc.TransactionManager.StartTransaction();
 
         /// <summary>
         /// Writes the specified message to the AutoCAD command-line on a new line with the 3DS> Prefix
         /// </summary>
         /// <param name="message"></param>
-        protected void WriteMessage(string message)
-        {
-            Editor.WriteMessage("\n3DS> {0}", message);
-        }
+        protected void WriteMessage(string message) => Editor.WriteMessage("\n3DS> {0}", message);
 
         /// <summary>
         /// Check if the database contains the specified layer
         /// </summary>
-        /// <param name="layerName"></param>
-        /// <param name="tr"></param>
-        /// <returns></returns>
+        /// <param name="layerName">Name of the layer.</param>
+        /// <param name="tr">The transaction.</param>
+        /// <returns><c>true</c> if the specified layer name has layer; otherwise, <c>false</c>.</returns>
         protected bool HasLayer(string layerName, Transaction tr)
         {
             if (string.IsNullOrEmpty(layerName))
+            {
                 return false;
+            }
 
             LayerTable layerTable = tr.GetObject(Acaddoc.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
             return layerTable.Has(layerName);
@@ -111,15 +68,20 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         /// </summary>
         /// <param name="layerName"></param>
         /// <param name="tr"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         protected void CreateLayer(string layerName, Transaction tr)
         {
             if (string.IsNullOrEmpty(layerName))
+            {
                 throw new ArgumentNullException("layerName");
+            }
 
             LayerTable layerTable = tr.GetObject(Acaddoc.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
             if (layerTable.Has(layerName))
+            {
                 return;
+            }
 
             LayerTableRecord ltr = new LayerTableRecord();
             ltr.Name = layerName;
@@ -131,9 +93,6 @@ namespace _3DS_CivilSurveySuite.Helpers.AutoCAD
         public void Dispose()
         {
         }
-
-        //private Document m_AcadDocument = null;
-        //private CivilDocument m_CivilDocument = null;
     }
 }
 

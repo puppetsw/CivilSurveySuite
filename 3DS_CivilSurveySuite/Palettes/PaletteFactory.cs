@@ -1,16 +1,15 @@
-﻿// 3DS_CivilSurveySuite References
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite.Views;
-// AutoCAD References
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
-// System References
-using System;
-using System.Collections.Generic;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
+
 namespace _3DS_CivilSurveySuite.Palettes
 {
     /// <summary>
@@ -19,13 +18,10 @@ namespace _3DS_CivilSurveySuite.Palettes
     /// </summary>
     public class PaletteFactory : CivilBase, IExtensionApplication
     {
-        #region Private Members
-        private bool m_PaletteVisible;
-        private static PaletteSet m_CivilSurveySuitePalSet = null;
-        private static readonly List<Type> m_Palettes = new List<Type>();
-        #endregion
+        private static readonly List<Type> s_palettes = new List<Type>();
+        private static PaletteSet s_civilSurveySuitePalSet;
+        private bool _paletteVisible;
 
-        #region IExtensionApplication
         public void Initialize()
         {
             //hookup events
@@ -43,124 +39,190 @@ namespace _3DS_CivilSurveySuite.Palettes
             AcaddocManager.DocumentToBeDeactivated -= AcaddocManager_DocumentToBeDeactivated;
             AcaddocManager.DocumentToBeDestroyed -= AcaddocManager_DocumentToBeDestroyed;
         }
-        #endregion
 
-        #region Document Events
-
-        private void AcaddocManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        [CommandMethod("3DSShowConnectLinePalette")]
+        public void ShowConnectLinePalette()
         {
-            if (m_CivilSurveySuitePalSet == null) return;
-            m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
-            if (AcaddocManager.Count == 1)
-                m_CivilSurveySuitePalSet.Visible = false;
+            ConnectLineworkView view = new ConnectLineworkView
+            {
+                DataContext = new ConnectLineworkViewModel()
+            };
+
+            if (s_civilSurveySuitePalSet == null)
+            {
+                CreatePaletteSet();
+            }
+
+            if (!s_palettes.Contains(view.GetType()))
+            {
+                s_civilSurveySuitePalSet.AddVisual("Linework", view);
+                s_palettes.Add(view.GetType());
+                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
+            }
+
+            if (!s_civilSurveySuitePalSet.Visible)
+            {
+                s_civilSurveySuitePalSet.Visible = true;
+            }
         }
 
-        private void AcaddocManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        [CommandMethod("3DSShowDMSCalculatorPalette")]
+        public void ShowDMSCalculatorPalette()
         {
-            if (m_CivilSurveySuitePalSet == null) return;
-            m_PaletteVisible = m_CivilSurveySuitePalSet.Visible;
+            DMSCalculatorView view = new DMSCalculatorView
+            {
+                DataContext = new DMSCalculatorViewModel()
+            };
+
+            if (s_civilSurveySuitePalSet == null)
+                CreatePaletteSet();
+
+            if (!s_palettes.Contains(view.GetType()))
+            {
+                s_civilSurveySuitePalSet.AddVisual("Calculator", view);
+                s_palettes.Add(view.GetType());
+                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
+            }
+
+            if (!s_civilSurveySuitePalSet.Visible)
+            {
+                s_civilSurveySuitePalSet.Visible = true;
+            }
         }
-
-        private void AcaddocManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
-        {
-            if (m_CivilSurveySuitePalSet == null) return;
-            m_CivilSurveySuitePalSet.Visible = m_PaletteVisible;
-        }
-
-        private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
-        {
-            if (m_CivilSurveySuitePalSet == null) return;
-            m_CivilSurveySuitePalSet.Visible = e.Document != null && m_PaletteVisible;
-        }
-
-        #endregion
-
-        #region Show Palettes
 
         [CommandMethod("3DSShowTraversePalette")]
         public void ShowTraversePalette()
         {
             TraverseView view = new TraverseView();
             TraverseViewModel vm = new TraverseViewModel();
-            view.DataContext = vm;
+            GeneratePalette(view, vm, "Traverse", true, vm.ClearTransientGraphics);
+            //view.DataContext = vm;
 
-            if (m_CivilSurveySuitePalSet == null)
-                CreatePaletteSet();
+            //if (s_civilSurveySuitePalSet == null)
+            //{
+            //    CreatePaletteSet();
+            //}
 
-            if (!m_Palettes.Contains(view.GetType()))
+            //if (!s_palettes.Contains(view.GetType()))
+            //{
+            //    s_civilSurveySuitePalSet.AddVisual("Traverse", view);
+            //    s_palettes.Add(view.GetType());
+            //    s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
+            //    s_civilSurveySuitePalSet.StateChanged += (s, e) =>
+            //    {
+            //        if (e.NewState == StateEventIndex.Hide)
+            //        {
+            //            vm.ClearTransientGraphics();
+            //        }
+            //    };
+            //}
+
+            //if (!s_civilSurveySuitePalSet.Visible)
+            //{
+            //    s_civilSurveySuitePalSet.Visible = true;
+            //}
+        }
+
+        /// <summary>
+        /// Generates the palette.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="viewModel">The view model.</param>
+        /// <param name="viewName">Name of the view.</param>
+        /// <param name="hideEvent">if set to <c>true</c> [hide event].</param>
+        /// <param name="hideMethod">The hide method.</param>
+        /// <exception cref="ArgumentNullException">viewName</exception>
+        private void GeneratePalette(UserControl view, ViewModelBase viewModel, string viewName, bool hideEvent = false, Action hideMethod = null)
+        {
+            view.DataContext = viewModel;
+
+            if (string.IsNullOrEmpty(viewName))
             {
-                m_CivilSurveySuitePalSet.AddVisual("Traverse", view);
-                m_Palettes.Add(view.GetType());
-                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
-                m_CivilSurveySuitePalSet.StateChanged += (s, e) =>
+                throw new ArgumentNullException(nameof(viewName));
+            }
+
+            if (s_civilSurveySuitePalSet == null)
+            {
+                CreatePaletteSet();
+            }
+
+            if (!s_palettes.Contains(view.GetType()))
+            {
+                s_civilSurveySuitePalSet.AddVisual(viewName, view);
+                s_palettes.Add(view.GetType());
+                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
+
+                if (hideEvent && hideMethod != null)
                 {
-                    if (e.NewState == StateEventIndex.Hide)
-                        vm.ClearTransientGraphics();
-                };
+                    s_civilSurveySuitePalSet.StateChanged += (s, e) =>
+                    {
+                        if (e.NewState == StateEventIndex.Hide)
+                        {
+                            hideMethod?.Invoke();
+                        }
+                    };
+                }
             }
 
-            if (!m_CivilSurveySuitePalSet.Visible)
-                m_CivilSurveySuitePalSet.Visible = true;
-        }
-
-        [CommandMethod("3DSShowConnectLinePalette")]
-        public void ShowConnectLinePalette()
-        {
-            ConnectLineworkView view = new ConnectLineworkView();
-            ConnectLineworkViewModel vm = new ConnectLineworkViewModel();
-            view.DataContext = vm;
-
-            if (m_CivilSurveySuitePalSet == null)
-                CreatePaletteSet();
-
-            if (!m_Palettes.Contains(view.GetType()))
+            if (!s_civilSurveySuitePalSet.Visible)
             {
-                m_CivilSurveySuitePalSet.AddVisual("Linework", view);
-                m_Palettes.Add(view.GetType());
-                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
+                s_civilSurveySuitePalSet.Visible = true;
             }
-
-            if (!m_CivilSurveySuitePalSet.Visible)
-                m_CivilSurveySuitePalSet.Visible = true;
         }
 
-        [CommandMethod("3DSShowDMSCalculatorPalette")]
-        public void ShowDMSCalculatorPalette()
+        private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
-            DMSCalculatorView view = new DMSCalculatorView();
-            DMSCalculatorViewModel vm = new DMSCalculatorViewModel();
-            view.DataContext = vm;
-
-            if (m_CivilSurveySuitePalSet == null)
-                CreatePaletteSet();
-
-            if (!m_Palettes.Contains(view.GetType()))
+            if (s_civilSurveySuitePalSet == null)
             {
-                m_CivilSurveySuitePalSet.AddVisual("Calculator", view);
-                m_Palettes.Add(view.GetType());
-                m_CivilSurveySuitePalSet.Activate(m_Palettes.IndexOf(view.GetType()));
+                return;
             }
 
-            if (!m_CivilSurveySuitePalSet.Visible)
-                m_CivilSurveySuitePalSet.Visible = true;
+            s_civilSurveySuitePalSet.Visible = e.Document != null && _paletteVisible;
         }
 
+        private void AcaddocManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+        {
+            if (s_civilSurveySuitePalSet == null)
+            {
+                return;
+            }
 
-        #endregion
+            s_civilSurveySuitePalSet.Visible = _paletteVisible;
+        }
 
-        #region Private Methods
+        private void AcaddocManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        {
+            if (s_civilSurveySuitePalSet == null)
+            {
+                return;
+            }
+
+            _paletteVisible = s_civilSurveySuitePalSet.Visible;
+        }
+
+        private void AcaddocManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        {
+            if (s_civilSurveySuitePalSet == null)
+            {
+                return;
+            }
+
+            _paletteVisible = s_civilSurveySuitePalSet.Visible;
+
+            if (AcaddocManager.Count == 1)
+            {
+                s_civilSurveySuitePalSet.Visible = false;
+            }
+        }
 
         private void CreatePaletteSet()
         {
-            m_CivilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
-            m_CivilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton | 
-                                             PaletteSetStyles.ShowPropertiesMenu | 
-                                             PaletteSetStyles.ShowAutoHideButton; 
-            m_CivilSurveySuitePalSet.EnableTransparency(true);
-            m_CivilSurveySuitePalSet.KeepFocus = false;
+            s_civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
+            s_civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |
+                                             PaletteSetStyles.ShowPropertiesMenu |
+                                             PaletteSetStyles.ShowAutoHideButton;
+            s_civilSurveySuitePalSet.EnableTransparency(true);
+            s_civilSurveySuitePalSet.KeepFocus = false;
         }
-
-        #endregion
-
     }
 }

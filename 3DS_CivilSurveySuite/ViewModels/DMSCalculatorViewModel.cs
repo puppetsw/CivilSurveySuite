@@ -1,63 +1,83 @@
-﻿using _3DS_CivilSurveySuite.Helpers.Wpf;
-using _3DS_CivilSurveySuite.Model;
-using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: DMSCalculatorViewModel.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System.Collections.ObjectModel;
 using System.Text;
+using _3DS_CivilSurveySuite.Helpers.Wpf;
+using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
+    /// <summary>
+    /// Class DMSCalculatorViewModel.
+    /// Implements the <see cref="_3DS_CivilSurveySuite.ViewModels.ViewModelBase" />
+    /// </summary>
+    /// <seealso cref="_3DS_CivilSurveySuite.ViewModels.ViewModelBase" />
+    /// TODO Edit XML Comment Template for DMSCalculatorViewModel
     public class DMSCalculatorViewModel : ViewModelBase
     {
-        #region Private Members
         private string _inputBearing;
-        #endregion
 
-        #region Properties
         public ObservableCollection<DMS> DMSList { get; set; }
 
-        public string InputBearing { get => _inputBearing; set { _inputBearing = value; NotifyPropertyChanged(); } }
-        #endregion
+        public string InputBearing
+        {
+            get => _inputBearing;
+            set
+            {
+                _inputBearing = value;
+                NotifyPropertyChanged();
+            }
+        }
 
-        #region Constructor
+        public RelayCommand EnterDMSCommand => new RelayCommand(_ => AddDMSToList(), _ => true);
+        public RelayCommand AdditionDMSCommand => new RelayCommand(_ => AddDMS(), _ => true);
+        public RelayCommand SubtractionDMSCommand => new RelayCommand(_ => SubtractDMS(), _ => true);
+        public RelayCommand NumPadCommand => new RelayCommand(NumPad, _ => true);
+
         public DMSCalculatorViewModel()
         {
             DMSList = new ObservableCollection<DMS>();
         }
-        #endregion
 
-        #region Commands
-
-        public RelayCommand EnterDMSCommand => new RelayCommand((_) => AddDMSToList(), (_) => true);
-        public RelayCommand AdditionDMSCommand => new RelayCommand((_) => AddDMS(), (_) => true);
-        public RelayCommand SubtractionDMSCommand => new RelayCommand((_) => SubtractDMS(), (_) => true);
-        public RelayCommand NumPadCommand => new RelayCommand((buttonPressed) => NumPad(buttonPressed), (buttonPressed) => true);
-
-        #endregion
-
-        #region Command Methods
         private void AddDMSToList()
         {
             //Validate InputBearing
-            DMS dmsToAdd;
+            DMS dmsToAdd = null;
 
-            try {
+            try
+            {
                 dmsToAdd = new DMS(InputBearing);
-            } catch {
-                Console.WriteLine("Invalid bearing value entered");
-                return;
+            }
+            catch
+            {
+                //Console.WriteLine("Invalid bearing value entered");
             }
 
-            DMSList.Add(dmsToAdd);
+            if (dmsToAdd != null)
+            {
+                DMSList.Add(dmsToAdd);
+            }
+
             InputBearing = string.Empty;
         }
 
         private void AddDMS()
         {
-            //No need to add if the list count is low
-            if (DMSList.Count < 1) return;
+            // No need to add if the list count is less than 1
+            if (DMSList.Count < 1)
+            {
+                return;
+            }
 
             DMS dmsResult;
-            //add the last 2 in list together
+            // Add the last 2 in list together
             if (string.IsNullOrEmpty(InputBearing) && DMSList.Count > 1)
             {
                 var dms1 = DMSList[DMSList.Count - 1];
@@ -72,8 +92,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 return;
             }
 
-            //if the list has more than one and the inputbearing is not empty.
-            //we add the input bearing to the last value in the list
+            // If the list has more than one and the InputBearing is not empty.
+            // We add the InputBearing to the last value in the list
             if (!string.IsNullOrEmpty(InputBearing) && DMSList.Count >= 1)
             {
                 var dms1 = DMSList[DMSList.Count - 1];
@@ -88,13 +108,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
         }
 
         private void SubtractDMS()
-        { 
+        {
 
         }
 
         private void NumPad(object buttonPressed)
         {
-            var key = (string)buttonPressed;
+            var key = (string) buttonPressed;
 
             var sb = new StringBuilder();
             sb.Append(InputBearing);
@@ -102,7 +122,5 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             InputBearing = sb.ToString();
         }
-
-        #endregion
     }
 }

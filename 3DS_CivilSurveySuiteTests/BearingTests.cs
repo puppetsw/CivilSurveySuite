@@ -1,7 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: BearingTests.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System;
 using System.Linq;
-using static _3DS_CivilSurveySuiteTests.TraverseTests;
+using _3DS_CivilSurveySuite.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -9,18 +18,38 @@ namespace _3DS_CivilSurveySuiteTests
     public class BearingTests
     {
         [TestMethod]
+        public void Test_TwoDMSAreEqual_True()
+        {
+            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+
+            Assert.AreEqual(dms1, dms2);
+        }
+
+        [TestMethod]
+        public void Test_TwoDMSAreNotEqual_True()
+        {
+            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 10 };
+            var dms2 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+
+            Assert.AreNotEqual(dms1, dms2);
+        }
+
+        [TestMethod]
         public void TestAddingBearing1()
         {
-            DMS dms1 = new DMS() { Degrees = 22, Minutes = 18, Seconds = 13 };
-            DMS dms2 = new DMS() { Degrees = 10, Minutes = 11, Seconds = 25 };
-            DMS expectedDMS = new DMS() { Degrees = 32, Minutes = 29, Seconds = 38 };
+            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new DMS { Degrees = 10, Minutes = 11, Seconds = 25 };
+            var expectedDMS = new DMS { Degrees = 32, Minutes = 29, Seconds = 38 };
+
+            Assert.AreEqual(expectedDMS, dms1 + dms2);
         }
 
         [TestMethod]
         public void TestStrip1()
         {
-            string bearing = "354°20'50\"";
-            string expectedBearing = "354.2050";
+            const string bearing = "354°20'50\"";
+            const string expectedBearing = "354.2050";
 
             string result = StripDMSSymbols(bearing);
 
@@ -30,8 +59,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestStrip2()
         {
-            string bearing = "scott354°20'50\"";
-            string expectedBearing = "354.2050";
+            const string bearing = "scott354°20'50\"";
+            const string expectedBearing = "354.2050";
 
             string result = StripDMSSymbols(bearing);
 
@@ -41,8 +70,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestStrip3()
         {
-            string bearing = "scott354°°20'50\"°°'''''";
-            string expectedBearing = "354.2050";
+            const string bearing = "scott354°°20'50\"°°'''''";
+            const string expectedBearing = "354.2050";
 
             string result = StripDMSSymbols(bearing);
 
@@ -56,16 +85,10 @@ namespace _3DS_CivilSurveySuiteTests
             double testAngle = 84.5020;
             double oppositeAngle = 95.0940;
 
-            var dms1 = new DMS() { Degrees = 84, Minutes = 50, Seconds = 20 };
-            var dms2 = new DMS() { Degrees = 180, Minutes = 0, Seconds = 0 };
-
-            var dmsExpected = new DMS() { Degrees = 95, Minutes = 9, Seconds = 40 };
-
-            var dmsResult = BearingSubtraction(180, testAngle);
-            var result = Math.Round((double)dmsResult.Degrees + ((double)dmsResult.Minutes / 100) + ((double)dmsResult.Seconds / 10000), 4);
+            var dmsResult = TraverseTests.BearingSubtraction(180, testAngle);
+            var result = Math.Round(dmsResult.Degrees + ((double) dmsResult.Minutes / 100) + ((double) dmsResult.Seconds / 10000), 4);
 
             Assert.AreEqual(oppositeAngle, result);
-
         }
 
         public static string StripDMSSymbols(string bearingWithSymbols)
@@ -78,24 +101,26 @@ namespace _3DS_CivilSurveySuiteTests
             return cleanedString;
         }
 
-        public static string ReplaceFirst(string text, string search, string replace)
+        private static string ReplaceFirst(string text, string search, string replace)
         {
-            int pos = text.IndexOf(search);
+            int pos = text.IndexOf(search, StringComparison.Ordinal);
+
             if (pos < 0)
             {
                 return text;
             }
+
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
-        public static string RemoveAlphaCharacters(string source)
+        private static string RemoveAlphaCharacters(string source)
         {
             var numbers = new[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             var chars = new[] { '.', };
 
             return new string(source
-                    .Where(x => numbers.Contains(x) || chars.Contains(x))
-                    .ToArray()).Trim(chars);
+                .Where(x => numbers.Contains(x) || chars.Contains(x))
+                .ToArray()).Trim(chars);
         }
     }
 }

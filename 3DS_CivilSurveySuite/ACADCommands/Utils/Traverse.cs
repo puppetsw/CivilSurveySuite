@@ -1,14 +1,6 @@
-﻿// 3DS_CivilSurveySuite References
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
-// AutoCAD References
+﻿using _3DS_CivilSurveySuite.Helpers.AutoCAD;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
-// System References
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACADCommands.Utils.Traverse))]
 namespace _3DS_CivilSurveySuite.ACADCommands.Utils
