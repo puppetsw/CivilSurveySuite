@@ -7,6 +7,7 @@
 // Date:     01/07/2021
 // Author:   scott
 
+using System;
 using System.Collections.ObjectModel;
 using System.Text;
 using _3DS_CivilSurveySuite.Helpers.Wpf;
@@ -22,9 +23,18 @@ namespace _3DS_CivilSurveySuite.ViewModels
     /// TODO Edit XML Comment Template for DMSCalculatorViewModel
     public class DMSCalculatorViewModel : ViewModelBase
     {
+        private ObservableCollection<DMS> _dmsList;
         private string _inputBearing;
 
-        public ObservableCollection<DMS> DMSList { get; set; }
+        public ObservableCollection<DMS> DMSList
+        {
+            get => _dmsList;
+            set
+            {
+                _dmsList = value; 
+                NotifyPropertyChanged();
+            }
+        }
 
         public string InputBearing
         {
@@ -110,6 +120,12 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void SubtractDMS()
         {
 
+        }
+
+        private static DMS FlipPlusMinusSymbolDMS(DMS dms)
+        {
+            var degrees = dms.Degrees > 0 ? dms.Degrees * -1 : Math.Abs(dms.Degrees);
+            return new DMS { Degrees = degrees, Minutes = dms.Minutes, Seconds = dms.Seconds };
         }
 
         private void NumPad(object buttonPressed)

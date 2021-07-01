@@ -1,6 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: TraverseTests.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System;
 using _3DS_CivilSurveySuite.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -35,7 +44,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing8LengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 };
-            var testString = 354.5020;
+            double testString = 354.5020;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -43,7 +52,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing6LengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 0 };
-            var testString = 354.50;
+            double testString = 354.50;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -51,7 +60,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing3LengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 };
-            var testString = 354;
+            double testString = 354;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -59,7 +68,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing2LengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 54, Minutes = 0, Seconds = 0 };
-            var testString = 54;
+            double testString = 54;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -67,7 +76,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing4LengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 54, Minutes = 20, Seconds = 0 };
-            var testString = 54.20;
+            double testString = 54.20;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -75,7 +84,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestParsingBearing3ShortLengthDouble()
         {
             var expectedResult = new DMS() { Degrees = 5, Minutes = 20, Seconds = 0 };
-            var testString = 5.20;
+            double testString = 5.20;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
 
@@ -89,7 +98,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 3;
             double expectedResultSeconds = 25;
 
-            var result = BearingAddition(bearing1, bearing2);
+            DMS result = BearingAddition(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -106,7 +115,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 0;
             double expectedResultSeconds = 0;
 
-            var result = BearingAddition(bearing1, bearing2);
+            DMS result = BearingAddition(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -123,7 +132,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 52;
             double expectedResultSeconds = 52;
 
-            var result = BearingSubtraction(bearing1, bearing2);
+            DMS result = BearingSubtraction(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -133,14 +142,14 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestBearingSubtraction2()
         {
-            double bearing2 = 84.5020;
-            double bearing1 = 180;
+            const double bearing2 = 84.5020;
+            const double bearing1 = 180;
 
             double expectedResultDegrees = 95;
             double expectedResultMinutes = 9;
             double expectedResultSeconds = 40;
 
-            var result = BearingSubtraction(bearing1, bearing2);
+            DMS result = BearingSubtraction(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -150,12 +159,12 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestValidBearing()
         {
-            var expectedResult = true;
-            var bearing = 354.5020;
+            const bool expectedResult = true;
+            const double bearing = 354.5020;
 
-            var dms = ParseBearing(bearing);
+            DMS dms = ParseBearing(bearing);
 
-            var actual = IsValid(dms);
+            bool actual = IsValid(dms);
 
             Assert.AreEqual(expectedResult, actual);
         }
@@ -163,12 +172,12 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestInvalidBearing()
         {
-            var expectedResult = false;
-            var bearing = 374.5020;
+            const bool expectedResult = false;
+            const double bearing = 374.5020;
 
-            var dms = ParseBearing(bearing);
+            DMS dms = ParseBearing(bearing);
 
-            var actual = IsValid(dms);
+            bool actual = IsValid(dms);
 
             Assert.AreEqual(expectedResult, actual);
         }
@@ -176,24 +185,23 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestInvalidBearing2()
         {
-            var expectedResult = false;
-            var bearing = 354.6120;
+            const double bearing = 354.6120;
 
-            var dms = ParseBearing(bearing);
+            DMS dms = ParseBearing(bearing);
 
-            var actual = IsValid(dms);
+            bool actual = IsValid(dms);
 
-            Assert.AreEqual(expectedResult, actual);
+            Assert.AreEqual(false, actual);
         }
 
         [TestMethod]
         public void TestFeetConversion1()
         {
-            var feetExpect = 47.244;
-            var inchExpect = 0.1524;
+            double feetExpect = 47.244;
+            double inchExpect = 0.1524;
             double expectedResult = feetExpect + inchExpect;
 
-            var result = ConvertFeetToMeters(155.06);
+            double result = ConvertFeetToMeters(155.06);
 
             Assert.AreEqual(expectedResult, Math.Round(result, 4));
         }
@@ -201,11 +209,11 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestFeetConversion2()
         {
-            var feetExpect = 47.244;
-            var inchExpect = 0.254;
+            double feetExpect = 47.244;
+            double inchExpect = 0.254;
             double expectedResult = feetExpect + inchExpect;
 
-            var result = ConvertFeetToMeters(155.10);
+            double result = ConvertFeetToMeters(155.10);
 
             Assert.AreEqual(expectedResult, Math.Round(result, 4));
         }
@@ -213,13 +221,12 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestLinkConversion1()
         {
-            var expected = 20.1168;
-            var link = 100;
+            double expected = 20.1168;
+            double link = 100;
 
-            var result = ConvertLinkToMeters(link);
+            double result = ConvertLinkToMeters(link);
 
             Assert.AreEqual(expected, result);
-
         }
 
         /// <summary>
@@ -247,21 +254,21 @@ namespace _3DS_CivilSurveySuiteTests
             const double feetConversion = 0.3048;
             const double inchConversion = 0.0254;
 
-            var feet = Math.Truncate(feetAndInches) * feetConversion;
-            var inch1 = feetAndInches - Math.Truncate(feetAndInches);
-            var inch2 = (inch1 * 100) * inchConversion;
+            double feet = Math.Truncate(feetAndInches) * feetConversion;
+            double inch1 = feetAndInches - Math.Truncate(feetAndInches);
+            double inch2 = (inch1 * 100) * inchConversion;
 
             return feet + inch2;
         }
 
         private DMS BearingAddition(double bearing1, double bearing2)
         {
-            var dms1 = ParseBearing(bearing1);
-            var dms2 = ParseBearing(bearing2);
+            DMS dms1 = ParseBearing(bearing1);
+            DMS dms2 = ParseBearing(bearing2);
 
-            var degrees = dms1.Degrees + dms2.Degrees;
-            var minutes = dms1.Minutes + dms2.Minutes;
-            var seconds = dms1.Seconds + dms2.Seconds;
+            int degrees = dms1.Degrees + dms2.Degrees;
+            int minutes = dms1.Minutes + dms2.Minutes;
+            int seconds = dms1.Seconds + dms2.Seconds;
 
             //work out seconds first, carry over to minutes
             if (seconds >= 60)
@@ -282,12 +289,12 @@ namespace _3DS_CivilSurveySuiteTests
 
         public static DMS BearingSubtraction(double bearing1, double bearing2)
         {
-            var dms1 = ParseBearing(bearing1);
-            var dms2 = ParseBearing(bearing2);
+            DMS dms1 = ParseBearing(bearing1);
+            DMS dms2 = ParseBearing(bearing2);
 
-            var degrees = dms1.Degrees - dms2.Degrees;
-            var minutes = dms1.Minutes - dms2.Minutes;
-            var seconds = dms1.Seconds - dms2.Seconds;
+            int degrees = dms1.Degrees - dms2.Degrees;
+            int minutes = dms1.Minutes - dms2.Minutes;
+            int seconds = dms1.Seconds - dms2.Seconds;
 
             //work out seconds first, carry over to minutes
             if (dms1.Seconds < dms2.Seconds)
@@ -302,32 +309,9 @@ namespace _3DS_CivilSurveySuiteTests
                 degrees--;
                 minutes += 60;
             }
+
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
-
-        //public struct DMS
-        //{
-        //    public int Degrees;
-        //    public int Minutes;
-        //    public int Seconds;
-
-        //    public override string ToString()
-        //    {
-        //        string fmins, fsecs;
-
-        //        if (Minutes < 10)
-        //            fmins = "0" + Minutes; //add the 0 in front if its less than 10.
-        //        else
-        //            fmins = Minutes.ToString();
-
-        //        if (Seconds < 10)
-        //            fsecs = "0" + Seconds; //add the 0 in front if its less than 10.
-        //        else
-        //            fsecs = Seconds.ToString();
-
-        //        return string.Format(Degrees + "°" + fmins + "'" + fsecs + '"');
-        //    }
-        //}
 
         /// <summary>
         /// 
@@ -354,6 +338,7 @@ namespace _3DS_CivilSurveySuiteTests
                 var degrees = Convert.ToInt32(bearing);
                 return new DMS() { Degrees = degrees };
             }
+
             return new DMS();
         }
 
@@ -370,10 +355,9 @@ namespace _3DS_CivilSurveySuiteTests
             return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        private bool IsValid(DMS dMS)
+        private bool IsValid(DMS dms)
         {
-            return dMS.Degrees < 360 && dMS.Minutes < 60 && dMS.Seconds < 60;
+            return dms.Degrees < 360 && dms.Minutes < 60 && dms.Seconds < 60;
         }
-
     }
 }

@@ -1,10 +1,19 @@
-﻿using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: StringHelpers.cs
+// Date:     01/07/2021
+// Author:   scott
+
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace _3DS_CivilSurveySuite.Helpers
 {
-    public class StringHelpers
+    public static class StringHelpers
     {
         public static string RemoveAlphaCharacters(string source)
         {
@@ -12,15 +21,14 @@ namespace _3DS_CivilSurveySuite.Helpers
             var chars = new[] { '.', };
 
             return new string(source
-                    .Where(x => numbers.Contains(x) || chars.Contains(x))
-                    .ToArray()).Trim(chars);
+                .Where(x => numbers.Contains(x) || chars.Contains(x))
+                .ToArray()).Trim(chars);
         }
 
         public static double ExtractDoubleFromString(string str)
         {
-            Regex digits = new Regex(@"^\D*?((-?(\d+(\.\d+)?))|(-?\.\d+)).*");
-            Match mx = digits.Match(str);
-            //Console.WriteLine("Input {0} - Digits {1} {2}", str, mx.Success, mx.Groups);
+            var digits = new Regex(@"^\D*?((-?(\d+(\.\d+)?))|(-?\.\d+)).*");
+            var mx = digits.Match(str);
 
             return mx.Success ? Convert.ToDouble(mx.Groups[1].Value) : 0;
         }

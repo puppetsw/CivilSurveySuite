@@ -1,14 +1,28 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: CoordinateTests.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
-using static _3DS_CivilSurveySuiteTests.TraverseTests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
 {
     [TestClass]
     public class CoordinateTests
     {
+        public struct Coordinate
+        {
+            public double X;
+            public double Y;
+        }
+
         [TestMethod]
         public void TestCoordinate1()
         {
@@ -38,31 +52,25 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestCoordinate2()
         {
-            double startCoordx = 0;
-            double startCoordy = 0;
+            const double startCoordx = 0;
+            const double startCoordy = 0;
 
-            double distance = 50;
+            const double distance = 50;
 
-            double expectedX = -4.4978;
-            double expectedY = 49.7973;
+            const double expectedX = -4.4978;
+            const double expectedY = 49.7973;
 
-            var decimalDegree = DMSToDecimalDegrees(new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 });
-            var radians = DecimalDegreesToRadians(decimalDegree);
+            double decimalDegree = DMSToDecimalDegrees(new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 });
+            double radians = DecimalDegreesToRadians(decimalDegree);
 
-            double depature = distance * Math.Sin(radians);
+            double departure = distance * Math.Sin(radians);
             double latitude = distance * Math.Cos(radians);
 
-            double newEast = Math.Round(startCoordx + depature, 4);
+            double newEast = Math.Round(startCoordx + departure, 4);
             double newNorth = Math.Round(startCoordy + latitude, 4);
 
             Assert.AreEqual(expectedX, newEast);
             Assert.AreEqual(expectedY, newNorth);
-        }
-
-        public struct Coordinate
-        {
-            public double x;
-            public double y;
         }
 
         [TestMethod]
@@ -71,33 +79,33 @@ namespace _3DS_CivilSurveySuiteTests
             var dmsList = new List<DMS>();
             var coordinates = new List<Coordinate>
             {
-                new Coordinate() { x = 0, y = 0 }
+                new Coordinate() { X = 0, Y = 0 }
             };
 
-            double distance = 50;
+            const double distance = 50;
 
-            dmsList.Add(new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 84, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 174, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 354, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 84, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 174, Minutes = 0, Seconds = 0 });
 
             int i = 0;
 
             //calculate coordinates from bearing and distance
             foreach (DMS dms in dmsList)
             {
-                var dec = DMSToDecimalDegrees(dms);
-                var rad = DecimalDegreesToRadians(dec);
+                double dec = DMSToDecimalDegrees(dms);
+                double rad = DecimalDegreesToRadians(dec);
 
-                double depature = distance * Math.Sin(rad);
+                double departure = distance * Math.Sin(rad);
                 double latitude = distance * Math.Cos(rad);
 
-                var startingX = coordinates[i].x;
-                var startingY = coordinates[i].y;
+                double startingX = coordinates[i].X;
+                double startingY = coordinates[i].Y;
 
-                double newEast = Math.Round(startingX + depature, 4);
+                double newEast = Math.Round(startingX + departure, 4);
                 double newNorth = Math.Round(startingY + latitude, 4);
 
-                coordinates.Add(new Coordinate() { x = newEast, y = newNorth });
+                coordinates.Add(new Coordinate() { X = newEast, Y = newNorth });
 
                 i++;
             }
@@ -106,22 +114,22 @@ namespace _3DS_CivilSurveySuiteTests
             int lastIndex = coordinates.Count - 1;
             int firstIndex = 0;
 
-            var x = Math.Abs(coordinates[lastIndex].x - coordinates[firstIndex].x);
-            var y = Math.Abs(coordinates[lastIndex].y - coordinates[firstIndex].y);
+            double x = Math.Abs(coordinates[lastIndex].X - coordinates[firstIndex].X);
+            double y = Math.Abs(coordinates[lastIndex].Y - coordinates[firstIndex].Y);
 
-            var distanceBetween = Math.Round(Math.Sqrt((x * x) + (y * y)), 4);
+            double distanceBetween = Math.Round(Math.Sqrt((x * x) + (y * y)), 4);
 
             Assert.AreEqual(distance, distanceBetween);
 
-
-
-            var angleRad = Math.Atan2(coordinates[firstIndex].x - coordinates[lastIndex].x, coordinates[firstIndex].y - coordinates[lastIndex].y);
+            double angleRad = Math.Atan2(coordinates[firstIndex].X - coordinates[lastIndex].X, coordinates[firstIndex].Y - coordinates[lastIndex].Y);
 
             if (angleRad < 0)
+            {
                 angleRad += 2 * Math.PI; // if radians is less than 0 add 2PI
+            }
 
-            var decDeg = Math.Abs(angleRad) * 180 / Math.PI;
-            var resultDMS = DecimalDegreesToDMS(decDeg);
+            double decDeg = Math.Abs(angleRad) * 180 / Math.PI;
+            DMS resultDMS = DecimalDegreesToDMS(decDeg);
 
             Assert.AreEqual(264, resultDMS.Degrees);
         }
@@ -132,68 +140,61 @@ namespace _3DS_CivilSurveySuiteTests
             var dmsList = new List<DMS>();
             var coordinates = new List<Coordinate>
             {
-                new Coordinate() { x = 0, y = 0 }
+                new Coordinate { X = 0, Y = 0 }
             };
 
-            double distance = 50;
+            const double distance = 50;
 
-            dmsList.Add(new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 84, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS() { Degrees = 0, Minutes = 0, Seconds = 0 });
-
+            dmsList.Add(new DMS { Degrees = 354, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 84, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
 
             int i = 0;
 
             //calculate coordinates from bearing and distance
             foreach (DMS dms in dmsList)
             {
-                var dec = DMSToDecimalDegrees(dms);
-                var rad = DecimalDegreesToRadians(dec);
+                double dec = DMSToDecimalDegrees(dms);
+                double rad = DecimalDegreesToRadians(dec);
 
-                double depature = distance * Math.Sin(rad);
+                double departure = distance * Math.Sin(rad);
                 double latitude = distance * Math.Cos(rad);
 
-                var startingX = coordinates[i].x;
-                var startingY = coordinates[i].y;
+                double startingX = coordinates[i].X;
+                double startingY = coordinates[i].Y;
 
-                double newEast = Math.Round(startingX + depature, 4);
+                double newEast = Math.Round(startingX + departure, 4);
                 double newNorth = Math.Round(startingY + latitude, 4);
 
-                coordinates.Add(new Coordinate() { x = newEast, y = newNorth });
+                coordinates.Add(new Coordinate() { X = newEast, Y = newNorth });
 
                 i++;
             }
 
             //work out last bearing and distance
             int lastIndex = coordinates.Count - 1;
-            int firstIndex = 0;
+            const int firstIndex = 0;
 
-            var x = Math.Abs(coordinates[lastIndex].x - coordinates[firstIndex].x);
-            var y = Math.Abs(coordinates[lastIndex].y - coordinates[firstIndex].y);
-
-            var distanceBetween = Math.Round(Math.Sqrt((x * x) + (y * y)), 4);
-
-            var angleRad = Math.Atan2(coordinates[firstIndex].x - coordinates[lastIndex].x, coordinates[firstIndex].y - coordinates[lastIndex].y);
+            double angleRad = Math.Atan2(coordinates[firstIndex].X - coordinates[lastIndex].X, coordinates[firstIndex].Y - coordinates[lastIndex].Y);
 
             if (angleRad < 0)
                 angleRad += 2 * Math.PI; // if radians is less than 0 add 2PI
 
-            var decDeg = Math.Abs(angleRad) * 180 / Math.PI;
-            var resultDMS = DecimalDegreesToDMS(decDeg);
+            double decDeg = Math.Abs(angleRad) * 180 / Math.PI;
+            DMS resultDMS = DecimalDegreesToDMS(decDeg);
+
+            Assert.AreEqual(189, resultDMS.Degrees);
         }
 
         [TestMethod]
-        public void TestDMStoDecimalDegrees()
+        public void TestDMSToDecimalDegrees()
         {
-            var dms = new DMS();
-            dms.Degrees = 57;
-            dms.Minutes = 12;
-            dms.Seconds = 34;
+            var dms = new DMS { Degrees = 57, Minutes = 12, Seconds = 34 };
 
-            double expectedResult = 57.2094;
+            const double expectedResult = 57.2094;
             double result = DMSToDecimalDegrees(dms);
 
             Assert.AreEqual(expectedResult, Math.Round(result, 4));
@@ -202,10 +203,10 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestDecimalDegreeToDMS()
         {
-            var decimalDegree = 57.2094;
-            var expectedDMS = new DMS() { Degrees = 57, Minutes = 12, Seconds = 34 }; //seconds should be 34
+            const double decimalDegree = 57.2094;
+            var expectedDMS = new DMS { Degrees = 57, Minutes = 12, Seconds = 34 };
 
-            var result = DecimalDegreesToDMS(decimalDegree);
+            DMS result = DecimalDegreesToDMS(decimalDegree);
 
             Assert.AreEqual(expectedDMS, result);
         }
@@ -213,22 +214,19 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestDecimalDegreesToRadians()
         {
-            double expectedResult = 0.9985;
-            double decimalBearing = 57.2094;
+            const double expectedResult = 0.9985;
+            const double decimalBearing = 57.2094;
 
             double result = DecimalDegreesToRadians(decimalBearing);
 
             Assert.AreEqual(expectedResult, Math.Round(result, 4));
         }
 
-        private static double DMSToDecimalDegrees(DMS dMS)
+        private static double DMSToDecimalDegrees(DMS dms)
         {
-            double minutes = (double)dMS.Minutes / 60;
-            double seconds = (double)dMS.Seconds / 3600;
-
-            double decimalDegree = dMS.Degrees + minutes + seconds;
-
-            return decimalDegree;
+            double minutes = (double) dms.Minutes / 60;
+            double seconds = (double) dms.Seconds / 3600;
+            return dms.Degrees + minutes + seconds;
         }
 
         private static double DecimalDegreesToRadians(double decimalDegrees)
@@ -238,40 +236,15 @@ namespace _3DS_CivilSurveySuiteTests
 
         private static DMS DecimalDegreesToDMS(double decimalDegrees)
         {
-            //gets the degree
-            //result.Degrees = (int)Math.Floor(angleInDegrees);
-            //var delta = angleInDegrees - result.Degrees;
+            double degrees = Math.Floor(decimalDegrees);
+            double minutes = Math.Floor((decimalDegrees - degrees) * 60);
+            double seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
 
-            //gets minutes and seconds
-            //var seconds = (int)Math.Floor(3600.0 * delta);
-            //result.Seconds = seconds % 60;
-            //result.Minutes = (int)Math.Floor(seconds / 60.0);
-            //delta = delta * 3600.0 - seconds;
-
-            //int degrees = (int)Math.Floor(decimalDegrees);
-            //var delta = decimalDegrees - degrees;
-
-            //var secondsTemp = (int)Math.Floor(3600.0 * delta);
-            //int seconds = secondsTemp % 60;
-            //int minutes = (int)Math.Floor(secondsTemp / 60.0);
-
-            //double degrees = Math.Truncate(decimalDegrees);
-            //double minutes = (decimalDegrees - Math.Floor(decimalDegrees)) * 60.0;
-            //double seconds = (minutes - Math.Floor(minutes)) * 60.0;
-            // get rid of fractional part
-            //minutes = Math.Floor(minutes);
-            //seconds = Math.Floor(seconds);
-
-            var degrees = Math.Floor(decimalDegrees);
-            var minutes = Math.Floor((decimalDegrees - degrees) * 60);
-            var seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
-
-            return new DMS() { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
+            return new DMS { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
         }
 
-
         [TestMethod]
-        public void TestDeciamlRounding()
+        public void TestDecimalRounding()
         {
             const double dec = 156.742;
             const double expectedDeg = 156;
@@ -287,20 +260,18 @@ namespace _3DS_CivilSurveySuiteTests
             Be sure to follow math rules of rounding when calculating seconds by hand.
             If your resulting seconds is something like 31.9 you may round up to 32.*/
 
-
-            var degrees = Math.Floor(dec);
+            double degrees = Math.Floor(dec);
             Assert.AreEqual(expectedDeg, degrees);
 
-            var minutes = Math.Floor((dec - degrees) * 60);
+            double minutes = Math.Floor((dec - degrees) * 60);
             Assert.AreEqual(expectedMin, minutes);
 
-            var seconds = Math.Round((((dec - degrees) * 60) - minutes) * 60, 0);
+            double seconds = Math.Round((((dec - degrees) * 60) - minutes) * 60, 0);
             Assert.AreEqual(expectedSec, seconds);
-
         }
 
         [TestMethod]
-        public void TestDeciamlRounding2()
+        public void TestDecimalRounding2()
         {
             const double dec = 57.2094;
             const double expectedDeg = 57;
@@ -315,8 +286,6 @@ namespace _3DS_CivilSurveySuiteTests
 
             var seconds = Math.Round((((dec - degrees) * 60) - minutes) * 60, 0);
             Assert.AreEqual(expectedSec, seconds);
-
         }
-
     }
 }

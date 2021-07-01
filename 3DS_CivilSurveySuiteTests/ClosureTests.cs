@@ -26,8 +26,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test2dArea1()
         {
-            double expectedArea = 300;
-            List<Coordinate> coords = new List<Coordinate>
+            const double expectedArea = 300;
+            var coords = new List<Coordinate>
             {
                 new Coordinate() { X = 0, Y = 0 },
                 new Coordinate() { X = 0, Y = 30 },
@@ -42,8 +42,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test2dArea2()
         {
-            double expectedArea = 300;
-            List<Coordinate> coords = new List<Coordinate>
+            const double expectedArea = 300;
+            var coords = new List<Coordinate>
             {
                 new Coordinate() { X = 0, Y = 0 },
                 new Coordinate() { X = 0, Y = 10 },
@@ -58,8 +58,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test2dArea3()
         {
-            double expectedArea = 839.8114;
-            List<Coordinate> coords = new List<Coordinate>
+            const double expectedArea = 839.8114;
+            var coords = new List<Coordinate>
             {
                 new Coordinate() { X = 0, Y = 0 },
                 new Coordinate() { X = -4.2429, Y = 23.4555 },
@@ -73,7 +73,7 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedArea, Math.Round(area, 4));
         }
 
-        double PolygonArea(List<Coordinate> polygon)
+        private static double PolygonArea(List<Coordinate> polygon)
         {
             var array = polygon.ToArray();
 
@@ -89,7 +89,7 @@ namespace _3DS_CivilSurveySuiteTests
             return area / 2;
         }
 
-        private static double CalculateArea(List<Coordinate> coords)
+        private static double CalculateArea(IReadOnlyList<Coordinate> coords)
         {
             if (coords.Count < 3)
                 return -1;

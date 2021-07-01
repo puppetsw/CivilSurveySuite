@@ -11,7 +11,7 @@ namespace _3DS_CivilSurveySuite.Views
         public DMSCalculatorView()
         {
             InitializeComponent();
-            txtInput.KeyDown += TxtInput_KeyDown;
+            TxtInput.KeyDown += TxtInput_KeyDown;
         }
 
         private void TxtInput_KeyDown(object sender, KeyEventArgs e)

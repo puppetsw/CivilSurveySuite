@@ -1,4 +1,13 @@
-﻿using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: PaletteFactory.cs
+// Date:     01/07/2021
+// Author:   scott
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using _3DS_CivilSurveySuite.Helpers.AutoCAD;
@@ -9,7 +18,6 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
-
 namespace _3DS_CivilSurveySuite.Palettes
 {
     /// <summary>
@@ -18,9 +26,9 @@ namespace _3DS_CivilSurveySuite.Palettes
     /// </summary>
     public class PaletteFactory : CivilBase, IExtensionApplication
     {
+        private bool _paletteVisible;
         private static readonly List<Type> s_palettes = new List<Type>();
         private static PaletteSet s_civilSurveySuitePalSet;
-        private bool _paletteVisible;
 
         public void Initialize()
         {
@@ -43,51 +51,17 @@ namespace _3DS_CivilSurveySuite.Palettes
         [CommandMethod("3DSShowConnectLinePalette")]
         public void ShowConnectLinePalette()
         {
-            ConnectLineworkView view = new ConnectLineworkView
-            {
-                DataContext = new ConnectLineworkViewModel()
-            };
-
-            if (s_civilSurveySuitePalSet == null)
-            {
-                CreatePaletteSet();
-            }
-
-            if (!s_palettes.Contains(view.GetType()))
-            {
-                s_civilSurveySuitePalSet.AddVisual("Linework", view);
-                s_palettes.Add(view.GetType());
-                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
-            }
-
-            if (!s_civilSurveySuitePalSet.Visible)
-            {
-                s_civilSurveySuitePalSet.Visible = true;
-            }
+            ConnectLineworkView view = new ConnectLineworkView();
+            ConnectLineworkViewModel vm = new ConnectLineworkViewModel();
+            GeneratePalette(view, vm, "Linework");
         }
 
         [CommandMethod("3DSShowDMSCalculatorPalette")]
         public void ShowDMSCalculatorPalette()
         {
-            DMSCalculatorView view = new DMSCalculatorView
-            {
-                DataContext = new DMSCalculatorViewModel()
-            };
-
-            if (s_civilSurveySuitePalSet == null)
-                CreatePaletteSet();
-
-            if (!s_palettes.Contains(view.GetType()))
-            {
-                s_civilSurveySuitePalSet.AddVisual("Calculator", view);
-                s_palettes.Add(view.GetType());
-                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
-            }
-
-            if (!s_civilSurveySuitePalSet.Visible)
-            {
-                s_civilSurveySuitePalSet.Visible = true;
-            }
+            DMSCalculatorView view = new DMSCalculatorView();
+            DMSCalculatorViewModel vm = new DMSCalculatorViewModel();
+            GeneratePalette(view, vm, "Calculator");
         }
 
         [CommandMethod("3DSShowTraversePalette")]
@@ -96,31 +70,6 @@ namespace _3DS_CivilSurveySuite.Palettes
             TraverseView view = new TraverseView();
             TraverseViewModel vm = new TraverseViewModel();
             GeneratePalette(view, vm, "Traverse", true, vm.ClearTransientGraphics);
-            //view.DataContext = vm;
-
-            //if (s_civilSurveySuitePalSet == null)
-            //{
-            //    CreatePaletteSet();
-            //}
-
-            //if (!s_palettes.Contains(view.GetType()))
-            //{
-            //    s_civilSurveySuitePalSet.AddVisual("Traverse", view);
-            //    s_palettes.Add(view.GetType());
-            //    s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
-            //    s_civilSurveySuitePalSet.StateChanged += (s, e) =>
-            //    {
-            //        if (e.NewState == StateEventIndex.Hide)
-            //        {
-            //            vm.ClearTransientGraphics();
-            //        }
-            //    };
-            //}
-
-            //if (!s_civilSurveySuitePalSet.Visible)
-            //{
-            //    s_civilSurveySuitePalSet.Visible = true;
-            //}
         }
 
         /// <summary>
@@ -146,6 +95,7 @@ namespace _3DS_CivilSurveySuite.Palettes
                 CreatePaletteSet();
             }
 
+            // ReSharper disable PossibleNullReferenceException
             if (!s_palettes.Contains(view.GetType()))
             {
                 s_civilSurveySuitePalSet.AddVisual(viewName, view);
@@ -158,7 +108,7 @@ namespace _3DS_CivilSurveySuite.Palettes
                     {
                         if (e.NewState == StateEventIndex.Hide)
                         {
-                            hideMethod?.Invoke();
+                            hideMethod.Invoke();
                         }
                     };
                 }
@@ -168,6 +118,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             {
                 s_civilSurveySuitePalSet.Visible = true;
             }
+            // ReSharper restore PossibleNullReferenceException
         }
 
         private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
@@ -215,7 +166,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             }
         }
 
-        private void CreatePaletteSet()
+        private static void CreatePaletteSet()
         {
             s_civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
             s_civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |

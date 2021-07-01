@@ -46,6 +46,16 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void TestSubtractingBearing1()
+        {
+            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new DMS { Degrees = 10, Minutes = 11, Seconds = 25 };
+            var expectedDMS = new DMS { Degrees = 12, Minutes = 6, Seconds = 48 };
+
+            Assert.AreEqual(expectedDMS, dms1 - dms2);
+        }
+
+        [TestMethod]
         public void TestStrip1()
         {
             const string bearing = "354°20'50\"";
@@ -91,14 +101,12 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(oppositeAngle, result);
         }
 
-        public static string StripDMSSymbols(string bearingWithSymbols)
+        private static string StripDMSSymbols(string bearingWithSymbols)
         {
             //check if we have symbols?
             //TODO: what if only one symbol?
             string cleanedString = ReplaceFirst(bearingWithSymbols, "°", ".");
-            cleanedString = RemoveAlphaCharacters(cleanedString);
-
-            return cleanedString;
+            return RemoveAlphaCharacters(cleanedString);
         }
 
         private static string ReplaceFirst(string text, string search, string replace)

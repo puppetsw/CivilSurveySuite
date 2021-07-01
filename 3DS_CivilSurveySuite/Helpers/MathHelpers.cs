@@ -1,12 +1,20 @@
-﻿using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.Geometry;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+// 
+// Filename: MathHelpers.cs
+// Date:     01/07/2021
+// Author:   scott
+
 using System;
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.Helpers
 {
-    public class MathHelpers
+    public static class MathHelpers
     {
         /// <summary>
         /// Converts link to meters
@@ -43,17 +51,17 @@ namespace _3DS_CivilSurveySuite.Helpers
         /// <summary>
         /// Converts <see cref="DMS"/> object to decimal degrees
         /// </summary>
-        /// <param name="dMS"></param>
+        /// <param name="dms"></param>
         /// <returns></returns>
-        public static double DMSToDecimalDegrees(DMS dMS)
+        public static double DMSToDecimalDegrees(DMS dms)
         {
-            if (dMS == null)
+            if (dms == null)
                 return 0;
 
-            double minutes = (double)dMS.Minutes / 60;
-            double seconds = (double)dMS.Seconds / 3600;
+            double minutes = (double) dms.Minutes / 60;
+            double seconds = (double) dms.Seconds / 3600;
 
-            double decimalDegree = dMS.Degrees + minutes + seconds;
+            double decimalDegree = dms.Degrees + minutes + seconds;
 
             return decimalDegree;
         }
@@ -79,7 +87,7 @@ namespace _3DS_CivilSurveySuite.Helpers
             var minutes = Math.Floor((decimalDegrees - degrees) * 60);
             var seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
 
-            return new DMS() { Degrees = (int)degrees, Minutes = (int)minutes, Seconds = (int)seconds };
+            return new DMS() { Degrees = (int) degrees, Minutes = (int) minutes, Seconds = (int) seconds };
         }
 
         /// <summary>
@@ -125,8 +133,9 @@ namespace _3DS_CivilSurveySuite.Helpers
         /// Converts a list of <see cref="DMS"/> objects into a list of <see cref="Point2d"/> objects
         /// </summary>
         /// <param name="bearingList"></param>
+        /// <param name="basePoint"></param>
         /// <returns>collection of <see cref="Point2d"/></returns>
-        public static List<Point2d> BearingAndDistanceToCoordinates(IList<TraverseItem> bearingList, Point2d basePoint)
+        public static List<Point2d> BearingAndDistanceToCoordinates(IEnumerable<TraverseItem> bearingList, Point2d basePoint)
         {
             var pointList = new List<Point2d>();
             //add basePoint
@@ -150,6 +159,5 @@ namespace _3DS_CivilSurveySuite.Helpers
 
             return pointList;
         }
-
     }
 }
