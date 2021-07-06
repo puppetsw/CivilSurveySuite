@@ -108,7 +108,8 @@ namespace _3DS_CivilSurveySuite.Palettes
                         }
                     };
 
-                    view.IsVisibleChanged += (s, e) => AutoCADApplicationManager.Editor.WriteMessage("IsVisibleChanged");
+                    //BUG: When closing AutoCAD this event tries to run. But Editor is null.
+                    //view.IsVisibleChanged += (s, e) => AutoCADApplicationManager.Editor.WriteMessage("IsVisibleChanged");
                 }
             }
 
@@ -117,6 +118,16 @@ namespace _3DS_CivilSurveySuite.Palettes
                 s_civilSurveySuitePalSet.Visible = true;
             }
             // ReSharper restore PossibleNullReferenceException
+        }
+
+        private static void CreatePaletteSet()
+        {
+            s_civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
+            s_civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |
+                                             PaletteSetStyles.ShowPropertiesMenu |
+                                             PaletteSetStyles.ShowAutoHideButton;
+            s_civilSurveySuitePalSet.EnableTransparency(true);
+            s_civilSurveySuitePalSet.KeepFocus = false;
         }
 
         private void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
@@ -164,14 +175,5 @@ namespace _3DS_CivilSurveySuite.Palettes
             }
         }
 
-        private static void CreatePaletteSet()
-        {
-            s_civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
-            s_civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |
-                                             PaletteSetStyles.ShowPropertiesMenu |
-                                             PaletteSetStyles.ShowAutoHideButton;
-            s_civilSurveySuitePalSet.EnableTransparency(true);
-            s_civilSurveySuitePalSet.KeepFocus = false;
-        }
     }
 }

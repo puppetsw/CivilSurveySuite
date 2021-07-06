@@ -1,10 +1,10 @@
 ﻿using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: CommandClass(typeof(PointUtils))]
+[assembly: CommandClass(typeof(Points))]
 namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    class PointUtils
+    class Points
     {
         public void CreatePointAtOffsetTwoLines()
         { }

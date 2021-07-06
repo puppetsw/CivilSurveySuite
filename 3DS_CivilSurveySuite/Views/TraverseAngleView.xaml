@@ -95,10 +95,10 @@
                 <b:EventTrigger EventName="SourceUpdated">
                     <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
                 </b:EventTrigger>
-                <b:EventTrigger EventName="LostFocus">
+                <b:EventTrigger EventName="LostKeyboardFocus">
                     <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ClearGraphicsEvent}" />
                 </b:EventTrigger>
-                <b:EventTrigger EventName="GotFocus">
+                <b:EventTrigger EventName="GotKeyboardFocus">
                     <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>

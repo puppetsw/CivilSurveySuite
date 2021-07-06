@@ -7,12 +7,12 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 {
     public class LockedTransaction : Transaction
     {
-        DocumentLock docLock;
-        public LockedTransaction(Transaction trx, DocumentLock docLock) : base(trx.UnmanagedObject, trx.AutoDelete)
+        private readonly DocumentLock _docLock;
+        public LockedTransaction(Transaction tr, DocumentLock docLock) : base(tr.UnmanagedObject, tr.AutoDelete)
         {
-            Interop.DetachUnmanagedObject(trx);
-            GC.SuppressFinalize(trx);
-            this.docLock = docLock;
+            Interop.DetachUnmanagedObject(tr);
+            GC.SuppressFinalize(tr);
+            _docLock = docLock;
         }
 
         protected override void Dispose(bool A_1)
@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             base.Dispose(A_1);
             if (A_1)
             {
-                docLock.Dispose();
+                _docLock.Dispose();
             }
         }
     }

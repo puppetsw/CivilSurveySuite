@@ -79,7 +79,7 @@
                         <TextBlock Text=" Draw Traverse" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding ClosureCommand}">
+                <!--<Button Command="{Binding ClosureCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource ClosureToolTipContent}"/>
                     </Button.ToolTip>
@@ -87,7 +87,7 @@
                         <Image Source="{StaticResource ClosureToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Closure Report" />
                     </StackPanel>
-                </Button>
+                </Button>-->
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding FeetToMetersCommand}">
                     <Button.ToolTip>

@@ -51,10 +51,10 @@
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="Labels.cs" />
-    <Compile Include="PointGroupUtils.cs" />
-    <Compile Include="PointUtils.cs" />
+    <Compile Include="PointGroups.cs" />
+    <Compile Include="Points.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SurfaceUtils.cs" />
+    <Compile Include="Surfaces.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.Helpers
 {

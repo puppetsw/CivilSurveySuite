@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;
@@ -17,17 +14,10 @@ using Autodesk.AutoCAD.Internal;
 //TODO: Hopefully remove all civil/acad references from this class
 namespace _3DS_CivilSurveySuite.ViewModels
 {
-    public interface ITraverseViewModel
-    {
-        void DrawTraverse();
-        void SetBasePoint();
-        void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates);
-    }
-
     /// <summary>
     /// ViewModel for TraverseView
     /// </summary>
-    public class TraverseViewModel : ViewModelBase, ITraverseViewModel
+    public class TraverseViewModel : ViewModelBase
     {
         private Point3d _basePoint;
         private bool _basePointFlag;
@@ -64,7 +54,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
         public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
         public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
-        public RelayCommand ClosureCommand => new RelayCommand((_) => ClosureReport(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
         public RelayCommand SetBasePointCommand => new RelayCommand((_) => SetBasePoint(), (_) => true);
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
@@ -85,6 +74,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void RefreshTransient()
         {
+            TransientGraphics.ClearTransientGraphics();
             TransientGraphics.DrawTransientPreview(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y)));
         }
 
@@ -153,132 +143,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             CloseBearing = angle.ToString();
         }
 
-        private void ClosureReport()
-        {
-            //from, easting, northing, bearing, distance, to
-            //2d area, misclose bearing and distance
-
-            //set focus to acad window
-            Utils.SetFocusToDwgView();
-
-            if (!_commandRunning)
-            {
-                _commandRunning = true;
-            }
-            else
-            {
-                return; //exit if command already running
-            }
-
-            PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select location for report text: ");
-            PromptPointResult ppr = AutoCADApplicationManager.Editor.GetPoint(ppo);
-
-            if (ppr.Status != PromptStatus.OK) // Check if we have a valid base point
-            {
-                return;
-            }
-
-            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
-            {
-                var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
-
-                const double rowHeight = 8;
-                const double colWidth = 30;
-                const double textHeight = 3;
-
-                var tb = new Table();
-                tb.TableStyle = AutoCADApplicationManager.ActiveDocument.Database.Tablestyle;
-                tb.SetSize(1, 6);
-                tb.SetColumnWidth(colWidth);
-                tb.SetRowHeight(rowHeight);
-                tb.Position = ppr.Value;
-
-                tb.Cells[0, 0].TextString = "Closure Report";
-                tb.Cells[0, 0].TextHeight = textHeight;
-
-                tb.InsertRows(tb.Rows.Count, rowHeight, 1);
-                int rowIndex = tb.Rows.Count - 1;
-                string[] headerData = { "From", "Easting", "Northing", "Bearing", "Distance", "To" };
-
-                //create header
-                for (int i = 0; i < headerData.Length; i++)
-                {
-                    var cell = tb.Cells[rowIndex, i];
-                    cell.TextString = headerData[i];
-                    cell.TextHeight = textHeight;
-                    cell.Alignment = CellAlignment.MiddleCenter;
-                }
-
-                using (var point = new Autodesk.AutoCAD.DatabaseServices.Polyline())
-                {
-                    for (int i = 0; i < coordinates.Count - 1; i++)
-                    {
-                        //add point to polyline to calculate area
-                        point.AddVertexAt(i, coordinates[i], 0, 0, 0);
-
-                        //form report text
-                        string from = TraverseItems[i].Index.ToString();
-                        string easting = $"{coordinates[i].X:#,0.000}";
-                        string northing = $"{coordinates[i].Y:#,0.000}";
-                        string bearing = TraverseItems[i].DMSBearing.ToString();
-                        string distance = $"{TraverseItems[i].Distance:#,0.000}";
-                        string to;
-
-                        if (i != coordinates.Count - 2) //-2 there is always going to be 1 less bearing/distance
-                        {
-                            to = TraverseItems[i + 1].Index.ToString();
-                        }
-                        else
-                        {
-                            to = TraverseItems[0].Index.ToString(); //if it's last one assign starting id.
-                        }
-
-                        tb.InsertRows(tb.Rows.Count, rowHeight, 1);
-                        rowIndex = tb.Rows.Count - 1;
-
-                        string[] rowData = { from, easting, northing, bearing, distance, to };
-                        for (int j = 0; j < rowData.Length; j++)
-                        {
-                            var cell = tb.Cells[rowIndex, j];
-                            cell.TextString = rowData[j];
-                            cell.TextHeight = textHeight;
-                            cell.Alignment = CellAlignment.MiddleCenter;
-                        }
-                    }
-
-                    var area = Math.Round(point.Area, 3);
-
-                    tb.InsertRows(tb.Rows.Count, rowHeight, 1);
-                    rowIndex = tb.Rows.Count - 1;
-
-                    //create base of report
-                    var cellRange = CellRange.Create(tb, rowIndex, 0, rowIndex, tb.Columns.Count - 1);
-                    tb.MergeCells(cellRange);
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.AppendLine($"Closure Distance: {CloseDistance}");
-                    sb.AppendLine($"Closure Bearing: {CloseBearing}");
-                    sb.AppendLine($"2D Area: {area}m²");
-
-                    tb.Cells[rowIndex, 0].TextString = sb.ToString();
-                    tb.Cells[rowIndex, 0].TextHeight = textHeight;
-                    tb.Cells[rowIndex, 0].Alignment = CellAlignment.MiddleLeft;
-                }
-
-                BlockTable bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord ms =
-                    (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                ms.AppendEntity(tb);
-                tr.AddNewlyCreatedDBObject(tb, true);
-
-                // Finally we commit our transaction
-                tr.Commit();
-            }
-
-            _commandRunning = false;
-        }
-
-        public void DrawTraverse()
+        private void DrawTraverse()
         {
             //set focus to acad window
             Utils.SetFocusToDwgView();
@@ -291,10 +156,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             else
                 return; //exit if command running
 
-            //get coordinates based on traverse data
-            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
-
-            PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
+            var pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
             {
                 AppendKeywordsToMessage = true
             };
@@ -303,11 +165,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
             pko.Keywords.Add("Redraw");
 
             //lock acad document and start transaction
-            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
             {
-                TransientGraphics.ClearTransientGraphics();
                 //draw first transient traverse
-
+                var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
+                TransientGraphics.ClearTransientGraphics();
                 TransientGraphics.DrawTransientTraverse(coordinates);
                 var cancelled = false;
                 PromptResult prResult;
@@ -324,7 +186,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                                 TransientGraphics.DrawTransientTraverse(coordinates);
                                 break;
                             case "Accept":
-                                DrawTraverseLinework(tr, coordinates);
+                                Lines.DrawLines(tr, coordinates);
                                 cancelled = true;
                                 break;
                             case "Cancel":
@@ -373,7 +235,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             TraverseItems[index].Bearing = dms.ToDouble();
         }
 
-        public void SetBasePoint()
+        private void SetBasePoint()
         {
             var point = EditorUtils.GetBasePoint3d();
 
@@ -397,7 +259,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             TransientGraphics.DrawTransientPreview(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y)));
         }
 
-
         private void ShowHelp()
         {
             _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
@@ -412,27 +273,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             foreach (TraverseObject item in TraverseItems)
             {
                 item.Index = i;
-                i++;
-            }
-        }
-
-        public void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates)
-        {
-            int i = 1;
-            foreach (Point2d point in coordinates)
-            {
-                var bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-
-                if (coordinates.Count == i)
-                {
-                    break;
-                }
-
-                var ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
-
-                btr.AppendEntity(ln);
-                tr.AddNewlyCreatedDBObject(ln, true);
                 i++;
             }
         }

@@ -6,6 +6,7 @@
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+// ReSharper disable InconsistentNaming
 
 namespace _3DS_CivilSurveySuite_ACADBase21
 {
@@ -18,5 +19,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         public static Editor Editor => ActiveDocument.Editor;
 
         public static Transaction StartTransaction() => ActiveDocument.TransactionManager.StartTransaction();
+
+        public static Transaction StartLockedTransaction() => ActiveDocument.TransactionManager.StartLockedTransaction();
     }
 }

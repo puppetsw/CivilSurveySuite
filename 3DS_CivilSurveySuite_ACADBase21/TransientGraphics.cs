@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Runtime;
@@ -84,7 +82,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
         public static void ClearTransientGraphics()
         {
-            Transient.CapturedDrawable = null;
+            //Transient.CapturedDrawable = null;
 
             var tm = TransientManager.CurrentTransientManager;
             var intCol = new IntegerCollection();
@@ -97,16 +95,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                     graphic.Dispose();
                 }
             }
-        }
-
-        static TransientGraphics()
-        {
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated += DocumentManagerOnDocumentToBeDeactivated;
-        }
-
-        private static void DocumentManagerOnDocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
-        {
-            ClearTransientGraphics();
         }
     }
 }

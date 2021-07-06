@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using _3DS_CivilSurveySuite.Helpers;
@@ -50,7 +49,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
 
-        //public RelayCommand ClosureCommand => new RelayCommand((_) => ClosureReport(), (_) => true);
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
 
         public RelayCommand SetBasePointCommand => new RelayCommand((_) => SetBasePoint(), (_) => true);
@@ -145,15 +143,17 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void SetBasePoint()
         {
-            Utils.SetFocusToDwgView();
-            PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select a base point: ");
-            PromptPointResult ppr = AutoCADApplicationManager.Editor.GetPoint(ppo);
+            var point = EditorUtils.GetBasePoint2d();
 
-            if (ppr.Status != PromptStatus.OK) return; //if we have a valid point
-
-            //_basePoint = ppr.Value;
-            _basePoint = new Point2d(ppr.Value.X, ppr.Value.Y);
-            _basePointFlag = true;
+            if (point != null)
+            {
+                _basePoint = point.Value;
+                _basePointFlag = true;
+            }
+            else
+            {
+                return;
+            }
 
             AutoCADApplicationManager.Editor.WriteMessage("Base point set: X:" + _basePoint.X + " Y:" + _basePoint.Y + "\n");
 
@@ -162,7 +162,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 return;
             }
 
-            //DrawTransientPreview();
             TransientGraphics.DrawTransientPreview(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, _basePoint));
         }
 
@@ -188,7 +187,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             //get coordinates based on traverse data
             var coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point2d(_basePoint.X, _basePoint.Y));
 
-            PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
+            var pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
             {
                 AppendKeywordsToMessage = true
             };
@@ -199,9 +198,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
             //lock acad document and start transaction
             using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
-                TransientGraphics.ClearTransientGraphics();
                 //draw first transient traverse
-                //DrawTransientTraverse(coordinates);
+                TransientGraphics.ClearTransientGraphics();
                 TransientGraphics.DrawTransientTraverse(coordinates);
                 var cancelled = false;
                 PromptResult prResult;
@@ -218,7 +216,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                                 TransientGraphics.DrawTransientTraverse(coordinates);
                                 break;
                             case "Accept":
-                                DrawTraverseLinework(tr, coordinates);
+                                Lines.DrawLines(tr, coordinates);
                                 cancelled = true;
                                 break;
                             case "Cancel":
@@ -233,27 +231,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             TransientGraphics.ClearTransientGraphics();
             _commandRunning = false;
-        }
-
-        private void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates)
-        {
-            var i = 1;
-            foreach (Point2d point in coordinates)
-            {
-                var bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-
-                if (coordinates.Count == i)
-                {
-                    break;
-                }
-
-                var ln = new Line(new Point3d(point.X, point.Y, 0), new Point3d(coordinates[i].X, coordinates[i].Y, 0));
-
-                btr.AppendEntity(ln);
-                tr.AddNewlyCreatedDBObject(ln, true);
-                i++;
-            }
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
 ﻿using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: CommandClass(typeof(SurfaceUtils))]
+[assembly: CommandClass(typeof(Surfaces))]
 namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    class SurfaceUtils
+    class Surfaces
     {
         /// <summary>
         /// Adds the selected breakline(s) to a surface
