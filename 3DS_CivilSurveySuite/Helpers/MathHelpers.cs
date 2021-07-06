@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.Helpers
 {
@@ -33,7 +34,7 @@ namespace _3DS_CivilSurveySuite.Helpers
         /// </summary>
         /// <param name="feetAndInches">
         /// Feet and inches represented as decimal. 5feet 2inch 5.02.
-        /// Inches less than 10 must have a preceeding 0. 
+        /// Inches less than 10 must have a preceding 0. 
         /// </param>
         /// <returns></returns>
         public static double ConvertFeetToMeters(double feetAndInches)
@@ -49,11 +50,11 @@ namespace _3DS_CivilSurveySuite.Helpers
         }
 
         /// <summary>
-        /// Converts <see cref="DMS"/> object to decimal degrees
+        /// Converts <see cref="Angle"/> object to decimal degrees
         /// </summary>
         /// <param name="dms"></param>
         /// <returns></returns>
-        public static double DMSToDecimalDegrees(DMS dms)
+        public static double AngleToDecimalDegrees(Angle dms)
         {
             if (dms == null)
                 return 0;
@@ -70,24 +71,24 @@ namespace _3DS_CivilSurveySuite.Helpers
         /// Converts decimal degrees to radians
         /// </summary>
         /// <param name="decimalDegrees"></param>
-        /// <returns></returns>
+        /// <returns>A double value containing the decimal degrees in radians.</returns>
         public static double DecimalDegreesToRadians(double decimalDegrees)
         {
             return decimalDegrees * (Math.PI / 180);
         }
 
         /// <summary>
-        /// Converts decimal degrees to <see cref="DMS"/> object
+        /// Converts decimal degrees to <see cref="Angle"/> object
         /// </summary>
         /// <param name="decimalDegrees"></param>
         /// <returns></returns>
-        public static DMS DecimalDegreesToDMS(double decimalDegrees)
+        public static Angle DecimalDegreesToDMS(double decimalDegrees)
         {
             var degrees = Math.Floor(decimalDegrees);
             var minutes = Math.Floor((decimalDegrees - degrees) * 60);
             var seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
 
-            return new DMS() { Degrees = (int) degrees, Minutes = (int) minutes, Seconds = (int) seconds };
+            return new Angle() { Degrees = (int) degrees, Minutes = (int) minutes, Seconds = (int) seconds };
         }
 
         /// <summary>
@@ -115,8 +116,8 @@ namespace _3DS_CivilSurveySuite.Helpers
         /// <param name="x2">Easting of second coordinate</param>
         /// <param name="y1">Northing of first coordinate</param>
         /// <param name="y2">Northing of second coordinate</param>
-        /// <returns><see cref="DMS"/></returns>
-        public static DMS AngleBetweenPoints(double x1, double x2, double y1, double y2)
+        /// <returns><see cref="Angle"/></returns>
+        public static Angle AngleBetweenPoints(double x1, double x2, double y1, double y2)
         {
             double rad = Math.Atan2(x2 - x1, y2 - y1);
 
@@ -124,33 +125,33 @@ namespace _3DS_CivilSurveySuite.Helpers
                 rad += 2 * Math.PI; // if radians is less than 0 add 2PI
 
             double decDeg = Math.Abs(rad) * 180 / Math.PI;
-            DMS dms = DecimalDegreesToDMS(decDeg);
+            Angle dms = DecimalDegreesToDMS(decDeg);
 
             return dms;
         }
 
         /// <summary>
-        /// Converts a list of <see cref="DMS"/> objects into a list of <see cref="Point2d"/> objects
+        /// Converts a list of <see cref="Angle"/> objects into a list of <see cref="Point2d"/> objects.
         /// </summary>
         /// <param name="bearingList"></param>
         /// <param name="basePoint"></param>
         /// <returns>collection of <see cref="Point2d"/></returns>
-        public static List<Point2d> BearingAndDistanceToCoordinates(IEnumerable<TraverseItem> bearingList, Point2d basePoint)
+        public static List<Point2d> BearingAndDistanceToCoordinates(IEnumerable<TraverseObject> bearingList, Point2d basePoint)
         {
             var pointList = new List<Point2d>();
             //add basePoint
             pointList.Add(basePoint);
 
             int i = 0;
-            foreach (TraverseItem item in bearingList)
+            foreach (TraverseObject item in bearingList)
             {
-                var dec = DMSToDecimalDegrees(item.DMSBearing);
+                var dec = AngleToDecimalDegrees(item.DMSBearing);
                 var rad = DecimalDegreesToRadians(dec);
 
-                double depature = item.Distance * Math.Sin(rad);
+                double departure = item.Distance * Math.Sin(rad);
                 double latitude = item.Distance * Math.Cos(rad);
 
-                double newX = Math.Round(pointList[i].X + depature, 4);
+                double newX = Math.Round(pointList[i].X + departure, 4);
                 double newY = Math.Round(pointList[i].Y + latitude, 4);
 
                 pointList.Add(new Point2d(newX, newY));
@@ -158,6 +159,52 @@ namespace _3DS_CivilSurveySuite.Helpers
             }
 
             return pointList;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="TraverseAngleObject"/> to a List of <see cref="Point2d"/>.
+        /// </summary>
+        /// <param name="angleList">A enumerable list containing the <see cref="TraverseAngleObject"/>'s.</param>
+        /// <param name="basePoint">The base point.</param>
+        /// <returns>A <see cref="List{T}"/> of <see cref="Point2d"/>.</returns>
+        public static List<Point2d> AngleAndDistanceToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point2d basePoint)
+        {
+            var newPointList = new List<Point2d> { basePoint };
+
+            var lastBearing = new Angle(0);
+            var i = 0;
+            foreach (TraverseAngleObject item in angleList)
+            {
+                Angle nextBearing = lastBearing - new Angle(180);
+
+                if (i == 0)
+                {
+                    nextBearing = new Angle(0);
+                }
+                else if (!item.DMSInternalAngle.IsEmpty)
+                {
+                    nextBearing -= item.DMSInternalAngle;
+                }
+                else if (!item.DMSAdjacentAngle.IsEmpty)
+                {
+                    nextBearing += item.DMSAdjacentAngle;
+                }
+
+                double dec = AngleToDecimalDegrees(nextBearing);
+                double rad = DecimalDegreesToRadians(dec);
+
+                double departure = item.Distance * Math.Sin(rad);
+                double latitude = item.Distance * Math.Cos(rad);
+
+                double newX = Math.Round(newPointList[i].X + departure, 4);
+                double newY = Math.Round(newPointList[i].Y + latitude, 4);
+
+                newPointList.Add(new Point2d(newX, newY));
+
+                lastBearing = nextBearing;
+                i++;
+            }
+            return newPointList;
         }
     }
 }

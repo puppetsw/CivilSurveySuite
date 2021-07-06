@@ -5,26 +5,26 @@ namespace _3DS_CivilSurveySuite.ViewModels.Design
 {
     public class TraverseDesignViewModel
     {
-        public ObservableCollection<TraverseItem> TraverseItems
+        public ObservableCollection<TraverseObject> TraverseItems
         {
             get
             {
-                return new ObservableCollection<TraverseItem>()
+                return new ObservableCollection<TraverseObject>()
                 {
 
-                    new TraverseItem()
+                    new TraverseObject()
                     {
                         Index = 0,
                         Bearing = 354.5020,
                         Distance = 34.21,
                     },
-                    new TraverseItem()
+                    new TraverseObject()
                     {
                         Index = 1,
                         Bearing = 84.5020,
                         Distance = 20.81,
                     },
-                    new TraverseItem()
+                    new TraverseObject()
                     {
                         Index = 2,
                         Bearing = 174.5020,

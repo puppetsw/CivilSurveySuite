@@ -1,5 +1,4 @@
-﻿using _3DS_CivilSurveySuite.Helpers.Wpf;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;

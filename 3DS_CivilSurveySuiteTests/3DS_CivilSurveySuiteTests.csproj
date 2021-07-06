@@ -53,11 +53,12 @@
     <Compile Include="BearingTests.cs" />
     <Compile Include="ClosureTests.cs" />
     <Compile Include="CoordinateTests.cs" />
-    <Compile Include="DMSCalculatorTests.cs" />
+    <Compile Include="AngleCalculatorTests.cs" />
     <Compile Include="JsonTests.cs" />
     <Compile Include="MathStringTests.cs" />
     <Compile Include="TraverseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraverseAngleTests.cs" />
     <Compile Include="WildcardTests.cs" />
   </ItemGroup>
   <ItemGroup>

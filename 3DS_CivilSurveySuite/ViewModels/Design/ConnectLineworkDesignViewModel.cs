@@ -1,5 +1,5 @@
-﻿using _3DS_CivilSurveySuite.DesKeys;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using _3DS_CivilSurveySuite_C3DBase21;
 
 namespace _3DS_CivilSurveySuite.ViewModels.Design
 {

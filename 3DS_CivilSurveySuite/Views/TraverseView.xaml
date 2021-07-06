@@ -6,9 +6,9 @@
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.ViewModels" 
             xmlns:vmd="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design" 
-            xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Converters" 
-            xmlns:helper="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf"
-            xmlns:behavior="clr-namespace:_3DS_CivilSurveySuite.Helpers.Wpf.Behaviors"
+            xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Converters"
+            xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.Behaviors"
+            xmlns:helpers="clr-namespace:_3DS_CivilSurveySuite.Helpers"
             mc:Ignorable="d"
             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -161,10 +161,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behavior:SelectAllFocusBehavior.Enable="True" behavior:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
-                                        <helper:TakeFocusAction />
+                                        <helpers:TakeFocusAction />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>
@@ -185,10 +185,10 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behavior:SelectAllFocusBehavior.Enable="True" behavior:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
-                                        <helper:TakeFocusAction />
+                                        <helpers:TakeFocusAction />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>

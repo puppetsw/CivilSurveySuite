@@ -20,8 +20,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test_TwoDMSAreEqual_True()
         {
-            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
-            var dms2 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms1 = new Angle { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new Angle { Degrees = 22, Minutes = 18, Seconds = 13 };
 
             Assert.AreEqual(dms1, dms2);
         }
@@ -29,8 +29,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test_TwoDMSAreNotEqual_True()
         {
-            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 10 };
-            var dms2 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms1 = new Angle { Degrees = 22, Minutes = 18, Seconds = 10 };
+            var dms2 = new Angle { Degrees = 22, Minutes = 18, Seconds = 13 };
 
             Assert.AreNotEqual(dms1, dms2);
         }
@@ -38,9 +38,9 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestAddingBearing1()
         {
-            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
-            var dms2 = new DMS { Degrees = 10, Minutes = 11, Seconds = 25 };
-            var expectedDMS = new DMS { Degrees = 32, Minutes = 29, Seconds = 38 };
+            var dms1 = new Angle { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new Angle { Degrees = 10, Minutes = 11, Seconds = 25 };
+            var expectedDMS = new Angle { Degrees = 32, Minutes = 29, Seconds = 38 };
 
             Assert.AreEqual(expectedDMS, dms1 + dms2);
         }
@@ -48,9 +48,9 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestSubtractingBearing1()
         {
-            var dms1 = new DMS { Degrees = 22, Minutes = 18, Seconds = 13 };
-            var dms2 = new DMS { Degrees = 10, Minutes = 11, Seconds = 25 };
-            var expectedDMS = new DMS { Degrees = 12, Minutes = 6, Seconds = 48 };
+            var dms1 = new Angle { Degrees = 22, Minutes = 18, Seconds = 13 };
+            var dms2 = new Angle { Degrees = 10, Minutes = 11, Seconds = 25 };
+            var expectedDMS = new Angle { Degrees = 12, Minutes = 6, Seconds = 48 };
 
             Assert.AreEqual(expectedDMS, dms1 - dms2);
         }

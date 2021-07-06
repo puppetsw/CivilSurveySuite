@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test_DMS_ToString()
         {
-            var dms = new DMS { Degrees = 225, Minutes = 21, Seconds = 57 };
+            var dms = new Angle { Degrees = 225, Minutes = 21, Seconds = 57 };
             string bearing = dms.ToString();
 
             const string expectedResult = "225°21'57\"";
@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Test_DMS_ToDouble()
         {
-            var dms = new DMS { Degrees = 225, Minutes = 21, Seconds = 57 };
+            var dms = new Angle { Degrees = 225, Minutes = 21, Seconds = 57 };
             double bearing = dms.ToDouble();
 
             const double expectedResult = 225.2157;

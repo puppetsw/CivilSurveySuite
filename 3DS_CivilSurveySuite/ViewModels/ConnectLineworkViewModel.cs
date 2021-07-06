@@ -3,10 +3,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using _3DS_CivilSurveySuite.DesKeys;
 using _3DS_CivilSurveySuite.Helpers;
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
-using _3DS_CivilSurveySuite.Helpers.Wpf;
+using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite_ACADBase21;
+using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
@@ -54,11 +54,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
                 Dictionary<string, DescriptionKeyMatch> desMapping = new Dictionary<string, DescriptionKeyMatch>();
 
-                foreach (ObjectId pointId in Civildoc.CogoPoints)
+                foreach (ObjectId pointId in CivilApplicationManager.ActiveCivilDocument.CogoPoints)
                 {
                     //BUG: Seems like there could be a problem with the keys and stuff if they don't match up
                     //TODO: add way to check for special codes e.g. SL or RECT
@@ -95,7 +95,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                     }
                 }
 
-                BlockTable bt = (BlockTable) tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                BlockTable bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 BlockTableRecord btr =
                     (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
@@ -115,9 +115,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
                         string layerName = deskeyMatch.DescriptionKey.Layer;
 
                         //Check if the layer exists, if not create it.
-                        if (!HasLayer(layerName, tr))
+                        if (!Layers.HasLayer(layerName, tr))
                         {
-                            CreateLayer(layerName, tr);
+                            Layers.CreateLayer(layerName, tr);
                         }
 
                         if (deskeyMatch.DescriptionKey.Draw2D)

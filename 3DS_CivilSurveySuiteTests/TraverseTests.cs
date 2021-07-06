@@ -19,7 +19,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing8Length()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 50, Seconds = 20 };
             var testString = "354.5020";
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing6Length()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 50, Seconds = 0 };
             var testString = "354.50";
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing3Length()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 0, Seconds = 0 };
             var testString = "354";
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -43,7 +43,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing8LengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 50, Seconds = 20 };
             double testString = 354.5020;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing6LengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 50, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 50, Seconds = 0 };
             double testString = 354.50;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -59,7 +59,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing3LengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 354, Minutes = 0, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 354, Minutes = 0, Seconds = 0 };
             double testString = 354;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing2LengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 54, Minutes = 0, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 54, Minutes = 0, Seconds = 0 };
             double testString = 54;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -75,7 +75,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing4LengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 54, Minutes = 20, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 54, Minutes = 20, Seconds = 0 };
             double testString = 54.20;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -83,7 +83,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestParsingBearing3ShortLengthDouble()
         {
-            var expectedResult = new DMS() { Degrees = 5, Minutes = 20, Seconds = 0 };
+            var expectedResult = new Angle() { Degrees = 5, Minutes = 20, Seconds = 0 };
             double testString = 5.20;
             Assert.AreEqual(expectedResult, ParseBearing(testString));
         }
@@ -98,7 +98,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 3;
             double expectedResultSeconds = 25;
 
-            DMS result = BearingAddition(bearing1, bearing2);
+            Angle result = BearingAddition(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -115,7 +115,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 0;
             double expectedResultSeconds = 0;
 
-            DMS result = BearingAddition(bearing1, bearing2);
+            Angle result = BearingAddition(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -132,7 +132,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 52;
             double expectedResultSeconds = 52;
 
-            DMS result = BearingSubtraction(bearing1, bearing2);
+            Angle result = BearingSubtraction(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -149,7 +149,7 @@ namespace _3DS_CivilSurveySuiteTests
             double expectedResultMinutes = 9;
             double expectedResultSeconds = 40;
 
-            DMS result = BearingSubtraction(bearing1, bearing2);
+            Angle result = BearingSubtraction(bearing1, bearing2);
 
             Assert.AreEqual(expectedResultDegrees, result.Degrees);
             Assert.AreEqual(expectedResultMinutes, result.Minutes);
@@ -162,7 +162,7 @@ namespace _3DS_CivilSurveySuiteTests
             const bool expectedResult = true;
             const double bearing = 354.5020;
 
-            DMS dms = ParseBearing(bearing);
+            Angle dms = ParseBearing(bearing);
 
             bool actual = IsValid(dms);
 
@@ -175,7 +175,7 @@ namespace _3DS_CivilSurveySuiteTests
             const bool expectedResult = false;
             const double bearing = 374.5020;
 
-            DMS dms = ParseBearing(bearing);
+            Angle dms = ParseBearing(bearing);
 
             bool actual = IsValid(dms);
 
@@ -187,7 +187,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             const double bearing = 354.6120;
 
-            DMS dms = ParseBearing(bearing);
+            Angle dms = ParseBearing(bearing);
 
             bool actual = IsValid(dms);
 
@@ -261,10 +261,10 @@ namespace _3DS_CivilSurveySuiteTests
             return feet + inch2;
         }
 
-        private DMS BearingAddition(double bearing1, double bearing2)
+        private Angle BearingAddition(double bearing1, double bearing2)
         {
-            DMS dms1 = ParseBearing(bearing1);
-            DMS dms2 = ParseBearing(bearing2);
+            Angle dms1 = ParseBearing(bearing1);
+            Angle dms2 = ParseBearing(bearing2);
 
             int degrees = dms1.Degrees + dms2.Degrees;
             int minutes = dms1.Minutes + dms2.Minutes;
@@ -284,13 +284,13 @@ namespace _3DS_CivilSurveySuiteTests
                 degrees++;
             }
 
-            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+            return new Angle() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        public static DMS BearingSubtraction(double bearing1, double bearing2)
+        public static Angle BearingSubtraction(double bearing1, double bearing2)
         {
-            DMS dms1 = ParseBearing(bearing1);
-            DMS dms2 = ParseBearing(bearing2);
+            Angle dms1 = ParseBearing(bearing1);
+            Angle dms2 = ParseBearing(bearing2);
 
             int degrees = dms1.Degrees - dms2.Degrees;
             int minutes = dms1.Minutes - dms2.Minutes;
@@ -310,7 +310,7 @@ namespace _3DS_CivilSurveySuiteTests
                 minutes += 60;
             }
 
-            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+            return new Angle() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
         /// <summary>
@@ -318,28 +318,28 @@ namespace _3DS_CivilSurveySuiteTests
         /// </summary>
         /// <param name="bearing"></param>
         /// <returns></returns>
-        public static DMS ParseBearing(string bearing)
+        public static Angle ParseBearing(string bearing)
         {
             if (bearing.Length == 8)
             {
                 var degrees = Convert.ToInt32(bearing.Substring(0, 3));
                 var minutes = Convert.ToInt32(bearing.Substring(4, 2));
                 var seconds = Convert.ToInt32(bearing.Substring(6));
-                return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+                return new Angle() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
             }
             else if (bearing.Length == 6)
             {
                 var degrees = Convert.ToInt32(bearing.Substring(0, 3));
                 var minutes = Convert.ToInt32(bearing.Substring(4));
-                return new DMS() { Degrees = degrees, Minutes = minutes };
+                return new Angle() { Degrees = degrees, Minutes = minutes };
             }
             else if (bearing.Length == 3)
             {
                 var degrees = Convert.ToInt32(bearing);
-                return new DMS() { Degrees = degrees };
+                return new Angle() { Degrees = degrees };
             }
 
-            return new DMS();
+            return new Angle();
         }
 
         /// <summary>
@@ -347,15 +347,15 @@ namespace _3DS_CivilSurveySuiteTests
         /// </summary>
         /// <param name="bearing"></param>
         /// <returns></returns>
-        public static DMS ParseBearing(double bearing)
+        public static Angle ParseBearing(double bearing)
         {
             var degrees = Convert.ToInt32(Math.Truncate(bearing));
             var minutes = Convert.ToInt32((bearing - degrees) * 100);
             var seconds = Convert.ToInt32((((bearing - degrees) * 100) - minutes) * 100);
-            return new DMS() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+            return new Angle() { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        private bool IsValid(DMS dms)
+        private bool IsValid(Angle dms)
         {
             return dms.Degrees < 360 && dms.Minutes < 60 && dms.Seconds < 60;
         }

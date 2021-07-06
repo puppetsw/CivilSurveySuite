@@ -1,5 +1,4 @@
-﻿using _3DS_CivilSurveySuite.Helpers.AutoCAD;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -9,7 +8,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
     /// <summary>
     /// A base class for the ViewModel classes.
     /// </summary>
-    public abstract class ViewModelBase : CivilBase, INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         #region Constructor
 

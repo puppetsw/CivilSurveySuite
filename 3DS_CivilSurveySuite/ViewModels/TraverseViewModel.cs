@@ -1,6 +1,4 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -8,22 +6,28 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using _3DS_CivilSurveySuite.Helpers;
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
-using _3DS_CivilSurveySuite.Helpers.Wpf;
 using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.Colors;
+using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
 
+//TODO: Add a button to select the bearing from an existing line, pline segment.
+//TODO: Hopefully remove all civil/acad references from this class
 namespace _3DS_CivilSurveySuite.ViewModels
 {
+    public interface ITraverseViewModel
+    {
+        void DrawTraverse();
+        void SetBasePoint();
+        void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates);
+    }
+
     /// <summary>
     /// ViewModel for TraverseView
     /// </summary>
-    public class TraverseViewModel : ViewModelBase
+    public class TraverseViewModel : ViewModelBase, ITraverseViewModel
     {
         private Point3d _basePoint;
         private bool _basePointFlag;
@@ -32,11 +36,10 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeDistance = "0.000";
 
         private bool _commandRunning;
-        private DBObjectCollection _transientGraphics;
 
-        public ObservableCollection<TraverseItem> TraverseItems { get; set; }
+        public ObservableCollection<TraverseObject> TraverseItems { get; set; }
 
-        public TraverseItem SelectedTraverseItem { get; set; }
+        public TraverseObject SelectedTraverseItem { get; set; }
 
         public string CloseDistance
         {
@@ -67,24 +70,29 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
-        public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
+        public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => RefreshTransient(), (_) => true);
         public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
-        public RelayCommand LostFocusEvent => new RelayCommand((_) => DrawTransientPreview(), (_) => true);
+        public RelayCommand LostFocusEvent => new RelayCommand((_) => RefreshTransient(), (_) => true);
 
         public TraverseViewModel()
         {
-            TraverseItems = new ObservableCollection<TraverseItem>();
+            TraverseItems = new ObservableCollection<TraverseObject>();
             TraverseItems.CollectionChanged += TraverseItems_CollectionChanged;
 
             //HACK: clear graphics on drawing switch
-            AcaddocManager.DocumentToBeDeactivated += (s, e) => ClearTransientGraphics();
+            //AcaddocManager.DocumentToBeDeactivated += (s, e) => TransientGraphics.ClearTransientGraphics();
+        }
+
+        private void RefreshTransient()
+        {
+            TransientGraphics.DrawTransientPreview(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y)));
         }
 
         private void TraverseItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach (TraverseItem item in e.NewItems)
+                foreach (TraverseObject item in e.NewItems)
                 {
                     item.PropertyChanged += Item_PropertyChanged;
                 }
@@ -92,7 +100,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             if (e.OldItems != null)
             {
-                foreach (TraverseItem item in e.OldItems)
+                foreach (TraverseObject item in e.OldItems)
                 {
                     item.PropertyChanged -= Item_PropertyChanged;
                 }
@@ -103,7 +111,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void AddRow()
         {
-            var ti = new TraverseItem();
+            var ti = new TraverseObject();
             TraverseItems.Add(ti);
 
             //hack: add index property and update method
@@ -117,13 +125,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
             _ = TraverseItems.Remove(SelectedTraverseItem);
             UpdateIndex();
 
-            DrawTransientPreview();
+            TransientGraphics.DrawTransientPreview(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y)));
         }
 
         private void ClearTraverse()
         {
             TraverseItems.Clear();
-            ClearTransientGraphics();
+            TransientGraphics.ClearTransientGraphics();
         }
 
         private void CloseTraverse()
@@ -163,14 +171,14 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
 
             PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select location for report text: ");
-            PromptPointResult ppr = Editor.GetPoint(ppo);
+            PromptPointResult ppr = AutoCADApplicationManager.Editor.GetPoint(ppo);
 
             if (ppr.Status != PromptStatus.OK) // Check if we have a valid base point
             {
                 return;
             }
 
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
                 var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
 
@@ -179,7 +187,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 const double textHeight = 3;
 
                 var tb = new Table();
-                tb.TableStyle = Acaddoc.Database.Tablestyle;
+                tb.TableStyle = AutoCADApplicationManager.ActiveDocument.Database.Tablestyle;
                 tb.SetSize(1, 6);
                 tb.SetColumnWidth(colWidth);
                 tb.SetRowHeight(rowHeight);
@@ -257,7 +265,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                     tb.Cells[rowIndex, 0].Alignment = CellAlignment.MiddleLeft;
                 }
 
-                BlockTable bt = (BlockTable) tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                BlockTable bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 BlockTableRecord ms =
                     (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
                 ms.AppendEntity(tb);
@@ -270,7 +278,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             _commandRunning = false;
         }
 
-        private void DrawTraverse()
+        public void DrawTraverse()
         {
             //set focus to acad window
             Utils.SetFocusToDwgView();
@@ -284,8 +292,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 return; //exit if command running
 
             //get coordinates based on traverse data
-            var coordinates =
-                MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
+            var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
 
             PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
             {
@@ -295,27 +302,26 @@ namespace _3DS_CivilSurveySuite.ViewModels
             pko.Keywords.Add("Cancel");
             pko.Keywords.Add("Redraw");
 
-            PromptResult prResult;
-
             //lock acad document and start transaction
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
-                ClearTransientGraphics();
+                TransientGraphics.ClearTransientGraphics();
                 //draw first transient traverse
-                DrawTransientTraverse(coordinates);
-                bool cancelled = false;
+
+                TransientGraphics.DrawTransientTraverse(coordinates);
+                var cancelled = false;
+                PromptResult prResult;
                 do
                 {
-                    prResult = Editor.GetKeywords(pko);
+                    prResult = AutoCADApplicationManager.Editor.GetKeywords(pko);
                     if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
                     {
                         switch (prResult.StringResult)
                         {
                             case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                ClearTransientGraphics();
-                                coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems,
-                                    new Point2d(_basePoint.X, _basePoint.Y));
-                                DrawTransientTraverse(coordinates);
+                                TransientGraphics.ClearTransientGraphics();
+                                coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
+                                TransientGraphics.DrawTransientTraverse(coordinates);
                                 break;
                             case "Accept":
                                 DrawTraverseLinework(tr, coordinates);
@@ -331,7 +337,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 tr.Commit();
             }
 
-            ClearTransientGraphics();
+            TransientGraphics.ClearTransientGraphics();
             _commandRunning = false;
         }
 
@@ -360,35 +366,37 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (SelectedTraverseItem == null) return;
 
             int index = TraverseItems.IndexOf(SelectedTraverseItem);
-            var dms180 = new DMS(180.0000);
+            var dms180 = new Angle(180.0000);
 
             var dms = dms180 - SelectedTraverseItem.DMSBearing;
 
             TraverseItems[index].Bearing = dms.ToDouble();
         }
 
-        private void SetBasePoint()
+        public void SetBasePoint()
         {
-            Utils.SetFocusToDwgView();
-            PromptPointOptions ppo = new PromptPointOptions("\n3DS> Select a base point: ");
-            PromptPointResult ppr = Editor.GetPoint(ppo);
+            var point = EditorUtils.GetBasePoint3d();
 
-            if (ppr.Status != PromptStatus.OK) return; //if we have a valid point
+            if (point != null)
+            {
+                _basePoint = point.Value;
+                _basePointFlag = true;
+            }
+            else
+            {
+                return;
+            }
 
-            _basePoint = ppr.Value;
-            _basePointFlag = true;
-
-            WriteMessage("Base point set: X:" + _basePoint.X + " Y:" + _basePoint.Y + "\n");
+            AutoCADApplicationManager.Editor.WriteMessage("Base point set: X:" + _basePoint.X + " Y:" + _basePoint.Y + "\n");
 
             if (TraverseItems.Count < 1)
             {
                 return;
             }
 
-            DrawTransientPreview();
+            TransientGraphics.DrawTransientPreview(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y)));
         }
 
-        //TODO: Add a button to select the bearing from an existing line, pline segment.
 
         private void ShowHelp()
         {
@@ -401,19 +409,19 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void UpdateIndex()
         {
             int i = 0;
-            foreach (TraverseItem item in TraverseItems)
+            foreach (TraverseObject item in TraverseItems)
             {
                 item.Index = i;
                 i++;
             }
         }
 
-        private void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates)
+        public void DrawTraverseLinework(Transaction tr, IReadOnlyList<Point2d> coordinates)
         {
             int i = 1;
             foreach (Point2d point in coordinates)
             {
-                var bt = (BlockTable) tr.GetObject(Acaddoc.Database.BlockTableId, OpenMode.ForRead);
+                var bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
                 if (coordinates.Count == i)
@@ -426,127 +434,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 btr.AppendEntity(ln);
                 tr.AddNewlyCreatedDBObject(ln, true);
                 i++;
-            }
-        }
-
-        private void DrawTransientPreview()
-        {
-            //if no basepoint set
-            if (!_basePointFlag)
-                return;
-
-            //get coordinates based on traverse data
-            var coordinates =
-                MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point2d(_basePoint.X, _basePoint.Y));
-
-            using (Transaction tr = Acaddoc.TransactionManager.StartLockedTransaction())
-            {
-                ClearTransientGraphics();
-                DrawTransientTraverse(coordinates);
-                tr.Commit();
-                //Refresh ACAD screen to display changes
-                Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
-                //Editor.Regen();
-            }
-        }
-
-        /// <summary>
-        /// Draws the traverse as transient graphics
-        /// </summary>
-        /// <param name="coordinates"></param>
-        private void DrawTransientTraverse(IReadOnlyList<Point2d> coordinates)
-        {
-            try
-            {
-                //TODO: add text and marker style
-                //HACK: move transient stuff into try catch
-                _transientGraphics = new DBObjectCollection();
-                int i = 1;
-                //draw the coord lines
-                foreach (Point2d point in coordinates)
-                {
-                    Line ln;
-                    //DBText tx;
-
-                    var tm = TransientManager.CurrentTransientManager;
-                    var intCol = new IntegerCollection();
-
-                    if (coordinates.Count == i)
-                    {
-                        //draw boxes on last and first points
-                        var box1 = CalculateBox(point);
-                        var box2 = CalculateBox(coordinates[0]);
-                        box1.Color = Color.FromColor(System.Drawing.Color.Yellow);
-                        box2.Color = Color.FromColor(System.Drawing.Color.Yellow);
-                        _transientGraphics.Add(box1);
-                        _transientGraphics.Add(box2);
-                        tm.AddTransient(box1, TransientDrawingMode.Main, 128, intCol);
-                        tm.AddTransient(box2, TransientDrawingMode.Main, 128, intCol);
-                    }
-                    else
-                    {
-                        ln = new Line(new Point3d(point.X, point.Y, 0),
-                            new Point3d(coordinates[i].X, coordinates[i].Y, 0));
-                        //tx = new DBText();
-                        //tx.Position = new Point3d(point.X + 0.2, point.Y + 0.2, 0);
-                        //tx.TextString = i.ToString();
-                        //tx.Justify = AttachmentPoint.BottomLeft;
-                        //tx.Height = 0.5;
-
-                        _transientGraphics.Add(ln);
-                        //_markers.Add(tx);
-                        tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
-                        //tm.AddTransient(tx, TransientDrawingMode.Highlight, 128, intCol);
-                    }
-
-                    i++;
-                }
-
-                Acaddoc.TransactionManager.QueueForGraphicsFlush();
-            }
-            catch (Exception ex)
-            {
-                ClearTransientGraphics();
-                Editor.WriteMessage(ex.Message);
-                throw;
-            }
-        }
-
-        private Autodesk.AutoCAD.DatabaseServices.Polyline CalculateBox(Point2d basePoint)
-        {
-            var pointTopLeft = new Point2d(basePoint.X - 0.5, basePoint.Y + 0.5);
-            var pointTopRight = new Point2d(basePoint.X + 0.5, basePoint.Y + 0.5);
-            var pointBottomRight = new Point2d(basePoint.X + 0.5, basePoint.Y - 0.5);
-            var pointBottomLeft = new Point2d(basePoint.X - 0.5, basePoint.Y - 0.5);
-
-            var pline = new Autodesk.AutoCAD.DatabaseServices.Polyline();
-            pline.AddVertexAt(0, pointTopLeft, 0, 0, 0);
-            pline.AddVertexAt(1, pointTopRight, 0, 0, 0);
-            pline.AddVertexAt(2, pointBottomRight, 0, 0, 0);
-            pline.AddVertexAt(3, pointBottomLeft, 0, 0, 0);
-            pline.AddVertexAt(4, pointTopLeft, 0, 0, 0);
-            pline.AddVertexAt(5, pointBottomRight, 0, 0, 0);
-            pline.AddVertexAt(6, pointBottomLeft, 0, 0, 0);
-            pline.AddVertexAt(7, pointTopRight, 0, 0, 0);
-
-            return pline;
-        }
-
-        /// <summary>
-        /// Clear all Transient Graphics
-        /// </summary>
-        public void ClearTransientGraphics()
-        {
-            var tm = TransientManager.CurrentTransientManager;
-            var intCol = new IntegerCollection();
-
-            if (_transientGraphics != null)
-            {
-                foreach (DBObject graphic in _transientGraphics)
-                {
-                    tm.EraseTransient(graphic, intCol);
-                    graphic.Dispose();
-                }
             }
         }
     }

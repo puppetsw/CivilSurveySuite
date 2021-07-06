@@ -60,7 +60,7 @@ namespace _3DS_CivilSurveySuiteTests
             const double expectedX = -4.4978;
             const double expectedY = 49.7973;
 
-            double decimalDegree = DMSToDecimalDegrees(new DMS() { Degrees = 354, Minutes = 50, Seconds = 20 });
+            double decimalDegree = DMSToDecimalDegrees(new Angle() { Degrees = 354, Minutes = 50, Seconds = 20 });
             double radians = DecimalDegreesToRadians(decimalDegree);
 
             double departure = distance * Math.Sin(radians);
@@ -76,7 +76,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestClosure()
         {
-            var dmsList = new List<DMS>();
+            var dmsList = new List<Angle>();
             var coordinates = new List<Coordinate>
             {
                 new Coordinate() { X = 0, Y = 0 }
@@ -84,14 +84,14 @@ namespace _3DS_CivilSurveySuiteTests
 
             const double distance = 50;
 
-            dmsList.Add(new DMS { Degrees = 354, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 84, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 174, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 354, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 84, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 174, Minutes = 0, Seconds = 0 });
 
             int i = 0;
 
             //calculate coordinates from bearing and distance
-            foreach (DMS dms in dmsList)
+            foreach (Angle dms in dmsList)
             {
                 double dec = DMSToDecimalDegrees(dms);
                 double rad = DecimalDegreesToRadians(dec);
@@ -129,7 +129,7 @@ namespace _3DS_CivilSurveySuiteTests
             }
 
             double decDeg = Math.Abs(angleRad) * 180 / Math.PI;
-            DMS resultDMS = DecimalDegreesToDMS(decDeg);
+            Angle resultDMS = DecimalDegreesToDMS(decDeg);
 
             Assert.AreEqual(264, resultDMS.Degrees);
         }
@@ -137,7 +137,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestClosure2()
         {
-            var dmsList = new List<DMS>();
+            var dmsList = new List<Angle>();
             var coordinates = new List<Coordinate>
             {
                 new Coordinate { X = 0, Y = 0 }
@@ -145,17 +145,17 @@ namespace _3DS_CivilSurveySuiteTests
 
             const double distance = 50;
 
-            dmsList.Add(new DMS { Degrees = 354, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 84, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
-            dmsList.Add(new DMS { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 354, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 84, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 0, Minutes = 0, Seconds = 0 });
+            dmsList.Add(new Angle { Degrees = 0, Minutes = 0, Seconds = 0 });
 
             int i = 0;
 
             //calculate coordinates from bearing and distance
-            foreach (DMS dms in dmsList)
+            foreach (Angle dms in dmsList)
             {
                 double dec = DMSToDecimalDegrees(dms);
                 double rad = DecimalDegreesToRadians(dec);
@@ -184,7 +184,7 @@ namespace _3DS_CivilSurveySuiteTests
                 angleRad += 2 * Math.PI; // if radians is less than 0 add 2PI
 
             double decDeg = Math.Abs(angleRad) * 180 / Math.PI;
-            DMS resultDMS = DecimalDegreesToDMS(decDeg);
+            Angle resultDMS = DecimalDegreesToDMS(decDeg);
 
             Assert.AreEqual(189, resultDMS.Degrees);
         }
@@ -192,7 +192,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestDMSToDecimalDegrees()
         {
-            var dms = new DMS { Degrees = 57, Minutes = 12, Seconds = 34 };
+            var dms = new Angle { Degrees = 57, Minutes = 12, Seconds = 34 };
 
             const double expectedResult = 57.2094;
             double result = DMSToDecimalDegrees(dms);
@@ -204,9 +204,9 @@ namespace _3DS_CivilSurveySuiteTests
         public void TestDecimalDegreeToDMS()
         {
             const double decimalDegree = 57.2094;
-            var expectedDMS = new DMS { Degrees = 57, Minutes = 12, Seconds = 34 };
+            var expectedDMS = new Angle { Degrees = 57, Minutes = 12, Seconds = 34 };
 
-            DMS result = DecimalDegreesToDMS(decimalDegree);
+            Angle result = DecimalDegreesToDMS(decimalDegree);
 
             Assert.AreEqual(expectedDMS, result);
         }
@@ -222,7 +222,7 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedResult, Math.Round(result, 4));
         }
 
-        private static double DMSToDecimalDegrees(DMS dms)
+        private static double DMSToDecimalDegrees(Angle dms)
         {
             double minutes = (double) dms.Minutes / 60;
             double seconds = (double) dms.Seconds / 3600;
@@ -234,13 +234,13 @@ namespace _3DS_CivilSurveySuiteTests
             return decimalDegrees * (Math.PI / 180);
         }
 
-        private static DMS DecimalDegreesToDMS(double decimalDegrees)
+        private static Angle DecimalDegreesToDMS(double decimalDegrees)
         {
             double degrees = Math.Floor(decimalDegrees);
             double minutes = Math.Floor((decimalDegrees - degrees) * 60);
             double seconds = Math.Round((((decimalDegrees - degrees) * 60) - minutes) * 60, 0);
 
-            return new DMS { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
+            return new Angle { Degrees = Convert.ToInt32(degrees), Minutes = Convert.ToInt32(minutes), Seconds = Convert.ToInt32(seconds) };
         }
 
         [TestMethod]

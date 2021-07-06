@@ -2,17 +2,13 @@
 // Reproduction or transmission in whole or in part, any form or by any
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
-// 
-// Filename: PaletteFactory.cs
-// Date:     01/07/2021
-// Author:   scott
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
-using _3DS_CivilSurveySuite.Helpers.AutoCAD;
+using System.Windows;
 using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite.Views;
+using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
@@ -24,7 +20,7 @@ namespace _3DS_CivilSurveySuite.Palettes
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class PaletteFactory : CivilBase, IExtensionApplication
+    public class PaletteFactory : IExtensionApplication
     {
         private bool _paletteVisible;
         private static readonly List<Type> s_palettes = new List<Type>();
@@ -33,62 +29,62 @@ namespace _3DS_CivilSurveySuite.Palettes
         public void Initialize()
         {
             //hookup events
-            AcaddocManager.DocumentActivated += AcaddocManager_DocumentActivated;
-            AcaddocManager.DocumentCreated += AcaddocManager_DocumentCreated;
-            AcaddocManager.DocumentToBeDeactivated += AcaddocManager_DocumentToBeDeactivated;
-            AcaddocManager.DocumentToBeDestroyed += AcaddocManager_DocumentToBeDestroyed;
+            AutoCADApplicationManager.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
+            AutoCADApplicationManager.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
         }
 
         public void Terminate()
         {
-            //unhook events
-            AcaddocManager.DocumentActivated -= AcaddocManager_DocumentActivated;
-            AcaddocManager.DocumentCreated -= AcaddocManager_DocumentCreated;
-            AcaddocManager.DocumentToBeDeactivated -= AcaddocManager_DocumentToBeDeactivated;
-            AcaddocManager.DocumentToBeDestroyed -= AcaddocManager_DocumentToBeDestroyed;
+            AutoCADApplicationManager.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
+            AutoCADApplicationManager.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
         }
 
         [CommandMethod("3DSShowConnectLinePalette")]
         public void ShowConnectLinePalette()
         {
-            ConnectLineworkView view = new ConnectLineworkView();
-            ConnectLineworkViewModel vm = new ConnectLineworkViewModel();
+            var view = new ConnectLineworkView();
+            var vm = new ConnectLineworkViewModel();
             GeneratePalette(view, vm, "Linework");
         }
 
-        [CommandMethod("3DSShowDMSCalculatorPalette")]
-        public void ShowDMSCalculatorPalette()
+        [CommandMethod("3DSShowAngleCalculatorPalette")]
+        public void ShowAngleCalculatorPalette()
         {
-            DMSCalculatorView view = new DMSCalculatorView();
-            DMSCalculatorViewModel vm = new DMSCalculatorViewModel();
-            GeneratePalette(view, vm, "Calculator");
+            var view = new AngleCalculatorView();
+            var vm = new AngleCalculatorViewModel();
+            GeneratePalette(view, vm, "Angle Calculator");
         }
 
         [CommandMethod("3DSShowTraversePalette")]
         public void ShowTraversePalette()
         {
-            TraverseView view = new TraverseView();
-            TraverseViewModel vm = new TraverseViewModel();
-            GeneratePalette(view, vm, "Traverse", true, vm.ClearTransientGraphics);
+            var view = new TraverseView();
+            var vm = new TraverseViewModel();
+            GeneratePalette(view, vm, "Traverse", TransientGraphics.ClearTransientGraphics);
+        }
+
+        [CommandMethod("3DSShowAngleTraversePalette")]
+        public void ShowTraverseAnglePalette()
+        {
+            var view = new TraverseAngleView();
+            var vm = new TraverseAngleViewModel();
+            GeneratePalette(view, vm, "Angle Traverse", TransientGraphics.ClearTransientGraphics);
         }
 
         /// <summary>
         /// Generates the palette.
         /// </summary>
         /// <param name="view">The view.</param>
-        /// <param name="viewModel">The view model.</param>
-        /// <param name="viewName">Name of the view.</param>
-        /// <param name="hideEvent">if set to <c>true</c> [hide event].</param>
-        /// <param name="hideMethod">The hide method.</param>
-        /// <exception cref="ArgumentNullException">viewName</exception>
-        private void GeneratePalette(UserControl view, ViewModelBase viewModel, string viewName, bool hideEvent = false, Action hideMethod = null)
+        /// <param name="viewModel">The ViewModel.</param>
+        /// <param name="viewName">The View associated with the ViewModel.</param>
+        /// <param name="hideMethod">The action to run when the palette is hidden/closed.</param>
+        private static void GeneratePalette(FrameworkElement view, ViewModelBase viewModel, string viewName, Action hideMethod = null)
         {
             view.DataContext = viewModel;
-
-            if (string.IsNullOrEmpty(viewName))
-            {
-                throw new ArgumentNullException(nameof(viewName));
-            }
 
             if (s_civilSurveySuitePalSet == null)
             {
@@ -102,7 +98,7 @@ namespace _3DS_CivilSurveySuite.Palettes
                 s_palettes.Add(view.GetType());
                 s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
 
-                if (hideEvent && hideMethod != null)
+                if (hideMethod != null)
                 {
                     s_civilSurveySuitePalSet.StateChanged += (s, e) =>
                     {
@@ -111,6 +107,8 @@ namespace _3DS_CivilSurveySuite.Palettes
                             hideMethod.Invoke();
                         }
                     };
+
+                    view.IsVisibleChanged += (s, e) => AutoCADApplicationManager.Editor.WriteMessage("IsVisibleChanged");
                 }
             }
 
@@ -121,7 +119,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             // ReSharper restore PossibleNullReferenceException
         }
 
-        private void AcaddocManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
+        private void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
             if (s_civilSurveySuitePalSet == null)
             {
@@ -131,7 +129,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             s_civilSurveySuitePalSet.Visible = e.Document != null && _paletteVisible;
         }
 
-        private void AcaddocManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+        private void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
             if (s_civilSurveySuitePalSet == null)
             {
@@ -141,7 +139,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             s_civilSurveySuitePalSet.Visible = _paletteVisible;
         }
 
-        private void AcaddocManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        private void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
         {
             if (s_civilSurveySuitePalSet == null)
             {
@@ -151,7 +149,7 @@ namespace _3DS_CivilSurveySuite.Palettes
             _paletteVisible = s_civilSurveySuitePalSet.Visible;
         }
 
-        private void AcaddocManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        private void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
             if (s_civilSurveySuitePalSet == null)
             {
@@ -160,7 +158,7 @@ namespace _3DS_CivilSurveySuite.Palettes
 
             _paletteVisible = s_civilSurveySuitePalSet.Visible;
 
-            if (AcaddocManager.Count == 1)
+            if (AutoCADApplicationManager.DocumentManager.Count == 1)
             {
                 s_civilSurveySuitePalSet.Visible = false;
             }

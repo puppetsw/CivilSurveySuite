@@ -23,11 +23,11 @@ namespace _3DS_CivilSurveySuite.Converters
             string[] numbersArray = str.Split(new string[] { "+", "-" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (input.Contains("+") && numbersArray.Length > 1)
-                return (new DMS(numbersArray[0]) + new DMS(numbersArray[1])).ToDouble();
+                return (new Angle(numbersArray[0]) + new Angle(numbersArray[1])).ToDouble();
             else if (input.Contains("-") && numbersArray.Length > 1)
-                return (new DMS(numbersArray[0]) - new DMS(numbersArray[1])).ToDouble();
+                return (new Angle(numbersArray[0]) - new Angle(numbersArray[1])).ToDouble();
             else
-                return new DMS(StringHelpers.ExtractDoubleFromString(input)).ToDouble();
+                return new Angle(StringHelpers.ExtractDoubleFromString(input)).ToDouble();
         }
     }
 }

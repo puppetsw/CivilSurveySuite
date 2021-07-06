@@ -1,0 +1,200 @@
+﻿<UserControl x:Class="_3DS_CivilSurveySuite.Views.TraverseAngleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Views"
+             xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.Converters"
+             xmlns:design="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behaviors1="clr-namespace:_3DS_CivilSurveySuite.Behaviors"
+             xmlns:helpers="clr-namespace:_3DS_CivilSurveySuite.Helpers"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
+            <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9" />
+            <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb" />
+            <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
+            <converters:DistanceConverter x:Key="DistanceConverter" />
+            <converters:BearingConverter x:Key="BearingConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/ToolTips.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="{Binding AddRowCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource AddRowToolTipContent}" />
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource AddRowToolbarIcon}" Width="16" Height="16" />
+                </Button>
+                <Button Command="{Binding RemoveRowCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource RemoveRowToolTipContent}" />
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource RemoveRowToolbarIcon}" Width="16" Height="16" />
+                </Button>
+                <Button Command="{Binding ClearCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ClearToolTipContent}" />
+                    </Button.ToolTip>
+                    <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
+                </Button>
+                <Separator IsTabStop="False" />
+                <Button Command="{Binding SetBasePointCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding RefreshTraverseCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource RefreshToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource RefreshTraverseToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Refresh"/>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding DrawCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource DrawToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource DrawTraverseToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Draw Traverse" />
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <StatusBar DockPanel.Dock="Bottom" Height="23">
+            <StatusBarItem Content="Closure: bearing = "/>
+            <StatusBarItem Content="{Binding CloseBearing}" />
+            <StatusBarItem Content="distance = "/>
+            <StatusBarItem Content="{Binding CloseDistance}" />
+        </StatusBar>
+        <DataGrid x:Name="DgTraverse" DockPanel.Dock="Bottom"
+                  ItemsSource="{Binding TraverseAngles}"
+                  SelectedItem="{Binding SelectedTraverseAngle}"
+                  SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="All" AutoGenerateColumns="False"
+                  HorizontalGridLinesBrush="{StaticResource BlueGridLine}"
+                  VerticalGridLinesBrush="{StaticResource RedGridLine}"
+                  Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False"
+                  CanUserReorderColumns="False" CanUserSortColumns="False"
+                  RowHeight="22" HorizontalContentAlignment="Center" PreviewKeyDown="dgTraverse_PreviewKeyDown">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SourceUpdated">
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
+                </b:EventTrigger>
+                <b:EventTrigger EventName="LostFocus">
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ClearGraphicsEvent}" />
+                </b:EventTrigger>
+                <b:EventTrigger EventName="GotFocus">
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="60" IsReadOnly="True" />
+                <DataGridTemplateColumn Header="Internal Angle" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DMSInternalAngle.Degrees}" />
+                                <TextBlock Text="°" />
+                                <TextBlock Text="{Binding DMSInternalAngle.Minutes}" />
+                                <TextBlock Text="'" />
+                                <TextBlock Text="{Binding DMSInternalAngle.Seconds}" />
+                                <TextBlock Text='"' />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox behaviors1:SelectAllFocusBehavior.Enable="True"
+                                     behaviors1:SimpleCalculationTextBoxBehavior.Enable="True">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Loaded">
+                                        <helpers:TakeFocusAction />
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="InternalAngle" Converter="{StaticResource BearingConverter}"
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
+                                             ValidatesOnExceptions="True"
+                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Adjacent Angle" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DMSAdjacentAngle.Degrees}" />
+                                <TextBlock Text="°" />
+                                <TextBlock Text="{Binding DMSAdjacentAngle.Minutes}" />
+                                <TextBlock Text="'" />
+                                <TextBlock Text="{Binding DMSAdjacentAngle.Seconds}" />
+                                <TextBlock Text='"' />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox behaviors1:SelectAllFocusBehavior.Enable="True"
+                                     behaviors1:SimpleCalculationTextBoxBehavior.Enable="True">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Loaded">
+                                        <helpers:TakeFocusAction />
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="AdjacentAngle" Converter="{StaticResource BearingConverter}"
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
+                                             ValidatesOnExceptions="True"
+                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Distance" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Distance, StringFormat=N3}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox behaviors1:SelectAllFocusBehavior.Enable="True"
+                                     behaviors1:SimpleCalculationTextBoxBehavior.Enable="True">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Loaded">
+                                        <helpers:TakeFocusAction />
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <TextBox.Text>
+                                    <Binding Path="Distance" Converter="{StaticResource DistanceConverter}"
+                                             StringFormat="N3"
+                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
+                                             ValidatesOnExceptions="True"
+                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
+                                </TextBox.Text>
+                            </TextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
