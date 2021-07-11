@@ -230,7 +230,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             int index = TraverseItems.IndexOf(SelectedTraverseItem);
             var dms180 = new Angle(180.0000);
 
-            var dms = dms180 - SelectedTraverseItem.DMSBearing;
+            var dms = dms180 - SelectedTraverseItem.Angle;
 
             TraverseItems[index].Bearing = dms.ToDouble();
         }

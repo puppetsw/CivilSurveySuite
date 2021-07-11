@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Resources">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <BitmapImage x:Key="AddRowToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/dialog-more.png"/>
     <BitmapImage x:Key="RemoveRowToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/window-close.png"/>
     <BitmapImage x:Key="ClearToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons/edit-clear-2.png"/>

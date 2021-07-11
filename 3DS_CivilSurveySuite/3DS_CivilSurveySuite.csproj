@@ -68,15 +68,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstraction\PointExtensions.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />
     <Compile Include="Commands\TrunkSize.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Helpers\DataGridExtensions.cs" />
-    <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Helpers\Keywords.cs" />
     <Compile Include="Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Behaviors\SelectAllFocusBehavior.cs" />
-    <Compile Include="Helpers\TakeFocusAction.cs" />
+    <Compile Include="Behaviors\TakeFocusAction.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\Design\ConnectLineworkDesignViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Converters\DistanceConverter.cs" />
     <Compile Include="Helpers\MathHelpers.cs" />
     <Compile Include="ViewModels\Design\TraverseDesignViewModel.cs" />
-    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Palettes\PaletteFactory.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
     <Resource Include="Resources\Icons.xaml">
@@ -227,6 +227,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
+      <Project>{09C298C6-4485-4911-8AF1-2CD14CC99090}</Project>
+      <Name>3DS_CivilSurveySuite.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
       <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>

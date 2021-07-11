@@ -32,7 +32,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         }
 
 
-
         
     }
 }

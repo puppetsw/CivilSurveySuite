@@ -12,15 +12,15 @@ namespace _3DS_CivilSurveySuite.Model
     {
         private double _bearing;
         private double _distance;
-        private Angle _dms;
+        private Angle _angle;
         private int _index;
 
-        public Angle DMSBearing
+        public Angle Angle
         {
-            get => _dms;
+            get => _angle;
             private set
             {
-                _dms = value;
+                _angle = value;
                 NotifyPropertyChanged();
             }
         }
@@ -43,12 +43,12 @@ namespace _3DS_CivilSurveySuite.Model
                 if (Angle.IsValid(value))
                 {
                     _bearing = value;
-                    DMSBearing = new Angle(value);
+                    Angle = new Angle(value);
                 }
                 else
                 {
                     _bearing = 0;
-                    DMSBearing = new Angle();
+                    Angle = new Angle();
                 }
 
                 NotifyPropertyChanged();
@@ -69,13 +69,13 @@ namespace _3DS_CivilSurveySuite.Model
 
         public TraverseObject()
         {
-            DMSBearing = new Angle();
+            Angle = new Angle();
             Bearing = 0;
         }
 
         public TraverseObject(double bearing, double distance)
         {
-            DMSBearing = new Angle(bearing);
+            Bearing = bearing;
             Distance = distance;
         }
 

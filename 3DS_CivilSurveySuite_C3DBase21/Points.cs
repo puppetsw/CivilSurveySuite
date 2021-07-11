@@ -1,60 +1,85 @@
-﻿using _3DS_CivilSurveySuite_C3DBase21;
-using Autodesk.AutoCAD.Runtime;
-
-[assembly: CommandClass(typeof(Points))]
-namespace _3DS_CivilSurveySuite_C3DBase21
+﻿namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    class Points
+    public class Points
     {
-        public void CreatePointAtOffsetTwoLines()
-        { }
+        /// <summary>
+        /// Changes a <see cref=""/> CogoPoint's Draw Description to upper case.
+        /// </summary>
+        public void RawDescriptionToUpperCase()
+        {
+        }
 
+        /// <summary>
+        /// Changes a <see cref=""/> CogoPoint's Full Description to upper case.
+        /// </summary>
+        public void FullDescriptionToUpperCase()
+        {
+        }
+
+        /// <summary>
+        /// Creates a point at the offset of 2 lines.
+        /// </summary>
+        public void CreatePointAtOffsetTwoLines()
+        {
+        }
+
+        /// <summary>
+        /// Creates a point on production of a line.
+        /// </summary>
         public void CreatePointOnProduction()
-        { }
+        {
+        }
 
         /// <summary>
         /// Add multiple points (with interpolated elevation) between two points.
         /// </summary>
-        void CreatePointBetweenPoints()
-        { }
+        private void CreatePointBetweenPoints()
+        {
+        }
 
         /// <summary>
         /// Add multiple points that are offsets of a line defined by two points.
         /// </summary>
-        void CreatePointBetweenPointsAtOffset()
-        { }
+        private void CreatePointBetweenPointsAtOffset()
+        {
+        }
 
         /// <summary>
         /// Add a point at a picked location with elevation calculated at designated slope.
         /// </summary>
-        void CreatePointAtLocationWithSlope()
-        { }
+        private void CreatePointAtLocationWithSlope()
+        {
+        }
 
         /// <summary>
         /// Create point at extension distance on grade between 2 points.
         /// </summary>
-        void CreatePointAtExtensionBetweenPoints()
-        { }
+        private void CreatePointAtExtensionBetweenPoints()
+        {
+        }
 
         /// <summary>
         /// Intersection of Bearing-Bearing, Bearing-Distance, Distance-Distance, 4 Points.
         /// </summary>
-        void CreatePointAtIntersectionOf()
-        { }
+        private void CreatePointAtIntersectionOf()
+        {
+        }
 
         /// <summary>
         /// Inverses between points (pick or number), echoes coordinates, 
         /// azimuths, bearings, horz/vert distance and slope.
         /// </summary>
-        void InverseBetweenPoints()
-        { }
+        private void InverseBetweenPoints()
+        {
+        }
 
         /// <summary>
         /// The CreatePointsFromLabels command can be used to create Civil-3D Points at the 
         /// exact location and elevation of Surface Elevation Labels found in a drawing.
         /// </summary>
-        void CreatePointAtLabel()
-        { }
+        private void CreatePointAtLabel()
+        {
+        }
 
         /// <summary>
         /// The UsedPt command displays a list of used point numbers in the command window.
@@ -62,8 +87,9 @@ namespace _3DS_CivilSurveySuite_C3DBase21
         /// Type UsedPt at the command line.The available point numbers in the drawing are displayed in the 
         /// command window, as in the following example:
         /// </summary>
-        void UsedPoints()
-        { }
+        private void UsedPoints()
+        {
+        }
 
         /// <summary>
         /// The ZoomPt command zooms the display to the specified point number.
@@ -73,9 +99,8 @@ namespace _3DS_CivilSurveySuite_C3DBase21
         /// multiplying it by this number.Enter a lower number for the zoom height factor to zoom in closer to the point, or a higher number to zoom out further.
         /// The default zoom height factor is 4.
         /// </summary>
-        void ZoomPoint()
-        { }
-
-
+        private void ZoomPoint()
+        {
+        }
     }
 }

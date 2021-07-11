@@ -10,15 +10,12 @@ namespace _3DS_CivilSurveySuite.Model
 {
     public class TraverseAngleObject : INotifyPropertyChanged
     {
-        private Angle _adjacentAngleDMS;
-        private Angle _internalAngleDMS;
+        private Angle _angle;
         private double _distance;
-        private double _internalAngle;
-        private double _adjacentAngle;
+        private double _bearing;
         private int _index;
-
-        //TODO: Change Internal and Adjacent to bearing only.
-        //TODO: Add Enum for Internal and Adjacent angle.
+        private AngleRotationDirection _angleDirection;
+        private AngleReferenceDirection _referenceDirection;
 
         public int Index
         {
@@ -30,78 +27,22 @@ namespace _3DS_CivilSurveySuite.Model
             }
         }
 
-        public double InternalAngle
+        public double Bearing
         {
-            get => _internalAngle;
+            get => _bearing;
             set
             {
                 if (Angle.IsValid(value))
                 {
-                    _internalAngle = value;
-                    DMSInternalAngle = new Angle(value);
+                    _bearing = value;
+                    Angle = new Angle(value);
                 }
                 else
                 {
-                    _internalAngle = 0;
-                    DMSInternalAngle = new Angle();
+                    _bearing = 0;
+                    Angle = new Angle();
                 }
 
-                if (DMSAdjacentAngle != null && !DMSAdjacentAngle.IsEmpty)
-                {
-                    _adjacentAngle = 0;
-                    _adjacentAngleDMS = new Angle(0);
-                    NotifyPropertyChanged(nameof(AdjacentAngle));
-                    NotifyPropertyChanged(nameof(DMSAdjacentAngle));
-                }
-
-                NotifyPropertyChanged();
-            }
-        }
-
-        public double AdjacentAngle
-        {
-            get => _adjacentAngle;
-            set
-            {
-                if (Angle.IsValid(value))
-                {
-                    _adjacentAngle = value;
-                    DMSAdjacentAngle = new Angle(value);
-                }
-                else
-                {
-                    _adjacentAngle = 0;
-                    DMSAdjacentAngle = new Angle();
-                }
-
-                if (DMSInternalAngle != null && !DMSInternalAngle.IsEmpty)
-                {
-                    _internalAngle = 0;
-                    _internalAngleDMS = new Angle(0);
-                    NotifyPropertyChanged(nameof(InternalAngle));
-                    NotifyPropertyChanged(nameof(DMSInternalAngle));
-                }
-
-                NotifyPropertyChanged();
-            }
-        }
-
-        public Angle DMSInternalAngle
-        {
-            get => _internalAngleDMS;
-            private set
-            {
-                _internalAngleDMS = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public Angle DMSAdjacentAngle
-        {
-            get => _adjacentAngleDMS;
-            private set
-            {
-                _adjacentAngleDMS = value;
                 NotifyPropertyChanged();
             }
         }
@@ -116,15 +57,49 @@ namespace _3DS_CivilSurveySuite.Model
             }
         }
 
+        public Angle Angle
+        {
+            get => _angle;
+            private set
+            {
+                _angle = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public AngleRotationDirection RotationDirection
+        {
+            get => _angleDirection;
+            set
+            {
+                _angleDirection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public AngleReferenceDirection ReferenceDirection
+        {
+            get => _referenceDirection;
+            set
+            {
+                _referenceDirection = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public TraverseAngleObject()
         {
-            DMSInternalAngle = new Angle();
-            InternalAngle = 0;
-            DMSAdjacentAngle = new Angle();
-            AdjacentAngle = 0;
+            Angle = new Angle();
+            Bearing = 0;
             Distance = 0;
+        }
+
+        public TraverseAngleObject(double bearing, double distance)
+        {
+            Bearing = bearing;
+            Distance = distance;
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

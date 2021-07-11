@@ -1,27 +1,29 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.Internal;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
     public class TraverseAngleViewModel : ViewModelBase
     {
-        private Point2d _basePoint;
-        private bool _basePointFlag;
         private string _closeBearing;
         private string _closeDistance;
         private bool _commandRunning;
 
-        public ObservableCollection<TraverseAngleObject> TraverseAngles { get; set; }
+        public ObservableCollection<TraverseAngleObject> TraverseAngles { get; set; } = new ObservableCollection<TraverseAngleObject>();
 
         public TraverseAngleObject SelectedTraverseAngle { get; set; }
+
+        public IEnumerable<AngleReferenceDirection> ReferenceDirectionValues => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
+
+        public IEnumerable<AngleRotationDirection> RotationDirectionValues => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
 
         public string CloseDistance
         {
@@ -51,47 +53,17 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
 
-        public RelayCommand SetBasePointCommand => new RelayCommand((_) => SetBasePoint(), (_) => true);
-
         //public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
         //public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
         //public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
-        public RelayCommand RefreshTraverseCommand => new RelayCommand((_) => TransientGraphics.DrawTransientPreview(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, _basePoint)), (_) => true);
         //public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
 
-        public RelayCommand LostFocusEvent => new RelayCommand((_) => TransientGraphics.DrawTransientPreview(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, _basePoint)), (_) => true);
+        public RelayCommand CellUpdatedEvent => new RelayCommand((_) => CellUpdated(), (_) => true);
 
-        public RelayCommand ClearGraphicsEvent => new RelayCommand((_) => TransientGraphics.ClearTransientGraphics(), (_) => true);
-
-        public TraverseAngleViewModel()
+        private void CellUpdated()
         {
-            TraverseAngles = new ObservableCollection<TraverseAngleObject>();
-            TraverseAngles.CollectionChanged += TraverseItems_CollectionChanged;
-
-            //HACK: clear graphics on drawing switch
-            //AcaddocManager.DocumentToBeDeactivated += (s, e) => TransientGraphics.ClearTransientGraphics();
+            CloseTraverse();
         }
-
-        private void TraverseItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-            {
-                foreach (TraverseAngleObject item in e.NewItems)
-                {
-                    item.PropertyChanged += Item_PropertyChanged;
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (TraverseAngleObject item in e.OldItems)
-                {
-                    item.PropertyChanged -= Item_PropertyChanged;
-                }
-            }
-        }
-
-        private void Item_PropertyChanged(object sender, PropertyChangedEventArgs e) => CloseTraverse();
 
         private void CloseTraverse()
         {
@@ -108,7 +80,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             double distance = MathHelpers.DistanceBetweenPoints(firstCoord.X, lastCoord.X, firstCoord.Y, lastCoord.Y);
             Angle angle = MathHelpers.AngleBetweenPoints(lastCoord.X, firstCoord.X, lastCoord.Y, firstCoord.Y);
 
-            CloseDistance = string.Format("{0:0.000}", distance);
+            CloseDistance = $"{distance:0.000}";
             CloseBearing = angle.ToString();
         }
 
@@ -130,107 +102,83 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             _ = TraverseAngles.Remove(SelectedTraverseAngle);
             UpdateIndex();
-
-            //DrawTransientPreview();
-            TransientGraphics.DrawTransientPreview(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, _basePoint));
         }
 
         private void ClearTraverse()
         {
             TraverseAngles.Clear();
-            TransientGraphics.ClearTransientGraphics();
-        }
-
-        private void SetBasePoint()
-        {
-            var point = EditorUtils.GetBasePoint2d();
-
-            if (point != null)
-            {
-                _basePoint = point.Value;
-                _basePointFlag = true;
-            }
-            else
-            {
-                return;
-            }
-
-            AutoCADApplicationManager.Editor.WriteMessage("Base point set: X:" + _basePoint.X + " Y:" + _basePoint.Y + "\n");
-
-            if (TraverseAngles.Count < 1)
-            {
-                return;
-            }
-
-            TransientGraphics.DrawTransientPreview(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, _basePoint));
         }
 
         private void DrawTraverse()
         {
-            //set focus to acad window
-            Utils.SetFocusToDwgView();
-            //if no basepoint set
-            if (!_basePointFlag)
-            {
-                SetBasePoint(); //set basepoint
-            }
-
+            // If user clicks DrawTraverse again we want to stop the command from
+            // running again if it is already running.
             if (!_commandRunning)
-            {
                 _commandRunning = true;
-            }
             else
-            {
-                return; //exit if command running
-            }
+                return;
+
+            var point = EditorUtils.GetBasePoint2d();
+
+            if (point == null)
+                return;
+
+            AutoCADApplicationManager.Editor.WriteMessage($"\nBase point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             //get coordinates based on traverse data
-            var coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point2d(_basePoint.X, _basePoint.Y));
+            var coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, point.Value);
 
-            var pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ")
-            {
-                AppendKeywordsToMessage = true
-            };
-            pko.Keywords.Add("Accept");
-            pko.Keywords.Add("Cancel");
-            pko.Keywords.Add("Redraw");
+            var pko = new PromptKeywordOptions("\nAccept and draw traverse?") { AppendKeywordsToMessage = true };
+            pko.Keywords.Add(Keywords.Accept);
+            pko.Keywords.Add(Keywords.Cancel);
+            pko.Keywords.Add(Keywords.Redraw);
 
-            //lock acad document and start transaction
-            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
+            try
             {
-                //draw first transient traverse
-                TransientGraphics.ClearTransientGraphics();
-                TransientGraphics.DrawTransientTraverse(coordinates);
-                var cancelled = false;
-                PromptResult prResult;
-                do
+                // Lock ACAD document and start transaction as we are running from Palette.
+                using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
                 {
-                    prResult = AutoCADApplicationManager.Editor.GetKeywords(pko);
-                    if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
+                    // Draw Transient Graphics of Traverse.
+                    TransientGraphics.ClearTransientGraphics();
+                    TransientGraphics.DrawTransientTraverse(coordinates);
+                    var cancelled = false;
+                    PromptResult prResult;
+                    do
                     {
-                        switch (prResult.StringResult)
+                        prResult = AutoCADApplicationManager.Editor.GetKeywords(pko);
+                        if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
                         {
-                            case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                TransientGraphics.ClearTransientGraphics();
-                                coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point2d(_basePoint.X, _basePoint.Y));
-                                TransientGraphics.DrawTransientTraverse(coordinates);
-                                break;
-                            case "Accept":
-                                Lines.DrawLines(tr, coordinates);
-                                cancelled = true;
-                                break;
-                            case "Cancel":
-                                cancelled = true;
-                                break;
+                            switch (prResult.StringResult)
+                            {
+                                case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
+                                    TransientGraphics.ClearTransientGraphics();
+                                    coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, point.Value);
+                                    TransientGraphics.DrawTransientTraverse(coordinates);
+                                    break;
+                                case Keywords.Accept:
+                                    Lines.DrawLines(tr, coordinates);
+                                    cancelled = true;
+                                    break;
+                                case Keywords.Cancel:
+                                    cancelled = true;
+                                    break;
+                            }
                         }
-                    }
-                } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
+                    } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
 
-                tr.Commit();
+                    tr.Commit();
+                }
             }
-
-            TransientGraphics.ClearTransientGraphics();
-            _commandRunning = false;
+            catch (Exception e)
+            {
+                Console.WriteLine(e); //TODO: Handle exception better at later date.
+                throw;
+            }
+            finally
+            {
+                TransientGraphics.ClearTransientGraphics();
+                _commandRunning = false;
+            }
         }
 
         /// <summary>

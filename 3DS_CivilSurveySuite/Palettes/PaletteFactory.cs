@@ -43,6 +43,12 @@ namespace _3DS_CivilSurveySuite.Palettes
             AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
         }
 
+        [CommandMethod("3DSTEST")]
+        public void RunViewer()
+        {
+        }
+
+
         [CommandMethod("3DSShowConnectLinePalette")]
         public void ShowConnectLinePalette()
         {

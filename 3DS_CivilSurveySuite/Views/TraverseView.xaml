@@ -164,7 +164,7 @@
                             <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
-                                        <helpers:TakeFocusAction />
+                                        <behaviors:TakeFocusAction />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>
@@ -188,7 +188,7 @@
                             <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Loaded">
-                                        <helpers:TakeFocusAction />
+                                        <behaviors:TakeFocusAction />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TextBox.Text>

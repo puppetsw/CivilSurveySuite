@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;

@@ -4,7 +4,8 @@
 // prior written consent of the copyright owner.
 
 using System;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Remoting.Messaging;
 
 namespace _3DS_CivilSurveySuite.Model
 {
@@ -60,8 +61,16 @@ namespace _3DS_CivilSurveySuite.Model
         /// <param name="bearing">The bearing in degrees, minutes and seconds in string format.</param>
         public Angle(string bearing)
         {
-            var b = Convert.ToDouble(bearing);
-            Angle angle = Parse(b);
+            Angle angle;
+            try
+            {
+                var b = Convert.ToDouble(bearing);
+                angle = Parse(b);
+            }
+            catch
+            {
+                angle = new Angle();
+            }
 
             Degrees = angle.Degrees;
             Minutes = angle.Minutes;
@@ -72,21 +81,51 @@ namespace _3DS_CivilSurveySuite.Model
         /// Converts a bearing of degrees, minutes, seconds in decimal format to a <see cref="Angle"/> object.
         /// </summary>
         /// <param name="bearing">bearing in degrees, minutes and seconds. 354.5020 (354 degrees, 50 minutes, 20 seconds)</param>
-        /// <returns><see cref="Angle"/>object containing the parsed values.</returns>
+        /// <returns>A <see cref="Angle"/> object containing the parsed value.</returns>
         public static Angle Parse(double bearing)
         {
-            try
+            var angle = new Angle();
+
+            var degrees = (int)Math.Truncate(bearing);
+            var deg1 = Math.Round(bearing - degrees, 4);
+
+            var minutes = (int)Math.Round(deg1 * 100, 4);
+            var min1 = Math.Round(bearing - degrees, 4);
+            var min2 = Math.Round(min1 * 100, 2);
+            var min3 = Math.Round(min2 - minutes, 2);
+            
+            var seconds = (int)(min3 * 100);
+
+            angle.Degrees = degrees;
+            angle.Minutes = minutes;
+            angle.Seconds = seconds;
+
+            return angle;
+        }
+
+        /// <summary>
+        /// Converts the number representation of a bearing to a <see cref="Angle"/>.
+        /// A return value indicates whether the operation succeeded.
+        /// </summary>
+        /// <param name="bearing">The bearing.</param>
+        /// <param name="angle">The angle.</param>
+        /// <returns><c>true</c> if <c>bearing</c> was converted successfully, <c>false</c> otherwise.</returns>
+        public static bool TryParse(double? bearing, out Angle angle)
+        {
+            angle = null;
+
+            if (bearing == null)
+                return false;
+
+            Angle tempAngle = Parse(bearing.Value);
+
+            if (IsValid(tempAngle))
             {
-                var degrees = Convert.ToInt32(Math.Truncate(bearing));
-                var minutes = Convert.ToInt32((bearing - degrees) * 100);
-                var seconds = Convert.ToInt32((((bearing - degrees) * 100) - minutes) * 100);
-                return new Angle { Degrees = degrees, Minutes = minutes, Seconds = seconds };
+                angle = tempAngle;
+                return true;
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message); //TODO: Change to trace
-                throw new Exception("Error parsing bearing");
-            }
+  
+            return false;
         }
 
         /// <summary>
@@ -201,6 +240,22 @@ namespace _3DS_CivilSurveySuite.Model
             return new Angle { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
+        public static Angle Add(double bearing1, double bearing2, bool limit = false)
+        {
+            var angle1 = new Angle(bearing1);
+            var angle2 = new Angle(bearing2);
+
+            return Add(angle1, angle2, limit);
+        }
+
+        public static Angle Subtract(double bearing1, double bearing2, bool limit = false)
+        {
+            var angle1 = new Angle(bearing1);
+            var angle2 = new Angle(bearing2);
+
+            return Subtract(angle1, angle2, limit);
+        }
+        
         public bool IsEmpty => Degrees == 0 && Minutes == 0 && Seconds == 0;
 
         public bool Equals(Angle other)
@@ -221,6 +276,7 @@ namespace _3DS_CivilSurveySuite.Model
         }
 
         // ReSharper disable NonReadonlyMemberInGetHashCode
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode()
         {
             return Degrees.GetHashCode() ^ Minutes.GetHashCode() ^ Seconds.GetHashCode();

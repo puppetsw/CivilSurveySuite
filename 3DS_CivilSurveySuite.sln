@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite_C3DBas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite_ACADBase21", "3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj", "{61765096-A4F2-43DA-A640-4E0D1EF8118B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.Core", "3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj", "{09C298C6-4485-4911-8AF1-2CD14CC99090}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{61765096-A4F2-43DA-A640-4E0D1EF8118B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61765096-A4F2-43DA-A640-4E0D1EF8118B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61765096-A4F2-43DA-A640-4E0D1EF8118B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

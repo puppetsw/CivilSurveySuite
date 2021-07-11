@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace _3DS_CivilSurveySuite.Helpers
+namespace _3DS_CivilSurveySuite.Core
 {
     public static class XmlHelper
     {

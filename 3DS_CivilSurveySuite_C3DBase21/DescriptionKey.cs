@@ -5,59 +5,59 @@ namespace _3DS_CivilSurveySuite_C3DBase21
 {
     public class DescriptionKey : INotifyPropertyChanged
     {
-        private string description;
-        private bool draw2D;
-        private bool draw3D;
+        private string _description;
+        private bool _draw2D;
+        private bool _draw3D;
 
-        private string key;
-        private string layer;
+        private string _key;
+        private string _layer;
 
         public string Key
         {
-            get => key;
+            get => _key;
             set
             {
-                key = value;
+                _key = value;
                 NotifyPropertyChanged();
             }
         }
 
         public string Layer
         {
-            get => layer;
+            get => _layer;
             set
             {
-                layer = value;
+                _layer = value;
                 NotifyPropertyChanged();
             }
         }
 
         public string Description
         {
-            get => description;
+            get => _description;
             set
             {
-                description = value;
+                _description = value;
                 NotifyPropertyChanged();
             }
         }
 
         public bool Draw2D
         {
-            get => draw2D;
+            get => _draw2D;
             set
             {
-                draw2D = value;
+                _draw2D = value;
                 NotifyPropertyChanged();
             }
         }
 
         public bool Draw3D
         {
-            get => draw3D;
+            get => _draw3D;
             set
             {
-                draw3D = value;
+                _draw3D = value;
                 NotifyPropertyChanged();
             }
         }

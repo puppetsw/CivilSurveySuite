@@ -1,15 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//UnitOfWork_StateUnderTest_ExpectedBehavior
 namespace _3DS_CivilSurveySuiteTests
 {
     [TestClass]
     public class TraverseAngleTests
     {
+        [TestMethod]
+        public void TraverseAngleObject_New_SetBearing_Invalid()
+        {
+            var traverseObject = new TraverseAngleObject();
+            traverseObject.Bearing = 400; //Invalid Bearing
+
+            var expected = new Angle();
+            Assert.AreEqual(expected.ToDouble(), traverseObject.Bearing);
+        }
+
         [TestMethod]
         public void Add_InternalAngle90ToBearing45_Calculate()
         {
@@ -68,16 +76,21 @@ namespace _3DS_CivilSurveySuiteTests
             var angleList = new List<TraverseAngleObject>
             {
                 new TraverseAngleObject { Distance = 30 },
-                new TraverseAngleObject { Distance = 10, InternalAngle = 90 },
-                new TraverseAngleObject { Distance = 30, InternalAngle = 90 }
+                new TraverseAngleObject { Distance = 10, Bearing = 90 },
+                new TraverseAngleObject { Distance = 30, Bearing = 90 }
             };
 
-            var newPointList = TraverseAngleCoordinates(angleList);
+            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
 
-            Assert.AreEqual(new Coordinate(0, 0), newPointList[0]);
-            Assert.AreEqual(new Coordinate(0, 30), newPointList[1]);
-            Assert.AreEqual(new Coordinate(10, 30), newPointList[2]);
-            Assert.AreEqual(new Coordinate(10, 0), newPointList[3]);
+            var expectedList = new List<Point>
+            {
+                new Point(0, 0),
+                new Point(0, 30),
+                new Point(10, 30),
+                new Point(10, 0)
+            };
+
+            CollectionAssert.AreEqual(expectedList, newPointList);
         }
 
         [TestMethod]
@@ -86,14 +99,19 @@ namespace _3DS_CivilSurveySuiteTests
             var angleList = new List<TraverseAngleObject>
             {
                 new TraverseAngleObject { Distance = 60.35 },
-                new TraverseAngleObject { Distance = 111.23, AdjacentAngle = 98.40 }
+                new TraverseAngleObject { Distance = 111.23, Bearing = 98.40, RotationDirection = AngleRotationDirection.Positive }
             };
 
-            var newPointList = TraverseAngleCoordinates(angleList);
+            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
 
-            Assert.AreEqual(new Coordinate(0, 0), newPointList[0]);
-            Assert.AreEqual(new Coordinate(0, 60.35), newPointList[1]);
-            Assert.AreEqual(new Coordinate(-109.9599, 77.1108), newPointList[2]);
+            var expectedList = new List<Point>
+            {
+                new Point(0, 0),
+                new Point(0, 60.35),
+                new Point(-109.9599, 77.1108)
+            };
+
+            CollectionAssert.AreEqual(expectedList, newPointList);
         }
 
         [TestMethod]
@@ -102,112 +120,53 @@ namespace _3DS_CivilSurveySuiteTests
             var angleList = new List<TraverseAngleObject>
             {
                 new TraverseAngleObject { Distance = 60.35 },
-                new TraverseAngleObject { Distance = 111.23, AdjacentAngle = 98.40 },
-                new TraverseAngleObject { Distance = 11.51, InternalAngle = 98.07 },
-                new TraverseAngleObject { Distance = 38.15, AdjacentAngle = 176.23 },
-                new TraverseAngleObject { Distance = 279.55, InternalAngle = 95.29 },
+                new TraverseAngleObject { Distance = 111.23, Bearing = 98.40, RotationDirection = AngleRotationDirection.Positive },
+                new TraverseAngleObject { Distance = 11.51, Bearing = 98.07, },
+                new TraverseAngleObject { Distance = 38.15, Bearing = 176.23, RotationDirection = AngleRotationDirection.Positive, },
+                new TraverseAngleObject { Distance = 279.55, Bearing = 95.29 },
                 //new TraverseAngleItem { Distance = 212.35, InternalAngle = 84 },
                 //new TraverseAngleItem { Distance = 66.22, AdjacentAngle = 66.11 },
                 //new TraverseAngleItem { Distance = 105.66, InternalAngle = 168.58 }
             };
 
-            var newPointList = TraverseAngleCoordinates(angleList);
+            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
 
-            Assert.AreEqual(new Coordinate(0, 0).ToString(), newPointList[0].ToString());
-            Assert.AreEqual(new Coordinate(0, 60.35).ToString(), newPointList[1].ToString());
-            Assert.AreEqual(new Coordinate(-109.9599, 77.1108).ToString(), newPointList[2].ToString());
-            Assert.AreEqual(new Coordinate(-109.8494, 88.6203).ToString(), newPointList[3].ToString());
-            Assert.AreEqual(new Coordinate(-111.8903, 126.7157).ToString(), newPointList[4].ToString());
-            Assert.AreEqual(new Coordinate(164.5529, 168.2771), newPointList[5]);
+            var expectedList = new List<Point>
+            {
+                new Point(0,0),
+                new Point(0, 60.35),
+                new Point(-109.9599, 77.1108),
+                new Point(-109.8494, 88.6203),
+                new Point(-111.8904, 126.7157),
+                new Point(164.5528, 168.277)
+            };
+
+            CollectionAssert.AreEqual(expectedList, newPointList);
         }
 
         [TestMethod]
-        public void SetProperty_InternalAngleWithExistingAdjacentAngle_SetAdjacentAngleToEmpty()
+        public void Calculate_CoordinatesFromTraverseAngleItemList_ComplexBoundary_WithInternalAndAdjacent_FullBoundary2()
         {
-            var angle = new TraverseAngleObject { AdjacentAngle = 45 };
-            Assert.AreEqual(new Angle(45).ToDouble(), angle.AdjacentAngle);
-
-            angle.InternalAngle = 135;
-            Assert.AreEqual(new Angle(135).ToDouble(), angle.InternalAngle);
-            Assert.AreEqual(true, angle.DMSAdjacentAngle.IsEmpty);
-        }
-
-        private static List<Coordinate> TraverseAngleCoordinates(IReadOnlyList<TraverseAngleObject> angleList)
-        {
-            var newPointList = new List<Coordinate>();
-            var basePoint = new Coordinate(0, 0);
-            newPointList.Add(basePoint);
-
-            var lastBearing = new Angle(0);
-            for (var i = 0; i < angleList.Count; i++)
+            var angleList = new List<TraverseAngleObject>
             {
-                TraverseAngleObject item = angleList[i];
-                Angle nextBearing = lastBearing - new Angle(180);
+                new TraverseAngleObject { Distance = 32.10 },
+                new TraverseAngleObject { Distance = 21.03, Bearing = 89.15, },
+                new TraverseAngleObject { Distance = 34.49, Bearing = 86.37, RotationDirection = AngleRotationDirection.Positive, ReferenceDirection = AngleReferenceDirection.Forward },
+                new TraverseAngleObject { Distance = 8.94, Bearing = 78.17, },
+            };
 
-                if (i == 0)
-                {
-                    nextBearing = new Angle(0);
-                }
-                else if (!item.DMSInternalAngle.IsEmpty)
-                {
-                    nextBearing -= item.DMSInternalAngle;
-                }
-                else if (!item.DMSAdjacentAngle.IsEmpty)
-                {
-                    nextBearing += item.DMSAdjacentAngle;
-                }
+            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
 
-                double dec = DMSToDecimalDegrees(nextBearing);
-                double rad = DecimalDegreesToRadians(dec);
-
-                double departure = item.Distance * Math.Sin(rad);
-                double latitude = item.Distance * Math.Cos(rad);
-
-                double newX = Math.Round(newPointList[i].X + departure, 4);
-                double newY = Math.Round(newPointList[i].Y + latitude, 4);
-
-                newPointList.Add(new Coordinate(newX, newY));
-
-                lastBearing = nextBearing;
-            }
-
-            return newPointList;
-        }
-
-        [DebuggerDisplay("X = {X}, Y = {Y}")]
-        private struct Coordinate
-        {
-            public double X;
-            public double Y;
-
-            public Coordinate(double x, double y)
+            var expectedList = new List<Point>
             {
-                X = x;
-                Y = y;
-            }
+                new Point(0,0),
+                new Point(0, 32.10),
+                new Point(21.0282, 31.8247),
+                new Point(22.6128, -2.6289),
+                new Point(13.7849, -1.2175)
+            };
 
-            public override string ToString()
-            {
-                return $"X:{X},Y:{Y}";
-            }
-        }
-
-        private static double DMSToDecimalDegrees(Angle dms)
-        {
-            if (dms == null)
-                return 0;
-
-            double minutes = (double) dms.Minutes / 60;
-            double seconds = (double) dms.Seconds / 3600;
-
-            double decimalDegree = dms.Degrees + minutes + seconds;
-
-            return decimalDegree;
-        }
-
-        private static double DecimalDegreesToRadians(double decimalDegrees)
-        {
-            return decimalDegrees * (Math.PI / 180);
+            CollectionAssert.AreEqual(expectedList, newPointList);
         }
     }
 }
