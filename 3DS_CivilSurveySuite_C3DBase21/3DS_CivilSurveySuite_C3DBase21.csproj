@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CivilApplicationManager.cs" />
+    <Compile Include="Linework.cs" />
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="Labels.cs" />
@@ -55,6 +56,12 @@
     <Compile Include="Points.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Surfaces.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
+      <Project>{61765096-A4F2-43DA-A640-4E0D1EF8118B}</Project>
+      <Name>3DS_CivilSurveySuite_ACADBase21</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

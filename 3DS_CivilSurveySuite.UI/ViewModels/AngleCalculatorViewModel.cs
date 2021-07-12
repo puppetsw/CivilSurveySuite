@@ -10,17 +10,16 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Text;
-using _3DS_CivilSurveySuite.Helpers;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Helpers;
 
-namespace _3DS_CivilSurveySuite.ViewModels
+namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
     /// <summary>
     /// Class DMSCalculatorViewModel.
-    /// Implements the <see cref="_3DS_CivilSurveySuite.ViewModels.ViewModelBase" />
+    /// Implements the <see cref="ViewModelBase" />
     /// </summary>
-    /// <seealso cref="_3DS_CivilSurveySuite.ViewModels.ViewModelBase" />
-    /// TODO Edit XML Comment Template for DMSCalculatorViewModel
+    /// <seealso cref="ViewModelBase" />
     public class AngleCalculatorViewModel : ViewModelBase
     {
         private ObservableCollection<Angle> _dmsList;

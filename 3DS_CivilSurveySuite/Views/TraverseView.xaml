@@ -4,11 +4,8 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-            xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.ViewModels" 
-            xmlns:vmd="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design" 
             xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.Converters"
             xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.Behaviors"
-            xmlns:helpers="clr-namespace:_3DS_CivilSurveySuite.Helpers"
             mc:Ignorable="d"
             d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -19,7 +16,6 @@
             <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
             <converter:DistanceConverter x:Key="DistanceConverter"/>
             <converter:BearingConverter x:Key="BearingConverter"/>
-            <vmd:TraverseDesignViewModel x:Key="mockViewModel"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/ToolTips.xaml" />
@@ -141,7 +137,7 @@
                   >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SourceUpdated">
-                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.LostFocusEvent}" />
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CellUpdatedEvent}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>

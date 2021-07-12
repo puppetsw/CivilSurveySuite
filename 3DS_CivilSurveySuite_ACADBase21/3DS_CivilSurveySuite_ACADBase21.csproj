@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstraction\PointExtensions.cs" />
     <Compile Include="AutoCADApplicationManager.cs" />
     <Compile Include="EditorUtils.cs" />
     <Compile Include="Layers.cs" />
@@ -58,6 +59,16 @@
     <Compile Include="TransactionExtensions.cs" />
     <Compile Include="TransientGraphics.cs" />
     <Compile Include="Traverse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
+      <Project>{09C298C6-4485-4911-8AF1-2CD14CC99090}</Project>
+      <Name>3DS_CivilSurveySuite.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
+      <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
+      <Name>3DS_CivilSurveySuite.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

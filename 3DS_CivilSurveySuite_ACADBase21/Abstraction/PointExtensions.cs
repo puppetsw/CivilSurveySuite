@@ -8,9 +8,8 @@ using System.Linq;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.Geometry;
 
-namespace _3DS_CivilSurveySuite.Abstraction
+namespace _3DS_CivilSurveySuite_ACADBase21.Abstraction
 {
-    //TODO: Work on and implement abstraction
     public static class PointExtensions
     {
         public static Point2d ToPoint2d(this Point point)

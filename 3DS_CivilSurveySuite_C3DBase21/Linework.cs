@@ -1,61 +1,21 @@
 ﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using _3DS_CivilSurveySuite.Core;
-using _3DS_CivilSurveySuite.Helpers;
-using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;
-using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.ViewModels
+namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    /// <summary>
-    /// ViewModel for ConnectLineworkView.xaml
-    /// </summary>
-    public class ConnectLineworkViewModel : ViewModelBase
+    public class Linework
     {
-        private ObservableCollection<DescriptionKey> _descriptionKeys;
-
-        public ObservableCollection<DescriptionKey> DescriptionKeys
+        public static void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
-            get => _descriptionKeys;
-            set
-            {
-                _descriptionKeys = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public DescriptionKey SelectedKey { get; set; }
-
-        public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
-        public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
-        public RelayCommand ConnectCommand => new RelayCommand((_) => ConnectLinework(), (_) => true);
-
-        public ConnectLineworkViewModel()
-        {
-            LoadSettings();
-        }
-
-        private void AddRow()
-        {
-            DescriptionKeys.Add(new DescriptionKey());
-        }
-
-        private void RemoveRow()
-        {
-            if (SelectedKey != null)
-                DescriptionKeys.Remove(SelectedKey);
-        }
-
-        private void ConnectLinework()
-        {
-            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
             {
                 Dictionary<string, DescriptionKeyMatch> desMapping = new Dictionary<string, DescriptionKeyMatch>();
 
@@ -73,7 +33,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                         continue;
                     }
 
-                    foreach (DescriptionKey descriptionKey in DescriptionKeys)
+                    foreach (DescriptionKey descriptionKey in descriptionKeys)
                     {
                         if (DescriptionKeyMatch.IsMatch(cogoPoint.RawDescription, descriptionKey))
                         {
@@ -123,73 +83,18 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
                         if (deskeyMatch.DescriptionKey.Draw2D)
                         {
-                            Draw2DPolyline(tr, btr, points, layerName);
+                            Polylines.DrawPolyline2d(tr, btr, points, layerName);
                         }
 
                         if (deskeyMatch.DescriptionKey.Draw3D)
                         {
-                            Draw3DPolyline(tr, btr, points, layerName);
+                            Polylines.DrawPolyline3d(tr, btr, points, layerName);
                         }
                     }
                 }
 
                 tr.Commit();
             }
-        }
-
-        private static void Draw3DPolyline(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
-        {
-            var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false);
-            pLine3d.Layer = layerName;
-            btr.AppendEntity(pLine3d);
-            tr.AddNewlyCreatedDBObject(pLine3d, true);
-        }
-
-        private static void Draw2DPolyline(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
-        {
-            var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null);
-            var pLine = new Polyline();
-            pLine.ConvertFrom(pLine2d, false);
-            pLine.Layer = layerName;
-            btr.AppendEntity(pLine);
-            tr.AddNewlyCreatedDBObject(pLine, true);
-        }
-
-        /// <summary>
-        /// Get the last xml file loaded from settings
-        /// </summary>
-        private void LoadSettings()
-        {
-            string fileName = Properties.Settings.Default.ConnectLineworkFileName;
-
-            if (File.Exists(fileName))
-            {
-                Load(fileName);
-            }
-            else
-            {
-                DescriptionKeys = new ObservableCollection<DescriptionKey>();
-            }
-        }
-
-        /// <summary>
-        /// Load XML file
-        /// </summary>
-        /// <param name="fileName"></param>
-        public void Load(string fileName)
-        {
-            DescriptionKeys = XmlHelper.ReadFromXmlFile<ObservableCollection<DescriptionKey>>(fileName);
-        }
-
-        /// <summary>
-        /// Save XML file
-        /// </summary>
-        /// <param name="fileName"></param>
-        public void Save(string fileName)
-        {
-            XmlHelper.WriteToXmlFile(fileName, DescriptionKeys);
-            Properties.Settings.Default.ConnectLineworkFileName = fileName;
-            Properties.Settings.Default.Save();
         }
     }
 }

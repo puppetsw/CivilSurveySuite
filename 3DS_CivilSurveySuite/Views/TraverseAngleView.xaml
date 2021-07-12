@@ -5,12 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Views"
              xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.Converters"
-             xmlns:design="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:behaviors1="clr-namespace:_3DS_CivilSurveySuite.Behaviors"
-             xmlns:helpers="clr-namespace:_3DS_CivilSurveySuite.Helpers"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:model="clr-namespace:_3DS_CivilSurveySuite.Model;assembly=3DS_CivilSurveySuite.Model"
+             xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -92,18 +88,6 @@
                   Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserReorderColumns="False" CanUserSortColumns="False"
                   RowHeight="25" HorizontalContentAlignment="Center" PreviewKeyDown="dgTraverse_PreviewKeyDown">
-            <DataGrid.Resources>
-                <ObjectDataProvider x:Key="RotationDirectionValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}" >
-                    <ObjectDataProvider.MethodParameters>
-                        <x:Type TypeName="model:AngleRotationDirection"/>
-                    </ObjectDataProvider.MethodParameters>
-                </ObjectDataProvider>
-                <ObjectDataProvider x:Key="ReferenceDirectionValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}" >
-                    <ObjectDataProvider.MethodParameters>
-                        <x:Type TypeName="model:AngleReferenceDirection"/>
-                    </ObjectDataProvider.MethodParameters>
-                </ObjectDataProvider>
-            </DataGrid.Resources>
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="SourceUpdated">
                     <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CellUpdatedEvent}" />
@@ -115,26 +99,26 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding DMSInternalAngle.Degrees}" />
+                                <TextBlock Text="{Binding Angle.Degrees}" />
                                 <TextBlock Text="°" />
-                                <TextBlock Text="{Binding DMSInternalAngle.Minutes}" />
+                                <TextBlock Text="{Binding Angle.Minutes}" />
                                 <TextBlock Text="'" />
-                                <TextBlock Text="{Binding DMSInternalAngle.Seconds}" />
+                                <TextBlock Text="{Binding Angle.Seconds}" />
                                 <TextBlock Text='"' />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behaviors1:SelectAllFocusBehavior.Enable="True"
-                                     behaviors1:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True"
+                                     behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
-                                        <behaviors1:TakeFocusAction />
+                                        <behaviors:TakeFocusAction />
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <TextBox.Text>
-                                    <Binding Path="InternalAngle" Converter="{StaticResource BearingConverter}"
+                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}"
                                              ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
                                              ValidatesOnExceptions="True"
                                              UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
@@ -151,11 +135,11 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behaviors1:SelectAllFocusBehavior.Enable="True"
-                                     behaviors1:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True"
+                                     behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
-                                        <behaviors1:TakeFocusAction />
+                                        <behaviors:TakeFocusAction />
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <TextBox.Text>

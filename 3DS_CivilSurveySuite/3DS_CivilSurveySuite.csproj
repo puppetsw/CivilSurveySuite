@@ -68,26 +68,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstraction\PointExtensions.cs" />
     <Compile Include="Commands\PointLabelRotate.cs" />
     <Compile Include="Commands\TrunkSize.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
-    <Compile Include="Helpers\DataGridExtensions.cs" />
-    <Compile Include="Helpers\Keywords.cs" />
     <Compile Include="Behaviors\SimpleCalculationTextBoxBehavior.cs" />
-    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Behaviors\TakeFocusAction.cs" />
-    <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
-    <Compile Include="ViewModels\Design\ConnectLineworkDesignViewModel.cs" />
-    <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
-    <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
-    <Compile Include="Helpers\MathHelpers.cs" />
-    <Compile Include="ViewModels\Design\TraverseDesignViewModel.cs" />
     <Compile Include="Palettes\PaletteFactory.cs" />
-    <Compile Include="ViewModels\TraverseViewModel.cs" />
     <Resource Include="Resources\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -234,6 +222,10 @@
     <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
       <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj">
+      <Project>{0431E86D-1A04-4F76-8AFC-193F84FA7965}</Project>
+      <Name>3DS_CivilSurveySuite.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
       <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>

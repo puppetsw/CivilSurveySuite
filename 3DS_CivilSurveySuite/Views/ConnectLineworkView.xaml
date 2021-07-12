@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.ViewModels" 
-             xmlns:vmd="clr-namespace:_3DS_CivilSurveySuite.ViewModels.Design" 
              xmlns:local="clr-namespace:_3DS_CivilSurveySuite.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -14,7 +12,6 @@
             <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
             <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
             <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
-            <vmd:ConnectLineworkDesignViewModel x:Key="mockViewModel"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite;component/Resources/ToolTips.xaml" />
@@ -61,7 +58,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <DataGrid d:DataContext="{StaticResource mockViewModel}" ItemsSource="{Binding DescriptionKeys}" SelectedItem="{Binding SelectedKey}"
+        <DataGrid ItemsSource="{Binding DescriptionKeys}" SelectedItem="{Binding SelectedKey}"
                   GridLinesVisibility="All" AutoGenerateColumns="False" CanUserAddRows="false" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}" Background="{StaticResource YellowBackground}" 
                   RowHeight="22" HorizontalContentAlignment="Center" 

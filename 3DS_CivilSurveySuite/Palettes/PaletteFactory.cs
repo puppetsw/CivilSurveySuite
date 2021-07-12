@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using _3DS_CivilSurveySuite.ViewModels;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.Views;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -53,7 +53,7 @@ namespace _3DS_CivilSurveySuite.Palettes
         public void ShowConnectLinePalette()
         {
             var view = new ConnectLineworkView();
-            var vm = new ConnectLineworkViewModel();
+            var vm = new ConnectLineworkViewModel(Properties.Settings.Default.ConnectLineworkFileName);
             GeneratePalette(view, vm, "Linework");
         }
 
