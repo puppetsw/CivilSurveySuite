@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.Helpers;
+using _3DS_CivilSurveySuite.ViewModels.Helpers;
 using _3DS_CivilSurveySuite_ACADBase21;
 
-namespace _3DS_CivilSurveySuite.UI.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     public class TraverseAngleViewModel : ViewModelBase
     {

@@ -4,7 +4,7 @@ using System.Windows.Data;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 
-namespace _3DS_CivilSurveySuite.Converters
+namespace _3DS_CivilSurveySuite.UI.Converters
 {
     public class BearingConverter : IValueConverter
     {

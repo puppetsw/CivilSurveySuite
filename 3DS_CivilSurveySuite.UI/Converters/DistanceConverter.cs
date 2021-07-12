@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using _3DS_CivilSurveySuite.Core;
 
-namespace _3DS_CivilSurveySuite.Converters
+namespace _3DS_CivilSurveySuite.UI.Converters
 {
     public class DistanceConverter : IValueConverter
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite.UI.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
     /// A base class for the ViewModel classes.

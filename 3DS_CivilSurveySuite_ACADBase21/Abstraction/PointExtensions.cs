@@ -16,9 +16,20 @@ namespace _3DS_CivilSurveySuite_ACADBase21.Abstraction
         {
             return new Point2d(point.X, point.Y);
         }
+
         public static Point3d ToPoint3d(this Point point)
         {
             return new Point3d(point.X, point.Y, point.Z);
+        }
+
+        public static Point ToPoint(this Point2d point)
+        {
+            return new Point(point.X, point.Y);
+        }
+
+        public static Point ToPoint(this Point3d point)
+        {
+            return new Point(point.X, point.Y, point.Z);
         }
 
         public static List<Point2d> ToListOfPoint2d(this IEnumerable<Point> pointList)

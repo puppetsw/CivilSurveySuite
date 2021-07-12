@@ -11,9 +11,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Text;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.Helpers;
+using _3DS_CivilSurveySuite.ViewModels.Helpers;
 
-namespace _3DS_CivilSurveySuite.UI.ViewModels
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
     /// Class DMSCalculatorViewModel.

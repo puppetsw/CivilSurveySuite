@@ -6,12 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using _3DS_CivilSurveySuite.UI.ViewModels;
-using _3DS_CivilSurveySuite.Views;
+using _3DS_CivilSurveySuite.UI.Views;
+using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+using Assembly = System.Reflection.Assembly;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
 namespace _3DS_CivilSurveySuite.Palettes
@@ -33,6 +34,9 @@ namespace _3DS_CivilSurveySuite.Palettes
             AutoCADApplicationManager.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
             AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
             AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
+
+            //HACK: Force Behaviors assembly to load.
+            Assembly.Load("Microsoft.Xaml.Behaviors");
         }
 
         public void Terminate()
@@ -42,12 +46,6 @@ namespace _3DS_CivilSurveySuite.Palettes
             AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
             AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
         }
-
-        [CommandMethod("3DSTEST")]
-        public void RunViewer()
-        {
-        }
-
 
         [CommandMethod("3DSShowConnectLinePalette")]
         public void ShowConnectLinePalette()
@@ -180,6 +178,5 @@ namespace _3DS_CivilSurveySuite.Palettes
                 s_civilSurveySuitePalSet.Visible = false;
             }
         }
-
     }
 }

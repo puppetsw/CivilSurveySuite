@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace _3DS_CivilSurveySuite.Views
+namespace _3DS_CivilSurveySuite.UI.Views
 {
     /// <summary>
     /// Interaction logic for TraverseAngleView.xaml

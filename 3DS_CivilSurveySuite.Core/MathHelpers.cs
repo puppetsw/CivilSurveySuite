@@ -10,9 +10,8 @@ using _3DS_CivilSurveySuite.Model;
 namespace _3DS_CivilSurveySuite.Core
 {
     /// <summary>
-    /// Class MathHelpers.
+    /// A Math helper class for converting units, angles and coordinates.
     /// </summary>
-    /// TODO Edit XML Comment Template for MathHelpers
     public static class MathHelpers
     {
         /// <summary>

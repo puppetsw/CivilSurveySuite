@@ -1,11 +1,8 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
+using Microsoft.Xaml.Behaviors;
 
-namespace _3DS_CivilSurveySuite.Views
+namespace _3DS_CivilSurveySuite.UI.Views
 {
     /// <summary>
     /// Interaction logic for TraverseView.xaml

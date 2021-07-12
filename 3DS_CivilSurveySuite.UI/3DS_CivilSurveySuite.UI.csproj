@@ -32,14 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xaml.Behaviors">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -48,7 +46,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Behaviors\SelectAllFocusBehavior.cs" />
+    <Compile Include="Behaviors\SimpleCalculationTextBoxBehavior.cs" />
+    <Compile Include="Behaviors\TakeFocusAction.cs" />
+    <Compile Include="Converters\BearingConverter.cs" />
+    <Compile Include="Converters\DistanceConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -62,11 +64,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
-    <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
-    <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
-    <Compile Include="ViewModels\TraverseViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AngleCalculatorView.xaml.cs">
+      <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConnectLineworkView.xaml.cs">
+      <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraverseAngleView.xaml.cs">
+      <DependentUpon>TraverseAngleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraverseView.xaml.cs">
+      <DependentUpon>TraverseView.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +84,94 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\3DSCivilSurveySuite.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ToolTips.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\3DS_DescriptionKeys.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\dialog-more.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\dialog-ok-apply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\document-export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\document-open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\draw-freehand.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\edit-clear-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\edit-redo-6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\help.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\insert-horizontal-rule.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\insert-link-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\insert-object.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\object-flip-horizontal-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\office-chart-polar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\window-close.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample\samepl4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample\sample1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample\sample2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample\sample3.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
@@ -85,14 +182,29 @@
       <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
-      <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
-      <Name>3DS_CivilSurveySuite_ACADBase21</Name>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.ViewModels\3DS_CivilSurveySuite.ViewModels.csproj">
+      <Project>{9f732d27-dfed-4af1-9fc0-c1cd0c4ac3d6}</Project>
+      <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite_C3DBase21\3DS_CivilSurveySuite_C3DBase21.csproj">
-      <Project>{81274DFB-9C83-43D7-AC13-FE57A813D8A6}</Project>
-      <Name>3DS_CivilSurveySuite_C3DBase21</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Views\AngleCalculatorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ConnectLineworkView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TraverseAngleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TraverseView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace _3DS_CivilSurveySuite.Behaviors
+namespace _3DS_CivilSurveySuite.UI.Behaviors
 {
     public class SimpleCalculationTextBoxBehavior
     {

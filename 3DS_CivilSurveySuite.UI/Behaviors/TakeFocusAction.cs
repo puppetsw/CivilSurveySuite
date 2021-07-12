@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Xaml.Behaviors;
 
-namespace _3DS_CivilSurveySuite.Behaviors
+namespace _3DS_CivilSurveySuite.UI.Behaviors
 {
     public class TakeFocusAction : TriggerAction<UIElement>
     {

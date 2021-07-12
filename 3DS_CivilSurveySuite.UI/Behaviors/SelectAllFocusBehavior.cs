@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace _3DS_CivilSurveySuite.Behaviors
+namespace _3DS_CivilSurveySuite.UI.Behaviors
 {
     /// <summary>
     /// https://www.codeproject.com/Tips/1249276/WPF-Select-All-Focus-Behavior

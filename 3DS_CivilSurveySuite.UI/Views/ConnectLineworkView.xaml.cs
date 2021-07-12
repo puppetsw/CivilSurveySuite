@@ -1,9 +1,9 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using _3DS_CivilSurveySuite.UI.ViewModels;
+using _3DS_CivilSurveySuite.ViewModels;
+using Microsoft.Win32;
 
-namespace _3DS_CivilSurveySuite.Views
+namespace _3DS_CivilSurveySuite.UI.Views
 {
     /// <summary>
     /// Interaction logic for LineConnectView.xaml
