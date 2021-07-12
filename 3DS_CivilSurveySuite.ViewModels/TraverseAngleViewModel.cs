@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
@@ -51,10 +52,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
 
-        //public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
-        //public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
-        //public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
-        //public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
+        public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
+
+        public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
+        
+        public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
+        
+        public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
 
         public RelayCommand CellUpdatedEvent => new RelayCommand((_) => CloseTraverse(), (_) => true);
 
@@ -67,8 +71,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             var coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point(0, 0));
 
-            double distance = MathHelpers.DistanceBetweenPoints(coordinates[0], coordinates[coordinates.Count - 1]);
-            Angle angle = MathHelpers.AngleBetweenPoints(coordinates[0], coordinates[coordinates.Count - 1]);
+            double distance = MathHelpers.DistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            Angle angle = MathHelpers.AngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
 
             CloseDistance = $"{distance:0.000}";
             CloseBearing = angle.ToString();
@@ -111,6 +115,44 @@ namespace _3DS_CivilSurveySuite.ViewModels
             Traverse.DrawTraverse(TraverseAngles);
 
             _commandRunning = false;
+        }
+
+        private void FeetToMeters()
+        {
+            if (SelectedTraverseAngle == null) return;
+
+            int index = TraverseAngles.IndexOf(SelectedTraverseAngle);
+
+            double distance = TraverseAngles[index].Distance;
+            TraverseAngles[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
+            CloseTraverse();
+        }
+
+        private void LinksToMeters()
+        {
+            if (SelectedTraverseAngle == null) return;
+
+            int index = TraverseAngles.IndexOf(SelectedTraverseAngle);
+
+            double distance = TraverseAngles[index].Distance;
+            TraverseAngles[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
+            CloseTraverse();
+        }
+
+        private void FlipBearing()
+        {
+            if (SelectedTraverseAngle == null) 
+                return;
+
+            var angle = new Angle(180) - SelectedTraverseAngle.Angle;
+
+            SelectedTraverseAngle.Bearing = angle.ToDouble();
+            CloseTraverse();
+        }
+
+        private void ShowHelp()
+        {
+            _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
         }
 
         /// <summary>

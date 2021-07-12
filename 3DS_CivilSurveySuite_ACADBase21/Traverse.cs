@@ -22,12 +22,12 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
             var basePoint = point.Value.ToPoint();
 
-            AutoCADApplicationManager.Editor.WriteMessage($"\nBase point set: X:{point.Value.X} Y:{point.Value.Y}");
+            AutoCADApplicationManager.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             //get coordinates based on traverse data
             var coordinates = MathHelpers.AngleAndDistanceToCoordinates(angleList, basePoint);
 
-            var pko = new PromptKeywordOptions("\nAccept and draw traverse?") { AppendKeywordsToMessage = true };
+            var pko = new PromptKeywordOptions("\n3DS> Accept and draw traverse?") { AppendKeywordsToMessage = true };
             pko.Keywords.Add(Keywords.Accept);
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
@@ -71,8 +71,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             catch (Exception e)
             {
-                Console.WriteLine(e); //TODO: Handle exception better at later date.
-                throw;
+                AutoCADApplicationManager.Editor.WriteMessage(e.Message);
             }
             finally
             {
@@ -87,7 +86,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             if (point == null)
                 return;
 
-            AutoCADApplicationManager.Editor.WriteMessage($"\nBase point set: X:{point.Value.X} Y:{point.Value.Y}");
+            AutoCADApplicationManager.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             var basePoint = point.Value.ToPoint();
 
@@ -138,8 +137,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                AutoCADApplicationManager.Editor.WriteMessage(e.Message);
             }
             finally
             {

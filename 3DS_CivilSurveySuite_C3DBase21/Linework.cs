@@ -11,7 +11,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    public class Linework
+    public static class Linework
     {
         public static void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
@@ -56,16 +56,15 @@ namespace _3DS_CivilSurveySuite_C3DBase21
                     }
                 }
 
-                BlockTable bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord btr =
-                    (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                var bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
+                var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
                 //TODO: add special code checks in here?
-                foreach (KeyValuePair<string, DescriptionKeyMatch> desKey in desMapping)
+                foreach (var desKey in desMapping)
                 {
                     DescriptionKeyMatch deskeyMatch = desKey.Value;
 
-                    foreach (KeyValuePair<string, List<CogoPoint>> joinablePoints in deskeyMatch.JoinablePoints)
+                    foreach (var joinablePoints in deskeyMatch.JoinablePoints)
                     {
                         Point3dCollection points = new Point3dCollection();
                         foreach (CogoPoint point in joinablePoints.Value)

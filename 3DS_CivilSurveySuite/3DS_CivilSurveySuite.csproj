@@ -68,6 +68,7 @@
     <Compile Include="Palettes\PaletteFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

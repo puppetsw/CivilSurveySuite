@@ -12,7 +12,6 @@ using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
-using Assembly = System.Reflection.Assembly;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
 namespace _3DS_CivilSurveySuite.Palettes
@@ -21,30 +20,22 @@ namespace _3DS_CivilSurveySuite.Palettes
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class PaletteFactory : IExtensionApplication
+    public class PaletteFactory : IDisposable
     {
         private bool _paletteVisible;
-        private static readonly List<Type> s_palettes = new List<Type>();
-        private static PaletteSet s_civilSurveySuitePalSet;
+        private readonly List<Type> _palettes = new List<Type>();
+        private PaletteSet _civilSurveySuitePalSet;
 
-        public void Initialize()
+        public PaletteFactory()
         {
-            //hookup events
             AutoCADApplicationManager.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
             AutoCADApplicationManager.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
             AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
             AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
-
-            //HACK: Force Behaviors assembly to load.
-            Assembly.Load("Microsoft.Xaml.Behaviors");
         }
-
-        public void Terminate()
+        ~PaletteFactory()
         {
-            AutoCADApplicationManager.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
-            AutoCADApplicationManager.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
+            ReleaseUnmanagedResources();
         }
 
         [CommandMethod("3DSShowConnectLinePalette")]
@@ -68,7 +59,7 @@ namespace _3DS_CivilSurveySuite.Palettes
         {
             var view = new TraverseView();
             var vm = new TraverseViewModel();
-            GeneratePalette(view, vm, "Traverse", TransientGraphics.ClearTransientGraphics);
+            GeneratePalette(view, vm, "Traverse");
         }
 
         [CommandMethod("3DSShowAngleTraversePalette")]
@@ -76,7 +67,7 @@ namespace _3DS_CivilSurveySuite.Palettes
         {
             var view = new TraverseAngleView();
             var vm = new TraverseAngleViewModel();
-            GeneratePalette(view, vm, "Angle Traverse", TransientGraphics.ClearTransientGraphics);
+            GeneratePalette(view, vm, "Angle Traverse");
         }
 
         /// <summary>
@@ -86,25 +77,25 @@ namespace _3DS_CivilSurveySuite.Palettes
         /// <param name="viewModel">The ViewModel.</param>
         /// <param name="viewName">The View associated with the ViewModel.</param>
         /// <param name="hideMethod">The action to run when the palette is hidden/closed.</param>
-        private static void GeneratePalette(FrameworkElement view, ViewModelBase viewModel, string viewName, Action hideMethod = null)
+        private void GeneratePalette(FrameworkElement view, ViewModelBase viewModel, string viewName, Action hideMethod = null)
         {
             view.DataContext = viewModel;
 
-            if (s_civilSurveySuitePalSet == null)
+            if (_civilSurveySuitePalSet == null)
             {
                 CreatePaletteSet();
             }
 
             // ReSharper disable PossibleNullReferenceException
-            if (!s_palettes.Contains(view.GetType()))
+            if (!_palettes.Contains(view.GetType()))
             {
-                s_civilSurveySuitePalSet.AddVisual(viewName, view);
-                s_palettes.Add(view.GetType());
-                s_civilSurveySuitePalSet.Activate(s_palettes.IndexOf(view.GetType()));
+                _civilSurveySuitePalSet.AddVisual(viewName, view);
+                _palettes.Add(view.GetType());
+                _civilSurveySuitePalSet.Activate(_palettes.IndexOf(view.GetType()));
 
                 if (hideMethod != null)
                 {
-                    s_civilSurveySuitePalSet.StateChanged += (s, e) =>
+                    _civilSurveySuitePalSet.StateChanged += (s, e) =>
                     {
                         if (e.NewState == StateEventIndex.Hide)
                         {
@@ -117,66 +108,81 @@ namespace _3DS_CivilSurveySuite.Palettes
                 }
             }
 
-            if (!s_civilSurveySuitePalSet.Visible)
+            if (!_civilSurveySuitePalSet.Visible)
             {
-                s_civilSurveySuitePalSet.Visible = true;
+                _civilSurveySuitePalSet.Visible = true;
             }
             // ReSharper restore PossibleNullReferenceException
         }
 
-        private static void CreatePaletteSet()
+        private void CreatePaletteSet()
         {
-            s_civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
-            s_civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |
+            _civilSurveySuitePalSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
+            _civilSurveySuitePalSet.Style = PaletteSetStyles.ShowCloseButton |
                                              PaletteSetStyles.ShowPropertiesMenu |
                                              PaletteSetStyles.ShowAutoHideButton;
-            s_civilSurveySuitePalSet.EnableTransparency(true);
-            s_civilSurveySuitePalSet.KeepFocus = false;
+            _civilSurveySuitePalSet.EnableTransparency(true);
+            _civilSurveySuitePalSet.KeepFocus = false;
         }
 
         private void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (s_civilSurveySuitePalSet == null)
+            if (_civilSurveySuitePalSet == null)
             {
                 return;
             }
 
-            s_civilSurveySuitePalSet.Visible = e.Document != null && _paletteVisible;
+            _civilSurveySuitePalSet.Visible = e.Document != null && _paletteVisible;
         }
 
         private void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
-            if (s_civilSurveySuitePalSet == null)
+            if (_civilSurveySuitePalSet == null)
             {
                 return;
             }
 
-            s_civilSurveySuitePalSet.Visible = _paletteVisible;
+            _civilSurveySuitePalSet.Visible = _paletteVisible;
         }
 
         private void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (s_civilSurveySuitePalSet == null)
+            if (_civilSurveySuitePalSet == null)
             {
                 return;
             }
 
-            _paletteVisible = s_civilSurveySuitePalSet.Visible;
+            _paletteVisible = _civilSurveySuitePalSet.Visible;
         }
 
         private void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
-            if (s_civilSurveySuitePalSet == null)
+            if (_civilSurveySuitePalSet == null)
             {
                 return;
             }
 
-            _paletteVisible = s_civilSurveySuitePalSet.Visible;
+            _paletteVisible = _civilSurveySuitePalSet.Visible;
 
             if (AutoCADApplicationManager.DocumentManager.Count == 1)
             {
-                s_civilSurveySuitePalSet.Visible = false;
+                _civilSurveySuitePalSet.Visible = false;
             }
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            AutoCADApplicationManager.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
+            AutoCADApplicationManager.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
+            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
     }
 }

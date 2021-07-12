@@ -69,6 +69,43 @@
                         <TextBlock Text=" Draw Traverse" />
                     </StackPanel>
                 </Button>
+<Separator IsTabStop="False" />
+                <Button Command="{Binding FeetToMetersCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource FeetToMetersToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource FeetToMetersToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Feet To Meters" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding LinksToMetersCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource LinksToMetersToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource LinksToMetersToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Links To Meters" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding FlipBearingCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}"/>
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource FlipBearingToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Flip Bearing" />
+                    </StackPanel>
+                </Button>
+                <Separator IsTabStop="False" />
+                <Button Command="{Binding ShowHelpCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ShowHelpToolTipContent}" />
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal" ToolTip="Help">
+                        <Image Source="{StaticResource HelpToolbarIcon}" Width="16" Height="16"/>
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom" Height="23">

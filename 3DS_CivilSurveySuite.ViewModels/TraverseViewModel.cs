@@ -87,8 +87,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             var coordinates = MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point(0,0));
 
-            var distance = MathHelpers.DistanceBetweenPoints(coordinates[0], coordinates[coordinates.Count - 1]);
-            var angle = MathHelpers.AngleBetweenPoints(coordinates[0], coordinates[coordinates.Count - 1]);
+            var distance = MathHelpers.DistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            var angle = MathHelpers.AngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
 
             CloseDistance = $"{distance:0.000}";
             CloseBearing = angle.ToString();
@@ -114,6 +114,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             double distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
+            CloseTraverse();
         }
 
         private void LinksToMeters()
@@ -124,6 +125,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             double distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
+            CloseTraverse();
         }
 
         private void FlipBearing()
@@ -136,6 +138,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             var dms = dms180 - SelectedTraverseItem.Angle;
 
             TraverseItems[index].Bearing = dms.ToDouble();
+            CloseTraverse();
         }
 
         private void ShowHelp()

@@ -3,10 +3,10 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-// ReSharper disable InconsistentNaming
 
 namespace _3DS_CivilSurveySuite_ACADBase21
 {
@@ -21,5 +21,11 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         public static Transaction StartTransaction() => ActiveDocument.TransactionManager.StartTransaction();
 
         public static Transaction StartLockedTransaction() => ActiveDocument.TransactionManager.StartLockedTransaction();
+
+        public static double AutoCADVersion()
+        {
+            Version version = Autodesk.AutoCAD.ApplicationServices.Core.Application.Version;
+            return version.Major + version.Minor / 10.0;
+        }
     }
 }
