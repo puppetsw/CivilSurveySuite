@@ -9,7 +9,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void TestViewModel()
         {
-            var vm = new TraverseAngleViewModel();
+            var vm = new TraverseAngleViewModel(null);
 
             Assert.AreEqual(typeof(TraverseAngleViewModel), vm.GetType());
         }

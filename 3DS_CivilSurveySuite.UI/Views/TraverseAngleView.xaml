@@ -97,6 +97,15 @@
                         <TextBlock Text=" Flip Bearing" />
                     </StackPanel>
                 </Button>
+                <Button Command="{Binding ShowViewerCommand}">
+                    <!--<Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}"/>
+                    </Button.ToolTip>-->
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Image Source="{StaticResource FlipBearingToolbarIcon}" Width="16" Height="16"/>-->
+                        <TextBlock Text=" Show Viewer" />
+                    </StackPanel>
+                </Button>
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding ShowHelpCommand}">
                     <Button.ToolTip>

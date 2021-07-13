@@ -15,7 +15,6 @@ namespace _3DS_CivilSurveySuite
     {
         private PaletteFactory _palettes;
 
-        /// <inheritdoc />
         public void Initialize()
         {
             double num = AutoCADApplicationManager.AutoCADVersion();
@@ -30,11 +29,12 @@ namespace _3DS_CivilSurveySuite
             Assembly.Load("Microsoft.Xaml.Behaviors");
 
             _palettes = new PaletteFactory();
+            _palettes.HookupEvents();
         }
 
-        /// <inheritdoc />
         public void Terminate()
         {
+            _palettes.UnhookEvents();
             _palettes.Dispose();
         }
     }

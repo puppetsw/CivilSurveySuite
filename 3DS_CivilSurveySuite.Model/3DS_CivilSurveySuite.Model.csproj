@@ -38,6 +38,7 @@
     <Compile Include="Angle.cs" />
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
+    <Compile Include="IViewerService.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraverseAngleObject.cs" />

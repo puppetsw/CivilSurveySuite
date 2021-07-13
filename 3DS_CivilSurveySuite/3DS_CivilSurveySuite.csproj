@@ -66,6 +66,7 @@
     <Compile Include="Commands\PointLabelRotate.cs" />
     <Compile Include="Commands\TrunkSize.cs" />
     <Compile Include="Palettes\PaletteFactory.cs" />
+    <Compile Include="Services\ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />

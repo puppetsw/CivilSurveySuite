@@ -15,7 +15,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeBearing;
         private string _closeDistance;
         private bool _commandRunning;
+        private IViewerService _viewerService;
 
+        // ReSharper disable UnusedMember.Global
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
 
         public TraverseAngleObject SelectedTraverseAngle { get; set; }
@@ -60,7 +62,21 @@ namespace _3DS_CivilSurveySuite.ViewModels
         
         public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
 
-        public RelayCommand CellUpdatedEvent => new RelayCommand((_) => CloseTraverse(), (_) => true);
+        public RelayCommand CellUpdatedEvent => new RelayCommand((_) => GridUpdated(), (_) => true);
+
+        public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
+        // ReSharper restore UnusedMember.Global
+
+        public TraverseAngleViewModel(IViewerService viewerService)
+        {
+            _viewerService = viewerService;
+        }
+
+        private void GridUpdated()
+        {
+            CloseTraverse();
+            _viewerService.AddGraphics(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point(0, 0)));
+        }
 
         private void CloseTraverse()
         {
@@ -153,6 +169,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void ShowHelp()
         {
             _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
+        }
+
+        private void ShowViewer()
+        {
+            _viewerService?.ShowWindow();
         }
 
         /// <summary>
