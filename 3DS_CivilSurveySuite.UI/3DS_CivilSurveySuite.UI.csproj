@@ -67,6 +67,7 @@
     <Compile Include="UserControls\TraverseViewer.xaml.cs">
       <DependentUpon>TraverseViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ZoomBorder.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
     </Compile>
