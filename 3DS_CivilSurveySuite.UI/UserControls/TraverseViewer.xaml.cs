@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
 
         private double YNormalise(double y)
         {
-            return (ViewerCanvas.Height - (y - YMin) * ViewerCanvas.Height / (YMax - YMin));
+            return ViewerCanvas.Height - (y - YMin) * ViewerCanvas.Height / (YMax - YMin);
         }
     }
 }

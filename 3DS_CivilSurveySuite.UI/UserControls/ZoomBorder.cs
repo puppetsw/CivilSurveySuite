@@ -47,12 +47,11 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
                 group.Children.Add(tt);
                 _child.RenderTransform = group;
                 _child.RenderTransformOrigin = new Point(0.0, 0.0);
-                this.MouseWheel += child_MouseWheel;
-                this.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                this.MouseLeftButtonUp += child_MouseLeftButtonUp;
-                this.MouseMove += child_MouseMove;
-                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
-                    child_PreviewMouseRightButtonDown);
+                MouseWheel += child_MouseWheel;
+                MouseLeftButtonDown += child_MouseLeftButtonDown;
+                MouseLeftButtonUp += child_MouseLeftButtonUp;
+                MouseMove += child_MouseMove;
+                PreviewMouseRightButtonDown += child_PreviewMouseRightButtonDown;
             }
         }
 

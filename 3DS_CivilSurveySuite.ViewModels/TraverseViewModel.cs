@@ -51,11 +51,17 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand FlipBearingCommand => new RelayCommand(_ => FlipBearing(), _ => true);
         public RelayCommand ShowHelpCommand => new RelayCommand(_ => ShowHelp(), _ => true);
         public RelayCommand CellUpdatedEvent => new RelayCommand(_ => GridUpdated(), _ => true);
+        public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
 
         public TraverseViewModel(IViewerService viewerService)
         {
             TraverseItems = new ObservableCollection<TraverseObject>();
             _viewerService = viewerService;
+        }
+
+        private void ShowViewer()
+        {
+            _viewerService?.ShowWindow();
         }
 
         private void GridUpdated()
