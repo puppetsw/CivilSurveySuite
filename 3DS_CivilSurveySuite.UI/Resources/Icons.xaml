@@ -11,6 +11,8 @@
     <BitmapImage x:Key="LinksToMetersToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/insert-link-2.png"/>
     <BitmapImage x:Key="FlipBearingToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/object-flip-horizontal-2.png"/>
     <BitmapImage x:Key="HelpToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/help.png"/>
+    <BitmapImage x:Key="PreviewToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/preview.png"/>
+
 
     <BitmapImage x:Key="OpenDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/document-open.png"/>
     <BitmapImage x:Key="SaveDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/document-export.png"/>

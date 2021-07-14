@@ -191,7 +191,11 @@
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="UserControls\TraverseViewer.xaml">
       <SubType>Designer</SubType>

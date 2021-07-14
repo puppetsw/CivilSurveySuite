@@ -23,7 +23,7 @@
     </DataTemplate>
     <DataTemplate x:Key="SetBasePointToolTipContent">
         <StackPanel>
-            <TextBlock Text="Set Basepoint" FontWeight="Bold"/>
+            <TextBlock Text="Set basepoint" FontWeight="Bold"/>
             <TextBlock Text="Sets a basepoint for the traverse to calculate from."/>
         </StackPanel>
     </DataTemplate>
@@ -96,6 +96,13 @@
             <TextBlock Text="Display the 3DS Civil Survey Suite help file."/>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="PreviewToolTipContent">
+        <StackPanel>
+            <TextBlock Text="Preview" FontWeight="Bold"/>
+            <TextBlock Text="Display the traverse preview window."/>
+        </StackPanel>
+    </DataTemplate>
+
     
     <!--ToolTips for ConnectLineworkView-->
     <DataTemplate x:Key="OpenDocumentToolTipContent">

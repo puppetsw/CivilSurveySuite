@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.Services;
 using _3DS_CivilSurveySuite.UI.UserControls;
 using _3DS_CivilSurveySuite.UI.Views;
@@ -28,10 +29,11 @@ namespace _3DS_CivilSurveySuite.Palettes
         private bool _paletteVisible;
         private readonly List<Type> _palettes = new List<Type>();
         private PaletteSet _civilSurveySuitePalSet;
+        private static IViewerService s_viewerService;
 
         public PaletteFactory()
         {
-
+            s_viewerService = new ViewerService();
         }
         ~PaletteFactory()
         {
@@ -58,7 +60,7 @@ namespace _3DS_CivilSurveySuite.Palettes
         public void ShowTraversePalette()
         {
             var view = new TraverseView();
-            var vm = new TraverseViewModel();
+            var vm = new TraverseViewModel(s_viewerService);
             GeneratePalette(view, vm, "Traverse");
         }
 
@@ -66,7 +68,7 @@ namespace _3DS_CivilSurveySuite.Palettes
         public void ShowTraverseAnglePalette()
         {
             var view = new TraverseAngleView();
-            var vm = new TraverseAngleViewModel(new ViewerService());
+            var vm = new TraverseAngleViewModel(s_viewerService);
             GeneratePalette(view, vm, "Angle Traverse");
         }
 

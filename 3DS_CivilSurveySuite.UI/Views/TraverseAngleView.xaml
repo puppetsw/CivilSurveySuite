@@ -98,12 +98,12 @@
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding ShowViewerCommand}">
-                    <!--<Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}"/>
-                    </Button.ToolTip>-->
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource PreviewToolTipContent}"/>
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <!--<Image Source="{StaticResource FlipBearingToolbarIcon}" Width="16" Height="16"/>-->
-                        <TextBlock Text=" Show Viewer" />
+                        <Image Source="{StaticResource PreviewToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Viewer" />
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />

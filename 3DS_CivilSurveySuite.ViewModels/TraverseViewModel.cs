@@ -16,6 +16,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeBearing = "0°00'00\"";
         private string _closeDistance = "0.000";
         private bool _commandRunning;
+        private readonly IViewerService _viewerService;
 
         public ObservableCollection<TraverseObject> TraverseItems { get; set; }
 
@@ -41,19 +42,26 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
-        public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
-        public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
-        public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
-        public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
-        public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
-        public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
-        public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
-        public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
-        public RelayCommand CellUpdatedEvent => new RelayCommand((_) => CloseTraverse(), (_) => true);
+        public RelayCommand AddRowCommand => new RelayCommand(_ => AddRow(), _ => true);
+        public RelayCommand RemoveRowCommand => new RelayCommand(_ => RemoveRow(), _ => true);
+        public RelayCommand ClearCommand => new RelayCommand(_ => ClearTraverse(), _ => true);
+        public RelayCommand DrawCommand => new RelayCommand(_ => DrawTraverse(), _ => true);
+        public RelayCommand FeetToMetersCommand => new RelayCommand(_ => FeetToMeters(), _ => true);
+        public RelayCommand LinksToMetersCommand => new RelayCommand(_ => LinksToMeters(), _ => true);
+        public RelayCommand FlipBearingCommand => new RelayCommand(_ => FlipBearing(), _ => true);
+        public RelayCommand ShowHelpCommand => new RelayCommand(_ => ShowHelp(), _ => true);
+        public RelayCommand CellUpdatedEvent => new RelayCommand(_ => GridUpdated(), _ => true);
 
-        public TraverseViewModel()
+        public TraverseViewModel(IViewerService viewerService)
         {
             TraverseItems = new ObservableCollection<TraverseObject>();
+            _viewerService = viewerService;
+        }
+
+        private void GridUpdated()
+        {
+            CloseTraverse();
+            _viewerService.AddGraphics(MathHelpers.BearingAndDistanceToCoordinates(TraverseItems, new Point(0, 0)));
         }
 
         private void AddRow()

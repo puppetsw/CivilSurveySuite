@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeBearing;
         private string _closeDistance;
         private bool _commandRunning;
-        private IViewerService _viewerService;
+        private readonly IViewerService _viewerService;
 
         // ReSharper disable UnusedMember.Global
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
