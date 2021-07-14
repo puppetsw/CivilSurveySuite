@@ -14,13 +14,14 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
         private IReadOnlyList<Model.Point> _points;
         private const double XIncrement = 10;
         private const double YIncrement = 10;
-        private Point _startPoint = new Point();
-        private Point _endPoint = new Point();
+        private Point _startPoint;
+        private Point _endPoint;
+        private TranslateTransform _transform;
 
-        public double XMin { get; set; } = -100;
-        public double YMin { get; set; } = -100;
-        public double XMax { get; set; } = 100;
-        public double YMax { get; set; } = 100;
+        public double XMin { get; set; } = -50;
+        public double YMin { get; set; } = -50;
+        public double XMax { get; set; } = 50;
+        public double YMax { get; set; } = 50;
 
         public TraverseViewer()
         {
@@ -45,11 +46,22 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
             polyline.StrokeThickness = 2;
             foreach (var point in points)
             {
-                polyline.Points.Add(new Point(XNormalise(point.X), YNormalise(point.Y)));
+                Point newPoint = _transform == null ? new Point(XNormalise(point.X), YNormalise(point.Y)) : 
+                                                      new Point(XNormalise(point.X) + _transform.X, YNormalise(point.Y) + _transform.Y);
+                polyline.Points.Add(newPoint);
             }
 
             ViewerCanvas.Children.Clear();
             ViewerCanvas.Children.Add(polyline);
+
+            // Apply transform from a shift if there is one.
+            if (_transform != null)
+            {
+                foreach (Shape drawingObject in ViewerCanvas.Children)
+                {
+                    drawingObject.RenderTransform = _transform;
+                }
+            }
         }
 
         private double XNormalise(double x)
@@ -90,30 +102,38 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
 
         private void ViewerCanvas_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (ViewerCanvas.IsMouseCaptured)
-            {
-                _endPoint = e.GetPosition(ViewerCanvas);
-                TranslateTransform tt = new TranslateTransform();
-                tt.X = _endPoint.X - _startPoint.X;
-                tt.Y = _endPoint.Y - _startPoint.Y;
+            if (!ViewerCanvas.IsMouseCaptured) 
+                return;
 
-                foreach (Shape drawingObject in ViewerCanvas.Children)
-                {
-                    drawingObject.RenderTransform = tt;
-                }
+            _endPoint = e.GetPosition(ViewerCanvas);
+
+            if (_transform == null)
+            {
+                _transform = new TranslateTransform();
+            }
+
+            _transform.X = _endPoint.X - _startPoint.X;
+            _transform.Y = _endPoint.Y - _startPoint.Y;
+
+            foreach (Shape drawingObject in ViewerCanvas.Children)
+            {
+                drawingObject.RenderTransform = _transform;
             }
         }
+
+        //BUG: Position is updated, but when you click to drag, it returns to the previous position, leaving the mouse where you licked
+        // So it's like it's offset. Need to apply the transform shift to the actual points, and not just a render?
 
         private void ViewerCanvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _endPoint = e.GetPosition(ViewerCanvas);
-            var dx = (XMax - XMin) * (_endPoint.X - _startPoint.X) / ViewerCanvas.Width;
-            var dy = (YMax - YMin) * (_endPoint.Y - _startPoint.Y) / ViewerCanvas.Height;
+            //var dx = (XMax - XMin) * (_endPoint.X - _startPoint.X) / ViewerCanvas.Width;
+            //var dy = (YMax - YMin) * (_endPoint.Y - _startPoint.Y) / ViewerCanvas.Height;
 
-            XMin += dx;
-            XMax += dx;
-            YMin += dy;
-            YMax += dy;
+            //XMin += dx;
+            //XMax += dx;
+            //YMin += dy;
+            //YMax += dy;
 
             ViewerCanvas.ReleaseMouseCapture();
             ViewerCanvas.Cursor = Cursors.Arrow;
