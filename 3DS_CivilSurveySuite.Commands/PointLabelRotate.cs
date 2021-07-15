@@ -25,20 +25,20 @@ namespace _3DS_CivilSurveySuite.Commands
             };
             TypedValue[] pointsFilter = { new TypedValue((int) DxfCode.Start, "AECC_COGO_POINT") };
             SelectionFilter ssPoints = new SelectionFilter(pointsFilter);
-            PromptSelectionResult psrPoints = AutoCADApplicationManager.Editor.GetSelection(psoPoints, ssPoints);
+            PromptSelectionResult psrPoints = AutoCADActive.Editor.GetSelection(psoPoints, ssPoints);
 
-            //SELECT line, polyline or 3D Polyline
+            //SELECT line, Polyline or 3D Polyline
             var peoLines = new PromptEntityOptions("\n3DS> Select line, polyline or 3Dpolyline");
             peoLines.SetRejectMessage("\n3DS> Select line, polyline or 3Dpolyline only");
             peoLines.AddAllowedClass(typeof(Polyline3d), true);
             peoLines.AddAllowedClass(typeof(Polyline), true);
             peoLines.AddAllowedClass(typeof(Polyline2d), true);
             peoLines.AddAllowedClass(typeof(Line), true);
-            PromptEntityResult perLines = AutoCADApplicationManager.Editor.GetEntity(peoLines);
+            PromptEntityResult perLines = AutoCADActive.Editor.GetEntity(peoLines);
 
             if (psrPoints.Value == null) return;
 
-            using (Transaction tr = AutoCADApplicationManager.StartTransaction())
+            using (Transaction tr = AutoCADActive.StartTransaction())
             {
                 double angle = 0;
                 double textAngle = 0;
@@ -68,7 +68,7 @@ namespace _3DS_CivilSurveySuite.Commands
                         break;
                 }
 
-                AutoCADApplicationManager.Editor.WriteMessage("Polyline segment angle (radians): " + angle);
+                AutoCADActive.Editor.WriteMessage("Polyline segment angle (radians): " + angle);
 
                 foreach (ObjectId id in psrPoints.Value.GetObjectIds())
                 {
@@ -76,8 +76,8 @@ namespace _3DS_CivilSurveySuite.Commands
                     LabelStyle style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
                     textAngle = Labels.GetLabelStyleComponentAngle(style); //gets the current cogopoints label style rotation from first text component
 
-                    AutoCADApplicationManager.Editor.WriteMessage($"Point label style current rotation (radians): {textAngle}");
-                    AutoCADApplicationManager.Editor.WriteMessage($"Rotating label to {angle} to match polyline segment");
+                    AutoCADActive.Editor.WriteMessage($"Point label style current rotation (radians): {textAngle}");
+                    AutoCADActive.Editor.WriteMessage($"Rotating label to {angle} to match polyline segment");
 
                     pt.UpgradeOpen();
                     pt.LabelRotation = 0;

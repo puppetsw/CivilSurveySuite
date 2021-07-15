@@ -6,36 +6,35 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using _3DS_CivilSurveySuite;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.Services;
-using _3DS_CivilSurveySuite.UI.UserControls;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
-using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.Palettes.PaletteFactory))]
-namespace _3DS_CivilSurveySuite.Palettes
+[assembly: CommandClass(typeof(Palettes))]
+namespace _3DS_CivilSurveySuite
 {
     /// <summary>
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class PaletteFactory : IDisposable
+    public class Palettes : IDisposable
     {
         private bool _paletteVisible;
         private readonly List<Type> _palettes = new List<Type>();
         private PaletteSet _civilSurveySuitePalSet;
         private static IViewerService s_viewerService;
 
-        public PaletteFactory()
+        public Palettes()
         {
             s_viewerService = new ViewerService();
         }
-        ~PaletteFactory()
+        ~Palettes()
         {
             ReleaseUnmanagedResources();
         }
@@ -166,7 +165,7 @@ namespace _3DS_CivilSurveySuite.Palettes
 
             _paletteVisible = _civilSurveySuitePalSet.Visible;
 
-            if (AutoCADApplicationManager.DocumentManager.Count == 1)
+            if (AutoCADActive.DocumentManager.Count == 1)
             {
                 _civilSurveySuitePalSet.Visible = false;
             }
@@ -174,18 +173,18 @@ namespace _3DS_CivilSurveySuite.Palettes
 
         public void HookupEvents()
         {
-            AutoCADApplicationManager.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
-            AutoCADApplicationManager.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
+            AutoCADActive.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
+            AutoCADActive.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
+            AutoCADActive.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
+            AutoCADActive.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
         }
 
         public void UnhookEvents()
         {
-            AutoCADApplicationManager.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
-            AutoCADApplicationManager.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
-            AutoCADApplicationManager.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
+            AutoCADActive.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
+            AutoCADActive.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
+            AutoCADActive.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
+            AutoCADActive.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
         }
 
         private void ReleaseUnmanagedResources()

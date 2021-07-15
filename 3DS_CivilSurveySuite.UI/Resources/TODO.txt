@@ -51,7 +51,7 @@ Label Mask on/off for labels
 ---the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
 ---also include station/offset information, use the DL_Points tool to link the points to alignment(s).
 
-The SPSetMidPointsBetweenPolys command will allow the user to select two polylines then pick random locations on screen where they would like to get 
+---The SPSetMidPointsBetweenPolys command will allow the user to select two polylines then pick random locations on screen where they would like to get 
 the midpoint between the 2 polylines. This can be useful for using the BestFit Alignment tool in Civil 3D when the surveyor only provided edge of pavement 
 shots. At the command prompt for selecting the polylines you may enter T to bring up the Settings dialog.
 

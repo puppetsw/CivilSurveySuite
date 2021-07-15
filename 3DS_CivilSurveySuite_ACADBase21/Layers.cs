@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 return false;
             }
 
-            var layerTable = tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
+            var layerTable = tr.GetObject(AutoCADActive.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
             return !(layerTable is null) && layerTable.Has(layerName);
         }
@@ -41,7 +41,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 throw new ArgumentNullException(nameof(layerName));
             }
 
-            var layerTable = tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
+            var layerTable = tr.GetObject(AutoCADActive.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
             if (layerTable.Has(layerName))
             {

@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         {
             Utils.SetFocusToDwgView();
             var ppo = new PromptPointOptions("\n3DS> Select a base point: ");
-            var ppr = AutoCADApplicationManager.Editor.GetPoint(ppo);
+            var ppr = AutoCADActive.Editor.GetPoint(ppo);
 
             if (ppr.Status != PromptStatus.OK)
             {

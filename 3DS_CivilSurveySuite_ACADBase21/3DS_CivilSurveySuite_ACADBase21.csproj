@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstraction\PointExtensions.cs" />
-    <Compile Include="AutoCADApplicationManager.cs" />
+    <Compile Include="AutoCADActive.cs" />
     <Compile Include="EditorUtils.cs" />
     <Compile Include="Layers.cs" />
     <Compile Include="Lines.cs" />

@@ -1,5 +1,4 @@
-﻿using _3DS_CivilSurveySuite.Commands;
-using _3DS_CivilSurveySuite_ACADBase21;
+﻿using _3DS_CivilSurveySuite_ACADBase21;
 using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
@@ -20,15 +19,15 @@ namespace _3DS_CivilSurveySuite.Commands
             //TODO: Use settings to determine codes for TRNK and TRE
             var counter = 0;
 
-            using (Transaction tr = AutoCADApplicationManager.StartTransaction())
+            using (Transaction tr = AutoCADActive.StartTransaction())
             {
-                foreach (ObjectId pointId in CivilApplicationManager.ActiveCivilDocument.CogoPoints)
+                foreach (ObjectId pointId in CivilActive.ActiveCivilDocument.CogoPoints)
                 {
                     var cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
 
                     if (cogoPoint.RawDescription.Contains("TRE "))
                     {
-                        ObjectId trunkPointId = CivilApplicationManager.ActiveCivilDocument.CogoPoints.Add(cogoPoint.Location, true);
+                        ObjectId trunkPointId = CivilActive.ActiveCivilDocument.CogoPoints.Add(cogoPoint.Location, true);
                         CogoPoint trunkPoint = trunkPointId.GetObject(OpenMode.ForWrite) as CogoPoint;
 
                         trunkPoint.RawDescription = cogoPoint.RawDescription.Replace("TRE ", "TRNK ");
@@ -46,7 +45,7 @@ namespace _3DS_CivilSurveySuite.Commands
             }
 
             string completeMessage = "Changed " + counter + " TRE points, and created " + counter + " TRNK points";
-            AutoCADApplicationManager.Editor.WriteMessage(completeMessage);
+            AutoCADActive.Editor.WriteMessage(completeMessage);
 
         }
     }

@@ -22,7 +22,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
             var basePoint = point.Value.ToPoint();
 
-            AutoCADApplicationManager.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
+            AutoCADActive.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             //get coordinates based on traverse data
             var coordinates = MathHelpers.AngleAndDistanceToCoordinates(angleList, basePoint);
@@ -35,17 +35,17 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             try
             {
                 // Lock ACAD document and start transaction as we are running from Palette.
-                using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
+                using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
                     // Draw Transient Graphics of Traverse.
                     TransientGraphics.ClearTransientGraphics();
-                    //draw first transient traverse
+                    // Draw first transient traverse
                     TransientGraphics.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                     var cancelled = false;
                     PromptResult prResult;
                     do
                     {
-                        prResult = AutoCADApplicationManager.Editor.GetKeywords(pko);
+                        prResult = AutoCADActive.Editor.GetKeywords(pko);
                         if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
                         {
                             switch (prResult.StringResult)
@@ -71,7 +71,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             catch (Exception e)
             {
-                AutoCADApplicationManager.Editor.WriteMessage(e.Message);
+                AutoCADActive.Editor.WriteMessage(e.Message);
             }
             finally
             {
@@ -86,7 +86,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             if (point == null)
                 return;
 
-            AutoCADApplicationManager.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
+            AutoCADActive.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             var basePoint = point.Value.ToPoint();
 
@@ -98,7 +98,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             try
             {
                 //lock acad document and start transaction
-                using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
+                using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
                     //draw first transient traverse
                     var coordinates = MathHelpers.BearingAndDistanceToCoordinates(traverseList, basePoint);
@@ -111,7 +111,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                     PromptResult prResult;
                     do
                     {
-                        prResult = AutoCADApplicationManager.Editor.GetKeywords(pko);
+                        prResult = AutoCADActive.Editor.GetKeywords(pko);
                         if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
                         {
                             switch (prResult.StringResult)
@@ -137,7 +137,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             catch (Exception e)
             {
-                AutoCADApplicationManager.Editor.WriteMessage(e.Message);
+                AutoCADActive.Editor.WriteMessage(e.Message);
             }
             finally
             {

@@ -9,7 +9,11 @@ using Autodesk.Civil.ApplicationServices;
 
 namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    public static class CivilApplicationManager
+    /// <summary>
+    /// Provides access to several "active" objects and helper methods
+    /// in the AutoCAD Civil 3D runtime environment.
+    /// </summary>
+    public static class CivilActive
     {
         public static CivilDocument ActiveCivilDocument => CivilApplication.ActiveDocument;
 

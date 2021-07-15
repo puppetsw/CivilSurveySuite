@@ -5,21 +5,22 @@
 
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite_ACADBase21;
+using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite_C3DBase21
+namespace _3DS_CivilSurveySuite.Commands
 {
     public static class Linework
     {
         public static void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
-            using (Transaction tr = AutoCADApplicationManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADActive.StartLockedTransaction())
             {
-                Dictionary<string, DescriptionKeyMatch> desMapping = new Dictionary<string, DescriptionKeyMatch>();
+                var desMapping = new Dictionary<string, DescriptionKeyMatch>();
 
-                foreach (ObjectId pointId in CivilApplicationManager.ActiveCivilDocument.CogoPoints)
+                foreach (ObjectId pointId in CivilActive.ActiveCivilDocument.CogoPoints)
                 {
                     //BUG: Seems like there could be a problem with the keys and stuff if they don't match up
                     //TODO: add way to check for special codes e.g. SL or RECT
@@ -56,7 +57,7 @@ namespace _3DS_CivilSurveySuite_C3DBase21
                     }
                 }
 
-                var bt = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
+                var bt = (BlockTable) tr.GetObject(AutoCADActive.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
                 //TODO: add special code checks in here?

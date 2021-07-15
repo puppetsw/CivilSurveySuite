@@ -49,7 +49,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 throw new ArgumentNullException(nameof(tr), "Transaction was null.");
             }
 
-            var blockTable = (BlockTable) tr.GetObject(AutoCADApplicationManager.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
+            var blockTable = (BlockTable) tr.GetObject(AutoCADActive.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
             var blockTableRecord = (BlockTableRecord) tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
             var line = new Line(startPoint, endPoint);

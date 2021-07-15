@@ -5,6 +5,7 @@
 
 using System.Collections.ObjectModel;
 using System.IO;
+using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.ViewModels.Helpers;
 using _3DS_CivilSurveySuite_C3DBase21;

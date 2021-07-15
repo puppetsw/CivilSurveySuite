@@ -1,8 +1,4 @@
-﻿using _3DS_CivilSurveySuite_ACADBase21;
-using Autodesk.AutoCAD.Runtime;
-
-[assembly: CommandClass(typeof(TextUtils))]
-namespace _3DS_CivilSurveySuite_ACADBase21
+﻿namespace _3DS_CivilSurveySuite_ACADBase21
 {
     public class TextUtils
     {

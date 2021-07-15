@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F732D27-DFED-4AF1-9FC0-C1CD0C4AC3D6}</ProjectGuid>
+    <ProjectGuid>{19874A28-51EE-4732-AE4E-74B88657F6C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_3DS_CivilSurveySuite.ViewModels</RootNamespace>
-    <AssemblyName>3DS_CivilSurveySuite.ViewModels</AssemblyName>
+    <RootNamespace>_3DS_CivilSurveySuite.Commands</RootNamespace>
+    <AssemblyName>3DS_CivilSurveySuite.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,32 +31,42 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
+    <Reference Include="accoremgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\accoremgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acdbmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AecBaseMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AecBaseMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AeccDbMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\C3D\AeccDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Linework.cs" />
+    <Compile Include="PointLabelRotate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AngleCalculatorViewModel.cs" />
-    <Compile Include="ConnectLineworkViewModel.cs" />
-    <Compile Include="TraverseAngleViewModel.cs" />
-    <Compile Include="TraverseViewModel.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="TrunkSize.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Commands\3DS_CivilSurveySuite.Commands.csproj">
-      <Project>{19874a28-51ee-4732-ae4e-74b88657f6c6}</Project>
-      <Name>3DS_CivilSurveySuite.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
-      <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
-      <Name>3DS_CivilSurveySuite.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
-      <Project>{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}</Project>
-      <Name>3DS_CivilSurveySuite.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
       <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
       <Name>3DS_CivilSurveySuite_ACADBase21</Name>
@@ -66,6 +76,5 @@
       <Name>3DS_CivilSurveySuite_C3DBase21</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,20 +21,19 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             try
             {
                 //TODO: add text and marker style
-                //HACK: move transient stuff into try catch
                 if (s_transientGraphics == null)
                 {
                     s_transientGraphics = new DBObjectCollection();
                 }
 
-                var i = 1;
+                var i = 1; //Start an index for the next coordinate in the collection.
                 //draw the coord lines
                 foreach (Point2d point in coordinates)
                 {
                     var tm = TransientManager.CurrentTransientManager;
                     var intCol = new IntegerCollection();
 
-                    if (coordinates.Count == i)
+                    if (coordinates.Count == i) // if the next coordinate index is the same as the collection count, end.
                     {
                         //draw boxes on last and first points
                         Polyline box1 = Polylines.Square(point, 0.5);
@@ -58,19 +57,22 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                     i++;
                 }
 
-                AutoCADApplicationManager.ActiveDocument.TransactionManager.QueueForGraphicsFlush();
+                AutoCADActive.ActiveDocument.TransactionManager.QueueForGraphicsFlush();
             }
             catch (Exception ex)
             {
-                ClearTransientGraphics();
-                AutoCADApplicationManager.Editor.WriteMessage(ex.Message);
+                AutoCADActive.Editor.WriteMessage(ex.Message);
                 throw;
+            }
+            finally
+            {
+                ClearTransientGraphics();
             }
         }
 
         public static void DrawTransientPreview(IReadOnlyList<Point2d> coordinates)
         {
-            using (Transaction tr = AutoCADApplicationManager.ActiveDocument.TransactionManager.StartLockedTransaction())
+            using (Transaction tr = AutoCADActive.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
                 ClearTransientGraphics();
                 DrawTransientTraverse(coordinates);
@@ -82,8 +84,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
         public static void ClearTransientGraphics()
         {
-            //Transient.CapturedDrawable = null;
-
             var tm = TransientManager.CurrentTransientManager;
             var intCol = new IntegerCollection();
 

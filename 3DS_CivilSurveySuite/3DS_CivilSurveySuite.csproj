@@ -63,9 +63,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\PointLabelRotate.cs" />
-    <Compile Include="Commands\TrunkSize.cs" />
-    <Compile Include="Palettes\PaletteFactory.cs" />
+    <Compile Include="Palettes.cs" />
     <Compile Include="Services\ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +81,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">

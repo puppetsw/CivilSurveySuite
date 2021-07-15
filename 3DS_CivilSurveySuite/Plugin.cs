@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System.Reflection;
-using _3DS_CivilSurveySuite.Palettes;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.Runtime;
 
@@ -13,22 +12,24 @@ namespace _3DS_CivilSurveySuite
 {
     public class Plugin : IExtensionApplication
     {
-        private PaletteFactory _palettes;
+        private Palettes _palettes;
 
         public void Initialize()
         {
-            double num = AutoCADApplicationManager.AutoCADVersion();
+            double num = AutoCADActive.AutoCADVersion();
             if (num < 21.0 || 23.1 < num)
             {
-                AutoCADApplicationManager.Editor.WriteMessage("\n3DS> Warning: Cannot load 3DS_CivilSurveySuite.dll It was written for AutoCAD 2017 to 2020. ");
+                AutoCADActive.Editor.WriteMessage("\n3DS> Warning: Cannot load 3DS_CivilSurveySuite.dll It was written for AutoCAD 2017 to 2020. ");
                 throw new Exception();
             }
 
-            AutoCADApplicationManager.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
+            AutoCADActive.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
+
             //HACK: Force Behaviors assembly to load.
             Assembly.Load("Microsoft.Xaml.Behaviors");
+            Assembly.Load("3DS_CivilSurveySuite.Commands");
 
-            _palettes = new PaletteFactory();
+            _palettes = new Palettes();
             _palettes.HookupEvents();
         }
 
