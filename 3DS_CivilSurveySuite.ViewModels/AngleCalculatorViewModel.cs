@@ -57,23 +57,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void AddDMSToList()
         {
-            //Validate InputBearing
-            Angle dmsToAdd = null;
-
-            try
-            {
-                dmsToAdd = new Angle(InputBearing);
-            }
-            catch
-            {
-                //Console.WriteLine("Invalid bearing value entered");
-            }
-
-            if (dmsToAdd != null)
-            {
-                DMSList.Add(dmsToAdd);
-            }
-
+            var dmsToAdd = new Angle(InputBearing);
+            DMSList.Add(dmsToAdd);
             InputBearing = string.Empty;
         }
 

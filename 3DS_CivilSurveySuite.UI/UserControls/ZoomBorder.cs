@@ -123,15 +123,12 @@ namespace _3DS_CivilSurveySuite.UI.UserControls
 
         private void child_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_child != null)
+            if (_child != null && _child.IsMouseCaptured)
             {
-                if (_child.IsMouseCaptured)
-                {
-                    var tt = GetTranslateTransform(_child);
-                    Vector v = _start - e.GetPosition(this);
-                    tt.X = _origin.X - v.X;
-                    tt.Y = _origin.Y - v.Y;
-                }
+                var tt = GetTranslateTransform(_child);
+                Vector v = _start - e.GetPosition(this);
+                tt.X = _origin.X - v.X;
+                tt.Y = _origin.Y - v.Y;
             }
         }
     }

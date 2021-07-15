@@ -27,6 +27,8 @@ namespace _3DS_CivilSurveySuite.Commands
             SelectionFilter ssPoints = new SelectionFilter(pointsFilter);
             PromptSelectionResult psrPoints = AutoCADActive.Editor.GetSelection(psoPoints, ssPoints);
 
+            if (psrPoints.Value == null) return;
+
             //SELECT line, Polyline or 3D Polyline
             var peoLines = new PromptEntityOptions("\n3DS> Select line, polyline or 3Dpolyline");
             peoLines.SetRejectMessage("\n3DS> Select line, polyline or 3Dpolyline only");
@@ -35,8 +37,6 @@ namespace _3DS_CivilSurveySuite.Commands
             peoLines.AddAllowedClass(typeof(Polyline2d), true);
             peoLines.AddAllowedClass(typeof(Line), true);
             PromptEntityResult perLines = AutoCADActive.Editor.GetEntity(peoLines);
-
-            if (psrPoints.Value == null) return;
 
             using (Transaction tr = AutoCADActive.StartTransaction())
             {

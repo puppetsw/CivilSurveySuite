@@ -46,23 +46,23 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
-        public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
+        public RelayCommand AddRowCommand => new RelayCommand(_ => AddRow(), _ => true);
 
-        public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
+        public RelayCommand RemoveRowCommand => new RelayCommand(_ => RemoveRow(), _ => true);
 
-        public RelayCommand ClearCommand => new RelayCommand((_) => ClearTraverse(), (_) => true);
+        public RelayCommand ClearCommand => new RelayCommand(_ => ClearTraverse(), _ => true);
 
-        public RelayCommand DrawCommand => new RelayCommand((_) => DrawTraverse(), (_) => true);
+        public RelayCommand DrawCommand => new RelayCommand(_ => DrawTraverse(), _ => true);
 
-        public RelayCommand FeetToMetersCommand => new RelayCommand((_) => FeetToMeters(), (_) => true);
+        public RelayCommand FeetToMetersCommand => new RelayCommand(_ => FeetToMeters(), _ => true);
 
-        public RelayCommand LinksToMetersCommand => new RelayCommand((_) => LinksToMeters(), (_) => true);
+        public RelayCommand LinksToMetersCommand => new RelayCommand(_ => LinksToMeters(), _ => true);
         
-        public RelayCommand FlipBearingCommand => new RelayCommand((_) => FlipBearing(), (_) => true);
+        public RelayCommand FlipBearingCommand => new RelayCommand(_ => FlipBearing(), _ => true);
         
-        public RelayCommand ShowHelpCommand => new RelayCommand((_) => ShowHelp(), (_) => true);
+        public RelayCommand ShowHelpCommand => new RelayCommand(_ => ShowHelp(), _ => true);
 
-        public RelayCommand CellUpdatedEvent => new RelayCommand((_) => GridUpdated(), (_) => true);
+        public RelayCommand GridUpdatedCommand => new RelayCommand(_ => GridUpdated(), _ => true);
 
         public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
         // ReSharper restore UnusedMember.Global
@@ -160,7 +160,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (SelectedTraverseAngle == null) 
                 return;
 
-            var angle = new Angle(180) - SelectedTraverseAngle.Angle;
+            Angle angle;
+            if (SelectedTraverseAngle.Angle.Degrees > 180)
+                angle = SelectedTraverseAngle.Angle - new Angle(180);
+            else
+                angle = SelectedTraverseAngle.Angle + new Angle(180);
 
             SelectedTraverseAngle.Bearing = angle.ToDouble();
             CloseTraverse();

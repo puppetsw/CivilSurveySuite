@@ -13,8 +13,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
     /// </summary>
     public class TraverseViewModel : ViewModelBase
     {
-        private string _closeBearing = "0°00'00\"";
-        private string _closeDistance = "0.000";
+        private string _closeBearing;
+        private string _closeDistance;
         private bool _commandRunning;
         private readonly IViewerService _viewerService;
 
@@ -50,7 +50,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand LinksToMetersCommand => new RelayCommand(_ => LinksToMeters(), _ => true);
         public RelayCommand FlipBearingCommand => new RelayCommand(_ => FlipBearing(), _ => true);
         public RelayCommand ShowHelpCommand => new RelayCommand(_ => ShowHelp(), _ => true);
-        public RelayCommand CellUpdatedEvent => new RelayCommand(_ => GridUpdated(), _ => true);
+        public RelayCommand GridUpdatedCommand => new RelayCommand(_ => GridUpdated(), _ => true);
         public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
 
         public TraverseViewModel(IViewerService viewerService)
@@ -144,15 +144,19 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void FlipBearing()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null) 
+                return;
 
-            int index = TraverseItems.IndexOf(SelectedTraverseItem);
-            var dms180 = new Angle(180.0000);
+            Angle angle;
+            if (SelectedTraverseItem.Angle.Degrees > 180)
+                angle = SelectedTraverseItem.Angle - new Angle(180);
+            else
+                angle = SelectedTraverseItem.Angle + new Angle(180);
 
-            var dms = dms180 - SelectedTraverseItem.Angle;
-
-            TraverseItems[index].Bearing = dms.ToDouble();
+            SelectedTraverseItem.Bearing = angle.ToDouble();
             CloseTraverse();
+
+
         }
 
         private void ShowHelp()

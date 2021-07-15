@@ -1,19 +1,23 @@
-﻿namespace _3DS_CivilSurveySuite_C3DBase21
+﻿using Autodesk.Civil.DatabaseServices;
+
+namespace _3DS_CivilSurveySuite_C3DBase21
 {
-    public class Points
+    public class CogoPoints
     {
         /// <summary>
-        /// Changes a <see cref=""/> CogoPoint's Draw Description to upper case.
+        /// Changes a <see cref="CogoPoint"/>'s Draw Description to upper case.
         /// </summary>
-        public void RawDescriptionToUpperCase()
+        public static void RawDescriptionToUpperCase(ref CogoPoint point)
         {
+            point.RawDescription = point.RawDescription.ToUpper();
         }
 
         /// <summary>
-        /// Changes a <see cref=""/> CogoPoint's Full Description to upper case.
+        /// Changes a <see cref="CogoPoint"/>'s Full Description to upper case.
         /// </summary>
-        public void FullDescriptionToUpperCase()
+        public static void FullDescriptionToUpperCase(ref CogoPoint point)
         {
+            point.DescriptionFormat = point.DescriptionFormat.ToUpper();
         }
 
         /// <summary>

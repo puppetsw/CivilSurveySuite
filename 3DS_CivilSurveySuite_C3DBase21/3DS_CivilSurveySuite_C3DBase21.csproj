@@ -52,7 +52,7 @@
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="Labels.cs" />
     <Compile Include="PointGroups.cs" />
-    <Compile Include="Points.cs" />
+    <Compile Include="CogoPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Surfaces.cs" />
   </ItemGroup>
@@ -60,6 +60,10 @@
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
       <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
       <Name>3DS_CivilSurveySuite.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
+      <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
+      <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

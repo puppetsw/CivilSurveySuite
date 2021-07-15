@@ -49,10 +49,6 @@
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AeccDbMgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\C3D\AeccDbMgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -98,10 +94,6 @@
     <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
       <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
       <Name>3DS_CivilSurveySuite_ACADBase21</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite_C3DBase21\3DS_CivilSurveySuite_C3DBase21.csproj">
-      <Project>{81274dfb-9c83-43d7-ac13-fe57a813d8a6}</Project>
-      <Name>3DS_CivilSurveySuite_C3DBase21</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
