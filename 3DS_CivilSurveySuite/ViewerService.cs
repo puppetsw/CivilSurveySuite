@@ -9,7 +9,7 @@ using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.UserControls;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
-namespace _3DS_CivilSurveySuite.Services
+namespace _3DS_CivilSurveySuite
 {
     public class ViewerService : IViewerService, IDisposable
     {

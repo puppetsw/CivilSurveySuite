@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Windows;
 using _3DS_CivilSurveySuite;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.Services;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
 using _3DS_CivilSurveySuite_ACADBase21;

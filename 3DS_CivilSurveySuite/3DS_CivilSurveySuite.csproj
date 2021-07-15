@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Palettes.cs" />
-    <Compile Include="Services\ViewerService.cs" />
+    <Compile Include="ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
