@@ -72,6 +72,10 @@
       <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
       <Name>3DS_CivilSurveySuite.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
+      <Project>{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}</Project>
+      <Name>3DS_CivilSurveySuite.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
       <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
       <Name>3DS_CivilSurveySuite_ACADBase21</Name>

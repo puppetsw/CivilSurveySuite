@@ -66,6 +66,7 @@
     <Compile Include="BearingConverterTests.cs" />
     <Compile Include="BearingTests.cs" />
     <Compile Include="ClosureTests.cs" />
+    <Compile Include="ConnectLineworkViewModelTest.cs" />
     <Compile Include="CoordinateTests.cs" />
     <Compile Include="AngleCalculatorTests.cs" />
     <Compile Include="MathHelpersTests.cs" />
@@ -96,6 +97,12 @@
       <Project>{9f732d27-dfed-4af1-9fc0-c1cd0c4ac3d6}</Project>
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="TestFiles\3DS_DescriptionKeys.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

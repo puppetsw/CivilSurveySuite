@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite_C3DBase21
+namespace _3DS_CivilSurveySuite.Model
 {
     public class DescriptionKey : INotifyPropertyChanged
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite_C3DBase21
@@ -48,7 +49,7 @@ namespace _3DS_CivilSurveySuite_C3DBase21
         }
 
         /// <summary>
-        /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="_3DS_CivilSurveySuite_C3DBase21.DescriptionKey"/>
+        /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="_3DS_CivilSurveySuite.Model.DescriptionKey"/>
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>

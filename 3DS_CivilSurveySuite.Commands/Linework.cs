@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;
 using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
