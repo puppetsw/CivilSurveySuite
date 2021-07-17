@@ -201,5 +201,14 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expected, angle);
         }
+
+        [TestMethod]
+        public void Angle_Construct_Degrees_Minutes_Seconds()
+        {
+            var angle = new Angle(90, 30, 30);
+            var expectedString = "90°30\'30\"";
+
+            Assert.AreEqual(expectedString, angle.ToString());
+        }
     }
 }

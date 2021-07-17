@@ -5,7 +5,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Remoting.Messaging;
 
 namespace _3DS_CivilSurveySuite.Model
 {
@@ -38,6 +37,19 @@ namespace _3DS_CivilSurveySuite.Model
             Degrees = 0;
             Minutes = 0;
             Seconds = 0;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Angle" /> class.
+        /// </summary>
+        /// <param name="degrees">The degrees.</param>
+        /// <param name="minutes">The minutes.</param>
+        /// <param name="seconds">The seconds.</param>
+        public Angle(int degrees, int minutes, int seconds)
+        {
+            Degrees = degrees;
+            Minutes = minutes;
+            Seconds = seconds;
         }
 
         /// <summary>
@@ -86,15 +98,15 @@ namespace _3DS_CivilSurveySuite.Model
         {
             var angle = new Angle();
 
-            var degrees = (int)Math.Truncate(bearing);
+            var degrees = (int) Math.Truncate(bearing);
             var deg1 = Math.Round(bearing - degrees, 4);
 
-            var minutes = (int)Math.Round(deg1 * 100, 4);
+            var minutes = (int) Math.Round(deg1 * 100, 4);
             var min1 = Math.Round(bearing - degrees, 4);
             var min2 = Math.Round(min1 * 100, 2);
             var min3 = Math.Round(min2 - minutes, 2);
-            
-            var seconds = (int)(min3 * 100);
+
+            var seconds = (int) (min3 * 100);
 
             angle.Degrees = degrees;
             angle.Minutes = minutes;
@@ -124,7 +136,7 @@ namespace _3DS_CivilSurveySuite.Model
                 angle = tempAngle;
                 return true;
             }
-  
+
             return false;
         }
 
@@ -132,16 +144,24 @@ namespace _3DS_CivilSurveySuite.Model
         /// Returns true if the <see cref="Angle"/> object contains a valid bearing.
         /// </summary>
         /// <param name="angle"><see cref="Angle"/> object to check.</param>
-        public static bool IsValid(Angle angle) => angle.Degrees < 360 && angle.Minutes < 60 && angle.Seconds < 60;
+        /// <param name="limit">If limit is true then checks to see if Degrees is less than 360.</param>
+        public static bool IsValid(Angle angle, bool limit = true)
+        {
+            if (limit)
+                return angle.Degrees < 360 && angle.Minutes < 60 && angle.Seconds < 60;
+            
+            return angle.Minutes < 60 && angle.Seconds < 60;
+        }
 
         /// <summary>
         /// Returns true if the <see cref="Angle"/> object contains a valid bearing.
         /// </summary>
         /// <param name="bearing">The bearing represented as a double value.</param>
-        public static bool IsValid(double bearing)
+        /// <param name="limit"></param>
+        public static bool IsValid(double bearing, bool limit = true)
         {
             Angle angle = Parse(bearing);
-            return IsValid(angle);
+            return IsValid(angle, limit);
         }
 
         public static Angle operator +(Angle angle1, Angle angle2) => Add(angle1, angle2, true);
@@ -255,8 +275,8 @@ namespace _3DS_CivilSurveySuite.Model
 
             return Subtract(angle1, angle2, limit);
         }
-        
-        public bool IsEmpty => Degrees == 0 && Minutes == 0 && Seconds == 0;
+
+        public bool IsZero => Degrees == 0 && Minutes == 0 && Seconds == 0;
 
         public bool Equals(Angle other)
         {

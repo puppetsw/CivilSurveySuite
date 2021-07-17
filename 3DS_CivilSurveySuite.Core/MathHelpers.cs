@@ -197,7 +197,7 @@ namespace _3DS_CivilSurveySuite.Core
             {
                 Angle nextBearing = lastBearing;
 
-                if (!item.Angle.IsEmpty)
+                if (!item.Angle.IsZero)
                 {
                     switch (item.ReferenceDirection)
                     {

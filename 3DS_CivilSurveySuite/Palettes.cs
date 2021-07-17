@@ -14,6 +14,7 @@ using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Windows;
+using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
 [assembly: CommandClass(typeof(Palettes))]
 namespace _3DS_CivilSurveySuite
@@ -46,12 +47,14 @@ namespace _3DS_CivilSurveySuite
             GeneratePalette(view, vm, "Linework");
         }
 
-        [CommandMethod("3DSShowAngleCalculatorPalette")]
+        [CommandMethod("3DSShowAngleCalculator")]
         public void ShowAngleCalculatorPalette()
         {
             var view = new AngleCalculatorView();
             var vm = new AngleCalculatorViewModel();
-            GeneratePalette(view, vm, "Angle Calculator");
+            view.DataContext = vm;
+            //GeneratePalette(view, vm, "Angle Calculator");
+            Application.ShowModelessWindow(view);
         }
 
         [CommandMethod("3DSShowTraversePalette")]

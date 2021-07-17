@@ -2,125 +2,106 @@
 // Reproduction or transmission in whole or in part, any form or by any
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
-// 
-// Filename: DMSCalculatorViewModel.cs
-// Date:     01/07/2021
-// Author:   scott
 
-using System;
-using System.Collections.ObjectModel;
-using System.Text;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.ViewModels.Helpers;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
     /// <summary>
-    /// Class DMSCalculatorViewModel.
-    /// Implements the <see cref="ViewModelBase" />
+    /// ViewModel for AngleCalculatorView.
     /// </summary>
-    /// <seealso cref="ViewModelBase" />
     public class AngleCalculatorViewModel : ViewModelBase
     {
-        private ObservableCollection<Angle> _dmsList;
-        private string _inputBearing;
+        private Angle _firstAngle;
+        private Angle _secondAngle;
+        private string _result;
+        private double _firstBearing;
+        private double _secondBearing;
 
-        public ObservableCollection<Angle> DMSList
+        public Angle FirstAngle
         {
-            get => _dmsList;
+            get => _firstAngle;
+            set => SetProperty(ref _firstAngle, value);
+        }
+
+        public Angle SecondAngle
+        {
+            get => _secondAngle;
+            set => SetProperty(ref _secondAngle, value);
+        }
+
+        public string Result
+        {
+            get => _result;
+            private set => SetProperty(ref _result, value);
+        }
+
+        public double FirstBearing
+        {
+            get => _firstBearing;
             set
             {
-                _dmsList = value; 
+                if (Angle.IsValid(value, false)) // Don't limit degrees.
+                {
+                    _firstBearing = value;
+                    FirstAngle = new Angle(value);
+                }
+                else
+                {
+                    _firstBearing = 0;
+                    FirstAngle = new Angle();
+                }
+
                 NotifyPropertyChanged();
             }
         }
 
-        public string InputBearing
+        public double SecondBearing
         {
-            get => _inputBearing;
+            get => _secondBearing;
             set
             {
-                _inputBearing = value;
+                if (Angle.IsValid(value, false)) // Don't limit degrees.
+                {
+                    _secondBearing = value;
+                    SecondAngle = new Angle(value);
+                }
+                else
+                {
+                    _secondBearing = 0;
+                    SecondAngle = new Angle();
+                }
+
                 NotifyPropertyChanged();
             }
         }
 
-        public RelayCommand EnterDMSCommand => new RelayCommand(_ => AddDMSToList(), _ => true);
-        public RelayCommand AdditionDMSCommand => new RelayCommand(_ => AddDMS(), _ => true);
-        public RelayCommand SubtractionDMSCommand => new RelayCommand(_ => SubtractDMS(), _ => true);
-        public RelayCommand NumPadCommand => new RelayCommand(NumPad, _ => true);
+        public RelayCommand AddCommand => new RelayCommand(_ => Add(), _ => true);
+
+        public RelayCommand SubtractCommand => new RelayCommand(_ => Subtract(), _ => true);
 
         public AngleCalculatorViewModel()
         {
-            DMSList = new ObservableCollection<Angle>();
+            FirstAngle = new Angle();
+            SecondAngle = new Angle();
+            Result = "";
         }
 
-        private void AddDMSToList()
+        private void Add()
         {
-            var dmsToAdd = new Angle(InputBearing);
-            DMSList.Add(dmsToAdd);
-            InputBearing = string.Empty;
-        }
-
-        private void AddDMS()
-        {
-            // No need to add if the list count is less than 1
-            if (DMSList.Count < 1)
-            {
+            if (FirstAngle == null || SecondAngle == null)
                 return;
-            }
 
-            Angle dmsResult;
-            // Add the last 2 in list together
-            if (string.IsNullOrEmpty(InputBearing) && DMSList.Count > 1)
-            {
-                var dms1 = DMSList[DMSList.Count - 1];
-                var dms2 = DMSList[DMSList.Count - 2];
+            Result = Angle.Add(FirstAngle, SecondAngle).ToString();
+        }
 
-                dmsResult = Angle.Add(dms1, dms2);
-
-                DMSList.Remove(dms1);
-                DMSList.Remove(dms2);
-
-                DMSList.Add(dmsResult);
+        private void Subtract()
+        {
+            if (FirstAngle == null || SecondAngle == null)
                 return;
-            }
 
-            // If the list has more than one and the InputBearing is not empty.
-            // We add the InputBearing to the last value in the list
-            if (!string.IsNullOrEmpty(InputBearing) && DMSList.Count >= 1)
-            {
-                var dms1 = DMSList[DMSList.Count - 1];
-                var dms2 = new Angle(InputBearing);
-
-                dmsResult = Angle.Add(dms1, dms2);
-                DMSList.Remove(dms1);
-
-                DMSList.Add(dmsResult);
-                InputBearing = string.Empty;
-            }
-        }
-
-        private void SubtractDMS()
-        {
-
-        }
-
-        private static Angle FlipPlusMinusSymbolDMS(Angle dms)
-        {
-            int degrees = dms.Degrees > 0 ? dms.Degrees * -1 : Math.Abs(dms.Degrees);
-            return new Angle { Degrees = degrees, Minutes = dms.Minutes, Seconds = dms.Seconds };
-        }
-
-        private void NumPad(object buttonPressed)
-        {
-            var key = (string) buttonPressed;
-
-            var sb = new StringBuilder();
-            sb.Append(InputBearing);
-            sb.Append(key);
-
-            InputBearing = sb.ToString();
+            Result = Angle.Subtract(FirstAngle, SecondAngle).ToString();
         }
     }
 }
