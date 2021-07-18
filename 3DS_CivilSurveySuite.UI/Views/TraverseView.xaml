@@ -48,15 +48,15 @@
                     <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
                 </Button>
                 <Separator IsTabStop="False" />
-                <Button Command="{Binding SetBasePointCommand}">
+                <!--<Button Command="{Binding SetBasePointCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/>
                     </StackPanel>
-                </Button>
-                <Button Command="{Binding RefreshTraverseCommand}">
+                </Button>-->
+                <!--<Button Command="{Binding RefreshTraverseCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource RefreshToolTipContent}"/>
                     </Button.ToolTip>
@@ -64,7 +64,7 @@
                         <Image Source="{StaticResource RefreshTraverseToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Refresh"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
                 <Button Command="{Binding DrawCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource DrawToolTipContent}"/>
@@ -145,7 +145,7 @@
                   >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SourceUpdated">
-                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CellUpdatedEvent}" />
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.GridUpdatedCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>

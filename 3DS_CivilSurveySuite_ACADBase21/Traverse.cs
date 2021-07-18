@@ -31,15 +31,17 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
+            var tg = new TransientGraphics();
+
             try
             {
                 // Lock ACAD document and start transaction as we are running from Palette.
                 using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
                     // Draw Transient Graphics of Traverse.
-                    TransientGraphics.ClearTransientGraphics();
+                    tg.ClearTransientGraphics();
                     // Draw first transient traverse
-                    TransientGraphics.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                     var cancelled = false;
                     PromptResult prResult;
                     do
@@ -50,9 +52,9 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                             switch (prResult.StringResult)
                             {
                                 case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
-                                    TransientGraphics.ClearTransientGraphics();
+                                    tg.ClearTransientGraphics();
                                     coordinates = MathHelpers.AngleAndDistanceToCoordinates(angleList, basePoint);
-                                    TransientGraphics.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                                     break;
                                 case Keywords.Accept:
                                     Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
@@ -74,7 +76,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             finally
             {
-                TransientGraphics.ClearTransientGraphics();
+                tg.ClearTransientGraphics();
             }
         }
 
@@ -94,6 +96,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
+            var tg = new TransientGraphics();
+
             try
             {
                 //lock acad document and start transaction
@@ -102,9 +106,9 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                     //draw first transient traverse
                     var coordinates = MathHelpers.BearingAndDistanceToCoordinates(traverseList, basePoint);
 
-                    TransientGraphics.ClearTransientGraphics();
+                    tg.ClearTransientGraphics();
                     //draw first transient traverse
-                    TransientGraphics.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
 
                     var cancelled = false;
                     PromptResult prResult;
@@ -116,9 +120,9 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                             switch (prResult.StringResult)
                             {
                                 case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                    TransientGraphics.ClearTransientGraphics();
+                                    tg.ClearTransientGraphics();
                                     coordinates = MathHelpers.BearingAndDistanceToCoordinates(traverseList, basePoint);
-                                    TransientGraphics.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                                     break;
                                 case "Accept":
                                     Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
@@ -140,7 +144,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
             finally
             {
-                TransientGraphics.ClearTransientGraphics();
+                tg.ClearTransientGraphics();
             }
         }
     }

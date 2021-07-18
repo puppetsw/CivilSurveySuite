@@ -134,7 +134,7 @@
                   RowHeight="25" HorizontalContentAlignment="Center" PreviewKeyDown="dgTraverse_PreviewKeyDown">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="SourceUpdated">
-                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.CellUpdatedEvent}" />
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.GridUpdatedCommand}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
             <DataGrid.Columns>

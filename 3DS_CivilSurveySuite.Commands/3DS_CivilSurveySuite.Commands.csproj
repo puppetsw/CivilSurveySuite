@@ -62,10 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Linework.cs" />
-    <Compile Include="PointLabelRotate.cs" />
     <Compile Include="CogoPointUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrunkSize.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
-using Autodesk.AutoCAD.Runtime;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite_ACADBase21
@@ -12,18 +12,18 @@ namespace _3DS_CivilSurveySuite_ACADBase21
     /// A helper class to display and manage TransientGraphics
     /// within AutoCAD.
     /// </summary>
-    public static class TransientGraphics
+    public class TransientGraphics : IDisposable
     {
-        private static DBObjectCollection s_transientGraphics;
+        private DBObjectCollection _transientGraphics;
 
-        public static void DrawTransientTraverse(IReadOnlyList<Point2d> coordinates)
+        public void DrawTransientTraverse(IReadOnlyList<Point2d> coordinates)
         {
             try
             {
                 //TODO: add text and marker style
-                if (s_transientGraphics == null)
+                if (_transientGraphics == null)
                 {
-                    s_transientGraphics = new DBObjectCollection();
+                    _transientGraphics = new DBObjectCollection();
                 }
 
                 var i = 1; //Start an index for the next coordinate in the collection.
@@ -40,8 +40,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                         Polyline box2 = Polylines.Square(coordinates[0], 0.5);
                         box1.Color = Color.FromColorIndex(ColorMethod.None, 2);
                         box2.Color = Color.FromColorIndex(ColorMethod.None, 2);
-                        s_transientGraphics.Add(box1);
-                        s_transientGraphics.Add(box2);
+                        _transientGraphics.Add(box1);
+                        _transientGraphics.Add(box2);
                         tm.AddTransient(box1, TransientDrawingMode.Main, 128, intCol);
                         tm.AddTransient(box2, TransientDrawingMode.Main, 128, intCol);
                     }
@@ -50,7 +50,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                         var ln = new Line(new Point3d(point.X, point.Y, 0),
                             new Point3d(coordinates[i].X, coordinates[i].Y, 0));
 
-                        s_transientGraphics.Add(ln);
+                        _transientGraphics.Add(ln);
                         tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
                     }
 
@@ -59,18 +59,14 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
                 AutoCADActive.ActiveDocument.TransactionManager.QueueForGraphicsFlush();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                AutoCADActive.Editor.WriteMessage(ex.Message);
+                AutoCADActive.Editor.WriteMessage(e.Message);
                 throw;
-            }
-            finally
-            {
-                ClearTransientGraphics();
             }
         }
 
-        public static void DrawTransientPreview(IReadOnlyList<Point2d> coordinates)
+        public void DrawTransientPreview(IReadOnlyList<Point2d> coordinates)
         {
             using (Transaction tr = AutoCADActive.ActiveDocument.TransactionManager.StartLockedTransaction())
             {
@@ -82,19 +78,51 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
         }
 
-        public static void ClearTransientGraphics()
+        public void ClearTransientGraphics()
         {
-            var tm = TransientManager.CurrentTransientManager;
-            var intCol = new IntegerCollection();
-
-            if (s_transientGraphics != null)
+            if (_transientGraphics != null)
             {
-                foreach (DBObject graphic in s_transientGraphics)
+                var tm = TransientManager.CurrentTransientManager;
+                var intCol = new IntegerCollection();
+
+                foreach (DBObject graphic in _transientGraphics)
                 {
                     tm.EraseTransient(graphic, intCol);
                     graphic.Dispose();
                 }
             }
+        }
+
+        public void DrawTransientPoint(Point3d point)
+        {
+            try
+            {
+                if (_transientGraphics == null)
+                {
+                    _transientGraphics = new DBObjectCollection();
+                }
+
+                var tm = TransientManager.CurrentTransientManager;
+                var intCol = new IntegerCollection();
+
+                Circle marker = new Circle(point, Vector3d.ZAxis, 0.2);
+                marker.Color = Color.FromRgb(0, 255, 0);
+                _transientGraphics.Add(marker);
+
+                tm.AddTransient(marker, TransientDrawingMode.Highlight, 128, intCol);
+            }
+            catch (Exception e)
+            {
+                AutoCADActive.Editor.WriteMessage(e.Message);
+                throw;
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            ClearTransientGraphics();
+            _transientGraphics?.Dispose();
         }
     }
 }

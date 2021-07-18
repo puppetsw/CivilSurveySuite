@@ -212,5 +212,89 @@ namespace _3DS_CivilSurveySuiteTests
 
             CollectionAssert.AreEqual(expected, results);
         }
+
+        [TestMethod]
+        public void Intersection_Of_Two_Angles_As_Coordinates()
+        {
+            var pointA = new Vector(0, 0);
+            var pointB = new Vector(0, 30);
+
+            var pointC = new Vector(15, 15);
+            var pointD = new Vector(-15, 15);
+
+            var expected = new Point(0, 15);
+
+            var worked = MathHelpers.LineSegementsIntersect(pointA, pointB, pointC, pointD, out Point result);
+
+            Assert.AreEqual(expected, result);
+            Assert.AreEqual(true, worked);
+        }
+
+        [TestMethod]
+        public void Intersection_Of_Two_Angles_As_Coordinates_Parallel_Lines()
+        {
+            var pointA = new Vector(0, 0);
+            var pointB = new Vector(0, 30);
+
+            var pointC = new Vector(5, 0);
+            var pointD = new Vector(5, 30);
+
+            var expected = new Point(0, 0);
+
+            var worked = MathHelpers.LineSegementsIntersect(pointA, pointB, pointC, pointD, out Point result);
+
+            Assert.AreEqual(expected, result);
+            Assert.AreEqual(false, worked);
+        }
+
+        [TestMethod]
+        public void LineSegmentsDoNotIntersect()
+        {
+            Point intersection;
+            var actual = MathHelpers.LineSegementsIntersect(
+                new Vector(3, 0),
+                new Vector(3, 4),
+                new Vector(0, 5),
+                new Vector(5, 5),
+                out intersection);
+
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        public void LineSegmentsAreCollinearAndOverlapping()
+        {
+            Point intersection;
+            var actual = MathHelpers.LineSegementsIntersect(
+                new Vector(0, 0),
+                new Vector(2, 0),
+                new Vector(1, 0),
+                new Vector(3, 0),
+                out intersection, 
+                considerCollinearOverlapAsIntersect: true);
+
+            Assert.IsTrue(actual);
+            Assert.AreEqual(0, intersection.X);
+            Assert.AreEqual(0, intersection.Y);
+        }
+
+        [TestMethod]
+        public void LineSegmentsAreCollinearAndOverlapping_ButFalse()
+        {
+            Point intersection;
+            var actual = MathHelpers.LineSegementsIntersect(
+                new Vector(0, 0),
+                new Vector(2, 0),
+                new Vector(1, 0),
+                new Vector(3, 0),
+                out intersection, 
+                considerCollinearOverlapAsIntersect: false);
+
+            Assert.IsFalse(actual);
+            Assert.AreEqual(0, intersection.X);
+            Assert.AreEqual(0, intersection.Y);
+        }
+
+
     }
 }

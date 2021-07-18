@@ -37,6 +37,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         /// <param name="pickedPoint"></param>
         /// <returns>A double representing the angle of the polyline segment.</returns>
         //BUG: When polyline selected is the first segement, the angle is incorrect.
+        //TODO: Make option to return readable angle (page-up like in Civil 3D).
         public static double GetPolylineSegmentAngle(Polyline polyline, Point3d pickedPoint)
         {
             var segmentStart = 0;

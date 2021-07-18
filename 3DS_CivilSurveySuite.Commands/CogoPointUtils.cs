@@ -94,7 +94,7 @@ namespace _3DS_CivilSurveySuite.Commands
                 foreach (ObjectId objectId in pso.Value.GetObjectIds())
                 {
                     CogoPoint pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
-                    _3DS_CivilSurveySuite_C3DBase21.CogoPoints.RawDescriptionToUpperCase(ref pt);
+                    CogoPoints.RawDescriptionToUpperCase(ref pt);
                     pt.DowngradeOpen(); // Don't leave point in write mode?
                 }
 
@@ -121,6 +121,53 @@ namespace _3DS_CivilSurveySuite.Commands
 
                 tr.Commit();
             }
+        }
+
+        [CommandMethod("3DS", "_3DSCreateTrunkPointAtTrees", CommandFlags.Modal)]
+        public void CogoPointCreateTrunksAtTrees()
+        {
+            //TODO: Use settings to determine codes for TRNK and TRE
+            //TODO: Add option to set style for tree and trunk?
+            var counter = 0;
+
+            using (Transaction tr = AutoCADActive.StartTransaction())
+            {
+                foreach (ObjectId pointId in CivilActive.ActiveCivilDocument.CogoPoints)
+                {
+                    var cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
+
+                    if (cogoPoint is null) 
+                        continue;
+
+                    if (!cogoPoint.RawDescription.Contains("TRE ")) 
+                        continue;
+                    
+                    ObjectId trunkPointId = CivilActive.ActiveCivilDocument.CogoPoints.Add(cogoPoint.Location, true);
+                    CogoPoint trunkPoint = trunkPointId.GetObject(OpenMode.ForWrite) as CogoPoint;
+
+                    if (trunkPoint != null)
+                    {
+                        trunkPoint.RawDescription = cogoPoint.RawDescription.Replace("TRE ", "TRNK ");
+                        trunkPoint.ApplyDescriptionKeys();
+
+                        cogoPoint.UpgradeOpen();
+                        cogoPoint.RawDescription = cogoPoint.RawDescription.Replace("TRE ", "TREE ");
+                        cogoPoint.ApplyDescriptionKeys();
+                    }
+                    counter++;
+                }
+                tr.Commit();
+            }
+
+            string completeMessage = "Changed " + counter + " TRE points, and created " + counter + " TRNK points";
+            AutoCADActive.Editor.WriteMessage(completeMessage);
+
+        }
+
+        [CommandMethod("3DS", "_3DSCreateCogoPointAtSelectedBearingAndDistance", CommandFlags.Modal)]
+        public void CogoPoint_Create_At_Selected_Bearing_And_Distance()
+        {
+
         }
     }
 }
