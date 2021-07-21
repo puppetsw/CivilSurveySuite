@@ -1,4 +1,5 @@
 ﻿using System;
+using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -184,13 +185,10 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void Angle_EqualsTest_ShouldThrowException()
         {
-            Angle angle1 = null;
-            var angle2 = new Angle(0);
-
-            angle2.Equals(angle1);
+            var angle = new Angle(0);
+            Assert.ThrowsException<ArgumentNullException>(() => angle.Equals(null));
         }
 
         [TestMethod]
@@ -207,8 +205,26 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var angle = new Angle(90, 30, 30);
             var expectedString = "90°30\'30\"";
-
+            
             Assert.AreEqual(expectedString, angle.ToString());
+        }
+
+        [TestMethod]
+        public void Angle_CounterClockwise_To_Clockwise()
+        {
+            var angle = new Angle(270);
+            var expectedAngle = new Angle(180);
+
+            Assert.AreEqual(expectedAngle, angle.ToClockwise());
+        }
+
+        [TestMethod]
+        public void Angle_Flip_180Degrees()
+        {
+            var angle = new Angle(0);
+            var expectedAngle = new Angle(180);
+
+            Assert.AreEqual(expectedAngle, angle.Flip());
         }
     }
 }

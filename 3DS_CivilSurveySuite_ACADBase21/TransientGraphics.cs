@@ -16,6 +16,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
     {
         private DBObjectCollection _transientGraphics;
 
+        public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 4);
+
         public void DrawTransientTraverse(IReadOnlyList<Point2d> coordinates)
         {
             try
@@ -66,15 +68,55 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
         }
 
-        public void DrawTransientPreview(IReadOnlyList<Point2d> coordinates)
+        public void DrawTransientPoint(Point3d point, double pointSize = 0.1)
         {
-            using (Transaction tr = AutoCADActive.ActiveDocument.TransactionManager.StartLockedTransaction())
+            try
             {
-                ClearTransientGraphics();
-                DrawTransientTraverse(coordinates);
-                tr.Commit();
-                //Refresh ACAD screen to display changes
-                Autodesk.AutoCAD.ApplicationServices.Core.Application.UpdateScreen();
+                if (_transientGraphics == null)
+                {
+                    _transientGraphics = new DBObjectCollection();
+                }
+
+                var tm = TransientManager.CurrentTransientManager;
+                var intCol = new IntegerCollection();
+
+                var marker = new Circle(point, Vector3d.ZAxis, pointSize)
+                {
+                    Color = Color
+                };
+                _transientGraphics.Add(marker);
+
+                tm.AddTransient(marker, TransientDrawingMode.Highlight, 128, intCol);
+            }
+            catch (Exception e)
+            {
+                AutoCADActive.Editor.WriteMessage(e.Message);
+            }
+        }
+
+        public void DrawTransientLine(Point3d point1, Point3d point2)
+        {
+            try
+            {
+                if (_transientGraphics == null)
+                {
+                    _transientGraphics = new DBObjectCollection();
+                }
+
+                var tm = TransientManager.CurrentTransientManager;
+                var intCol = new IntegerCollection();
+
+                var ln = new Line(point1, point2)
+                {
+                    Color = Color
+                };
+
+                _transientGraphics.Add(ln);
+                tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
+            }
+            catch (Exception e)
+            {
+                AutoCADActive.Editor.WriteMessage(e.Message);
             }
         }
 
@@ -90,31 +132,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                     tm.EraseTransient(graphic, intCol);
                     graphic.Dispose();
                 }
-            }
-        }
-
-        public void DrawTransientPoint(Point3d point)
-        {
-            try
-            {
-                if (_transientGraphics == null)
-                {
-                    _transientGraphics = new DBObjectCollection();
-                }
-
-                var tm = TransientManager.CurrentTransientManager;
-                var intCol = new IntegerCollection();
-
-                Circle marker = new Circle(point, Vector3d.ZAxis, 0.2);
-                marker.Color = Color.FromRgb(0, 255, 0);
-                _transientGraphics.Add(marker);
-
-                tm.AddTransient(marker, TransientDrawingMode.Highlight, 128, intCol);
-            }
-            catch (Exception e)
-            {
-                AutoCADActive.Editor.WriteMessage(e.Message);
-                throw;
             }
         }
 

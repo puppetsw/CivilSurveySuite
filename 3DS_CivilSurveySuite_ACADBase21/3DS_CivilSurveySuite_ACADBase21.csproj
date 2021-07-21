@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Curves.cs" />
     <Compile Include="PointExtensions.cs" />
     <Compile Include="AutoCADActive.cs" />
     <Compile Include="EditorUtils.cs" />
@@ -70,6 +71,5 @@
       <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

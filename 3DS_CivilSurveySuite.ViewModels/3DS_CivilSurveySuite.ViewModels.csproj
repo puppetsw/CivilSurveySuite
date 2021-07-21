@@ -61,10 +61,6 @@
       <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
       <Name>3DS_CivilSurveySuite_ACADBase21</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite_C3DBase21\3DS_CivilSurveySuite_C3DBase21.csproj">
-      <Project>{81274dfb-9c83-43d7-ac13-fe57a813d8a6}</Project>
-      <Name>3DS_CivilSurveySuite_C3DBase21</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
-            Linework.ConnectCogoPoints(DescriptionKeys);
+            SurveyUtils.ConnectCogoPoints(DescriptionKeys);
         }
 
         /// <summary>

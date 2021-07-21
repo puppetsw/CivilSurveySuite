@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.Core
@@ -54,7 +56,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the <see cref="Angle"/> in decimal degrees.</returns>
         /// <remarks>The returned value is rounded to 4 decimal places, unless otherwise specified.</remarks>
-        public static double AngleToDecimalDegrees(Angle angle, int decimalPlaces = 4)
+        public static double ToDecimalDegrees(this Angle angle, int decimalPlaces = 4)
         {
             if (angle == null)
                 return 0;
@@ -68,14 +70,57 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
+        /// Converts a <see cref="Angle"/> to radians.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <param name="decimalPlaces">The decimal places to round to. You should
+        /// probably leave this as 15, otherwise rounding issues will occur.</param>
+        /// <returns>A double representing the <see cref="Angle"/> in radians.</returns>
+        public static double ToRadians(this Angle angle, int decimalPlaces = 15)
+        {
+            return DecimalDegreesToRadians(angle.ToDecimalDegrees());
+        }
+
+        /// <summary>
+        /// Converts an <see cref="Angle"/> to a clockwise direction.
+        /// </summary>
+        /// <param name="angle">The angle in a counter-clockwise direction.</param>
+        /// <returns>A <see cref="Angle"/> containing the converted values.</returns>
+        public static Angle ToClockwise(this Angle angle)
+        {
+            return new Angle(360) - angle + new Angle(90);
+        }
+
+        /// <summary>
+        /// Flips an <see cref="Angle"/> 180°.
+        /// </summary>
+        /// <param name="angle">The angle to be flipped.</param>
+        /// <returns>A <see cref="Angle"/> containing the flipped values.</returns>
+        public static Angle Flip(this Angle angle)
+        {
+            return angle - new Angle(180);
+        }
+
+        /// <summary>
         /// Converts a decimal degrees value to radians.
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees to convert.</param>
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double value containing the decimal degrees in radians.</returns>
-        public static double DecimalDegreesToRadians(double decimalDegrees, int decimalPlaces = 6)
+        public static double DecimalDegreesToRadians(double decimalDegrees, int decimalPlaces = 15)
         {
-            return Math.Round(decimalDegrees * (Math.PI / 180), decimalPlaces);
+            return (decimalDegrees / 180) * Math.PI;
+        }
+
+        /// <summary>
+        /// Converts a radians value to decimal degrees.
+        /// </summary>
+        /// <param name="radians">The radians to convert.</param>
+        /// <param name="decimalPlaces">The number of decimal places to round to. Default 6.</param>
+        /// <returns>A double value containing the radians value in decimal degrees.</returns>
+        public static double RadiansToDecimalDegrees(double radians, int decimalPlaces = 15)
+        {
+            return (radians * 180) / Math.PI;
         }
 
         /// <summary>
@@ -159,14 +204,14 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="bearingList"></param>
         /// <param name="basePoint"></param>
         /// <returns>collection of <see cref="Point"/></returns>
-        public static List<Point> BearingAndDistanceToCoordinates(IEnumerable<TraverseObject> bearingList, Point basePoint)
+        public static List<Point> TraverseObjectsToCoordinates(IEnumerable<TraverseObject> bearingList, Point basePoint)
         {
             var pointList = new List<Point> { basePoint };
 
             var i = 0;
             foreach (TraverseObject item in bearingList)
             {
-                double dec = AngleToDecimalDegrees(item.Angle);
+                double dec = ToDecimalDegrees(item.Angle);
                 double rad = DecimalDegreesToRadians(dec);
 
                 double departure = item.Distance * Math.Sin(rad);
@@ -188,7 +233,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="angleList">A enumerable list containing the <see cref="TraverseAngleObject"/>'s.</param>
         /// <param name="basePoint">The base point.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="Point"/>.</returns>
-        public static List<Point> AngleAndDistanceToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point basePoint)
+        public static List<Point> TraverseAngleObjectsToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point basePoint)
         {
             var newPointList = new List<Point> { basePoint };
             var lastBearing = new Angle();
@@ -226,9 +271,17 @@ namespace _3DS_CivilSurveySuite.Core
             return newPointList;
         }
 
+        /// <summary>
+        /// Converts a <see cref="Angle"/> object and distance to a <see cref="Point"/>.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <param name="distance">The distance.</param>
+        /// <param name="basePoint">The base point to calculate the new <see cref="Point"/> from.</param>
+        /// <returns>A <see cref="Point"/> containing the coordinates generated from the <see cref="Angle"/>
+        /// and distance.</returns>
         public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint)
         {
-            double dec = AngleToDecimalDegrees(angle);
+            double dec = ToDecimalDegrees(angle);
             double rad = DecimalDegreesToRadians(dec);
 
             double departure = distance * Math.Sin(rad);
@@ -287,6 +340,85 @@ namespace _3DS_CivilSurveySuite.Core
 
             // 5. Otherwise, the two line segments are not parallel but do not intersect.
             return false;
+        }
+
+        /// <summary>
+        /// Calculates a area in square metres from the specified coordinates.
+        /// </summary>
+        /// <param name="coordinates">The coordinates.</param>
+        /// <returns>A <c>double</c> containing the square metre area.</returns>
+        public static double Area(IReadOnlyList<Point> coordinates)
+        {
+            var array = coordinates.ToArray();
+
+            double area = 0;
+            var j = array.Length - 1;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                area += (coordinates[j].X + coordinates[i].X) * (coordinates[j].Y - coordinates[i].Y);
+                j = i;
+            }
+
+            return area / 2;
+        }
+
+        /// <summary>
+        /// Converts a radians value to <see cref="Angle"/> object.
+        /// </summary>
+        /// <param name="radians">The radians.</param>
+        /// <returns>A <see cref="Angle"/> representing the converted radians value.</returns>
+        public static Angle RadiansToAngle(double radians)
+        {
+            var decimalDegrees = RadiansToDecimalDegrees(radians);
+            return DecimalDegreesToAngle(decimalDegrees);
+        }
+
+        public static bool NearlyEqual(double x, double y) 
+        {
+            double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
+            return Math.Abs(x - y) <= epsilon;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Point"/> is left or right of the line
+        /// defined by the startPoint and endPoint parameters.
+        /// </summary>
+        /// <param name="multiDir"></param>
+        /// <param name="startPoint">The start point.</param>
+        /// <param name="endPoint">The end point.</param>
+        /// <param name="pickedPoint">The picked point.</param>
+        /// <returns><c>true</c> if the specified <see cref="Point"/> is left of line; otherwise, <c>false</c>.</returns>
+        /// <remarks>Returns <c>null</c> if the specified <see cref="Point"/> is on the line. </remarks>
+        public static bool? IsLeft(out int multiDir, Point startPoint, Point endPoint, Point pickedPoint)
+        {
+            double ans = (endPoint.X - startPoint.X) * (pickedPoint.Y - startPoint.Y) - 
+                         (pickedPoint.X - startPoint.X) * (endPoint.Y - startPoint.Y);
+
+            if (Math.Abs(ans) < 1.0e-8) //pickedPoint is on the line
+            {
+                multiDir = 0;
+                return null;
+            }
+
+            if (ans > 0) //pickedPoint is left of the line (CW)
+            {
+                multiDir = 1;
+                return true;
+            }
+
+            multiDir = -1;
+            return false; //Is right
+        }
+
+        public static bool IsOrdinaryAngle(Angle angle)
+        {
+            return angle.Degrees < 180 && angle.Degrees > 0;
+        }
+
+        public static bool IsOrdinaryAngle(Point startPoint, Point endPoint)
+        {
+            return startPoint.X < endPoint.X;
         }
     }
 }

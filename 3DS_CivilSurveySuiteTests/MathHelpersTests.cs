@@ -55,7 +55,7 @@ namespace _3DS_CivilSurveySuiteTests
             var angle = new Angle { Degrees = 57, Minutes = 12, Seconds = 34 };
 
             const double expectedResult = 57.2094;
-            double result = MathHelpers.AngleToDecimalDegrees(angle);
+            double result = MathHelpers.ToDecimalDegrees(angle);
 
             Assert.AreEqual(expectedResult, result, 4);
         }
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             const double expectedResult = 0;
             // ReSharper disable once ExpressionIsAlwaysNull
-            double result = MathHelpers.AngleToDecimalDegrees(angle);
+            double result = MathHelpers.ToDecimalDegrees(angle);
 
             Assert.AreEqual(expectedResult, result);
         }
@@ -175,7 +175,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var basePoint = new Point(0, 0, 0);
 
-            var results = MathHelpers.BearingAndDistanceToCoordinates(traverseObjects, basePoint);
+            var results = MathHelpers.TraverseObjectsToCoordinates(traverseObjects, basePoint);
 
             var expected = new List<Point>
             {
@@ -200,7 +200,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var basePoint = new Point(0, 0);
 
-            var results = MathHelpers.AngleAndDistanceToCoordinates(traverseAngleObject, basePoint);
+            var results = MathHelpers.TraverseAngleObjectsToCoordinates(traverseAngleObject, basePoint);
 
             var expected = new List<Point>
             {
@@ -295,6 +295,139 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(0, intersection.Y);
         }
 
+        [TestMethod]
+        public void Convert_DecimalDegrees_To_Radians_And_Back_To_DecimalDegrees()
+        {
+            var angle = new Angle(90);
+            var dec = MathHelpers.ToDecimalDegrees(angle);
+            var expectedDecimalDegrees = 90;
 
+            Assert.AreEqual(expectedDecimalDegrees, dec);
+
+            var expectedRadians = 1.570796326794897;
+            var radians = MathHelpers.DecimalDegreesToRadians(dec);
+
+            //Assert.AreEqual(expectedRadians, radians);
+            var checkEqualsRadians = MathHelpers.NearlyEqual(expectedRadians, radians);
+            Assert.AreEqual(true, checkEqualsRadians);
+
+            var convertedRadians = MathHelpers.RadiansToDecimalDegrees(radians);
+
+            var checkEquals = MathHelpers.NearlyEqual(expectedDecimalDegrees, convertedRadians);
+
+            //Assert.AreEqual(expectedDecimalDegrees, convertedRadians);
+            Assert.AreEqual(true, checkEquals);
+            
+
+            var finalAngle = MathHelpers.DecimalDegreesToAngle(Math.Round(convertedRadians, 4));
+
+            Assert.AreEqual(angle, finalAngle);
+        }
+
+        [TestMethod]
+        public void Convert_Radians_To_Angle()
+        {
+            var radians = 1.570796326794897;
+            var expectedAngle = new Angle(90);
+
+            var angle = MathHelpers.RadiansToAngle(radians);
+
+            Assert.AreEqual(expectedAngle, angle);
+        }
+
+        [TestMethod]
+        public void IsLeft_RightSide_ShouldBeFalse()
+        {
+            var startPoint = new Point(0, 0);
+            var endPoint = new Point(0, 30);
+
+            var pickedPoint = new Point(15, 15);
+
+            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+
+            Assert.AreEqual(false, side);
+        }
+
+        [TestMethod]
+        public void IsLeft_LeftSide_ShouldBeTrue()
+        {
+            var startPoint = new Point(0, 0);
+            var endPoint = new Point(0, 30);
+
+            var pickedPoint = new Point(-15, -15);
+
+            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+
+            Assert.AreEqual(true, side);
+        }
+
+        [TestMethod]
+        public void IsLeft_OnLine_ShouldBeNull()
+        {
+            var startPoint = new Point(0, 0);
+            var endPoint = new Point(0, 30);
+
+            var pickedPoint = new Point(0, 15);
+
+            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+            
+
+            Assert.AreEqual(null, side);
+        }
+
+        [TestMethod]
+        public void IsConvexAngle_ShouldBeTrue()
+        {
+            var angle = new Angle(45);
+
+            var result = MathHelpers.IsOrdinaryAngle(angle);
+
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void IsConvexAngle_ShouldBeFalse()
+        {
+            var angle = new Angle(270);
+
+            var result = MathHelpers.IsOrdinaryAngle(angle);
+
+            Assert.AreEqual(false, result);
+        }
+
+        [TestMethod]
+        public void IsOrdinaryAngle_ShouldBeTrue()
+        {
+            var startPoint = new Point(0, 0);
+            var endPoint = new Point(50, 50);
+
+            var result = MathHelpers.IsOrdinaryAngle(startPoint, endPoint);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void IsOrdinaryAngle_ShouldBeFalse()
+        {
+            var startPoint = new Point(50, 50);
+            var endPoint = new Point(0, 0);
+
+            var result = MathHelpers.IsOrdinaryAngle(startPoint, endPoint);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void ToRadians()
+        {
+            var angle = new Angle(180);
+            var expectedRadians = 3.14159265358979;
+
+            var result = angle.ToRadians();
+
+            var assertion = (MathHelpers.NearlyEqual(expectedRadians, result));
+
+            Assert.AreEqual(true, assertion);
+        }
     }
 }

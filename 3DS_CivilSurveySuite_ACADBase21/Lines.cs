@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
@@ -56,6 +57,28 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
             blockTableRecord.AppendEntity(line);
             tr.AddNewlyCreatedDBObject(line, true);
+        }
+
+        public static Line Offset(Line originalLine, double offsetDistance, Point3d pickedSide)
+        {
+            // Work out direction/angle of originalLine
+            //var anglePoints = MathHelpers.GetOrdinaryAngle(originalLine.StartPoint.ToPoint(), originalLine.EndPoint.ToPoint());
+            //var startPoint = anglePoints.Item1;
+            //var endPoint = anglePoints.Item2;
+            var startPoint = originalLine.StartPoint.ToPoint();
+            var endPoint = originalLine.EndPoint.ToPoint();
+            var pickedPoint = pickedSide.ToPoint();
+
+            MathHelpers.IsLeft(out int side, startPoint, endPoint, pickedPoint);
+
+            offsetDistance *= side;
+
+            var pointDbObjectCollection = originalLine.GetOffsetCurves(offsetDistance);
+
+            if (pointDbObjectCollection.Count < 1)
+                return null;
+
+            return pointDbObjectCollection[0] as Line;
         }
     }
 }

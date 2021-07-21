@@ -18,13 +18,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void SetProperty_Is_Failed()
         {
             var value = "Test";
             var expected = "Test";
             var vm = new TestViewModelBase();
-            vm.InvalidTestProperty = value;
+            Assert.ThrowsException<Exception>(() => vm.InvalidTestProperty = value);
         }
 
         [TestMethod]
@@ -33,6 +32,7 @@ namespace _3DS_CivilSurveySuiteTests
             var value = "Test";
             var expected = "Test";
             var vm = new TestViewModelBase() { TestProperty = "Test" };
+
             vm.TestProperty = value;
             Assert.AreEqual(expected, vm.TestProperty);
         }
@@ -51,7 +51,6 @@ namespace _3DS_CivilSurveySuiteTests
 
             public string InvalidTestProperty
             {
-                get => _testProperty;
                 set => SetProperty(ref _testProperty, value, "Invalid");
             }
         }

@@ -1,9 +1,16 @@
-﻿using Autodesk.Civil.DatabaseServices;
+﻿using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite_C3DBase21
 {
     public class CogoPoints
     {
+        public static void CreateCogoPoint(Point3d position)
+        {
+            CogoPointCollection cogoPoints = CivilActive.ActiveCivilDocument.CogoPoints;
+            cogoPoints.Add(position, true);
+        }
+
         /// <summary>
         /// Changes a <see cref="CogoPoint"/>'s Draw Description to upper case.
         /// </summary>

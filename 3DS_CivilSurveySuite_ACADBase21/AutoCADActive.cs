@@ -103,5 +103,10 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 tr.Commit();
             }
         }
+
+        public static void CreateObject<T>()
+        {
+
+        }
     }
 }

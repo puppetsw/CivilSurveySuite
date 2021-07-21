@@ -13,7 +13,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.Commands
 {
-    public static class Linework
+    public static class SurveyUtils
     {
         public static void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {

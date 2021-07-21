@@ -3,7 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
+using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite_ACADBase21
@@ -36,8 +40,9 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         /// <param name="polyline"></param>
         /// <param name="pickedPoint"></param>
         /// <returns>A double representing the angle of the polyline segment.</returns>
-        //BUG: When polyline selected is the first segement, the angle is incorrect.
-        //TODO: Make option to return readable angle (page-up like in Civil 3D).
+        //FIXED: Make option to return readable angle (page-up like in Civil 3D). //Not an option.
+        //FIXED: When polyline selected is the first segement, the angle is incorrect.
+        //FIXED: Debug this and find out what's happening at start/end of polylines.
         public static double GetPolylineSegmentAngle(Polyline polyline, Point3d pickedPoint)
         {
             var segmentStart = 0;
@@ -61,6 +66,13 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
 
             LineSegment2d segment = polyline.GetLineSegment2dAt(segmentStart);
+
+            if (!MathHelpers.IsOrdinaryAngle(segment.StartPoint.ToPoint(), segment.EndPoint.ToPoint()))
+            {
+                // if it isn't an ordinary angle, we flip it.
+                return MathHelpers.RadiansToAngle(segment.Direction.Angle).Flip().ToRadians();
+            }
+
             return segment.Direction.Angle;
         }
 
@@ -74,7 +86,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         {
             // Take the 3d Polyline and convert it to 2d.
             var polyline = new Polyline();
-            for (int j = 0; j < polyline3d.EndParam; j++)
+            for (int j = 0; j <= polyline3d.EndParam; j++)
             {
                 Point3d point = polyline3d.GetPointAtParameter(j);
                 polyline.AddVertexAt(j, new Point2d(point.X, point.Y), 0, 0, 0);
@@ -99,6 +111,37 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             pLine.Elevation = 0;
             btr.AppendEntity(pLine);
             tr.AddNewlyCreatedDBObject(pLine, true);
+        }
+
+        /// <summary>
+        /// Gets the polyline segment.
+        /// </summary>
+        /// <param name="polyline">The polyline.</param>
+        /// <param name="nestedEntity">The nested entity.</param>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="ArgumentNullException">polyline</exception>
+        /// <exception cref="ArgumentNullException">nestedEntity</exception>
+        /// TODO Edit XML Comment Template for GetPolylineSegment
+        public static int GetPolylineSegment(Polyline polyline, PromptNestedEntityResult nestedEntity)
+        {
+            if (polyline == null)
+                throw new ArgumentNullException(nameof(polyline));
+
+            if (nestedEntity == null)
+                throw new ArgumentNullException(nameof(nestedEntity));
+
+            // Transform picked point from current UCS to WCS.
+            Point3d wcsPickedPoint = nestedEntity.PickedPoint.TransformBy(AutoCADActive.Editor.CurrentUserCoordinateSystem);
+
+            // Get the closest point to picked point on the polyline.
+            // If the polyline is nested, it's needed to transform the picked point using the 
+            // the transformation matrix that is applied to the polyline by its containers.
+            var pointOnPolyline = nestedEntity.GetContainers().Length == 0 ? 
+                polyline.GetClosestPointTo(wcsPickedPoint, false) : // Not nested polyline.
+                polyline.GetClosestPointTo(wcsPickedPoint.TransformBy(nestedEntity.Transform.Inverse()), false); // Nested polyline
+
+            // Get the selected segment index.
+            return (int)polyline.GetParameterAtPoint(pointOnPolyline);
         }
     }
 }

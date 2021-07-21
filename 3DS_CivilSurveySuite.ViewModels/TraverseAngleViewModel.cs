@@ -75,7 +75,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private void GridUpdated()
         {
             CloseTraverse();
-            _viewerService.AddGraphics(MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point(0, 0)));
+            _viewerService.AddGraphics(MathHelpers.TraverseAngleObjectsToCoordinates(TraverseAngles, new Point(0, 0)));
         }
 
         private void CloseTraverse()
@@ -85,7 +85,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
                 return;
             }
 
-            var coordinates = MathHelpers.AngleAndDistanceToCoordinates(TraverseAngles, new Point(0, 0));
+            var coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(TraverseAngles, new Point(0, 0));
 
             double distance = MathHelpers.DistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
             Angle angle = MathHelpers.AngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);

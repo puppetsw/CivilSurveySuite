@@ -24,7 +24,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             AutoCADActive.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             //get coordinates based on traverse data
-            var coordinates = MathHelpers.AngleAndDistanceToCoordinates(angleList, basePoint);
+            var coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
 
             var pko = new PromptKeywordOptions("\n3DS> Accept and draw traverse?") { AppendKeywordsToMessage = true };
             pko.Keywords.Add(Keywords.Accept);
@@ -53,7 +53,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                             {
                                 case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
                                     tg.ClearTransientGraphics();
-                                    coordinates = MathHelpers.AngleAndDistanceToCoordinates(angleList, basePoint);
+                                    coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
                                     tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                                     break;
                                 case Keywords.Accept:
@@ -104,7 +104,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
                     //draw first transient traverse
-                    var coordinates = MathHelpers.BearingAndDistanceToCoordinates(traverseList, basePoint);
+                    var coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
 
                     tg.ClearTransientGraphics();
                     //draw first transient traverse
@@ -121,7 +121,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                             {
                                 case "Redraw": //if redraw update the coordinates clear transients and redraw
                                     tg.ClearTransientGraphics();
-                                    coordinates = MathHelpers.BearingAndDistanceToCoordinates(traverseList, basePoint);
+                                    coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
                                     tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
                                     break;
                                 case "Accept":

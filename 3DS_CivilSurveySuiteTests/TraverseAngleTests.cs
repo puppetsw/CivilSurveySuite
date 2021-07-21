@@ -80,7 +80,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 30, Bearing = 90 }
             };
 
-            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
+            var newPointList = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -102,7 +102,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 111.23, Bearing = 98.40, RotationDirection = AngleRotationDirection.Positive }
             };
 
-            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
+            var newPointList = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -129,7 +129,7 @@ namespace _3DS_CivilSurveySuiteTests
                 //new TraverseAngleItem { Distance = 105.66, InternalAngle = 168.58 }
             };
 
-            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
+            var newPointList = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -138,7 +138,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(-109.9599, 77.1108),
                 new Point(-109.8494, 88.6203),
                 new Point(-111.8904, 126.7157),
-                new Point(164.5528, 168.277)
+                new Point(164.5528, 168.2771)
             };
 
             CollectionAssert.AreEqual(expectedList, newPointList);
@@ -155,7 +155,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 8.94, Bearing = 78.17, },
             };
 
-            var newPointList = MathHelpers.AngleAndDistanceToCoordinates(angleList, new Point(0, 0));
+            var newPointList = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {

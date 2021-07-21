@@ -9,7 +9,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -17,84 +18,38 @@ namespace _3DS_CivilSurveySuiteTests
     [TestClass]
     public class ClosureTests
     {
-        private struct Coordinate
-        {
-            public double X;
-            public double Y;
-        }
-
         [TestMethod]
         public void Test2dArea1()
         {
             const double expectedArea = 300;
-            var coords = new List<Coordinate>
+            var coords = new List<Point>
             {
-                new Coordinate() { X = 0, Y = 0 },
-                new Coordinate() { X = 0, Y = 30 },
-                new Coordinate() { X = 10, Y = 30 },
-                new Coordinate() { X = 10, Y = 0 }
+                new Point(0, 0),
+                new Point(0, 30),
+                new Point(10, 30),
+                new Point(10, 0)
             };
 
-            var area = Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].X - p.X) * (coords[i + 1].Y + p.Y)).Sum() / 2);
+            var area = MathHelpers.Area(coords);
             Assert.AreEqual(expectedArea, area);
         }
 
         [TestMethod]
         public void Test2dArea2()
         {
-            const double expectedArea = 300;
-            var coords = new List<Coordinate>
-            {
-                new Coordinate() { X = 0, Y = 0 },
-                new Coordinate() { X = 0, Y = 10 },
-                new Coordinate() { X = 30, Y = 10 },
-                new Coordinate() { X = 30, Y = 0 }
-            };
-
-            var area = CalculateArea(coords);
-            Assert.AreEqual(expectedArea, area);
-        }
-
-        [TestMethod]
-        public void Test2dArea3()
-        {
             const double expectedArea = 839.8114;
-            var coords = new List<Coordinate>
+            var coords = new List<Point>
             {
-                new Coordinate() { X = 0, Y = 0 },
-                new Coordinate() { X = -4.2429, Y = 23.4555 },
-                new Coordinate() { X = 10.1496, Y = 37.6785 },
-                new Coordinate() { X = 27.9531, Y = 22.7901 },
-                new Coordinate() { X = 16.1396, Y = -6.4877 },
-                new Coordinate() { X = 7.9866, Y = 2.3289 }
+                new Point(0,0),
+                new Point(-4.2429, 23.4555),
+                new Point(10.1496, 37.6785),
+                new Point(27.9531, 22.7901),
+                new Point(16.1396, -6.4877),
+                new Point(7.9866, 2.3289)
             };
 
-            var area = PolygonArea(coords);
+            var area = MathHelpers.Area(coords);
             Assert.AreEqual(expectedArea, Math.Round(area, 4));
-        }
-
-        private static double PolygonArea(List<Coordinate> polygon)
-        {
-            var array = polygon.ToArray();
-
-            double area = 0;
-            var j = array.Length - 1;
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                area += (polygon[j].X + polygon[i].X) * (polygon[j].Y - polygon[i].Y);
-                j = i;
-            }
-
-            return area / 2;
-        }
-
-        private static double CalculateArea(IReadOnlyList<Coordinate> coords)
-        {
-            if (coords.Count < 3)
-                return -1;
-
-            return Math.Abs(coords.Take(coords.Count - 1).Select((p, i) => (coords[i + 1].X - p.X) * (coords[i + 1].Y + p.Y)).Sum() / 2);
         }
     }
 }
