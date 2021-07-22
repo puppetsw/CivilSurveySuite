@@ -5,7 +5,6 @@
 
 using System;
 using _3DS_CivilSurveySuite.Core;
-using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;

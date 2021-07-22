@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 
-namespace _3DS_CivilSurveySuite_ACADBase21
+namespace _3DS_CivilSurveySuite.Commands
 {
     /// <summary>
     /// Traverse utility with command line input
     /// </summary>
-    public class Traverse
+    public class TraverseUtils
     {
         public static void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList)
         {

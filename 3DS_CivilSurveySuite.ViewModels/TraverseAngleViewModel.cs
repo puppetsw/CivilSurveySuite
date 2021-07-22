@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.ViewModels.Helpers;
-using _3DS_CivilSurveySuite_ACADBase21;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -128,7 +128,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             else
                 return;
 
-            Traverse.DrawTraverse(TraverseAngles);
+            TraverseUtils.DrawTraverse(TraverseAngles);
 
             _commandRunning = false;
         }

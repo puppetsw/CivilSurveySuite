@@ -62,14 +62,14 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         public static Line Offset(Line originalLine, double offsetDistance, Point3d pickedSide)
         {
             // Work out direction/angle of originalLine
-            //var anglePoints = MathHelpers.GetOrdinaryAngle(originalLine.StartPoint.ToPoint(), originalLine.EndPoint.ToPoint());
-            //var startPoint = anglePoints.Item1;
-            //var endPoint = anglePoints.Item2;
             var startPoint = originalLine.StartPoint.ToPoint();
             var endPoint = originalLine.EndPoint.ToPoint();
             var pickedPoint = pickedSide.ToPoint();
 
-            MathHelpers.IsLeft(out int side, startPoint, endPoint, pickedPoint);
+            int side = MathHelpers.IsLeft(startPoint, endPoint, pickedPoint);
+
+            if (side == 0) // If pickedSide is on the line exit.
+                return null;
 
             offsetDistance *= side;
 

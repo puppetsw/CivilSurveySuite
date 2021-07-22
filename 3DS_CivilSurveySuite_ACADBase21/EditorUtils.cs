@@ -17,20 +17,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 {
     public static class EditorUtils
     {
-        public static Point3d? GetBasePoint3d()
-        {
-            Utils.SetFocusToDwgView();
-            var ppo = new PromptPointOptions("\n3DS> Select a base point: ");
-            var ppr = AutoCADActive.Editor.GetPoint(ppo);
-
-            if (ppr.Status != PromptStatus.OK)
-            {
-                return null;
-            }
-            
-            return ppr.Value;
-        }
-
         /// <summary>
         /// Gets a base <see cref="Point3d"/> from user input.
         /// </summary>
@@ -49,6 +35,20 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
             basePoint = ppr.Value;
             return true;
+        }
+
+        public static Point3d? GetBasePoint3d()
+        {
+            Utils.SetFocusToDwgView();
+            var ppo = new PromptPointOptions("\n3DS> Select a base point: ");
+            var ppr = AutoCADActive.Editor.GetPoint(ppo);
+
+            if (ppr.Status != PromptStatus.OK)
+            {
+                return null;
+            }
+            
+            return ppr.Value;
         }
 
         public static Point2d? GetBasePoint2d()

@@ -48,8 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SurveyUtils.cs" />
-    <Compile Include="CogoPointUtils.cs" />
+    <Compile Include="CogoPointCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraverseUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">

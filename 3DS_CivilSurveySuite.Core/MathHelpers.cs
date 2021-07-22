@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.Core
@@ -374,6 +373,12 @@ namespace _3DS_CivilSurveySuite.Core
             return DecimalDegreesToAngle(decimalDegrees);
         }
 
+        /// <summary>
+        /// Does a floating point comparison.
+        /// </summary>
+        /// <param name="x">The first comparison number.</param>
+        /// <param name="y">The second comparison number.</param>
+        /// <returns><c>true</c> if the numbers are nearly equal, <c>false</c> otherwise.</returns>
         public static bool NearlyEqual(double x, double y) 
         {
             double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
@@ -384,38 +389,50 @@ namespace _3DS_CivilSurveySuite.Core
         /// Determines whether the specified <see cref="Point"/> is left or right of the line
         /// defined by the startPoint and endPoint parameters.
         /// </summary>
-        /// <param name="multiDir"></param>
         /// <param name="startPoint">The start point.</param>
         /// <param name="endPoint">The end point.</param>
         /// <param name="pickedPoint">The picked point.</param>
-        /// <returns><c>true</c> if the specified <see cref="Point"/> is left of line; otherwise, <c>false</c>.</returns>
-        /// <remarks>Returns <c>null</c> if the specified <see cref="Point"/> is on the line. </remarks>
-        public static bool? IsLeft(out int multiDir, Point startPoint, Point endPoint, Point pickedPoint)
+        /// <returns>A int representing which side of the line the pickedPoint is. Which can be
+        /// multiplied by a distance for example.
+        /// <para>Returns <c>0</c> if the <c>pickedPoint</c> is on the line.</para>
+        /// <para>Returns <c>-1</c> if the <c>pickedPoint</c> is to the right of the line.</para>
+        /// <para>Returns <c>1</c> if the <c>pickedPoint</c> is to the left of the line.</para></returns>
+        public static int IsLeft(Point startPoint, Point endPoint, Point pickedPoint)
         {
-            double ans = (endPoint.X - startPoint.X) * (pickedPoint.Y - startPoint.Y) - 
+            double side = (endPoint.X - startPoint.X) * (pickedPoint.Y - startPoint.Y) - 
                          (pickedPoint.X - startPoint.X) * (endPoint.Y - startPoint.Y);
 
-            if (Math.Abs(ans) < 1.0e-8) //pickedPoint is on the line
+            if (Math.Abs(side) < 1.0e-8)
             {
-                multiDir = 0;
-                return null;
+                return 0; //pickedPoint is on the line
             }
 
-            if (ans > 0) //pickedPoint is left of the line (CW)
+            if (side > 0)
             {
-                multiDir = 1;
-                return true;
+                return 1; //pickedPoint is left of the line (CW)
             }
 
-            multiDir = -1;
-            return false; //Is right
+            return -1; //Is right.
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="Angle"/> is an ordinary angle.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <returns><c>true</c> if the specified <see cref="Angle"/> is within the degree range
+        /// of (360)0-180°; otherwise, <c>false</c>.</returns>
         public static bool IsOrdinaryAngle(Angle angle)
         {
             return angle.Degrees < 180 && angle.Degrees > 0;
         }
 
+        /// <summary>
+        /// Determines whether the specified angle determined by the <see cref="Point"/>s is an ordinary angle.
+        /// </summary>
+        /// <param name="startPoint">The start point.</param>
+        /// <param name="endPoint">The end point.</param>
+        /// <returns><c>true</c> if the specified angle is within the degree range
+        /// of (360)0-180°; otherwise, <c>false</c>.</returns>
         public static bool IsOrdinaryAngle(Point startPoint, Point endPoint)
         {
             return startPoint.X < endPoint.X;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.ViewModels.Helpers;
-using _3DS_CivilSurveySuite_ACADBase21;
 
 //TODO: Add a button to select the bearing from an existing line, pline segment.
 namespace _3DS_CivilSurveySuite.ViewModels
@@ -115,7 +115,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             else
                 return; //exit if command running
 
-            Traverse.DrawTraverse(TraverseItems);
+            TraverseUtils.DrawTraverse(TraverseItems);
 
             _commandRunning = false;
         }

@@ -336,16 +336,16 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void IsLeft_RightSide_ShouldBeFalse()
+        public void IsLeft_RightSide_ShouldBe1()
         {
             var startPoint = new Point(0, 0);
             var endPoint = new Point(0, 30);
 
             var pickedPoint = new Point(15, 15);
 
-            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+            var side = MathHelpers.IsLeft(startPoint, endPoint, pickedPoint);
 
-            Assert.AreEqual(false, side);
+            Assert.AreEqual(-1, side);
         }
 
         [TestMethod]
@@ -356,23 +356,23 @@ namespace _3DS_CivilSurveySuiteTests
 
             var pickedPoint = new Point(-15, -15);
 
-            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+            var side = MathHelpers.IsLeft(startPoint, endPoint, pickedPoint);
 
-            Assert.AreEqual(true, side);
+            Assert.AreEqual(1, side);
         }
 
         [TestMethod]
-        public void IsLeft_OnLine_ShouldBeNull()
+        public void IsLeft_OnLine_ShouldBe0()
         {
             var startPoint = new Point(0, 0);
             var endPoint = new Point(0, 30);
 
             var pickedPoint = new Point(0, 15);
 
-            var side = MathHelpers.IsLeft(out int dir, startPoint, endPoint, pickedPoint);
+            var side = MathHelpers.IsLeft(startPoint, endPoint, pickedPoint);
             
 
-            Assert.AreEqual(null, side);
+            Assert.AreEqual(0, side);
         }
 
         [TestMethod]
