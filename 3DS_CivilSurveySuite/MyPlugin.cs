@@ -7,10 +7,10 @@ using System.Reflection;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Plugin))]
+[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.MyPlugin))]
 namespace _3DS_CivilSurveySuite
 {
-    public class Plugin : IExtensionApplication
+    public class MyPlugin : IExtensionApplication
     {
         private Palettes _palettes;
 
@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuite
 
             //HACK: Force Behaviors assembly to load.
             Assembly.Load("Microsoft.Xaml.Behaviors");
-            Assembly.Load("3DS_CivilSurveySuite.Commands");
+            //Assembly.Load("3DS_CivilSurveySuite.Commands");
 
             _palettes = new Palettes();
             _palettes.HookupEvents();

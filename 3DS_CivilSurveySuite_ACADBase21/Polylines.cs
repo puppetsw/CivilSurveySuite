@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite_ACADBase21
 {
-    public class Polylines
+    public static class Polylines
     {
         public static Polyline Square(Point2d basePoint, double squareSize, int lineWidth = 0)
         {
@@ -40,7 +40,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         /// <param name="pickedPoint"></param>
         /// <returns>A double representing the angle of the polyline segment.</returns>
         //FIXED: Make option to return readable angle (page-up like in Civil 3D). //Not an option.
-        //FIXED: When polyline selected is the first segement, the angle is incorrect.
+        //FIXED: When polyline selected is the first segment, the angle is incorrect.
         //FIXED: Debug this and find out what's happening at start/end of polylines.
         public static double GetPolylineSegmentAngle(Polyline polyline, Point3d pickedPoint)
         {
@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         }
 
         /// <summary>
-        /// Gets the polyline segment.
+        /// Gets the index of the selected polyline segment.
         /// </summary>
         /// <param name="polyline">The polyline.</param>
         /// <param name="nestedEntity">The nested entity.</param>
@@ -141,6 +141,40 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
             // Get the selected segment index.
             return (int)polyline.GetParameterAtPoint(pointOnPolyline);
+        }
+
+        /// <summary>
+        /// Gets the line segment from polyline.
+        /// </summary>
+        /// <param name="polyline">The polyline.</param>
+        /// <param name="pickedPoint">The picked point.</param>
+        /// <returns>Line.</returns>
+        /// TODO Edit XML Comment Template for GetLineSegmentFromPolyline
+        public static Line GetLineSegmentFromPolyline(this Polyline polyline, Point3d pickedPoint)
+        {
+            var segmentStart = 0;
+
+            Point3d closestPoint = polyline.GetClosestPointTo(pickedPoint, false);
+            double len = polyline.GetDistAtPoint(closestPoint);
+
+            for (var i = 1; i < polyline.NumberOfVertices - 1; i++)
+            {
+                Point3d pt1 = polyline.GetPoint3dAt(i);
+                double l1 = polyline.GetDistAtPoint(pt1);
+
+                Point3d pt2 = polyline.GetPoint3dAt(i + 1);
+                double l2 = polyline.GetDistAtPoint(pt2);
+
+                if (len > l1 && len < l2)
+                {
+                    segmentStart = i;
+                    break;
+                }
+            }
+
+            var segment = polyline.GetLineSegmentAt(segmentStart);
+            var line = new Line(segment.StartPoint, segment.EndPoint);
+            return line;
         }
     }
 }

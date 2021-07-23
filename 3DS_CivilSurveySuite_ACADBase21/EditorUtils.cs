@@ -91,6 +91,13 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             return AutoCADActive.Editor.GetNestedEntity(pneo);
         }
 
+        public static bool GetNestedEntity(out PromptNestedEntityResult entityResult, string message)
+        {
+            var pneo = new PromptNestedEntityOptions(message) { AllowNone = false };
+            entityResult = AutoCADActive.Editor.GetNestedEntity(pneo);
+            return entityResult.Status == PromptStatus.OK;
+        }
+
         public static bool GetEntity(out ObjectId objectId, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
             var peo = new PromptEntityOptions(addMessage);
@@ -223,7 +230,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         /// <param name="basePoint">Optional base point parameter. If null, will prompt
         /// the user to select a base point.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool GetDistance(out double distance, string message, Point3d? basePoint = null)
+        public static bool GetDistance(out double distance, string message, Point3d? basePoint)
         {
             if (basePoint == null)
                 basePoint = GetBasePoint3d();
@@ -244,6 +251,55 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             distance = pdrDistance.Value;
 
             return true;
+        }
+
+        public static bool GetDistance(out double distance, string message)
+        {
+            distance = double.NaN;
+
+            var pdo = new PromptDistanceOptions(message) { Only2d = true, UseDashedLine = true };
+
+            PromptDoubleResult pdrDistance = AutoCADActive.ActiveDocument.Editor.GetDistance(pdo);
+
+            if (pdrDistance.Status != PromptStatus.OK)
+                return false;
+
+            distance = pdrDistance.Value;
+
+            return true;
+        }
+
+        public static bool IsType(ObjectId objectId, Type type)
+        {
+            RXClass classType = RXObject.GetClass(type);
+            return objectId.ObjectClass.IsDerivedFrom(classType);
+        }
+
+        public static bool IsType<T>(this ObjectId objectId)
+        {
+            RXClass classType = RXObject.GetClass(typeof(T));
+            return objectId.ObjectClass.IsDerivedFrom(classType);
+        }
+
+        public static bool IsType(this ObjectId objectId, IEnumerable<Type> types)
+        {
+            foreach (Type type in types)
+            {
+                if (IsType(objectId, type))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsOfType(ObjectId objectId, IEnumerable<Type> types)
+        {
+            foreach (Type type in types)
+            {
+                if (IsType(objectId, type))
+                    return true;
+            }
+            return false;
         }
     }
 }

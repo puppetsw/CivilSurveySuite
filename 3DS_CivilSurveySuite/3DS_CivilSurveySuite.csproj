@@ -59,11 +59,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcadPointCommands.cs" />
+    <Compile Include="CogoPointCommands.cs" />
     <Compile Include="Palettes.cs" />
     <Compile Include="ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plugin.cs" />
+    <Compile Include="MyPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -79,6 +81,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Commands\3DS_CivilSurveySuite.Commands.csproj">
+      <Project>{19874A28-51EE-4732-AE4E-74B88657F6C6}</Project>
+      <Name>3DS_CivilSurveySuite.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
       <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>

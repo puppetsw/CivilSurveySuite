@@ -11,5 +11,6 @@ namespace _3DS_CivilSurveySuite.Core
         public const string Cancel = "Cancel";
         public const string Redraw = "Redraw";
         public const string Flip = "Flip";
+        public const string None = "";
     }
 }

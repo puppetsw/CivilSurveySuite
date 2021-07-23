@@ -18,6 +18,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
         public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 4);
 
+        public Color HighlightColor { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
+
         public void DrawTransientTraverse(IReadOnlyList<Point2d> coordinates)
         {
             try
@@ -68,7 +70,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
         }
 
-        public void DrawTransientPoint(Point3d point, double pointSize = 0.1)
+        public void DrawTransientPoint(Point3d point, double pointSize = 0.5)
         {
             try
             {
@@ -79,11 +81,12 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
                 var tm = TransientManager.CurrentTransientManager;
                 var intCol = new IntegerCollection();
-
+                
                 var marker = new Circle(point, Vector3d.ZAxis, pointSize)
                 {
                     Color = Color
                 };
+
                 _transientGraphics.Add(marker);
 
                 tm.AddTransient(marker, TransientDrawingMode.Highlight, 128, intCol);
@@ -113,6 +116,30 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
                 _transientGraphics.Add(ln);
                 tm.AddTransient(ln, TransientDrawingMode.Highlight, 128, intCol);
+            }
+            catch (Exception e)
+            {
+                AutoCADActive.Editor.WriteMessage(e.Message);
+            }
+        }
+
+        public void HighlightEntity<T>(T entity) where T : Entity
+        {
+            try
+            {
+                if (_transientGraphics == null)
+                {
+                    _transientGraphics = new DBObjectCollection();
+                }
+
+                var tm = TransientManager.CurrentTransientManager;
+                var intCol = new IntegerCollection();
+
+                var clone = entity.Clone() as T;
+                clone.Color = HighlightColor;
+
+                _transientGraphics.Add(clone);
+                tm.AddTransient(clone, TransientDrawingMode.Highlight, 128, intCol);
             }
             catch (Exception e)
             {

@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite_ACADBase21
 {
-    public class Lines
+    public static class Lines
     {
         public static void DrawLines(Transaction tr, IReadOnlyList<Point3d> coordinates)
         {
@@ -79,6 +79,19 @@ namespace _3DS_CivilSurveySuite_ACADBase21
                 return null;
 
             return pointDbObjectCollection[0] as Line;
+        }
+
+        public static Point3d GetClosestEndPoint(this Line line, Point3d pickedPoint)
+        {
+            Point3d closetPoint = line.GetClosestPointTo(pickedPoint, false);
+            double param = Math.Round(line.GetParameterAtPoint(closetPoint));
+
+            if (param < line.Length / 2)
+            {
+                return line.StartPoint;
+            }
+
+            return line.EndPoint;
         }
     }
 }
