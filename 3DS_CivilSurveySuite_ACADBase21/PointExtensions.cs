@@ -12,25 +12,17 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 {
     public static class PointExtensions
     {
-        public static Point2d ToPoint2d(this Point point)
-        {
-            return new Point2d(point.X, point.Y);
-        }
+        public static Point2d ToPoint2d(this Point point) => new Point2d(point.X, point.Y);
 
-        public static Point3d ToPoint3d(this Point point)
-        {
-            return new Point3d(point.X, point.Y, point.Z);
-        }
+        public static Point3d ToPoint3d(this Point point) => new Point3d(point.X, point.Y, point.Z);
 
-        public static Point ToPoint(this Point2d point)
-        {
-            return new Point(point.X, point.Y);
-        }
+        public static Point2d ToPoint2d(this Point3d point) => new Point2d(point.X, point.Y);
 
-        public static Point ToPoint(this Point3d point)
-        {
-            return new Point(point.X, point.Y, point.Z);
-        }
+        public static Point3d ToPoint3d(this Point2d point, double elevation = 0) => new Point3d(point.X, point.Y, elevation);
+
+        public static Point ToPoint(this Point2d point) => new Point(point.X, point.Y);
+
+        public static Point ToPoint(this Point3d point) => new Point(point.X, point.Y, point.Z);
 
         public static List<Point2d> ToListOfPoint2d(this IEnumerable<Point> pointList)
         {
@@ -40,6 +32,16 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         public static List<Point3d> ToListOfPoint3d(this IEnumerable<Point> pointList)
         {
             return pointList.Select(point => new Point3d(point.X, point.Y, point.Z)).ToList();
+        }
+
+        public static List<Point2d> ToListOfPoint2d(this IEnumerable<Point3d> points)
+        {
+            return points.Select(point => new Point2d(point.X, point.Y)).ToList();
+        }
+
+        public static List<Point3d> ToListOfPoint3d(this IEnumerable<Point2d> points, double elevation = 0)
+        {
+            return points.Select(point => new Point3d(point.X, point.Y, elevation)).ToList();
         }
 
     }

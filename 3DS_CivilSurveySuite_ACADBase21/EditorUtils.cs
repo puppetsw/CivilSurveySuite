@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Runtime;
 
@@ -292,14 +294,26 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             return false;
         }
 
-        public static bool IsOfType(ObjectId objectId, IEnumerable<Type> types)
+        public static void ZoomToWindow(Point3d minPoint, Point3d maxPoint)
         {
-            foreach (Type type in types)
+            using (ViewTableRecord view = AutoCADActive.Editor.GetCurrentView())
             {
-                if (IsType(objectId, type))
-                    return true;
+                view.Width = maxPoint.X - minPoint.X;
+                view.Height = maxPoint.Y - minPoint.Y;
+                view.CenterPoint = new Point2d(minPoint.X + view.Width / 2, minPoint.Y + view.Height / 2);
+
+                AutoCADActive.Editor.SetCurrentView(view);
             }
-            return false;
+        }
+
+        public static void ZoomToEntity(Entity entity)
+        {
+            ZoomToWindow(entity.GeometricExtents.MinPoint, entity.GeometricExtents.MaxPoint);
+        }
+
+        public static void ZoomExtents()
+        {
+            ZoomToWindow(AutoCADActive.ActiveDatabase.Extmin, AutoCADActive.ActiveDatabase.Extmax);
         }
     }
 }

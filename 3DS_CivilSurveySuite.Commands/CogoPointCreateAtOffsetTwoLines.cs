@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuite.Commands
             if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult secondLineResult, "\n3DS> Select second line or polyline to offset: "))
                 return;
 
-            if (!EditorUtils.IsOfType(secondLineResult.ObjectId, new[] { typeof(Polyline), typeof(Line) }))
+            if (!secondLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
                 return;
 
             secondLineId = secondLineResult.ObjectId;

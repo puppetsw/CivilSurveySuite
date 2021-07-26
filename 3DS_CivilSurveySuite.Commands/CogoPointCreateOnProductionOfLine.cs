@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.Commands
                 if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult lineResult, "\n3DS> Select line or polyline: "))
                     return;
 
-                if (!EditorUtils.IsOfType(lineResult.ObjectId, new[] { typeof(Polyline), typeof(Line) }))
+                if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
                     return;
 
                 Point3d basePoint = default;
@@ -67,8 +67,8 @@ namespace _3DS_CivilSurveySuite.Commands
 
                     using (var graphics = new TransientGraphics())
                     {
-                        graphics.DrawTransientPoint(point.ToPoint3d());
-                        graphics.DrawTransientLine(basePoint, point.ToPoint3d());
+                        graphics.DrawCircle(point.ToPoint3d());
+                        graphics.DrawLine(basePoint, point.ToPoint3d());
 
                         var cancelled = false;
                         PromptResult prResult;
@@ -93,9 +93,9 @@ namespace _3DS_CivilSurveySuite.Commands
                                 case Keywords.Flip:
                                     angle = angle.Flip();
                                     point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
-                                    graphics.ClearTransientGraphics();
-                                    graphics.DrawTransientPoint(point.ToPoint3d());
-                                    graphics.DrawTransientLine(basePoint, point.ToPoint3d());
+                                    graphics.ClearGraphics();
+                                    graphics.DrawCircle(point.ToPoint3d());
+                                    graphics.DrawLine(basePoint, point.ToPoint3d());
                                     break;
                             }
                         } while (prResult.Status != PromptStatus.Cancel &&

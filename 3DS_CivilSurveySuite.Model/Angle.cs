@@ -5,6 +5,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Policy;
 
 namespace _3DS_CivilSurveySuite.Model
 {
@@ -166,7 +167,11 @@ namespace _3DS_CivilSurveySuite.Model
 
         public static Angle operator +(Angle angle1, Angle angle2) => Add(angle1, angle2, true);
 
+        public static Angle operator +(Angle angle1, int degrees) => angle1 + new Angle(degrees);
+
         public static Angle operator -(Angle angle1, Angle angle2) => Subtract(angle1, angle2, true);
+
+        public static Angle operator -(Angle angle1, int degrees) => angle1 - new Angle(degrees);
 
         ///<inheritdoc/>
         public override string ToString()

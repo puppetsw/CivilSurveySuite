@@ -5,13 +5,14 @@ using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite_ACADBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.GraphicsInterface;
 
 namespace _3DS_CivilSurveySuite.Commands
 {
     /// <summary>
     /// Traverse utility with command line input
     /// </summary>
-    public class TraverseUtils
+    public static class TraverseUtils
     {
         public static void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList)
         {
@@ -25,24 +26,23 @@ namespace _3DS_CivilSurveySuite.Commands
             AutoCADActive.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
 
             //get coordinates based on traverse data
-            var coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
 
             var pko = new PromptKeywordOptions("\n3DS> Accept and draw traverse?") { AppendKeywordsToMessage = true };
             pko.Keywords.Add(Keywords.Accept);
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
-            var tg = new TransientGraphics();
+            var tg = new TransientGraphics(TransientDrawingMode.Highlight);
 
             try
             {
                 // Lock ACAD document and start transaction as we are running from Palette.
                 using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
+                    var coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
+
                     // Draw Transient Graphics of Traverse.
-                    tg.ClearTransientGraphics();
-                    // Draw first transient traverse
-                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                    DrawTraverseGraphics(tg, coordinates);
                     var cancelled = false;
                     PromptResult prResult;
                     do
@@ -53,9 +53,8 @@ namespace _3DS_CivilSurveySuite.Commands
                             switch (prResult.StringResult)
                             {
                                 case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
-                                    tg.ClearTransientGraphics();
                                     coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
-                                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                                    DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case Keywords.Accept:
                                     Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
@@ -77,7 +76,7 @@ namespace _3DS_CivilSurveySuite.Commands
             }
             finally
             {
-                tg.ClearTransientGraphics();
+                tg.ClearGraphics();
             }
         }
 
@@ -97,19 +96,17 @@ namespace _3DS_CivilSurveySuite.Commands
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
-            var tg = new TransientGraphics();
+            var tg = new TransientGraphics(TransientDrawingMode.Highlight);
 
             try
             {
                 //lock acad document and start transaction
                 using (Transaction tr = AutoCADActive.StartLockedTransaction())
                 {
-                    //draw first transient traverse
                     var coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
 
-                    tg.ClearTransientGraphics();
                     //draw first transient traverse
-                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                    DrawTraverseGraphics(tg, coordinates);
 
                     var cancelled = false;
                     PromptResult prResult;
@@ -121,9 +118,8 @@ namespace _3DS_CivilSurveySuite.Commands
                             switch (prResult.StringResult)
                             {
                                 case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                    tg.ClearTransientGraphics();
                                     coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
-                                    tg.DrawTransientTraverse(coordinates.ToListOfPoint2d());
+                                    DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case "Accept":
                                     Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
@@ -145,7 +141,30 @@ namespace _3DS_CivilSurveySuite.Commands
             }
             finally
             {
-                tg.ClearTransientGraphics();
+                tg.ClearGraphics();
+            }
+        }
+
+        private static void DrawTraverseGraphics(TransientGraphics graphics, IReadOnlyList<Point> coordinates)
+        {
+            // Clear existing graphics
+            graphics.ClearGraphics();
+
+            var points = coordinates.ToListOfPoint3d();
+
+            graphics.DrawLines(points);
+
+            // If the list count is greater than 2, we show the boxes
+            if (coordinates.Count >= 2)
+            {
+                var endPoint = coordinates[coordinates.Count - 1].ToPoint3d();
+                var startPoint = coordinates[0].ToPoint3d();
+
+                graphics.DrawBox(endPoint, 4);
+                graphics.DrawX(endPoint, 4);
+
+                graphics.DrawBox(startPoint, 4);
+                graphics.DrawX(startPoint, 4);
             }
         }
     }

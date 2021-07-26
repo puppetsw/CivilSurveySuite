@@ -41,6 +41,7 @@
     <Compile Include="MathHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringHelpers.cs" />
+    <Compile Include="SystemVariables.cs" />
     <Compile Include="XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>

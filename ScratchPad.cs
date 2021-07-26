@@ -143,3 +143,145 @@ public void AddRectangle()
 
 
 } //End AddRectangle
+
+
+
+public static void ZoomTo()
+    {
+      SupExtEditor.ActEdt().SetCommandHelp();
+      using (Transaction transaction = SupExtDatabase.ActDbs().TransactionManager.StartTransaction())
+      {
+        SupExtEditor.ActEdt().EchoString("DS> Collecting Points ... ", false);
+        System.Collections.Generic.List<SurveyPoint> all = Points.GetAll();
+        SupExtEditor.ActEdt().EchoString("DS> Collecting Points ... Done.");
+        if (all.Count > 0)
+        {
+          bool flag = false;
+          while (!flag)
+          {
+            PromptStringOptions promptStringOptions = new PromptStringOptions("\r\nDS> Point ID: ");
+            PromptResult promptResult = SupExtEditor.ActEdt().GetString(promptStringOptions);
+            if (promptResult.Status == 5100)
+            {
+              if (promptResult.StringResult.Length > 0)
+              {
+                if (Operators.CompareString(promptResult.StringResult, "*", false) == 0)
+                {
+                  Extents3d extents3d;
+                  // ISSUE: explicit constructor call
+                  ((Extents3d) ref extents3d).\u002Ector();
+                  try
+                  {
+                    foreach (SurveyPoint surveyPoint in all)
+                      ((Extents3d) ref extents3d).AddPoint(surveyPoint.Location);
+                  }
+                  finally
+                  {
+                    System.Collections.Generic.List<SurveyPoint>.Enumerator enumerator;
+                    enumerator.Dispose();
+                  }
+                  SupExtEditor.ActEdt().ZoomWindow(((Extents3d) ref extents3d).MinPoint, ((Extents3d) ref extents3d).MaxPoint, 0.05f);
+                }
+                else
+                {
+                  SurveyPoint surveyPoint1 = new SurveyPoint();
+                  try
+                  {
+                    foreach (SurveyPoint surveyPoint2 in all)
+                    {
+                      if (surveyPoint2.Point.Equals(promptResult.StringResult))
+                      {
+                        surveyPoint1 = surveyPoint2;
+                        break;
+                      }
+                    }
+                  }
+                  finally
+                  {
+                    System.Collections.Generic.List<SurveyPoint>.Enumerator enumerator;
+                    enumerator.Dispose();
+                  }
+                  if (surveyPoint1.IsValid)
+                  {
+                    SupExtEditor.ActEdt().ZoomCenter(surveyPoint1.Location, Conversions.ToDouble(Application.GetSystemVariable("VIEWSIZE")));
+                    SupExtEditor.ActEdt().EchoString(string.Format("Point {0}  N:{1}  E:{2}  Z:{3}  D:{4}", (object) surveyPoint1.Point, (object) surveyPoint1.Northing, (object) surveyPoint1.Easting, (object) surveyPoint1.Elevation, (object) surveyPoint1.RawDescription));
+                  }
+                  else
+                    SupExtEditor.ActEdt().EchoString("DS> Point (" + promptResult.StringResult + ") Not Found !!!");
+                }
+              }
+              else
+                flag = true;
+            }
+            else
+              flag = true;
+          }
+        }
+        else
+          SupExtEditor.ActEdt().EchoString("DS> No Points Found in Drawing !!!");
+        transaction.Commit();
+      }
+    }
+
+ public static void ZoomObjects()
+        {
+            Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Editor ed = doc.Editor;
+            Transaction tr = doc.TransactionManager.StartTransaction();
+
+            using (tr)
+            {
+                try
+                {
+                    PromptSelectionResult sres = ed.GetSelection();
+
+                    if (sres.Status != PromptStatus.OK) return;
+
+                    ObjectId[] ids = sres.Value.GetObjectIds();
+
+                    if (ids.Length == 0) return;
+
+                   int tile = Convert.ToInt32(Application.GetSystemVariable("CVPORT"));
+                    
+                    var ents = from id in ids
+                               where id != null
+                               select tr.GetObject(id, OpenMode.ForRead);
+
+                    var minx = (from n in ents
+                                 where n != null
+                                 select ((Entity)n).GeometricExtents.MinPoint[0]).Min();
+
+                    var maxx = (from n in ents
+                                where n != null
+                                select ((Entity)n).GeometricExtents.MinPoint[0]).Max();
+
+                    var miny = (from n in ents
+                                where n != null
+                                select ((Entity)n).GeometricExtents.MinPoint[1]).Min();
+                    var maxy = (from n in ents
+                                where n != null
+                                select ((Entity)n).GeometricExtents.MinPoint[1]).Max();
+
+
+                    Autodesk.AutoCAD.GraphicsSystem.Manager graph = doc.GraphicsManager;
+
+                    using (graph)
+                    {
+                        Autodesk.AutoCAD.GraphicsSystem.View view = graph.GetGsView(tile, true);
+
+                    using (view)
+                    {                        
+                        view.ZoomExtents(new Point3d(minx,miny,0),new Point3d(maxx,maxy,0));
+                        view.Zoom(0.8);//<--optional 
+                        graph.SetViewportFromView(tile, view, true, true, false);
+                       
+                    }                   
+                }
+                  tr.Commit();
+                }
+                catch (Autodesk.AutoCAD.Runtime.Exception ex)
+                {
+                    ed.WriteMessage("Error: {0}\nTrace: {1}",ex.Message,ex.StackTrace);
+                }
+            }
+        }

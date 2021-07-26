@@ -7,6 +7,7 @@ using System;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite_ACADBase21
@@ -104,9 +105,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
         }
 
-        public static void CreateObject<T>()
+        public static void CreateObject<T>(Point3d position)
         {
-
         }
     }
 }
