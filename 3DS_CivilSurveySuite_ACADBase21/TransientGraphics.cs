@@ -26,9 +26,13 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
         public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
 
-        public TransientDrawingMode DrawingMode { get; set; } = TransientDrawingMode.Main;
+        public TransientDrawingMode DrawingMode { get; set; }
 
-        public TransientGraphics() => _graphics = new DBObjectCollection();
+        public TransientGraphics()
+        {
+            _graphics = new DBObjectCollection();
+            DrawingMode = TransientDrawingMode.Main;
+        }
 
         public TransientGraphics(TransientDrawingMode mode)
         {
@@ -118,7 +122,27 @@ namespace _3DS_CivilSurveySuite_ACADBase21
 
         public void DrawTriangle(Point3d position, int size, bool fill = true)
         {
-            throw new NotImplementedException();
+            var screenSize = ScreenSize(size);
+
+            var angle = new Angle(0);
+
+            var midPoint = MathHelpers.AngleAndDistanceToPoint(angle + 180, screenSize * 0.5, position.ToPoint());
+            var endPoint1 = MathHelpers.AngleAndDistanceToPoint(angle + 90, screenSize * 0.5, midPoint);
+            var endPoint2 = MathHelpers.AngleAndDistanceToPoint(angle - 90, screenSize * 0.5, midPoint);
+            var topPoint = MathHelpers.AngleAndDistanceToPoint(angle, screenSize * 0.5, position.ToPoint());
+
+            var polyline = new Polyline { Color = Color, Closed = true };
+            polyline.AddVertexAt(0, endPoint2.ToPoint2d(), 0, 0, 0);
+            polyline.AddVertexAt(1, endPoint1.ToPoint2d(), 0, 0, 0);
+            polyline.AddVertexAt(2, topPoint.ToPoint2d(), 0, 0, 0);
+
+            DrawAdd(polyline);
+
+            if (!fill)
+                return;
+            
+            var solid = new Solid(topPoint.ToPoint3d(), endPoint2.ToPoint3d(), endPoint1.ToPoint3d()) { Color = Color };
+            DrawAdd(solid);
         }
 
         public void DrawX(Point3d position, int size)
@@ -154,9 +178,8 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         {
             double screenSize = ScreenSize(size);
             double circleSize = screenSize * 0.5;
-            const int colorIndex = 4;
 
-            var polyline = new Polyline { ColorIndex = colorIndex, Elevation = point.Z, Closed = true };
+            var polyline = new Polyline { Color = Color, Elevation = point.Z, Closed = true };
 
             polyline.AddVertexAt(0, new Point2d(point.X - screenSize * 0.25, point.Y), 1.0, circleSize, circleSize);
             polyline.AddVertexAt(1, new Point2d(point.X + screenSize * 0.25, point.Y), 1.0, circleSize, circleSize);
@@ -164,7 +187,7 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             DrawAdd(polyline);
 
             var vector3d = new Vector3d(0, 0, 1);
-            var circle = new Circle(point, vector3d, circleSize) { ColorIndex = 7 };
+            var circle = new Circle(point, vector3d, circleSize) { Color = Color };
 
             DrawAdd(circle);
         }
@@ -251,7 +274,6 @@ namespace _3DS_CivilSurveySuite_ACADBase21
             }
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             ClearGraphics();

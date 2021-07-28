@@ -219,6 +219,15 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void Angle_Clockwise_To_CounterClockwise()
+        {
+            var angle = new Angle(180);
+            var expectedAngle = new Angle(270);
+
+            Assert.AreEqual(expectedAngle, angle.ToCounterClockwise());
+        }
+
+        [TestMethod]
         public void Angle_Flip_180Degrees()
         {
             var angle = new Angle(0);

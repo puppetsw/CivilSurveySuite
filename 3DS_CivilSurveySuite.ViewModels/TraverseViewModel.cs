@@ -3,7 +3,6 @@ using System.Diagnostics;
 using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.ViewModels.Helpers;
 
 //TODO: Add a button to select the bearing from an existing line, pline segment.
 namespace _3DS_CivilSurveySuite.ViewModels

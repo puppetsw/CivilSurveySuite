@@ -8,7 +8,6 @@ using System.IO;
 using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.ViewModels.Helpers;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {

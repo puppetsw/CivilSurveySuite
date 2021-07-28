@@ -14,21 +14,23 @@ namespace _3DS_CivilSurveySuite.Commands
 {
     public static class CogoPointCreateAtAngleAndDistance
     {
+        private const int GraphicPixelSize = 6;
+
         public static void RunCommand()
         {
             if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select a base point: "))
                 return;
 
-            if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Pick angle: ", basePoint))
+            if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Enter bearing (Format: DDD.MMSS): ", basePoint, "\n3DS> Pick bearing on screen: "))
                 return;
 
-            if (!EditorUtils.GetDistance(out double dist, "\n3DS> Offset distance: ", basePoint))
+            if (!EditorUtils.GetDistance(out double dist, "\n3DS> Distance: ", basePoint))
                 return;
 
-            AutoCADActive.Editor.WriteMessage($"\n3DS> Angle: {angle}");
+            AutoCADActive.Editor.WriteMessage($"\n3DS> Bearing: {angle}");
             AutoCADActive.Editor.WriteMessage($"\n3DS> Distance: {dist}");
 
-            var pko = new PromptKeywordOptions("\n3DS> Flip angle? ") { AppendKeywordsToMessage = true };
+            var pko = new PromptKeywordOptions("\n3DS> Flip bearing? ") { AppendKeywordsToMessage = true };
             pko.Keywords.Add(Keywords.Accept);
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Flip);
@@ -37,7 +39,8 @@ namespace _3DS_CivilSurveySuite.Commands
 
             using (var graphics = new TransientGraphics())
             {
-                graphics.DrawCircle(point.ToPoint3d());
+                graphics.DrawTriangle(basePoint, GraphicPixelSize);
+                graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
                 graphics.DrawLine(basePoint, point.ToPoint3d());
 
                 var cancelled = false;
@@ -63,7 +66,8 @@ namespace _3DS_CivilSurveySuite.Commands
                             angle = angle.Flip();
                             point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                             graphics.ClearGraphics();
-                            graphics.DrawCircle(point.ToPoint3d());
+                            graphics.DrawTriangle(basePoint, GraphicPixelSize);
+                            graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
                             graphics.DrawLine(basePoint, point.ToPoint3d());
                             break;
                     }

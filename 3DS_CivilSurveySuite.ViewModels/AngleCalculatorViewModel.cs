@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.ViewModels.Helpers;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {

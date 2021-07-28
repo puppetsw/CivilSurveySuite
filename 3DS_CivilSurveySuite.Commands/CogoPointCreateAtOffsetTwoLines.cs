@@ -11,6 +11,8 @@ using _3DS_CivilSurveySuite_C3DBase21;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.GraphicsInterface;
+using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite.Commands
 {
@@ -95,6 +97,44 @@ namespace _3DS_CivilSurveySuite.Commands
 
                 MathHelpers.LineSegementsIntersect(p1, p2, q1, q2, out Point intersectionPoint);
                 AutoCADActive.Editor.WriteMessage($"\n3DS> Intersection found at: X:{intersectionPoint.X} Y:{intersectionPoint.Y}");
+
+                var pko = new PromptKeywordOptions("\n3DS> Accept point position? ") { AppendKeywordsToMessage = true, AllowNone = true };
+                pko.Keywords.Add(Keywords.Accept);
+                pko.Keywords.Add(Keywords.Cancel);
+                pko.Keywords.Default = Keywords.Accept;
+
+                var cancelled = false;
+                PromptResult prResult;
+                TransientGraphics graphics = new TransientGraphics(TransientDrawingMode.Main);
+                do
+                {
+                    prResult = AutoCADActive.Editor.GetKeywords(pko);
+
+                    try
+                    {
+                        if (prResult.Status != PromptStatus.Keyword &&
+                            prResult.Status != PromptStatus.OK)
+                            continue;
+
+
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        AutoCADActive.Editor.WriteMessage(e.Message);
+                    }
+                    finally
+                    {
+                        graphics.Dispose();
+                    }
+
+
+                } while (prResult.Status != PromptStatus.Cancel &&
+                         prResult.Status != PromptStatus.Error && !cancelled);
+
+
+
 
                 CogoPoints.CreateCogoPoint(intersectionPoint.ToPoint3d());
 

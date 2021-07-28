@@ -13,25 +13,25 @@ namespace _3DS_CivilSurveySuite
 {
     public partial class MyCommands
     {
-        [CommandMethod("3DS", "_3DSCogoPointLabelRotate", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPLabelRotate", CommandFlags.Modal)]
         public void CogoPoint_Label_Rotate() => CogoPointLabelRotate.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointRawDescriptionToUpperCase", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPRawDescriptionToUpper", CommandFlags.Modal)]
         public void CogoPoint_RawDescription_ToUpper() => CogoPointRawDescriptionToUpperCase.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointFullDescriptionToUpperCase", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPFullDescriptionToUpper", CommandFlags.Modal)]
         public void CogoPoint_FullDescription_ToUpper() => CogoPointFullDescriptionToUpperCase.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointCreateTrunkPointAtTrees", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPTrunkPointAtTrees", CommandFlags.Modal)]
         public void CogoPoint_CreateTrunksAtTrees() => CogoPointCreateTrunkAtTree.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointCreateAtAngleAndDistance", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPAngleAndDistance", CommandFlags.Modal)]
         public void CogoPoint_Create_At_Angle_And_Distance() => CogoPointCreateAtAngleAndDistance.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointCreateAtOffsetTwoLines", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPOffsetTwoLines", CommandFlags.Modal)]
         public void CogoPoint_Create_At_Offset_Two_Lines() => CogoPointCreateAtOffsetTwoLines.RunCommand();
 
-        [CommandMethod("3DS", "_3DSCogoPointCreateAtProduction", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCPProduction", CommandFlags.Modal)]
         public void CogoPoint_Create_At_Production_Of_Line_And_Distance() => CogoPointCreateOnProductionOfLine.RunCommand();
 
 

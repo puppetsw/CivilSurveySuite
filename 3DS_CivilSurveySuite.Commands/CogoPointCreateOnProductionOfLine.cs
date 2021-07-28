@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuite.Commands
 
                     using (var graphics = new TransientGraphics())
                     {
-                        graphics.DrawCircle(point.ToPoint3d());
+                        graphics.DrawDot(point.ToPoint3d(), 6);
                         graphics.DrawLine(basePoint, point.ToPoint3d());
 
                         var cancelled = false;
@@ -94,7 +94,7 @@ namespace _3DS_CivilSurveySuite.Commands
                                     angle = angle.Flip();
                                     point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                                     graphics.ClearGraphics();
-                                    graphics.DrawCircle(point.ToPoint3d());
+                                    graphics.DrawDot(point.ToPoint3d(), 6);
                                     graphics.DrawLine(basePoint, point.ToPoint3d());
                                     break;
                             }

@@ -91,6 +91,16 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
+        /// Converts an <see cref="Angle"/> to a counter-clockwise direction.
+        /// </summary>
+        /// <param name="angle">The angle in a clockwise direction.</param>
+        /// <returns>A <see cref="Angle"/> containing the converted values.</returns>
+        public static Angle ToCounterClockwise(this Angle angle)
+        {
+            return new Angle(90) - angle + new Angle(360);
+        }
+
+        /// <summary>
         /// Flips an <see cref="Angle"/> 180°.
         /// </summary>
         /// <param name="angle">The angle to be flipped.</param>

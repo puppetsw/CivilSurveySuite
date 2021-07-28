@@ -176,22 +176,57 @@ namespace _3DS_CivilSurveySuite_ACADBase21
         /// <param name="message">The message to display to the user.</param>
         /// <param name="basePoint">Optional base point parameter. If null, will prompt
         /// the user to select a base point.</param>
+        /// <param name="pickMessage"></param>
         /// <returns>Angle. Null if cancelled or empty.</returns>
         /// <remarks>Ignores AutoCADs ANGDIR, and ANGBASE variables. AutoCAD also
         /// returns the radians in a counter-clockwise direction. We need to use
         /// the AngleToClockwise extension method to correct this.</remarks>
-        public static bool GetAngle(out Angle angle, string message, Point3d basePoint)
+        public static bool GetAngle(out Angle angle, string message, Point3d basePoint, string pickMessage = "")
         {
             angle = null;
 
-            var pao = new PromptAngleOptions(message) { UseBasePoint = true, BasePoint = basePoint, UseAngleBase = false };
+            var pdo = new PromptDoubleOptions(message);
+            pdo.Keywords.Add(Keywords.Pick);
+            pdo.AppendKeywordsToMessage = true;
 
-            PromptDoubleResult pdrAngle = AutoCADActive.ActiveDocument.Editor.GetAngle(pao);
-            
-            if (pdrAngle.Status != PromptStatus.OK)
-                return false;
+            var cancelled = false;
+            do
+            {
+                PromptDoubleResult pdoResult = AutoCADActive.Editor.GetDouble(pdo);
+                switch (pdoResult.Status)
+                {
+                    case PromptStatus.Keyword:
+                        if (pdoResult.StringResult == Keywords.Pick)
+                        {
+                            var pao = new PromptAngleOptions(pickMessage) { UseBasePoint = true, BasePoint = basePoint, UseAngleBase = false };
+                            var innerCancelled = false;
+                            do
+                            {
+                                PromptDoubleResult pdrAngle = AutoCADActive.ActiveDocument.Editor.GetAngle(pao);
 
-            angle = MathHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
+                                switch (pdrAngle.Status)
+                                {
+                                    case PromptStatus.OK:
+                                        angle = MathHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
+                                        cancelled = true;
+                                        innerCancelled = true;
+                                        break;
+                                    case PromptStatus.Cancel:
+                                        innerCancelled = true;
+                                        break;
+                                }
+                            } while (!innerCancelled);
+                        }
+                        break;
+                    case PromptStatus.OK:
+                        angle = new Angle(pdoResult.Value);
+                        cancelled = true;
+                        break;
+                    case PromptStatus.Cancel:
+                        cancelled = true;
+                        break;
+                }
+            } while (!cancelled);
 
             return true;
         }

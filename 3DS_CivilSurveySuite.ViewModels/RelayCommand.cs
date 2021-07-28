@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace _3DS_CivilSurveySuite.ViewModels.Helpers
+namespace _3DS_CivilSurveySuite.ViewModels
 {
     public class RelayCommand : ICommand
     {

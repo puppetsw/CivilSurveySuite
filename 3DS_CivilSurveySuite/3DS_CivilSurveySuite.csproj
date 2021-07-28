@@ -62,6 +62,7 @@
     <Compile Include="AcadPointCommands.cs" />
     <Compile Include="CogoPointCommands.cs" />
     <Compile Include="Palettes.cs" />
+    <Compile Include="TraverseCommands.cs" />
     <Compile Include="ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>

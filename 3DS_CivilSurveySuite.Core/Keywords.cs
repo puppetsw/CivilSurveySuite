@@ -12,7 +12,9 @@ namespace _3DS_CivilSurveySuite.Core
         public const string Redraw = "Redraw";
         public const string Rotate = "Rotate";
         public const string Change = "Change";
+        public const string End = "End";
         public const string Flip = "Flip";
         public const string None = "";
+        public const string Pick = "Pick";
     }
 }
