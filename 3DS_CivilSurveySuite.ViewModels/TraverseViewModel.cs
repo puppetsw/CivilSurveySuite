@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 
@@ -16,6 +15,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeDistance;
         private bool _commandRunning;
         private readonly IViewerService _viewerService;
+        private readonly ITraverseService _traverseService;
 
         public ObservableCollection<TraverseObject> TraverseItems { get; set; }
 
@@ -52,10 +52,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand GridUpdatedCommand => new RelayCommand(_ => GridUpdated(), _ => true);
         public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
 
-        public TraverseViewModel(IViewerService viewerService)
+        public TraverseViewModel(IViewerService viewerService, ITraverseService traverseService)
         {
             TraverseItems = new ObservableCollection<TraverseObject>();
             _viewerService = viewerService;
+            _traverseService = traverseService;
         }
 
         private void ShowViewer()
@@ -114,7 +115,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             else
                 return; //exit if command running
 
-            TraverseUtils.DrawTraverse(TraverseItems);
+            _traverseService.DrawTraverse(TraverseItems);
 
             _commandRunning = false;
         }

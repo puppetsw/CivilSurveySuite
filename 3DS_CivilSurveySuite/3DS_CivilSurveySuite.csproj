@@ -37,16 +37,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="accoremgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\accoremgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="acdbmgd">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acdbmgd.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="acmgd">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,19 +46,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcadPointCommands.cs" />
-    <Compile Include="CogoPointCommands.cs" />
-    <Compile Include="Palettes.cs" />
-    <Compile Include="TraverseCommands.cs" />
-    <Compile Include="ViewerService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MyPlugin.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -82,27 +64,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Commands\3DS_CivilSurveySuite.Commands.csproj">
-      <Project>{19874A28-51EE-4732-AE4E-74B88657F6C6}</Project>
-      <Name>3DS_CivilSurveySuite.Commands</Name>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj">
+      <Project>{27174b74-79d3-4579-8aae-d4eaecb04b3c}</Project>
+      <Name>3DS_CivilSurveySuite.ACAD2017</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
-      <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
-      <Name>3DS_CivilSurveySuite.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj">
-      <Project>{0431E86D-1A04-4F76-8AFC-193F84FA7965}</Project>
-      <Name>3DS_CivilSurveySuite.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.ViewModels\3DS_CivilSurveySuite.ViewModels.csproj">
-      <Project>{9f732d27-dfed-4af1-9fc0-c1cd0c4ac3d6}</Project>
-      <Name>3DS_CivilSurveySuite.ViewModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite_ACADBase21\3DS_CivilSurveySuite_ACADBase21.csproj">
-      <Project>{61765096-a4f2-43da-a640-4e0d1ef8118b}</Project>
-      <Name>3DS_CivilSurveySuite_ACADBase21</Name>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj">
+      <Project>{6996ad26-737e-4a36-999b-ff6c051c1b2a}</Project>
+      <Name>3DS_CivilSurveySuite.C3D2017</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

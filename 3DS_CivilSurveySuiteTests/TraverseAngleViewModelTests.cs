@@ -17,7 +17,7 @@ namespace _3DS_CivilSurveySuiteTests
             var result = false;
             var expectedString = "100.1000";
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseBearing))
@@ -38,7 +38,7 @@ namespace _3DS_CivilSurveySuiteTests
             var result = false;
             var expectedString = "100.1000";
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseDistance))
@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void RotationDirectionValues_Get()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
             var values = vm.RotationDirectionValues;
             var expectedNumberOfValues = 2;
 
@@ -69,7 +69,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void ReferenceDirectionValues_Get()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
             var values = vm.ReferenceDirectionValues;
             var expectedNumberOfValues = 2;
 
@@ -81,7 +81,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void AddRowCommand_Execute()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -94,7 +94,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void RemoveRowCommand_Execute()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -114,7 +114,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void RemoveRowCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -134,7 +134,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void ClearTraverseCommand_Execute()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -152,7 +152,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void GridUpdatedCommand_Execute()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.TraverseAngles.Add(new TraverseAngleObject(0, 30));
             vm.TraverseAngles.Add(new TraverseAngleObject(90, 10));
@@ -171,7 +171,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void GridUpdatedCommand_Execute_Traverse_Count_Less_Than_Two()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.TraverseAngles.Add(new TraverseAngleObject(0, 30));
 
@@ -191,7 +191,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = 30.734;
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -215,7 +215,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = 100.10;
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -237,7 +237,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = 20.1168;
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -261,7 +261,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = 100;
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -283,7 +283,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = new Angle(270);
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -308,7 +308,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = new Angle(90);
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -333,7 +333,7 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedValue = new Angle(90);
 
             Mock<IViewerService> mockService = new Mock<IViewerService>();
-            var vm = new TraverseAngleViewModel(mockService.Object);
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);

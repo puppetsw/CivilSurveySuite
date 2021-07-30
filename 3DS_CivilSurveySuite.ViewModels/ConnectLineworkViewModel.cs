@@ -5,7 +5,6 @@
 
 using System.Collections.ObjectModel;
 using System.IO;
-using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 
@@ -16,6 +15,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
     /// </summary>
     public class ConnectLineworkViewModel : ViewModelBase
     {
+        private readonly IConnectLineworkService _connectLineworkService;
         private ObservableCollection<DescriptionKey> _descriptionKeys;
 
         public ObservableCollection<DescriptionKey> DescriptionKeys
@@ -36,8 +36,9 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand ConnectCommand => new RelayCommand((_) => ConnectLinework(), (_) => true);
 
-        public ConnectLineworkViewModel(string settingsFileName)
+        public ConnectLineworkViewModel(string settingsFileName, IConnectLineworkService connectLineworkService)
         {
+            _connectLineworkService = connectLineworkService;
             LoadSettings(settingsFileName);
         }
 
@@ -56,7 +57,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void ConnectLinework()
         {
-            SurveyUtils.ConnectCogoPoints(DescriptionKeys);
+            _connectLineworkService.ConnectCogoPoints(DescriptionKeys);
         }
 
         /// <summary>

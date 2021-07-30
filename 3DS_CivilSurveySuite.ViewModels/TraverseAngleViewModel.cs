@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using _3DS_CivilSurveySuite.Commands;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 
@@ -15,6 +14,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
         private string _closeDistance;
         private bool _commandRunning;
         private readonly IViewerService _viewerService;
+        private readonly ITraverseService _traverseService;
 
         // ReSharper disable UnusedMember.Global
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
@@ -66,9 +66,10 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand ShowViewerCommand => new RelayCommand(_ => ShowViewer(), _ => true);
         // ReSharper restore UnusedMember.Global
 
-        public TraverseAngleViewModel(IViewerService viewerService)
+        public TraverseAngleViewModel(IViewerService viewerService, ITraverseService traverseService)
         {
             _viewerService = viewerService;
+            _traverseService = traverseService;
         }
 
         private void GridUpdated()
@@ -127,7 +128,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             else
                 return;
 
-            TraverseUtils.DrawTraverse(TraverseAngles);
+            _traverseService.DrawTraverse(TraverseAngles);
 
             _commandRunning = false;
         }

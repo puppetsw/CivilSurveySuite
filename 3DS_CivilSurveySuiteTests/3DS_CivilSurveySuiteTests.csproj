@@ -81,9 +81,6 @@
     <Compile Include="WildcardTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
       <Project>{09C298C6-4485-4911-8AF1-2CD14CC99090}</Project>
       <Name>3DS_CivilSurveySuite.Core</Name>

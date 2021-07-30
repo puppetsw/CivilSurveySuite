@@ -45,10 +45,6 @@
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Commands\3DS_CivilSurveySuite.Commands.csproj">
-      <Project>{19874a28-51ee-4732-ae4e-74b88657f6c6}</Project>
-      <Name>3DS_CivilSurveySuite.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
       <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
       <Name>3DS_CivilSurveySuite.Core</Name>

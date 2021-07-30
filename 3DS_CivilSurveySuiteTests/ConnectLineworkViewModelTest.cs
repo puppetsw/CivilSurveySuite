@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using _3DS_CivilSurveySuite.ViewModels;
+using Castle.Core.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -13,7 +14,7 @@ namespace _3DS_CivilSurveySuiteTests
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
 
-            var vm = new ConnectLineworkViewModel(path);
+            var vm = new ConnectLineworkViewModel(path, null);
         }
 
         [TestMethod]
@@ -22,7 +23,7 @@ namespace _3DS_CivilSurveySuiteTests
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
 
-            var vm = new ConnectLineworkViewModel(path);
+            var vm = new ConnectLineworkViewModel(path, null);
             vm.Save(path);
         }
 
@@ -30,7 +31,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestCategory("Commands")]
         public void AddRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel("");
+            var vm = new ConnectLineworkViewModel("", null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -42,7 +43,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestCategory("Commands")]
         public void RemoveRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel("");
+            var vm = new ConnectLineworkViewModel("", null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
