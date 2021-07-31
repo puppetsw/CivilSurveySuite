@@ -6,10 +6,10 @@
 using System.Reflection;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Plugin))]
-namespace _3DS_CivilSurveySuite
+[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader.Loader))]
+namespace _3DS_CivilSurveySuite.Loader
 {
-    public class Plugin : IExtensionApplication
+    public class Loader : IExtensionApplication
     {
         public void Initialize()
         {
@@ -23,6 +23,7 @@ namespace _3DS_CivilSurveySuite
             //AcadUtils.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
 
             Assembly.Load("Microsoft.Xaml.Behaviors");
+            //Assembly.Load("SimpleInjector");
             Assembly.Load("3DS_CivilSurveySuite.ACAD2017");
             Assembly.Load("3DS_CivilSurveySuite.C3D2017");
         }

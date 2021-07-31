@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("3DS_CivilSurveySuite.Commands")]
+[assembly: AssemblyTitle("3DS_CivilSurveySuite.Loader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("3DS_CivilSurveySuite.Commands")]
+[assembly: AssemblyProduct("3DS_CivilSurveySuite.Loader")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("19874a28-51ee-4732-ae4e-74b88657f6c6")]
+[assembly: Guid("b232e1ea-1cc1-4f2c-b7b2-194a436d9ccf")]
 
 // Version information for an assembly consists of the following four values:
 //

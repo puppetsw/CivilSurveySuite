@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public C3DPalettes()
         {
-            _paletteService = ServiceLoader.Container.GetInstance<IPaletteService>();
+            _paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
         [CommandMethod("3DSShowConnectLinePalette")]

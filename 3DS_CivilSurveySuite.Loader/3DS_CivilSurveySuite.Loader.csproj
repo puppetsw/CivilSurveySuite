@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{19874A28-51EE-4732-AE4E-74B88657F6C6}</ProjectGuid>
+    <ProjectGuid>{B232E1EA-1CC1-4F2C-B7B2-194A436D9CCF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_3DS_CivilSurveySuite.Commands</RootNamespace>
-    <AssemblyName>3DS_CivilSurveySuite.Commands</AssemblyName>
+    <RootNamespace>_3DS_CivilSurveySuite.Loader</RootNamespace>
+    <AssemblyName>3DS_CivilSurveySuite.Loader</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,37 +39,30 @@
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="acmgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AecBaseMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AecBaseMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="AeccDbMgd">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\C3D\AeccDbMgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CogoPointCreateAtAngleAndDistance.cs" />
-    <Compile Include="CogoPointCreateAtOffsetTwoLines.cs" />
-    <Compile Include="CogoPointCreateOnProductionOfLine.cs" />
-    <Compile Include="CogoPointCreateTrunkAtTree.cs" />
-    <Compile Include="CogoPointFullDescriptionToUpperCase.cs" />
-    <Compile Include="CogoPointLabelRotate.cs" />
-    <Compile Include="CogoPointRawDescriptionToUpperCase.cs" />
-    <Compile Include="PointCreateAtAngleAndDistance.cs" />
-    <Compile Include="PointCreateAtOffsetTwoLines.cs" />
-    <Compile Include="PointCreateOnProductionOfLine.cs" />
-    <Compile Include="SurveyUtils.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TraverseUtils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
-      <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
-      <Name>3DS_CivilSurveySuite.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj">
-      <Project>{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}</Project>
-      <Name>3DS_CivilSurveySuite.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

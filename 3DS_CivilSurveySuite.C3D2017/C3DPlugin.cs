@@ -1,6 +1,4 @@
-﻿using _3DS_CivilSurveySuite.ACAD2017;
-using Autodesk.AutoCAD.Internal;
-using Autodesk.AutoCAD.Runtime;
+﻿using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite.C3D2017
 {

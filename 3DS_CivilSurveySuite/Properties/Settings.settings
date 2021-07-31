@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="_3DS_CivilSurveySuite.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="ConnectLineworkFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Resources\3DS_DescriptionKeys.xml</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

@@ -74,7 +74,7 @@
     <Compile Include="Points.cs" />
     <Compile Include="Polylines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceLoader.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="SystemVariables.cs" />
     <Compile Include="TextUtils.cs" />
     <Compile Include="TransactionExtensions.cs" />

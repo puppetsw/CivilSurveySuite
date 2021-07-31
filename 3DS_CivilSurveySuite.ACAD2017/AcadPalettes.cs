@@ -25,8 +25,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public AcadPalettes()
         {
-            _viewerService = ServiceLoader.Container.GetInstance<IViewerService>();
-            _paletteService = ServiceLoader.Container.GetInstance<IPaletteService>();
+            _viewerService = ServiceLocator.Container.GetInstance<IViewerService>();
+            _paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
         [CommandMethod("3DSShowAngleCalculator")]

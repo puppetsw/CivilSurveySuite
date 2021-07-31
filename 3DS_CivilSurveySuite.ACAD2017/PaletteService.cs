@@ -84,7 +84,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 PaletteSet.Dispose();
         }
 
-        /// <inheritdoc />
         public void Dispose()
         {
             ReleaseUnmanagedResources();

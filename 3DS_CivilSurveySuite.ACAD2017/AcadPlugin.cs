@@ -1,6 +1,9 @@
-﻿using _3DS_CivilSurveySuite.Model;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
 using Autodesk.AutoCAD.Runtime;
-using SimpleInjector;
 
 [assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.ACAD2017.AcadPlugin))]
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -11,13 +14,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void Initialize()
         {
-            // 2. Configure the container (register)
-            ServiceLoader.Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
-            ServiceLoader.Container.Register<IPaletteService, PaletteService>(Lifestyle.Singleton);
-            ServiceLoader.Container.Register<ITraverseService, TraverseService>();
-            
-            // 3. Verify your configuration
-            ServiceLoader.Container.Verify();
+            ServiceLocator.Register();
 
             _palettes = new AcadPalettes();
             _palettes.HookupEvents();
