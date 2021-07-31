@@ -54,33 +54,32 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
-    <Compile Include="AcadUtils.cs" />
-    <Compile Include="Curves.cs" />
-    <Compile Include="DxfNames.cs" />
-    <Compile Include="EditorUtils.cs" />
-    <Compile Include="IPaletteService.cs" />
-    <Compile Include="Keywords.cs" />
-    <Compile Include="Layers.cs" />
-    <Compile Include="Lines.cs" />
-    <Compile Include="LockedTransaction.cs" />
+    <Compile Include="AcadApp.cs" />
+    <Compile Include="AcadUtils\Curves.cs" />
+    <Compile Include="AcadUtils\DxfNames.cs" />
+    <Compile Include="AcadUtils\EditorUtils.cs" />
+    <Compile Include="Services\IPaletteService.cs" />
+    <Compile Include="AcadUtils\Keywords.cs" />
+    <Compile Include="AcadUtils\Layers.cs" />
+    <Compile Include="AcadUtils\Lines.cs" />
+    <Compile Include="Extensions\LockedTransaction.cs" />
     <Compile Include="AcadPalettes.cs" />
-    <Compile Include="PaletteService.cs" />
+    <Compile Include="Services\PaletteService.cs" />
     <Compile Include="AcadPlugin.cs" />
-    <Compile Include="PointCreateAtAngleAndDistance.cs" />
-    <Compile Include="PointCreateAtOffsetTwoLines.cs" />
-    <Compile Include="PointCreateOnProductionOfLine.cs" />
-    <Compile Include="PointExtensions.cs" />
-    <Compile Include="Points.cs" />
-    <Compile Include="Polylines.cs" />
+    <Compile Include="Commands\PointCreateAtAngleAndDistance.cs" />
+    <Compile Include="Commands\PointCreateAtOffsetTwoLines.cs" />
+    <Compile Include="Commands\PointCreateOnProductionOfLine.cs" />
+    <Compile Include="Extensions\PointExtensions.cs" />
+    <Compile Include="AcadUtils\Points.cs" />
+    <Compile Include="AcadUtils\Polylines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocator.cs" />
-    <Compile Include="SystemVariables.cs" />
-    <Compile Include="TextUtils.cs" />
-    <Compile Include="TransactionExtensions.cs" />
-    <Compile Include="TransientGraphics.cs" />
-    <Compile Include="TraverseService.cs" />
-    <Compile Include="ViewerService.cs" />
+    <Compile Include="AcadUtils\SystemVariables.cs" />
+    <Compile Include="AcadUtils\TextUtils.cs" />
+    <Compile Include="Extensions\TransactionExtensions.cs" />
+    <Compile Include="AcadUtils\TransientGraphics.cs" />
+    <Compile Include="Services\TraverseService.cs" />
+    <Compile Include="Services\ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
@@ -100,5 +99,6 @@
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

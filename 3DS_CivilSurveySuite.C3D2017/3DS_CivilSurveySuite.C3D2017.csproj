@@ -57,24 +57,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="C3DUtils.cs" />
+    <Compile Include="C3DApp.cs" />
     <Compile Include="C3DPlugin.cs" />
-    <Compile Include="Commands.cs" />
-    <Compile Include="CogoPointCreateAtAngleAndDistance.cs" />
-    <Compile Include="CogoPointCreateAtOffsetTwoLines.cs" />
-    <Compile Include="CogoPointCreateOnProductionOfLine.cs" />
-    <Compile Include="CogoPointCreateTrunkAtTree.cs" />
-    <Compile Include="CogoPointFullDescriptionToUpperCase.cs" />
-    <Compile Include="CogoPointLabelRotate.cs" />
-    <Compile Include="CogoPointRawDescriptionToUpperCase.cs" />
-    <Compile Include="CogoPoints.cs" />
+    <Compile Include="Commands\CogoPointCreateAtAngleAndDistance.cs" />
+    <Compile Include="Commands\CogoPointCreateAtOffsetTwoLines.cs" />
+    <Compile Include="Commands\CogoPointCreateOnProductionOfLine.cs" />
+    <Compile Include="Commands\CogoPointCreateTrunkAtTree.cs" />
+    <Compile Include="Commands\CogoPointDescription.cs" />
+    <Compile Include="Commands\CogoPointLabelRotate.cs" />
+    <Compile Include="C3DUtils\CogoPoints.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
-    <Compile Include="Labels.cs" />
+    <Compile Include="C3DUtils\Labels.cs" />
     <Compile Include="C3DPalettes.cs" />
-    <Compile Include="PointGroups.cs" />
+    <Compile Include="C3DUtils\PointGroups.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Surfaces.cs" />
-    <Compile Include="ConnectLineworkService.cs" />
+    <Compile Include="C3DUtils\Surfaces.cs" />
+    <Compile Include="Services\ConnectLineworkService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj">
@@ -98,5 +96,6 @@
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

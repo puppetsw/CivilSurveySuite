@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
@@ -93,7 +94,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             _paletteVisible = _paletteService.PaletteSet.Visible;
 
-            if (AcadUtils.DocumentManager.Count == 1)
+            if (AcadApp.DocumentManager.Count == 1)
             {
                 _paletteService.PaletteSet.Visible = false;
             }
@@ -101,18 +102,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void HookupEvents()
         {
-            AcadUtils.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
-            AcadUtils.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
-            AcadUtils.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
-            AcadUtils.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
+            AcadApp.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
+            AcadApp.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
+            AcadApp.DocumentManager.DocumentToBeDeactivated += DocumentManager_DocumentToBeDeactivated;
+            AcadApp.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
         }
 
         public void UnhookEvents()
         {
-            AcadUtils.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
-            AcadUtils.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
-            AcadUtils.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
-            AcadUtils.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
+            AcadApp.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
+            AcadApp.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;
+            AcadApp.DocumentManager.DocumentToBeDeactivated -= DocumentManager_DocumentToBeDeactivated;
+            AcadApp.DocumentManager.DocumentToBeDestroyed -= DocumentManager_DocumentToBeDestroyed;
         }
     }
 }
