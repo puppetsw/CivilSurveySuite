@@ -1,9 +1,9 @@
 ﻿using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017.C3DUtils
+namespace _3DS_CivilSurveySuite.C3D2017
 {
-    public class CogoPoints
+    public class CogoPointUtils
     {
         public static void CreateCogoPoint(Point3d position)
         {

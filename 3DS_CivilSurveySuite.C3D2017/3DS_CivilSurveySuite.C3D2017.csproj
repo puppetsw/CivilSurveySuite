@@ -59,20 +59,15 @@
   <ItemGroup>
     <Compile Include="C3DApp.cs" />
     <Compile Include="C3DPlugin.cs" />
-    <Compile Include="Commands\CogoPointCreateAtAngleAndDistance.cs" />
-    <Compile Include="Commands\CogoPointCreateAtOffsetTwoLines.cs" />
-    <Compile Include="Commands\CogoPointCreateOnProductionOfLine.cs" />
-    <Compile Include="Commands\CogoPointCreateTrunkAtTree.cs" />
-    <Compile Include="Commands\CogoPointDescription.cs" />
-    <Compile Include="Commands\CogoPointLabelRotate.cs" />
-    <Compile Include="C3DUtils\CogoPoints.cs" />
+    <Compile Include="CogoPoints.cs" />
+    <Compile Include="CogoPointUtils.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
-    <Compile Include="C3DUtils\Labels.cs" />
+    <Compile Include="LabelUtils.cs" />
     <Compile Include="C3DPalettes.cs" />
-    <Compile Include="C3DUtils\PointGroups.cs" />
+    <Compile Include="PointGroupUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="C3DUtils\Surfaces.cs" />
-    <Compile Include="Services\ConnectLineworkService.cs" />
+    <Compile Include="SurfacesUtils.cs" />
+    <Compile Include="ConnectLineworkService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj">

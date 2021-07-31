@@ -10,9 +10,9 @@ using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.AcadUtils
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public static class Lines
+    public static class LineUtils
     {
         public static void DrawLines(Transaction tr, IReadOnlyList<Point3d> coordinates)
         {

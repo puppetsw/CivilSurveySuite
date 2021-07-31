@@ -15,7 +15,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.AcadUtils
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
     /// <summary>
     /// A helper class to display and manage TransientGraphics

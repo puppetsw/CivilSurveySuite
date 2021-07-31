@@ -13,7 +13,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Runtime;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.AcadUtils
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class EditorUtils
     {

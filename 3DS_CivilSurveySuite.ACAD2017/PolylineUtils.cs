@@ -10,9 +10,9 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.AcadUtils
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public static class Polylines
+    public static class PolylineUtils
     {
         public static Polyline Square(Point2d basePoint, double squareSize, int lineWidth = 0)
         {

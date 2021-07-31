@@ -6,9 +6,9 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.AcadUtils
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public class Points
+    public static class PointUtils
     {
         public static void CreatePoint(Point3d position)
         {

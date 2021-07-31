@@ -250,13 +250,12 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void LineSegmentsDoNotIntersect()
         {
-            Point intersection;
             var actual = MathHelpers.LineSegementsIntersect(
                 new Vector(3, 0),
                 new Vector(3, 4),
                 new Vector(0, 5),
                 new Vector(5, 5),
-                out intersection);
+                out Point _);
 
             Assert.IsFalse(actual);
         }
@@ -428,6 +427,18 @@ namespace _3DS_CivilSurveySuiteTests
             var assertion = (MathHelpers.NearlyEqual(expectedRadians, result));
 
             Assert.AreEqual(true, assertion);
+        }
+
+        [TestMethod]
+        public void MidpointBetweenPoints()
+        {
+            var expectedPoint = new Point(55, 55);
+            var startPoint = new Point(10, 10);
+            var endPoint = new Point(100, 100);
+
+            var actual = MathHelpers.MidpointBetweenPoints(startPoint, endPoint);
+
+            Assert.AreEqual(expectedPoint, actual);
         }
     }
 }

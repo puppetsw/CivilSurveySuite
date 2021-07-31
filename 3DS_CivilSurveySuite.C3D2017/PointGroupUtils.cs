@@ -1,6 +1,6 @@
-﻿namespace _3DS_CivilSurveySuite.C3D2017.C3DUtils
+﻿namespace _3DS_CivilSurveySuite.C3D2017
 {
-    public class PointGroups
+    public class PointGroupUtils
     {
         /// <summary>
         /// Quickly add/remove points by description match, elevation range, number range, etc.

@@ -6,9 +6,9 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
-namespace _3DS_CivilSurveySuite.C3D2017.C3DUtils
+namespace _3DS_CivilSurveySuite.C3D2017
 {
-    public class Labels
+    public class LabelUtils
     {
         /// <summary>
         /// Gets the angle of the first text component in the style.

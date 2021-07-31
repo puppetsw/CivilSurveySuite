@@ -5,13 +5,12 @@
 
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.ACAD2017.AcadUtils;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017.Services
+namespace _3DS_CivilSurveySuite.C3D2017
 {
     public class ConnectLineworkService : IConnectLineworkService
     {
@@ -77,19 +76,19 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         string layerName = deskeyMatch.DescriptionKey.Layer;
 
                         //Check if the layer exists, if not create it.
-                        if (!Layers.HasLayer(layerName, tr))
+                        if (!LayerUtils.HasLayer(layerName, tr))
                         {
-                            Layers.CreateLayer(layerName, tr);
+                            LayerUtils.CreateLayer(layerName, tr);
                         }
 
                         if (deskeyMatch.DescriptionKey.Draw2D)
                         {
-                            Polylines.DrawPolyline2d(tr, btr, points, layerName);
+                            PolylineUtils.DrawPolyline2d(tr, btr, points, layerName);
                         }
 
                         if (deskeyMatch.DescriptionKey.Draw3D)
                         {
-                            Polylines.DrawPolyline3d(tr, btr, points, layerName);
+                            PolylineUtils.DrawPolyline3d(tr, btr, points, layerName);
                         }
                     }
                 }

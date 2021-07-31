@@ -5,13 +5,11 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.ACAD2017.AcadUtils;
 using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Point = _3DS_CivilSurveySuite.Model.Point;
 
@@ -65,7 +63,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                                     DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case Keywords.Accept:
-                                    Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
+                                    LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
                                     cancelled = true;
                                     break;
                                 case Keywords.Cancel:
@@ -130,7 +128,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                                     DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case "Accept":
-                                    Lines.DrawLines(tr, coordinates.ToListOfPoint3d());
+                                    LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
                                     cancelled = true;
                                     break;
                                 case "Cancel":
@@ -175,108 +173,5 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 graphics.DrawX(startPoint, 4);
             }
         }
-
-
-
-        public static void Traverse_RunCommand()
-        {
-            // Pick base point
-            if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select base point: ")) 
-                return;
-
-            var cancelled = false;
-            var traverse = new List<TraverseObject>();
-
-            do
-            {
-                if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Bearing: ", basePoint))
-                    cancelled = true;
-
-                //TODO: Add feet/units conversion
-                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Distance: ", basePoint))
-                    cancelled = true;
-
-                var pko = new PromptKeywordOptions("\n3DS> Continue? ") { AppendKeywordsToMessage = true };
-                pko.Keywords.Add(Keywords.Accept);
-                pko.Keywords.Add(Keywords.Cancel);
-                pko.Keywords.Add(Keywords.Change);
-                pko.Keywords.Add(Keywords.Flip);
-
-                var coordinates = MathHelpers.TraverseObjectsToCoordinates(traverse, basePoint.ToPoint());
-
-                var innerCancelled = false;
-                do
-                {
-                    //draw transient graphics.
-                    var graphics = new TransientGraphics(TransientDrawingMode.Main);
-
-                    graphics.DrawLines(coordinates.ToListOfPoint3d());
-
-                    PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
-                    try
-                    {
-                        // Draw current lines in traverse.
-                        //graphics.DrawLine();
-                        // Draw new line to be added.
-                        var newLine = new TraverseObject(angle.ToDouble(), distance);
-                        var newLineCoord = MathHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
-
-                        graphics.DrawingMode = TransientDrawingMode.Highlight;
-                        graphics.DrawLine(basePoint.ToPoint2d(), newLineCoord.ToPoint2d());
-
-                        if (traverse.Count > 1)
-                        {
-
-                        }
-
-                        switch (prResult.StringResult)
-                        {
-                            case Keywords.Accept:
-                                traverse.Add(newLine);
-                                //innerCancelled = true;
-                                break;
-                            //case Keywords.Cancel:
-                            //    cancelled = true;
-                            //    break;
-                            case Keywords.Change:
-                                innerCancelled = true;
-                                break;
-                            case Keywords.Flip:
-                                angle = angle.Flip();
-                                break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        AcadApp.Editor.WriteMessage(e.Message);
-                    }
-                    finally
-                    {
-                        graphics.Dispose();
-                    }
-                } while (!innerCancelled);
-            } while (!cancelled);
-
-
-            // Bearing
-            // Distance
-            // Show transient line
-            // Ask to confirm or flip or cancel
-            // Cancel removes the transient line and starts a bearing
-
-            // If more than 2 in list show zoom to closure option.
-
-        }
-
-        private static void DrawTraverseTransientGraphic(TransientGraphics graphics, IReadOnlyList<TraverseObject> traverse, TraverseObject currentLine)
-        {
-
-        }
-
-        public static void TraverseAngle_RunCommand()
-        {
-
-        }
-
     }
 }

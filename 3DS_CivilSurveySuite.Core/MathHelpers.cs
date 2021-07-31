@@ -178,6 +178,19 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
+        /// Gets the mid-point between two <see cref="Point"/>s.
+        /// </summary>
+        /// <param name="point1">First point.</param>
+        /// <param name="point2">Second point.</param>
+        /// <returns>A <see cref="Point"/> representing the mid-point between the two <see cref="Point"/>s.</returns>
+        public static Point MidpointBetweenPoints(Point point1, Point point2)
+        {
+            double x = (point1.X + point2.X) / 2;
+            double y = (point1.Y + point2.Y) / 2;
+            return new Point(x, y);
+        }
+
+        /// <summary>
         /// Gets angle/bearing between two coordinates
         /// </summary>
         /// <param name="x1">Easting of first coordinate</param>
