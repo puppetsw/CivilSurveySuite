@@ -8,7 +8,6 @@ using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -39,15 +38,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static Editor Editor => ActiveDocument.Editor;
 
+        /// <summary>
+        /// Starts a transaction.
+        /// </summary>
+        /// <returns>Transaction.</returns>
         public static Transaction StartTransaction() => ActiveDocument.TransactionManager.StartTransaction();
 
+        /// <summary>
+        /// Starts a locked transaction.
+        /// </summary>
+        /// <returns>Transaction.</returns>
         public static Transaction StartLockedTransaction() => ActiveDocument.TransactionManager.StartLockedTransaction();
-
-        public static double AutoCADVersion()
-        {
-            Version version = Autodesk.AutoCAD.ApplicationServices.Core.Application.Version;
-            return version.Major + version.Minor / 10.0;
-        }
 
         public static void UsingTransaction(Action<Transaction> action)
         {
@@ -104,10 +105,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 }
                 tr.Commit();
             }
-        }
-
-        public static void CreateObject<T>(Point3d position)
-        {
         }
     }
 }

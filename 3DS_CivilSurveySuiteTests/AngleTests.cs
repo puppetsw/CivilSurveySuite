@@ -151,6 +151,18 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void Angle_AddTest_Int()
+        {
+            var angle1 = new Angle(45);
+
+            var result = angle1 + 45;
+
+            var expected = new Angle(90);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
         public void Angle_AddTest_SecondsGreaterThan60()
         {
             var angle1 = new Angle(90.0040);
@@ -167,6 +179,19 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var angle1 = new Angle(270);
             var angle2 = new Angle(90);
+
+            var result = angle1 - angle2;
+
+            var expected = new Angle(180);
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void Angle_SubtractTest_Int()
+        {
+            var angle1 = new Angle(270);
+            var angle2 = 90;
 
             var result = angle1 - angle2;
 
@@ -235,5 +260,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expectedAngle, angle.Flip());
         }
+
+
     }
 }

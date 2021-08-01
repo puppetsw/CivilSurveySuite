@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -80,6 +82,81 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return null;
 
             return pointDbObjectCollection[0] as Line;
+        }
+
+        public static Line GetLineOrPolylineSegment(Transaction tr)
+        {
+            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select Line or Polyline segment:"))
+                return null;
+
+            if (!firstLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
+                return null;
+
+            Line line = null;
+
+            if (EditorUtils.IsType(firstLineResult.ObjectId, typeof(Line)))
+            {
+                //line = firstLineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
+                line = tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead) as Line;
+            }
+
+            if (EditorUtils.IsType(firstLineResult.ObjectId, typeof(Polyline)))
+            {
+                //var polyline = firstLineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
+                var polyline = tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead) as Polyline;
+                var segmentId = PolylineUtils.GetPolylineSegment(polyline, firstLineResult);
+                var segment = polyline.GetLineSegment2dAt(segmentId);
+                line = new Line(segment.StartPoint.ToPoint3d(), segment.EndPoint.ToPoint3d());
+            }
+
+            return line == null ? null : line;
+        }
+
+        public static Line GetNearestPointOfLineOrPolylineSegment(Transaction tr, out Point3d endPoint)
+        {
+            endPoint = default;
+
+            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult lineResult, "\n" + ResourceStrings.Select_Line_Or_Polyline))
+                return null;
+
+            if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
+                return null;
+
+            Line line = null;
+
+            if (lineResult.ObjectId.IsType<Line>())
+            {
+                //line = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
+                line = tr.GetObject(lineResult.ObjectId, OpenMode.ForRead) as Line;
+                endPoint = line.GetClosestEndPoint(lineResult.PickedPoint);
+            }
+
+            if (lineResult.ObjectId.IsType<Polyline>())
+            {
+                //var polyline = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
+                var polyline = tr.GetObject(lineResult.ObjectId, OpenMode.ForRead) as Polyline;
+                line = polyline.GetLineSegmentFromPolyline(lineResult.PickedPoint);
+                endPoint = line.GetClosestEndPoint(lineResult.PickedPoint);
+            }
+
+            return line;
+        }
+
+        public static Angle GetAngleOfLine(Line line)
+        {
+            return MathHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+        }
+
+        public static Point FindIntersectionPoint(Line line1, Line line2)
+        {
+            var p1 = new Vector(line1.StartPoint.X, line1.StartPoint.Y);
+            var p2 = new Vector(line1.EndPoint.X, line1.EndPoint.Y);
+            var q1 = new Vector(line2.StartPoint.X, line2.StartPoint.Y);
+            var q2 = new Vector(line2.EndPoint.X, line2.EndPoint.Y);
+
+            MathHelpers.LineSegementsIntersect(p1, p2, q1, q2, out Point intersectionPoint);
+
+            return intersectionPoint;
         }
 
         public static Point3d GetClosestEndPoint(this Line line, Point3d pickedPoint)

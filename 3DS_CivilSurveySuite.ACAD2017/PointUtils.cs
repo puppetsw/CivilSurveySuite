@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.ACAD2017

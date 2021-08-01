@@ -10,12 +10,11 @@ using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
-using Point = _3DS_CivilSurveySuite.Model.Point;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
+using Point = _3DS_CivilSurveySuite.Model.Point;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.CogoPoints))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -25,48 +24,31 @@ namespace _3DS_CivilSurveySuite.C3D2017
         private const int GraphicPixelSize = 6;
 
         [CommandMethod("3DS", "_3DSCPProduction", CommandFlags.Modal)]
-        public void CogoPoint_Create_At_Production_Of_Line_And_Distance()
+        public void Create_At_Production_Of_Line_And_Distance()
         {
+            var graphics = new TransientGraphics();
             using (Transaction tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult lineResult, "\n3DS> Select line or polyline: "))
-                    return;
-
-                if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                    return;
-
-                Point3d basePoint = default;
-                Line line = null;
-
                 try
                 {
-                    if (lineResult.ObjectId.IsType<Line>())
-                    {
-                        line = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
-                        basePoint = line.GetClosestEndPoint(lineResult.PickedPoint);
-                    }
-
-                    if (lineResult.ObjectId.IsType<Polyline>())
-                    {
-                        var polyline = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
-                        line = polyline.GetLineSegmentFromPolyline(lineResult.PickedPoint);
-                        basePoint = line.GetClosestEndPoint(lineResult.PickedPoint);
-                    }
+                    Line line = LineUtils.GetNearestPointOfLineOrPolylineSegment(tr, out Point3d basePoint);
 
                     if (line == null)
                         return;
-                    
-                    Angle angle = MathHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
 
+                    graphics.DrawLine(line);
+
+                    Angle angle = LineUtils.GetAngleOfLine(line);
+
+                    // If the basePoint is equal to the lines StartPoint, we want the angle to go in the
+                    // opposite direction. So we Flip().
                     if (basePoint == line.StartPoint)
-                    {
                         angle = angle.Flip();
-                    }
 
-                    if (!EditorUtils.GetDistance(out double dist, "\n3DS> Offset distance: ", basePoint))
+                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance, basePoint))
                         return;
 
-                    var pko = new PromptKeywordOptions("\n3DS> Accept point position? ") { AppendKeywordsToMessage = true, AllowNone = true };
+                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
                     pko.Keywords.Add(Keywords.Accept);
                     pko.Keywords.Add(Keywords.Cancel);
                     pko.Keywords.Add(Keywords.Flip);
@@ -74,42 +56,39 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                     Point point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
-                    using (var graphics = new TransientGraphics())
+                    graphics.ClearGraphics();
+                    graphics.DrawPlus(point.ToPoint3d(), GraphicPixelSize);
+                    graphics.DrawLine(basePoint, point.ToPoint3d());
+
+                    var cancelled = false;
+                    PromptResult prResult;
+                    do
                     {
-                        graphics.DrawDot(point.ToPoint3d(), 6);
-                        graphics.DrawLine(basePoint, point.ToPoint3d());
+                        prResult = AcadApp.Editor.GetKeywords(pko);
 
-                        var cancelled = false;
-                        PromptResult prResult;
-                        do
+                        if (prResult.Status != PromptStatus.Keyword &&
+                            prResult.Status != PromptStatus.OK)
+                            continue;
+
+                        switch (prResult.StringResult)
                         {
-                            prResult = AcadApp.Editor.GetKeywords(pko);
-
-                            if (prResult.Status != PromptStatus.Keyword &&
-                                prResult.Status != PromptStatus.OK)
-                                continue;
-
-                            switch (prResult.StringResult)
-                            {
-                                case Keywords.None: // If user doesn't enter anything.
-                                case Keywords.Accept:
-                                    CogoPointUtils.CreateCogoPoint(point.ToPoint3d());
-                                    cancelled = true;
-                                    break;
-                                case Keywords.Cancel:
-                                    cancelled = true;
-                                    break;
-                                case Keywords.Flip:
-                                    angle = angle.Flip();
-                                    point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
-                                    graphics.ClearGraphics();
-                                    graphics.DrawDot(point.ToPoint3d(), 6);
-                                    graphics.DrawLine(basePoint, point.ToPoint3d());
-                                    break;
-                            }
-                        } while (prResult.Status != PromptStatus.Cancel &&
-                                 prResult.Status != PromptStatus.Error && !cancelled);
-                    }
+                            case Keywords.None: // If user doesn't enter anything.
+                            case Keywords.Accept:
+                                CogoPointUtils.CreateCogoPoint(point.ToPoint3d());
+                                cancelled = true;
+                                break;
+                            case Keywords.Cancel:
+                                cancelled = true;
+                                break;
+                            case Keywords.Flip:
+                                angle = angle.Flip();
+                                point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                                graphics.ClearGraphics();
+                                graphics.DrawPlus(point.ToPoint3d(), GraphicPixelSize);
+                                graphics.DrawLine(basePoint, point.ToPoint3d());
+                                break;
+                        }
+                    } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
 
                     tr.Commit();
                 }
@@ -117,133 +96,104 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     AcadApp.Editor.WriteMessage(e.ToString());
                 }
+                finally
+                {
+                    graphics.Dispose();
+                }
             }
         }
-        
+
         [CommandMethod("3DS", "_3DSCPOffsetTwoLines", CommandFlags.Modal)]
-        public void CogoPoint_Create_At_Offset_Two_Lines()
+        public void Create_At_Offset_Two_Lines()
         {
-            ObjectId firstLineId;
-            ObjectId secondLineId;
-
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select first line or polyline to offset: "))
-                return;
-
-            if (!firstLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                return;
-
-            firstLineId = firstLineResult.ObjectId;
-                
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult secondLineResult, "\n3DS> Select second line or polyline to offset: "))
-                return;
-
-            if (!secondLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                return;
-
-            secondLineId = secondLineResult.ObjectId;
-
-            // Pick offset side
-            if (!EditorUtils.GetBasePoint3d(out Point3d offsetPoint, "\n3DS> Select offset side: "))
-                return;
-
-            // Prompt for offset distance
-            if (!EditorUtils.GetDistance(out double dist, "\n3DS> Offset distance: "))
-                return;
-
-            using (Transaction tr = AcadApp.StartTransaction())
+            var graphics = new TransientGraphics();
+            try
             {
-                Line firstLineToOffset = null;
-                Line secondLineToOffset = null;
-
-                if (EditorUtils.IsType(firstLineId, typeof(Line)))
+                using (Transaction tr = AcadApp.StartTransaction())
                 {
-                    firstLineToOffset = firstLineId.GetObject(OpenMode.ForRead) as Line;
-                }
+                    AcadApp.Editor.WriteMessage("\n3DS> Select first line to offset.");
+                    Line firstLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
+                    
+                    if (firstLineToOffset == null)
+                        return;
 
-                if (EditorUtils.IsType(firstLineId, typeof(Polyline)))
-                {
-                    var polyline = firstLineId.GetObject(OpenMode.ForRead) as Polyline;
-                    var segmentId = PolylineUtils.GetPolylineSegment(polyline, firstLineResult);
-                    var segment = polyline.GetLineSegment2dAt(segmentId);
-                    firstLineToOffset = new Line(segment.StartPoint.ToPoint().ToPoint3d(), segment.EndPoint.ToPoint().ToPoint3d());
-                }
+                    // Highlight line.
+                    graphics.DrawLine(firstLineToOffset);
 
-                if (EditorUtils.IsType(secondLineId, typeof(Line)))
-                {
-                    secondLineToOffset = secondLineId.GetObject(OpenMode.ForRead) as Line;
-                }
+                    AcadApp.Editor.WriteMessage("\n3DS> Select second line to offset.");
+                    Line secondLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
 
-                if (EditorUtils.IsType(secondLineId, typeof(Polyline)))
-                {
-                    var polyline = secondLineId.GetObject(OpenMode.ForRead) as Polyline;
-                    var segmentId = PolylineUtils.GetPolylineSegment(polyline, secondLineResult);
-                    var segment = polyline.GetLineSegment2dAt(segmentId);
-                    secondLineToOffset = new Line(segment.StartPoint.ToPoint().ToPoint3d(), segment.EndPoint.ToPoint().ToPoint3d());
-                }
+                    if (secondLineToOffset == null)
+                        return;
 
-                Curve firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
-                Curve secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
+                    // Highlight line.
+                    graphics.DrawLine(secondLineToOffset);
 
-                if (firstOffsetLine == null || secondOffsetLine == null)
-                {
-                    AcadApp.Editor.WriteMessage("\n3DS> Please select a line or polyline only.");
-                    return;
-                }
+                    //TODO: Create default message, so we don't need to pass it in. Unless we want to.
+                    // Pick offset side.
+                    if (!EditorUtils.GetBasePoint3d(out Point3d offsetPoint, "\n" + ResourceStrings.Pick_Offset_Side))
+                        return;
 
-                var p1 = new Vector(firstOffsetLine.StartPoint.X, firstOffsetLine.StartPoint.Y);
-                var p2 = new Vector(firstOffsetLine.EndPoint.X, firstOffsetLine.EndPoint.Y);
-                var q1 = new Vector(secondOffsetLine.StartPoint.X, secondOffsetLine.StartPoint.Y);
-                var q2 = new Vector(secondOffsetLine.EndPoint.X, secondOffsetLine.EndPoint.Y);
+                    // Prompt for offset distance.
+                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance))
+                        return;
 
-                MathHelpers.LineSegementsIntersect(p1, p2, q1, q2, out Point intersectionPoint);
-                AcadApp.Editor.WriteMessage($"\n3DS> Intersection found at: X:{intersectionPoint.X} Y:{intersectionPoint.Y}");
+                    Line firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
+                    Line secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
 
-                var pko = new PromptKeywordOptions("\n3DS> Accept point position? ") { AppendKeywordsToMessage = true, AllowNone = true };
-                pko.Keywords.Add(Keywords.Accept);
-                pko.Keywords.Add(Keywords.Cancel);
-                pko.Keywords.Default = Keywords.Accept;
+                    Point intersectionPoint = LineUtils.FindIntersectionPoint(firstOffsetLine, secondOffsetLine);
 
-                var cancelled = false;
-                PromptResult prResult;
-                TransientGraphics graphics = new TransientGraphics(TransientDrawingMode.Main);
-                do
-                {
-                    prResult = AcadApp.Editor.GetKeywords(pko);
+                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
+                    pko.Keywords.Add(Keywords.Accept);
+                    pko.Keywords.Add(Keywords.Cancel);
+                    pko.Keywords.Default = Keywords.Accept;
 
-                    try
+                    graphics.ClearGraphics();
+                    graphics.DrawPlus(intersectionPoint.ToPoint3d(), GraphicPixelSize);
+                    
+                    var cancelled = false;
+                    do
                     {
-                        if (prResult.Status != PromptStatus.Keyword &&
-                            prResult.Status != PromptStatus.OK)
-                            continue;
+                        PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 
+                        switch (prResult.Status)
+                        {
+                            case PromptStatus.Cancel:
+                            case PromptStatus.None:
+                            case PromptStatus.Error:
+                                cancelled = true;
+                                break;
+                            case PromptStatus.OK:
+                            case PromptStatus.Keyword:
+                                switch (prResult.StringResult)
+                                {
+                                    case Keywords.Accept:
+                                        CogoPointUtils.CreateCogoPoint(intersectionPoint.ToPoint3d());
+                                        cancelled = true;
+                                        break;
+                                    case Keywords.Cancel:
+                                        cancelled = true;
+                                        break;
+                                }
+                                break;
+                        }
 
-
-
-                    }
-                    catch (Exception e)
-                    {
-                        AcadApp.Editor.WriteMessage(e.Message);
-                    }
-                    finally
-                    {
-                        graphics.Dispose();
-                    }
-
-
-                } while (prResult.Status != PromptStatus.Cancel &&
-                         prResult.Status != PromptStatus.Error && !cancelled);
-
-
-
-
-                CogoPointUtils.CreateCogoPoint(intersectionPoint.ToPoint3d());
-
-                tr.Commit();
+                    } while (!cancelled);
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage(e.Message);
+            }
+            finally
+            {
+                graphics.Dispose();
             }
         }
 
         [CommandMethod("3DS", "_3DSCPAngleAndDistance", CommandFlags.Modal)]
-        public void CogoPoint_Create_At_Angle_And_Distance()
+        public void Create_At_Angle_And_Distance()
         {
             if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select a base point: "))
                 return;
@@ -305,7 +255,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         [CommandMethod("3DS", "_3DSCPTrunkPointAtTrees", CommandFlags.Modal)]
-        public void CogoPoint_CreateTrunksAtTrees()
+        public void Create_Trunks_At_Trees()
         {
             //TODO: Use settings to determine codes for TRNK and TRE
             //TODO: Add option to set style for tree and trunk?
@@ -344,7 +294,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.WriteMessage(completeMessage);
         }
 
-        [CommandMethod("3DS", "_3DSCPRawDescriptionToUpper", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSRawDescriptionToUpper", CommandFlags.Modal)]
         public void RawDescription_ToUpper()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
@@ -365,7 +315,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSCPFullDescriptionToUpper", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSFullDescriptionToUpper", CommandFlags.Modal)]
         public void FullDescription_ToUpper()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
@@ -386,8 +336,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSCPLabelRotate", CommandFlags.Modal)]
-        public void CogoPoint_Label_Rotate()
+        [CommandMethod("3DS", "_3DSCPLabelRotationMatch", CommandFlags.Modal)]
+        public void Label_Rotate_Match()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
 

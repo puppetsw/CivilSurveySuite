@@ -23,7 +23,6 @@ namespace _3DS_CivilSurveySuite.Loader
             //AcadUtils.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
 
             Assembly.Load("Microsoft.Xaml.Behaviors");
-            //Assembly.Load("SimpleInjector");
             Assembly.Load("3DS_CivilSurveySuite.ACAD2017");
             Assembly.Load("3DS_CivilSurveySuite.C3D2017");
         }

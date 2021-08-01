@@ -59,6 +59,11 @@
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
     <Compile Include="Points.cs" />
+    <Compile Include="ResourceStrings.Designer.cs">
+      <DependentUpon>ResourceStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Traverse.cs" />
     <Compile Include="Services\IPaletteService.cs" />
     <Compile Include="Keywords.cs" />
@@ -98,6 +103,11 @@
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ResourceStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

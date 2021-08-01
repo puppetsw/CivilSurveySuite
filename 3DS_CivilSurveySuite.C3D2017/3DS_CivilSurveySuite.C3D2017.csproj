@@ -91,6 +91,5 @@
       <Name>3DS_CivilSurveySuite.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

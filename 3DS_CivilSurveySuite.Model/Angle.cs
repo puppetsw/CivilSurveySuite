@@ -5,7 +5,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Policy;
 
 namespace _3DS_CivilSurveySuite.Model
 {

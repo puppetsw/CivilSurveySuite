@@ -78,6 +78,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void DrawLine(Point2d point1, Point2d point2) => DrawLine(point1.ToPoint3d(), point2.ToPoint3d());
 
+        public void DrawLine(Line line) => DrawLine(line.StartPoint, line.EndPoint);
+
         public void DrawLine(Point3d point1, Point3d point2)
         {
             var line = new Line(point1, point2) { Color = Color };
@@ -263,6 +265,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void ClearGraphics()
         {
             if (_graphics == null) 
+                return;
+
+            if (_graphics.Count < 0)
                 return;
 
             var tm = TransientManager.CurrentTransientManager;

@@ -18,14 +18,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private const int GraphicsSize = 6;
 
-        // Bearing
-        // Distance
-        // Show transient line
-        // Ask to confirm or flip or cancel
-        // Cancel removes the transient line and starts a bearing
-
-        // If more than 2 in list show zoom to closure option.
-
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public void Traverse_CommandLine()
         {
