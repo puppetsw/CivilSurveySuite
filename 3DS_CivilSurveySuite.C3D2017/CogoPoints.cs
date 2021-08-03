@@ -328,7 +328,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId objectId in pso.Value.GetObjectIds())
                 {
                     CogoPoint pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
-                    CogoPointUtils.RawDescriptionToUpperCase(ref pt);
+                    CogoPointUtils.FullDescriptionToUpperCase(ref pt);
                     pt.DowngradeOpen();
                 }
 
