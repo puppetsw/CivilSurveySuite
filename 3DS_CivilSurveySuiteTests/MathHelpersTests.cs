@@ -10,6 +10,7 @@ namespace _3DS_CivilSurveySuiteTests
     public class MathHelpersTests
     {
         [TestMethod]
+        [TestCategory("Math")]
         public void ConvertLinkToMetersTest()
         {
             var linkValue = 100;
@@ -20,6 +21,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void ConvertFeetToMetersTest_FeetOnly()
         {
             var feetValue = 100;
@@ -30,6 +32,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void ConvertFeetToMetersTest_FeetAndInches()
         {
             var feetAndInchesValue = 100.10;
@@ -40,6 +43,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void ConvertFeetToMetersTest_FeetAndInches_InchesLessThan10()
         {
             var feetAndInchesValue = 100.09;
@@ -50,29 +54,32 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void AngleToDecimalDegreesTest()
         {
             var angle = new Angle { Degrees = 57, Minutes = 12, Seconds = 34 };
 
             const double expectedResult = 57.2094;
-            double result = MathHelpers.ToDecimalDegrees(angle);
+            double result = angle.ToDecimalDegrees();
 
             Assert.AreEqual(expectedResult, result, 4);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void AngleToDecimalDegreesTest_ShouldReturnZero()
         {
             Angle angle = null;
 
             const double expectedResult = 0;
             // ReSharper disable once ExpressionIsAlwaysNull
-            double result = MathHelpers.ToDecimalDegrees(angle);
+            double result = angle.ToDecimalDegrees();
 
             Assert.AreEqual(expectedResult, result);
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void DecimalDegreesToRadiansTest()
         {
             const double expectedResult = 0.9985;
@@ -84,17 +91,19 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void DecimalDegreesToAngleTest()
         {
             var decimalDegree = 57.2094;
             var expectedAngle = new Angle { Degrees = 57, Minutes = 12, Seconds = 34 };
 
-            Angle result = MathHelpers.DecimalDegreesToAngle(decimalDegree);
+            Angle result = AngleHelpers.DecimalDegreesToAngle(decimalDegree);
 
             Assert.AreEqual(expectedAngle, result);
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void DistanceBetweenPointsTest()
         {
             var x1 = 0;
@@ -110,6 +119,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void DistanceBetweenPointsTest_Point()
         {
             var point1 = new Point(0, 0);
@@ -117,12 +127,13 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = 141.4214;
 
-            var result = MathHelpers.DistanceBetweenPoints(point1, point2);
+            var result = PointHelpers.DistanceBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void AngleBetweenPointsTest()
         {
             var x1 = 0;
@@ -132,12 +143,13 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(45);
 
-            var result = MathHelpers.AngleBetweenPoints(x1, x2, y1, y2);
+            var result = AngleHelpers.AngleBetweenPoints(x1, x2, y1, y2);
 
             Assert.AreEqual(expectedDistance, result);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void AngleBetweenPointsTest_Point()
         {
             var point1 = new Point(0, 0);
@@ -145,12 +157,13 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(45);
 
-            var result = MathHelpers.AngleBetweenPoints(point1, point2);
+            var result = AngleHelpers.AngleBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void AngleBetweenPointsTest_Point_Negative()
         {
             var point1 = new Point(-100, -100);
@@ -158,12 +171,13 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(225);
 
-            var result = MathHelpers.AngleBetweenPoints(point1, point2);
+            var result = AngleHelpers.AngleBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void BearingAndDistanceToCoordinatesTest()
         {
             var traverseObjects = new List<TraverseObject>
@@ -175,7 +189,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var basePoint = new Point(0, 0, 0);
 
-            var results = MathHelpers.TraverseObjectsToCoordinates(traverseObjects, basePoint);
+            var results = PointHelpers.TraverseObjectsToCoordinates(traverseObjects, basePoint);
 
             var expected = new List<Point>
             {
@@ -189,6 +203,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void AngleAndDistanceToCoordinatesTest()
         {
             var traverseAngleObject = new List<TraverseAngleObject>
@@ -200,7 +215,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var basePoint = new Point(0, 0);
 
-            var results = MathHelpers.TraverseAngleObjectsToCoordinates(traverseAngleObject, basePoint);
+            var results = PointHelpers.TraverseAngleObjectsToCoordinates(traverseAngleObject, basePoint);
 
             var expected = new List<Point>
             {
@@ -214,6 +229,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void Intersection_Of_Two_Angles_As_Coordinates()
         {
             var pointA = new Vector(0, 0);
@@ -231,6 +247,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void Intersection_Of_Two_Angles_As_Coordinates_Parallel_Lines()
         {
             var pointA = new Vector(0, 0);
@@ -248,6 +265,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void LineSegmentsDoNotIntersect()
         {
             var actual = MathHelpers.LineSegementsIntersect(
@@ -261,6 +279,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void LineSegmentsAreCollinearAndOverlapping()
         {
             Point intersection;
@@ -278,6 +297,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
         public void LineSegmentsAreCollinearAndOverlapping_ButFalse()
         {
             Point intersection;
@@ -295,10 +315,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Math")]
+        [TestCategory("Angle")]
         public void Convert_DecimalDegrees_To_Radians_And_Back_To_DecimalDegrees()
         {
             var angle = new Angle(90);
-            var dec = MathHelpers.ToDecimalDegrees(angle);
+            var dec = angle.ToDecimalDegrees();
             var expectedDecimalDegrees = 90;
 
             Assert.AreEqual(expectedDecimalDegrees, dec);
@@ -318,23 +340,25 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(true, checkEquals);
             
 
-            var finalAngle = MathHelpers.DecimalDegreesToAngle(Math.Round(convertedRadians, 4));
+            var finalAngle = AngleHelpers.DecimalDegreesToAngle(Math.Round(convertedRadians, 4));
 
             Assert.AreEqual(angle, finalAngle);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void Convert_Radians_To_Angle()
         {
             var radians = 1.570796326794897;
             var expectedAngle = new Angle(90);
 
-            var angle = MathHelpers.RadiansToAngle(radians);
+            var angle = AngleHelpers.RadiansToAngle(radians);
 
             Assert.AreEqual(expectedAngle, angle);
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void IsLeft_RightSide_ShouldBe1()
         {
             var startPoint = new Point(0, 0);
@@ -348,6 +372,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void IsLeft_LeftSide_ShouldBeTrue()
         {
             var startPoint = new Point(0, 0);
@@ -361,6 +386,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void IsLeft_OnLine_ShouldBe0()
         {
             var startPoint = new Point(0, 0);
@@ -375,26 +401,29 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void IsConvexAngle_ShouldBeTrue()
         {
             var angle = new Angle(45);
 
-            var result = MathHelpers.IsOrdinaryAngle(angle);
+            var result = AngleHelpers.IsOrdinaryAngle(angle);
 
             Assert.AreEqual(true, result);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void IsConvexAngle_ShouldBeFalse()
         {
             var angle = new Angle(270);
 
-            var result = MathHelpers.IsOrdinaryAngle(angle);
+            var result = AngleHelpers.IsOrdinaryAngle(angle);
 
             Assert.AreEqual(false, result);
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void IsOrdinaryAngle_ShouldBeTrue()
         {
             var startPoint = new Point(0, 0);
@@ -406,6 +435,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void IsOrdinaryAngle_ShouldBeFalse()
         {
             var startPoint = new Point(50, 50);
@@ -417,6 +447,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Angle")]
         public void ToRadians()
         {
             var angle = new Angle(180);
@@ -430,15 +461,30 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        [TestCategory("Point")]
         public void MidpointBetweenPoints()
         {
             var expectedPoint = new Point(55, 55);
             var startPoint = new Point(10, 10);
             var endPoint = new Point(100, 100);
 
-            var actual = MathHelpers.MidpointBetweenPoints(startPoint, endPoint);
+            var actual = PointHelpers.MidpointBetweenPoints(startPoint, endPoint);
 
             Assert.AreEqual(expectedPoint, actual);
+        }
+
+        [TestMethod]
+        [TestCategory("Point")]
+        public void CoordinateDelta_ReturnDifference()
+        {
+            var firstPoint = Point.Origin;
+            var secondPoint = new Point(100, 100, 50);
+
+            var expectedDelta = new Point(-100, -100, -50);
+
+            var result = MathHelpers.DeltaPoint(firstPoint, secondPoint);
+
+            Assert.AreEqual(expectedDelta, result);
         }
     }
 }

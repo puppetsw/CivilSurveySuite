@@ -71,6 +71,9 @@
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CogoPointViewer.xaml.cs">
+      <DependentUpon>CogoPointViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ConnectLineworkView.xaml.cs">
       <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
     <Page Include="Views\AngleCalculatorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CogoPointViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConnectLineworkView.xaml">
       <Generator>MSBuild:Compile</Generator>

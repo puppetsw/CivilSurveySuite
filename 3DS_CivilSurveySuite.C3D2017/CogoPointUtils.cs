@@ -1,4 +1,5 @@
-﻿using Autodesk.AutoCAD.Geometry;
+﻿using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -25,20 +26,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static void FullDescriptionToUpperCase(ref CogoPoint point)
         {
             point.DescriptionFormat = point.DescriptionFormat.ToUpper();
-        }
-
-        /// <summary>
-        /// Creates a point at the offset of 2 lines.
-        /// </summary>
-        public void CreatePointAtOffsetTwoLines()
-        {
-        }
-
-        /// <summary>
-        /// Creates a point on production of a line.
-        /// </summary>
-        public void CreatePointOnProduction()
-        {
         }
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace _3DS_CivilSurveySuite.Model
         public double Y { get; private set; }
         public double Z { get; private set; }
 
+        public static Point Origin => new Point(0, 0, 0);
+
         public Point(double x, double y)
         {
             X = x;

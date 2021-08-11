@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -144,7 +143,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static Angle GetAngleOfLine(Line line)
         {
-            return MathHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+            return AngleHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
         }
 
         public static Point FindIntersectionPoint(Line line1, Line line2)

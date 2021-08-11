@@ -1,6 +1,6 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.Extensions
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class TransactionExtensions
     {

@@ -49,68 +49,6 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
-        /// Converts a <see cref="Angle"/> to decimal degrees.
-        /// </summary>
-        /// <param name="angle">The <see cref="Angle"/> to convert.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
-        /// <returns>A double representing the <see cref="Angle"/> in decimal degrees.</returns>
-        /// <remarks>The returned value is rounded to 4 decimal places, unless otherwise specified.</remarks>
-        public static double ToDecimalDegrees(this Angle angle, int decimalPlaces = 4)
-        {
-            if (angle == null)
-                return 0;
-
-            double minutes = (double) angle.Minutes / 60;
-            double seconds = (double) angle.Seconds / 3600;
-
-            double decimalDegree = angle.Degrees + minutes + seconds;
-
-            return Math.Round(decimalDegree, decimalPlaces);
-        }
-
-        /// <summary>
-        /// Converts a <see cref="Angle"/> to radians.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="decimalPlaces">The decimal places to round to. You should
-        /// probably leave this as 15, otherwise rounding issues will occur.</param>
-        /// <returns>A double representing the <see cref="Angle"/> in radians.</returns>
-        public static double ToRadians(this Angle angle, int decimalPlaces = 15)
-        {
-            return DecimalDegreesToRadians(angle.ToDecimalDegrees());
-        }
-
-        /// <summary>
-        /// Converts an <see cref="Angle"/> to a clockwise direction.
-        /// </summary>
-        /// <param name="angle">The angle in a counter-clockwise direction.</param>
-        /// <returns>A <see cref="Angle"/> containing the converted values.</returns>
-        public static Angle ToClockwise(this Angle angle)
-        {
-            return new Angle(360) - angle + new Angle(90);
-        }
-
-        /// <summary>
-        /// Converts an <see cref="Angle"/> to a counter-clockwise direction.
-        /// </summary>
-        /// <param name="angle">The angle in a clockwise direction.</param>
-        /// <returns>A <see cref="Angle"/> containing the converted values.</returns>
-        public static Angle ToCounterClockwise(this Angle angle)
-        {
-            return new Angle(90) - angle + new Angle(360);
-        }
-
-        /// <summary>
-        /// Flips an <see cref="Angle"/> 180°.
-        /// </summary>
-        /// <param name="angle">The angle to be flipped.</param>
-        /// <returns>A <see cref="Angle"/> containing the flipped values.</returns>
-        public static Angle Flip(this Angle angle)
-        {
-            return angle - new Angle(180);
-        }
-
-        /// <summary>
         /// Converts a decimal degrees value to radians.
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees to convert.</param>
@@ -133,20 +71,6 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
-        /// Converts a decimal degrees value to <see cref="Angle"/> object.
-        /// </summary>
-        /// <param name="decimalDegrees"></param>
-        /// <returns>A <see cref="Angle"/> representing the converted decimal degrees values.</returns>
-        public static Angle DecimalDegreesToAngle(double decimalDegrees)
-        {
-            var degrees = Math.Floor(decimalDegrees);
-            var minutes = Math.Floor((decimalDegrees - degrees) * 60);
-            var seconds = Math.Round(((decimalDegrees - degrees) * 60 - minutes) * 60, 0);
-
-            return new Angle { Degrees = (int) degrees, Minutes = (int) minutes, Seconds = (int) seconds };
-        }
-
-        /// <summary>
         /// Gets distance between two coordinates.
         /// </summary>
         /// <param name="x1">Easting of first coordinate.</param>
@@ -160,160 +84,11 @@ namespace _3DS_CivilSurveySuite.Core
             double x = Math.Abs(x1 - x2);
             double y = Math.Abs(y1 - y2);
 
-            double distance = Math.Round(Math.Sqrt(x * x + y * y), decimalPlaces);
-
-            return distance;
+            return Math.Round(Math.Sqrt(x * x + y * y), decimalPlaces);
         }
 
-        /// <summary>
-        /// Gets distance between two coordinates.
-        /// </summary>
-        /// <param name="point1">The first coordinate.</param>
-        /// <param name="point2">The second coordinate.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
-        /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double DistanceBetweenPoints(Point point1, Point point2, int decimalPlaces = 4)
-        {
-            return DistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, decimalPlaces);
-        }
 
-        /// <summary>
-        /// Gets the mid-point between two <see cref="Point"/>s.
-        /// </summary>
-        /// <param name="point1">First point.</param>
-        /// <param name="point2">Second point.</param>
-        /// <returns>A <see cref="Point"/> representing the mid-point between the two <see cref="Point"/>s.</returns>
-        public static Point MidpointBetweenPoints(Point point1, Point point2)
-        {
-            double x = (point1.X + point2.X) / 2;
-            double y = (point1.Y + point2.Y) / 2;
-            return new Point(x, y);
-        }
 
-        /// <summary>
-        /// Gets angle/bearing between two coordinates
-        /// </summary>
-        /// <param name="x1">Easting of first coordinate</param>
-        /// <param name="x2">Easting of second coordinate</param>
-        /// <param name="y1">Northing of first coordinate</param>
-        /// <param name="y2">Northing of second coordinate</param>
-        /// <returns>A <see cref="Angle"/> representing the angle/bearing between the two coordinates.</returns>
-        public static Angle AngleBetweenPoints(double x1, double x2, double y1, double y2)
-        {
-            double rad = Math.Atan2(x2 - x1, y2 - y1);
-
-            if (rad < 0)
-                rad += 2 * Math.PI; // If radians is less than 0 add 2PI.
-
-            double decDeg = Math.Abs(rad) * 180 / Math.PI;
-            return DecimalDegreesToAngle(decDeg);
-        }
-
-        /// <summary>
-        /// Gets angle/bearing between two coordinates
-        /// </summary>
-        /// <param name="point1">The first coordinate.</param>
-        /// <param name="point2">The second coordinate.</param>
-        /// <returns>A <see cref="Angle"/> representing the angle/bearing between the two coordinates.</returns>
-        public static Angle AngleBetweenPoints(Point point1, Point point2)
-        {
-            return AngleBetweenPoints(point1.X, point2.X, point1.Y, point2.Y);
-        }
-
-        /// <summary>
-        /// Converts a list of <see cref="Angle"/> objects into a list of <see cref="Point"/> objects.
-        /// </summary>
-        /// <param name="bearingList"></param>
-        /// <param name="basePoint"></param>
-        /// <returns>collection of <see cref="Point"/></returns>
-        public static List<Point> TraverseObjectsToCoordinates(IEnumerable<TraverseObject> bearingList, Point basePoint)
-        {
-            var pointList = new List<Point> { basePoint };
-
-            var i = 0;
-            foreach (TraverseObject item in bearingList)
-            {
-                double dec = ToDecimalDegrees(item.Angle);
-                double rad = DecimalDegreesToRadians(dec);
-
-                double departure = item.Distance * Math.Sin(rad);
-                double latitude = item.Distance * Math.Cos(rad);
-
-                double newX = Math.Round(pointList[i].X + departure, 4);
-                double newY = Math.Round(pointList[i].Y + latitude, 4);
-
-                pointList.Add(new Point(newX, newY));
-                i++;
-            }
-
-            return pointList;
-        }
-
-        /// <summary>
-        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="TraverseAngleObject"/> to a List of <see cref="Point"/>.
-        /// </summary>
-        /// <param name="angleList">A enumerable list containing the <see cref="TraverseAngleObject"/>'s.</param>
-        /// <param name="basePoint">The base point.</param>
-        /// <returns>A <see cref="List{T}"/> of <see cref="Point"/>.</returns>
-        public static List<Point> TraverseAngleObjectsToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point basePoint)
-        {
-            var newPointList = new List<Point> { basePoint };
-            var lastBearing = new Angle();
-            var i = 0;
-            foreach (TraverseAngleObject item in angleList)
-            {
-                Angle nextBearing = lastBearing;
-
-                if (!item.Angle.IsZero)
-                {
-                    switch (item.ReferenceDirection)
-                    {
-                        case AngleReferenceDirection.Backward:
-                            nextBearing = lastBearing - new Angle(180);
-                            break;
-                        case AngleReferenceDirection.Forward:
-                            nextBearing = lastBearing;
-                            break;
-                    }
-
-                    switch (item.RotationDirection)
-                    {
-                        case AngleRotationDirection.Negative:
-                            nextBearing -= item.Angle;
-                            break;
-                        case AngleRotationDirection.Positive:
-                            nextBearing += item.Angle;
-                            break;
-                    }
-                }
-                newPointList.Add(AngleAndDistanceToPoint(nextBearing, item.Distance, newPointList[i]));
-                lastBearing = nextBearing;
-                i++;
-            }
-            return newPointList;
-        }
-
-        /// <summary>
-        /// Converts a <see cref="Angle"/> object and distance to a <see cref="Point"/>.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <param name="distance">The distance.</param>
-        /// <param name="basePoint">The base point to calculate the new <see cref="Point"/> from.</param>
-        /// <returns>A <see cref="Point"/> containing the coordinates generated from the <see cref="Angle"/>
-        /// and distance.</returns>
-        public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint)
-        {
-            double dec = ToDecimalDegrees(angle);
-            double rad = DecimalDegreesToRadians(dec);
-
-            double departure = distance * Math.Sin(rad);
-            double latitude = distance * Math.Cos(rad);
-
-            double newX = Math.Round(basePoint.X + departure, 4);
-            double newY = Math.Round(basePoint.Y + latitude, 4);
-
-            return new Point(newX, newY);
-        }
 
         public static bool LineSegementsIntersect(Vector p, Vector p2, Vector q, Vector q2, out Point intersectingPoint, bool considerCollinearOverlapAsIntersect = false)
         {
@@ -386,17 +161,6 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
-        /// Converts a radians value to <see cref="Angle"/> object.
-        /// </summary>
-        /// <param name="radians">The radians.</param>
-        /// <returns>A <see cref="Angle"/> representing the converted radians value.</returns>
-        public static Angle RadiansToAngle(double radians)
-        {
-            var decimalDegrees = RadiansToDecimalDegrees(radians);
-            return DecimalDegreesToAngle(decimalDegrees);
-        }
-
-        /// <summary>
         /// Does a floating point comparison.
         /// </summary>
         /// <param name="x">The first comparison number.</param>
@@ -439,17 +203,6 @@ namespace _3DS_CivilSurveySuite.Core
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Angle"/> is an ordinary angle.
-        /// </summary>
-        /// <param name="angle">The angle.</param>
-        /// <returns><c>true</c> if the specified <see cref="Angle"/> is within the degree range
-        /// of (360)0-180°; otherwise, <c>false</c>.</returns>
-        public static bool IsOrdinaryAngle(Angle angle)
-        {
-            return angle.Degrees < 180 && angle.Degrees > 0;
-        }
-
-        /// <summary>
         /// Determines whether the specified angle determined by the <see cref="Point"/>s is an ordinary angle.
         /// </summary>
         /// <param name="startPoint">The start point.</param>
@@ -459,6 +212,20 @@ namespace _3DS_CivilSurveySuite.Core
         public static bool IsOrdinaryAngle(Point startPoint, Point endPoint)
         {
             return startPoint.X < endPoint.X;
+        }
+
+        /// <summary>
+        /// Returns the coordinate delta between the <see cref="Point"/>s.
+        /// </summary>
+        /// <param name="firstPoint">The first point.</param>
+        /// <param name="secondPoint">The second point.</param>
+        /// <param name="decimalPlaces">The decimal places.</param>
+        /// <returns>Returns <see cref="Point"/> containing the delta as coordinates.</returns>
+        public static Point DeltaPoint(Point firstPoint, Point secondPoint, int decimalPlaces = 4)
+        {
+            return new Point(Math.Round(firstPoint.X - secondPoint.X, decimalPlaces), 
+                             Math.Round(firstPoint.Y - secondPoint.Y, decimalPlaces),
+                             Math.Round(firstPoint.Z - secondPoint.Z, decimalPlaces));
         }
     }
 }

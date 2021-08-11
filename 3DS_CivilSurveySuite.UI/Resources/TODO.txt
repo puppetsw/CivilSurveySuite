@@ -16,6 +16,24 @@ XYZ point label (for autocad mainly)
 
 Insert picture(s) tool
 
+When you apply the CommandMethod attribute to a non-static method, AutoCAD's
+managed runtime will create multiple instances of your class, one for each
+document that you invoke the command in. Those instances are not created until
+you invoke the command.
+
+The problem you have is that AutoCAD's managed runtime also creates an instance
+of the class with the IExtensionApplication attribute on it as well, so multiple
+instances of your class are getting created, which obviously wasn't your
+intention.
+
+For one thing, it's not wise to implement commands in the same class that
+implements IExtensionApplication, but if you really wanted to do that, you could
+if you make the command handler methods static. If you're not sure about the
+difference between static and non-static (or 'instance') methods, get a hold of
+some basic C# learning materials, and try to become more familar with the basic
+concepts that underly the tools you're working with.
+
+
 Settings
 ----------------
 Properties.Settings.Default.MyConnection);

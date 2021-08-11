@@ -6,8 +6,8 @@
 using System.Reflection;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader.Loader))]
-namespace _3DS_CivilSurveySuite.Loader
+[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader))]
+namespace _3DS_CivilSurveySuite
 {
     public class Loader : IExtensionApplication
     {
@@ -22,6 +22,8 @@ namespace _3DS_CivilSurveySuite.Loader
 
             //AcadUtils.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
 
+            //TODO: Add checks for versions and file paths etc.
+
             Assembly.Load("Microsoft.Xaml.Behaviors");
             Assembly.Load("3DS_CivilSurveySuite.ACAD2017");
             Assembly.Load("3DS_CivilSurveySuite.C3D2017");
@@ -30,5 +32,7 @@ namespace _3DS_CivilSurveySuite.Loader
         public void Terminate()
         {
         }
+
+        
     }
 }

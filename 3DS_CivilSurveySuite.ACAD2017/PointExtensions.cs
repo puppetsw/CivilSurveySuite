@@ -8,7 +8,7 @@ using System.Linq;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.Geometry;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.Extensions
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class PointExtensions
     {

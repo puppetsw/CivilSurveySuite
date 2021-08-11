@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.EditorInput;
@@ -46,10 +45,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 pko.Keywords.Add(Keywords.Change);
                 pko.Keywords.Add(Keywords.Flip);
 
-                Point newPoint = MathHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
+                Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
                 graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                 graphics.DrawPlus(newPoint.ToPoint3d(), GraphicsSize);
-                graphics.DrawArrow(MathHelpers.MidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GraphicsSize);
+                graphics.DrawArrow(PointHelpers.MidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GraphicsSize);
 
                 PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 

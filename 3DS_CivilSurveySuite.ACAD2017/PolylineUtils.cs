@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -70,7 +69,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (!MathHelpers.IsOrdinaryAngle(segment.StartPoint.ToPoint(), segment.EndPoint.ToPoint()))
             {
                 // if it isn't an ordinary angle, we flip it.
-                return MathHelpers.RadiansToAngle(segment.Direction.Angle).Flip().ToRadians();
+                return AngleHelpers.RadiansToAngle(segment.Direction.Angle).Flip().ToRadians();
             }
 
             return segment.Direction.Angle;

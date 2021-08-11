@@ -3,14 +3,12 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
-using Exception = System.Exception;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Points))]
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -19,8 +17,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private const int GraphicPixelSize = 6;
 
-        [CommandMethod("3DS", "_3DSPointCreateAtProduction", CommandFlags.Modal)]
-        public void Point_Create_At_Production_Of_Line_And_Distance()
+        [CommandMethod("3DS", "_3DSPTCreateAtProduction", CommandFlags.Modal)]
+        public void AcadPoint_Create_At_Production_Of_Line_And_Distance()
         {
             using (Transaction tr = AcadApp.StartTransaction())
             {
@@ -51,7 +49,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (line == null)
                         return;
 
-                    Angle angle = MathHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+                    Angle angle = AngleHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
 
                     if (basePoint == line.StartPoint)
                     {
@@ -67,7 +65,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     pko.Keywords.Add(Keywords.Flip);
                     pko.Keywords.Default = Keywords.Accept;
 
-                    Point point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                    Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
                     using (var graphics = new TransientGraphics())
                     {
@@ -96,7 +94,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                                     break;
                                 case Keywords.Flip:
                                     angle = angle.Flip();
-                                    point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                                    point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                                     graphics.ClearGraphics();
                                     graphics.DrawCircle(point.ToPoint3d());
                                     graphics.DrawLine(basePoint, point.ToPoint3d());
@@ -115,7 +113,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSPointCreateAtOffsetTwoLines", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSPTCreateAtOffsetTwoLines", CommandFlags.Modal)]
         public void AcadPoint_Create_At_Offset_Two_Lines()
         {
             if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select first line or polyline to offset: "))
@@ -196,7 +194,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSPointCreateAtAngleAndDistance", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSPTCreateAtAngleAndDistance", CommandFlags.Modal)]
         public void AcadPoint_Create_At_Angle_And_Distance()
         {
             if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select a base point: "))
@@ -216,7 +214,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Flip);
 
-            Point point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+            Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
             using (var graphics = new TransientGraphics())
             {
@@ -245,7 +243,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                             break;
                         case Keywords.Flip:
                             angle = angle.Flip();
-                            point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                            point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                             graphics.ClearGraphics();
                             graphics.DrawPlus(basePoint, GraphicPixelSize);
                             graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
@@ -257,7 +255,39 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
+        [CommandMethod("3DS", "_3DSPTInverse", CommandFlags.Modal)]
+        public void AcadPoint_Inverse()
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                // Pick first point.
+                if (!EditorUtils.GetBasePoint3d(out Point3d firstPoint, "\n3DS> Select first point: "))
+                    return;
 
+                // Highlight first point.
+                graphics.DrawX(firstPoint, GraphicPixelSize);
 
+                // Pick second point.
+                if (!EditorUtils.GetBasePoint3d(out Point3d secondPoint, "\n3DS> Select second point: "))
+                    return;
+            
+                var angle = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var distance = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
+
+                AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
+                AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
+                AcadApp.Editor.WriteMessage($"\n3DS> dX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage(e.ToString());
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
     }
 }

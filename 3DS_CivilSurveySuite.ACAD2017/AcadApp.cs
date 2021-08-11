@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;

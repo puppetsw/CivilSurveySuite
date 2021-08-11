@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.ApplicationServices.Core;
@@ -129,10 +128,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             var angle = new Angle(0);
 
-            var midPoint = MathHelpers.AngleAndDistanceToPoint(angle + 180, screenSize * 0.5, position.ToPoint());
-            var endPoint1 = MathHelpers.AngleAndDistanceToPoint(angle + 90, screenSize * 0.5, midPoint);
-            var endPoint2 = MathHelpers.AngleAndDistanceToPoint(angle - 90, screenSize * 0.5, midPoint);
-            var topPoint = MathHelpers.AngleAndDistanceToPoint(angle, screenSize * 0.5, position.ToPoint());
+            var midPoint = PointHelpers.AngleAndDistanceToPoint(angle + 180, screenSize * 0.5, position.ToPoint());
+            var endPoint1 = PointHelpers.AngleAndDistanceToPoint(angle + 90, screenSize * 0.5, midPoint);
+            var endPoint2 = PointHelpers.AngleAndDistanceToPoint(angle - 90, screenSize * 0.5, midPoint);
+            var topPoint = PointHelpers.AngleAndDistanceToPoint(angle, screenSize * 0.5, position.ToPoint());
 
             var polyline = new Polyline { Color = Color, Closed = true };
             polyline.AddVertexAt(0, endPoint2.ToPoint2d(), 0, 0, 0);
@@ -230,9 +229,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             var angle = arrowDirection.Flip();
 
-            var endPoint1 = MathHelpers.AngleAndDistanceToPoint(angle, screenSize * 1.5, position.ToPoint());
-            var endPoint2 = MathHelpers.AngleAndDistanceToPoint(angle + 90, screenSize * 0.5, endPoint1);
-            var endPoint3 = MathHelpers.AngleAndDistanceToPoint(angle - 90, screenSize * 0.5, endPoint1);
+            var endPoint1 = PointHelpers.AngleAndDistanceToPoint(angle, screenSize * 1.5, position.ToPoint());
+            var endPoint2 = PointHelpers.AngleAndDistanceToPoint(angle + 90, screenSize * 0.5, endPoint1);
+            var endPoint3 = PointHelpers.AngleAndDistanceToPoint(angle - 90, screenSize * 0.5, endPoint1);
 
             var polyline = new Polyline { Color = Color, Closed = true };
             polyline.AddVertexAt(0, position.ToPoint2d(), 0, 0, 0);

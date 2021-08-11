@@ -164,7 +164,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (pdrAngle.Status != PromptStatus.OK)
                 return null;
 
-            return MathHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
+            return AngleHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                                 switch (pdrAngle.Status)
                                 {
                                     case PromptStatus.OK:
-                                        angle = MathHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
+                                        angle = AngleHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
                                         cancelled = true;
                                         innerCancelled = true;
                                         break;

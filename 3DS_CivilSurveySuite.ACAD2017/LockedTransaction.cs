@@ -3,7 +3,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 
-namespace _3DS_CivilSurveySuite.ACAD2017.Extensions
+namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class LockedTransaction : Transaction
     {

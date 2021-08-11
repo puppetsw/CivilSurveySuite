@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\3DS_CivilSurveySuite\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,6 +43,18 @@
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AecBaseMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AecBaseMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AeccDbMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\C3D\AeccDbMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SimpleInjector, Version=5.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
@@ -64,23 +76,24 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Ribbon.cs" />
     <Compile Include="Traverse.cs" />
     <Compile Include="Services\IPaletteService.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />
     <Compile Include="LineUtils.cs" />
-    <Compile Include="Extensions\LockedTransaction.cs" />
+    <Compile Include="LockedTransaction.cs" />
     <Compile Include="AcadPalettes.cs" />
     <Compile Include="Services\PaletteService.cs" />
     <Compile Include="AcadPlugin.cs" />
-    <Compile Include="Extensions\PointExtensions.cs" />
+    <Compile Include="PointExtensions.cs" />
     <Compile Include="PointUtils.cs" />
     <Compile Include="PolylineUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="SystemVariables.cs" />
     <Compile Include="TextUtils.cs" />
-    <Compile Include="Extensions\TransactionExtensions.cs" />
+    <Compile Include="TransactionExtensions.cs" />
     <Compile Include="TransientGraphics.cs" />
     <Compile Include="Services\TraverseService.cs" />
     <Compile Include="Services\ViewerService.cs" />
@@ -109,5 +122,6 @@
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

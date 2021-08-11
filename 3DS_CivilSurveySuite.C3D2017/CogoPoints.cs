@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -54,7 +53,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     pko.Keywords.Add(Keywords.Flip);
                     pko.Keywords.Default = Keywords.Accept;
 
-                    Point point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                    Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
                     graphics.ClearGraphics();
                     graphics.DrawPlus(point.ToPoint3d(), GraphicPixelSize);
@@ -82,7 +81,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                                 break;
                             case Keywords.Flip:
                                 angle = angle.Flip();
-                                point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                                point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                                 graphics.ClearGraphics();
                                 graphics.DrawPlus(point.ToPoint3d(), GraphicPixelSize);
                                 graphics.DrawLine(basePoint, point.ToPoint3d());
@@ -140,7 +139,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                     Line firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
                     Line secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
-
                     Point intersectionPoint = LineUtils.FindIntersectionPoint(firstOffsetLine, secondOffsetLine);
 
                     var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
@@ -212,7 +210,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Flip);
 
-            Point point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+            Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
             using (var graphics = new TransientGraphics())
             {
@@ -242,7 +240,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                             break;
                         case Keywords.Flip:
                             angle = angle.Flip();
-                            point = MathHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                            point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                             graphics.ClearGraphics();
                             graphics.DrawPlus(basePoint, GraphicPixelSize);
                             graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
@@ -307,7 +305,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId objectId in pso.Value.GetObjectIds())
                 {
                     CogoPoint pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
-                    CogoPointUtils.FullDescriptionToUpperCase(ref pt);
+                    CogoPointUtils.RawDescriptionToUpperCase(ref pt);
                     pt.DowngradeOpen();
                 }
 
@@ -398,6 +396,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 }
                 tr.Commit();
             }
+        }
+
+        public void Label_Rotate_Match_All()
+        {
+            // select a bunch of cogopoints and rotate them based on their position to the selected lines/polylines vertexs
+
         }
     }
 }

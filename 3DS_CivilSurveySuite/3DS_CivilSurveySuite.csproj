@@ -48,21 +48,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj">
-      <Project>{27174b74-79d3-4579-8aae-d4eaecb04b3c}</Project>
-      <Name>3DS_CivilSurveySuite.ACAD2017</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj">
-      <Project>{6996ad26-737e-4a36-999b-ff6c051c1b2a}</Project>
-      <Name>3DS_CivilSurveySuite.C3D2017</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.Loader\3DS_CivilSurveySuite.Loader.csproj">
-      <Project>{b232e1ea-1cc1-4f2c-b7b2-194a436d9ccf}</Project>
-      <Name>3DS_CivilSurveySuite.Loader</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Include="Loader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

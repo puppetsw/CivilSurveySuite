@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.ACAD2017.Extensions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -45,7 +44,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 // Lock ACAD document and start transaction as we are running from Palette.
                 using (Transaction tr = AcadApp.StartLockedTransaction())
                 {
-                    var coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
+                    var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
 
                     // Draw Transient Graphics of Traverse.
                     DrawTraverseGraphics(tg, coordinates);
@@ -59,7 +58,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                             switch (prResult.StringResult)
                             {
                                 case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
-                                    coordinates = MathHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
+                                    coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
                                     DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case Keywords.Accept:
@@ -109,7 +108,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 //lock acad document and start transaction
                 using (Transaction tr = AcadApp.StartLockedTransaction())
                 {
-                    var coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
+                    var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
 
                     //draw first transient traverse
                     DrawTraverseGraphics(tg, coordinates);
@@ -124,7 +123,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                             switch (prResult.StringResult)
                             {
                                 case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                    coordinates = MathHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
+                                    coordinates = PointHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
                                     DrawTraverseGraphics(tg, coordinates);
                                     break;
                                 case "Accept":
