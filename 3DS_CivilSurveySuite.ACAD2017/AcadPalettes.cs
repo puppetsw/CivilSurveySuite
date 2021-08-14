@@ -8,99 +8,93 @@ using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
-using Application = Autodesk.AutoCAD.ApplicationServices.Application;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.AcadPalettes))]
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
     /// <summary>
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class AcadPalettes
+    public static class AcadPalettes
     {
-        private bool _paletteVisible;
-        private readonly IViewerService _viewerService;
-        private readonly IPaletteService _paletteService;
+        private static bool s_paletteVisible;
+        private static readonly IViewerService s_viewerService;
+        private static readonly IPaletteService s_paletteService;
 
-        public AcadPalettes()
+        static AcadPalettes()
         {
-            _viewerService = ServiceLocator.Container.GetInstance<IViewerService>();
-            _paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
+            s_viewerService = ServiceLocator.Container.GetInstance<IViewerService>();
+            s_paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
-        [CommandMethod("3DSShowAngleCalculator")]
-        public void ShowAngleCalculatorPalette()
+        public static void ShowAngleCalculatorPalette()
         {
             var view = new AngleCalculatorView();
             var vm = new AngleCalculatorViewModel();
             view.DataContext = vm;
-            Application.ShowModelessWindow(view);
+            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
         }
 
-        [CommandMethod("3DSShowTraversePalette")]
-        public void ShowTraversePalette()
+        public static void ShowTraversePalette()
         {
             var view = new TraverseView();
-            var vm = new TraverseViewModel(_viewerService, new TraverseService());
-            _paletteService.GeneratePalette(view, vm, "Traverse");
+            var vm = new TraverseViewModel(s_viewerService, new TraverseService());
+            s_paletteService.GeneratePalette(view, vm, "Traverse");
         }
 
-        [CommandMethod("3DSShowAngleTraversePalette")]
-        public void ShowTraverseAnglePalette()
+        public static void ShowTraverseAnglePalette()
         {
             var view = new TraverseAngleView();
-            var vm = new TraverseAngleViewModel(_viewerService, new TraverseService());
-            _paletteService.GeneratePalette(view, vm, "Angle Traverse");
+            var vm = new TraverseAngleViewModel(s_viewerService, new TraverseService());
+            s_paletteService.GeneratePalette(view, vm, "Angle Traverse");
         }
 
-        private void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteService.PaletteSet.Visible = e.Document != null && _paletteVisible;
+            s_paletteService.PaletteSet.Visible = e.Document != null && s_paletteVisible;
         }
 
-        private void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteService.PaletteSet.Visible = _paletteVisible;
+            s_paletteService.PaletteSet.Visible = s_paletteVisible;
         }
 
-        private void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteVisible = _paletteService.PaletteSet.Visible;
+            s_paletteVisible = s_paletteService.PaletteSet.Visible;
         }
 
-        private void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteVisible = _paletteService.PaletteSet.Visible;
+            s_paletteVisible = s_paletteService.PaletteSet.Visible;
 
             if (AcadApp.DocumentManager.Count == 1)
             {
-                _paletteService.PaletteSet.Visible = false;
+                s_paletteService.PaletteSet.Visible = false;
             }
         }
 
-        public void HookupEvents()
+        public static void HookupEvents()
         {
             AcadApp.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
             AcadApp.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
@@ -108,7 +102,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
         }
 
-        public void UnhookEvents()
+        public static void UnhookEvents()
         {
             AcadApp.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
             AcadApp.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;

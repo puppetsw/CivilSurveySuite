@@ -10,19 +10,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class AcadPlugin : IExtensionApplication
     {
-        private AcadPalettes _palettes;
-
         public void Initialize()
         {
             ServiceLocator.Register();
-
-            _palettes = new AcadPalettes();
-            _palettes.HookupEvents();
+            AcadPalettes.HookupEvents();
         }
 
         public void Terminate()
         {
-            _palettes.UnhookEvents();
+            AcadPalettes.UnhookEvents();
         }
     }
 }

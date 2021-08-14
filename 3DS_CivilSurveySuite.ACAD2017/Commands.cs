@@ -10,7 +10,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class Commands
     {
-
+        // Points
         [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public static void PtProdDist()
         {
@@ -55,13 +55,34 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
 
 
-
+        // Utils
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public static void Traverse()
         {
             TraverseUtils.Traverse();
         }
 
+
+
+
+        // Palettes
+        [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
+        public static void ShowAngleCalculator()
+        {
+            AcadPalettes.ShowAngleCalculatorPalette();
+        }
+
+        [CommandMethod("3DS", "_3DSShowTraversePalette", CommandFlags.Modal)]
+        public static void ShowTraversePalette()
+        {
+            AcadPalettes.ShowTraversePalette();
+        }
+
+        [CommandMethod("3DS", "_3DSShowTraverseAnglePalette", CommandFlags.Modal)]
+        public static void ShowTraverseAngle()
+        {
+            AcadPalettes.ShowTraverseAnglePalette();
+        }
 
 
     }
