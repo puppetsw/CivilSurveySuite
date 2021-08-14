@@ -169,18 +169,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Sample\samepl4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Sample\sample1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Sample\sample2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Sample\sample3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">
       <Project>{09c298c6-4485-4911-8af1-2cd14cc99090}</Project>
       <Name>3DS_CivilSurveySuite.Core</Name>
@@ -224,13 +212,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Ribbon1.png" />
-    <None Include="Resources\Ribbon2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,11 +18,26 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A1D9E70-1267-4BFE-BE90-391E88DACEAE}"
 	ProjectSection(SolutionItems) = preProject
 		ScratchPad.cs = ScratchPad.cs
+		3DS_CivilSurveySuite.UI\Resources\TODO.txt = 3DS_CivilSurveySuite.UI\Resources\TODO.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.ACAD2017", "3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj", "{27174B74-79D3-4579-8AAE-D4EAECB04B3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.C3D2017", "3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj", "{6996AD26-737E-4A36-999B-FF6C051C1B2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PConnect Sample", "PConnect Sample", "{9688C86C-F839-4B17-9336-638E110A15CF}"
+	ProjectSection(SolutionItems) = preProject
+		3DS_CivilSurveySuite.UI\Resources\Sample\samepl4.png = 3DS_CivilSurveySuite.UI\Resources\Sample\samepl4.png
+		3DS_CivilSurveySuite.UI\Resources\Sample\sample1.png = 3DS_CivilSurveySuite.UI\Resources\Sample\sample1.png
+		3DS_CivilSurveySuite.UI\Resources\Sample\sample2.png = 3DS_CivilSurveySuite.UI\Resources\Sample\sample2.png
+		3DS_CivilSurveySuite.UI\Resources\Sample\sample3.png = 3DS_CivilSurveySuite.UI\Resources\Sample\sample3.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ribbon Sample", "Ribbon Sample", "{EDF782BB-52CC-45CF-9E62-9E06DD820B9E}"
+	ProjectSection(SolutionItems) = preProject
+		3DS_CivilSurveySuite.UI\Resources\Ribbon1.png = 3DS_CivilSurveySuite.UI\Resources\Ribbon1.png
+		3DS_CivilSurveySuite.UI\Resources\Ribbon2.png = 3DS_CivilSurveySuite.UI\Resources\Ribbon2.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +80,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9688C86C-F839-4B17-9336-638E110A15CF} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
+		{EDF782BB-52CC-45CF-9E62-9E06DD820B9E} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21AB6BAD-3251-4144-BB53-3E90D73A8B2D}
