@@ -1,6 +1,8 @@
 ﻿using System.IO;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace _3DS_CivilSurveySuiteTests
 {
@@ -55,6 +57,16 @@ namespace _3DS_CivilSurveySuiteTests
             vm.RemoveRowCommand.Execute(null);
 
             Assert.IsTrue(vm.DescriptionKeys.Count == 0);
+        }
+
+        [TestMethod]
+        public void ConnectCommand_Execute()
+        {
+            Mock<IConnectLineworkService> mockService = new Mock<IConnectLineworkService>();
+            var vm = new ConnectLineworkViewModel(string.Empty, mockService.Object);
+
+            vm.ConnectCommand.CanExecute(true);
+            vm.ConnectCommand.Execute(true);
         }
     }
 }

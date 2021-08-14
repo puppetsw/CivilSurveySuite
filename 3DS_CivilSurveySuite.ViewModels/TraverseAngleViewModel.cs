@@ -170,7 +170,7 @@ namespace _3DS_CivilSurveySuite.ViewModels
             CloseTraverse();
         }
 
-        private void ShowHelp()
+        private void ShowHelp() //TODO: Service? for testing?
         {
             _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
         }

@@ -368,5 +368,17 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expectedValue, vm.TraverseAngles[0].Angle);
         }
+
+        [TestMethod]
+        [TestCategory("Commands")]
+        public void DrawCommand_Execute()
+        {
+            Mock<ITraverseService> traverseService = new Mock<ITraverseService>();
+            Mock<IViewerService> mockService = new Mock<IViewerService>();
+            var vm = new TraverseAngleViewModel(mockService.Object, traverseService.Object);
+
+            vm.DrawCommand.CanExecute(true);
+            vm.DrawCommand.Execute(null);
+        }
     }
 }
