@@ -10,18 +10,14 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Traverse))]
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public class Traverse
+    public static class TraverseUtils
     {
         private const int GraphicsSize = 6;
 
-        [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
-        public void Traverse_CommandLine()
+        public static void Traverse()
         {
-            AcadApp.Editor.WriteMessage("\n3DS> === Traverse Utility ===");
-
             var graphics = new TransientGraphics(TransientDrawingMode.Main);
             try
             {

@@ -52,9 +52,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PointUtils.Create_At_Intersection_Two_Distances();
         }
- 
 
 
+
+
+        [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
+        public static void Traverse()
+        {
+            TraverseUtils.Traverse();
+        }
 
 
 

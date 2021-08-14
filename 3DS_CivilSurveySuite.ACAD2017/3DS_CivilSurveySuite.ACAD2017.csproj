@@ -76,7 +76,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Traverse.cs" />
+    <Compile Include="TraverseUtils.cs" />
     <Compile Include="Services\IPaletteService.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />

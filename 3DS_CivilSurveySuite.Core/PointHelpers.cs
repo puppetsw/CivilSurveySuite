@@ -36,8 +36,6 @@ namespace _3DS_CivilSurveySuite.Core
             return new Point(x, y);
         }
 
-        
-
         /// <summary>
         /// Converts a list of <see cref="Angle"/> objects into a list of <see cref="Point"/> objects.
         /// </summary>
@@ -211,17 +209,19 @@ namespace _3DS_CivilSurveySuite.Core
             double distBetweenPoints = DistanceBetweenPoints(point1, point2);
             if (distBetweenPoints <= dist1 + dist2 && distBetweenPoints >= Math.Abs(dist1 - dist2))
             {
+                // Borrowed from C3DTools.
+                // TODO: Write own calculations.
                 double xDifference = point2.X - point1.X;
                 double yDifference = point2.Y - point1.Y;
-                double num4 = (dist1 * dist1 - dist2 * dist2 + distBetweenPoints * distBetweenPoints) / (2.0 * distBetweenPoints);
-                double num5 = point1.X + xDifference * num4 / distBetweenPoints;
-                double num6 = point1.Y + yDifference * num4 / distBetweenPoints;
-                double num7 = Math.Sqrt(dist1 * dist1 - num4 * num4);
-                double num8 = -yDifference * (num7 / distBetweenPoints);
-                double num9 = xDifference * (num7 / distBetweenPoints);
+                double num1 = (dist1 * dist1 - dist2 * dist2 + distBetweenPoints * distBetweenPoints) / (2.0 * distBetweenPoints);
+                double num2 = point1.X + xDifference * num1 / distBetweenPoints;
+                double num3 = point1.Y + yDifference * num1 / distBetweenPoints;
+                double num4 = Math.Sqrt(dist1 * dist1 - num1 * num1);
+                double num5 = -yDifference * (num4 / distBetweenPoints);
+                double num6 = xDifference * (num4 / distBetweenPoints);
 
-                solution1 = new Point(num5 + num8, num6 + num9, 0.0);
-                solution2 = new Point(num5 - num8, num6 - num9, 0.0);
+                solution1 = new Point(num2 + num5, num3 + num6, 0.0);
+                solution2 = new Point(num2 - num5, num3 - num6, 0.0);
 
                 return true;
             }
