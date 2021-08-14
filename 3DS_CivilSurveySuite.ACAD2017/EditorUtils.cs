@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="basePoint">The base point output.</param>
         /// <param name="message">The message to display to the user in the command line.</param>
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
-        public static bool GetBasePoint3d(out Point3d basePoint, string message)
+        public static bool GetPoint(out Point3d basePoint, string message)
         {
             Utils.SetFocusToDwgView();
             var ppo = new PromptPointOptions(message);
@@ -37,6 +37,27 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        /// <summary>
+        /// Gets a base <see cref="Point2d"/> from user input.
+        /// </summary>
+        /// <param name="basePoint">The base point output.</param>
+        /// <param name="message">The message to display to the user in the command line.</param>
+        /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
+        public static bool GetPoint(out Point2d basePoint, string message)
+        {
+            Utils.SetFocusToDwgView();
+            var ppo = new PromptPointOptions(message);
+            var ppr = AcadApp.Editor.GetPoint(ppo);
+            basePoint = Point2d.Origin;
+
+            if (ppr.Status != PromptStatus.OK)
+                return false;
+
+            basePoint = ppr.Value.ToPoint2d();
+            return true;
+        }
+
+        //TODO: Remove this method.
         public static Point3d? GetBasePoint3d()
         {
             Utils.SetFocusToDwgView();
@@ -51,6 +72,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return ppr.Value;
         }
 
+        //TODO: Remove this method.
         public static Point2d? GetBasePoint2d()
         {
             var point = GetBasePoint3d();
@@ -148,6 +170,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <remarks>Ignores AutoCADs ANGDIR, and ANGBASE variables. AutoCAD also
         /// returns the radians in a counter-clockwise direction. We need to use
         /// the AngleToClockwise extension method to correct this.</remarks>
+        [Obsolete("This method is obsolete. Use GetAngle (bool) instead. To be removed.", true)]
         public static Angle GetAngle(string message, Point3d? basePoint = null)
         {
             if (basePoint == null)
@@ -238,6 +261,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns>A double value containing the distance.</returns>
         /// <remarks>If the action is cancelled returns a <see cref="double.NaN"/> which
         /// can be checked with double.IsNaN(distance).</remarks>
+        [Obsolete("This method is obsolete. Use GetDistance (bool) instead. To be removed.", true)]
         public static double GetDistance(string message, Point3d? basePoint = null)
         {
             if (basePoint == null)

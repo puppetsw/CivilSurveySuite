@@ -70,7 +70,7 @@
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
-    <Compile Include="Points.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="ResourceStrings.Designer.cs">
       <DependentUpon>ResourceStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>

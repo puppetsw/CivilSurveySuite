@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics(TransientDrawingMode.Main);
             try
             {
-                if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select base point: "))
+                if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))
                     return;
 
                 graphics.DrawPlus(basePoint, GraphicsSize);

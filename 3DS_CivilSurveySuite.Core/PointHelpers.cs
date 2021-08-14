@@ -152,9 +152,14 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="point2">The point2.</param>
         /// <param name="angle2">The angle2.</param>
         /// <returns>A <see cref="Point"/> representing the intersection of two <see cref="Angle"/> objects.</returns>
-        /// <remarks>Seems to be a rounding issue that I've yet to fix.</remarks>
-        public static Point AngleAngleIntersection(Point point1, Angle angle1, Point point2, Angle angle2)
+        /// <remarks>
+        /// Seems to be a rounding issue that I've yet to fix.
+        /// Might be an issue with AutoCAD internal. Math confirms with
+        /// other online calculations. 
+        /// </remarks>
+        public static bool AngleAngleIntersection(Point point1, Angle angle1, Point point2, Angle angle2, out Point intersectionPoint)
         {
+            intersectionPoint = Point.Origin;
             var inverseAng = AngleHelpers.AngleBetweenPoints(point1, point2);
             var inverseDist = DistanceBetweenPoints(point1, point2);
 
@@ -170,17 +175,22 @@ namespace _3DS_CivilSurveySuite.Core
             else
                 internalB = inverseAng.Flip() - angle2;
 
+            // Calculate remaining internal angle.
             Angle internalC = new Angle(180) - internalA - internalB;
 
-            if (internalC.Equals(new Angle(180)))
-                return Point.Origin;
+            // If the internal angle is greater than or equal to 180°
+            // Just thought that if the minutes or seconds are greater
+            // It's still going to think it's okay. 
+            if (internalC.Degrees >= 180 && internalC.Minutes >= 0 && internalC.Seconds >= 0)
+                return false;
             
             var radA = internalA.ToRadians();
             var radB = internalC.ToRadians();
 
             var dist1 = Math.Sin(radA) * inverseDist / Math.Sin(radB);
 
-            return AngleAndDistanceToPoint(angle2, dist1, point2, 5);
+            intersectionPoint = AngleAndDistanceToPoint(angle2, dist1, point2, 5);
+            return true;
         }
 
         /// <summary>

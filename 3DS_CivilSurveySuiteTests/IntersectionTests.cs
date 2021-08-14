@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuiteTests
             var angle2 = new Angle(225);
             var point2 = new Point(265, 153);
 
-            var result = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2);
+            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             var expectedIntersection = new Point(227, 115);
 
@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuiteTests
             var angle2 = new Angle(315);
             var point2 = new Point(265, 153);
 
-            var result = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2);
+            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             var expectedIntersection = new Point(222, 196);
 
@@ -64,7 +64,7 @@ namespace _3DS_CivilSurveySuiteTests
             var point2 = new Point(0, 30);
             var angle2 = new Angle(180);
 
-            var result = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2);
+            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             Assert.AreEqual(Point.Origin, result);
         }

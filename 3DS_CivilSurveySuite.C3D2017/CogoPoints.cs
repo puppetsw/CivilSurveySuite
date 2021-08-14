@@ -130,7 +130,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                     //TODO: Create default message, so we don't need to pass it in. Unless we want to.
                     // Pick offset side.
-                    if (!EditorUtils.GetBasePoint3d(out Point3d offsetPoint, "\n" + ResourceStrings.Pick_Offset_Side))
+                    if (!EditorUtils.GetPoint(out Point3d offsetPoint, "\n" + ResourceStrings.Pick_Offset_Side))
                         return;
 
                     // Prompt for offset distance.
@@ -193,7 +193,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSCPAngleAndDistance", CommandFlags.Modal)]
         public void Create_At_Angle_And_Distance()
         {
-            if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select a base point: "))
+            if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select a base point: "))
                 return;
 
             if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Enter bearing (Format: DDD.MMSS): ", basePoint, "\n3DS> Pick bearing on screen: "))
