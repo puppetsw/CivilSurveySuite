@@ -266,6 +266,18 @@ namespace _3DS_CivilSurveySuiteTests
 
         [TestMethod]
         [TestCategory("Math")]
+        public void Point_To_Vector()
+        {
+            var point = new Point(100, 100);
+
+            var expectedVector = new Vector(100, 100);
+
+            Assert.AreEqual(expectedVector, point.ToVector());
+        }
+
+
+        [TestMethod]
+        [TestCategory("Math")]
         public void LineSegmentsDoNotIntersect()
         {
             var actual = MathHelpers.LineSegementsIntersect(
@@ -444,6 +456,30 @@ namespace _3DS_CivilSurveySuiteTests
             var result = MathHelpers.IsOrdinaryAngle(startPoint, endPoint);
 
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Angle")]
+        public void GetOrdinaryAngle_ShouldBeOrdinary()
+        {
+            var angle = new Angle(90);
+            var expected = new Angle(90);
+
+            var result = angle.GetOrdinaryAngle();
+
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [TestCategory("Angle")]
+        public void GetOrdinaryAngle_ShouldNotBeOrdinary()
+        {
+            var angle = new Angle(270);
+            var expected = new Angle(90);
+
+            var result = angle.GetOrdinaryAngle();
+
+            Assert.AreEqual(expected, result);
         }
 
         [TestMethod]

@@ -117,20 +117,105 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="angle">The angle.</param>
         /// <param name="distance">The distance.</param>
         /// <param name="basePoint">The base point to calculate the new <see cref="Point"/> from.</param>
+        /// <param name="decimalPlaces"></param>
         /// <returns>A <see cref="Point"/> containing the coordinates generated from the <see cref="Angle"/>
         /// and distance.</returns>
-        public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint)
+        public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint, int decimalPlaces = 4)
         {
-            double dec = angle.ToDecimalDegrees();
+            double dec = angle.ToDecimalDegrees(15);
             double rad = MathHelpers.DecimalDegreesToRadians(dec);
 
             double departure = distance * Math.Sin(rad);
             double latitude = distance * Math.Cos(rad);
 
-            double newX = Math.Round(basePoint.X + departure, 4);
-            double newY = Math.Round(basePoint.Y + latitude, 4);
+            double newX = Math.Round(basePoint.X + departure, decimalPlaces);
+            double newY = Math.Round(basePoint.Y + latitude, decimalPlaces);
 
             return new Point(newX, newY);
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Point"/> to <see cref="Vector"/>
+        /// </summary>
+        /// <param name="point">The point.</param>
+        /// <returns>A <see cref="Vector"/> representing the <see cref="Point"/>.</returns>
+        public static Vector ToVector(this Point point)
+        {
+            return new Vector(point.X, point.Y);
+        }
+
+        /// <summary>
+        /// Calculates a <see cref="Point"/> at the intersection of two <see cref="Angle"/> objects.
+        /// </summary>
+        /// <param name="point1">The point1.</param>
+        /// <param name="angle1">The angle1.</param>
+        /// <param name="point2">The point2.</param>
+        /// <param name="angle2">The angle2.</param>
+        /// <returns>A <see cref="Point"/> representing the intersection of two <see cref="Angle"/> objects.</returns>
+        /// <remarks>Seems to be a rounding issue that I've yet to fix.</remarks>
+        public static Point AngleAngleIntersection(Point point1, Angle angle1, Point point2, Angle angle2)
+        {
+            var inverseAng = AngleHelpers.AngleBetweenPoints(point1, point2);
+            var inverseDist = DistanceBetweenPoints(point1, point2);
+
+            Angle internalA;
+            if (angle1.Degrees > inverseAng.Degrees)
+                internalA = angle1 - inverseAng;
+            else
+                internalA = inverseAng - angle1;
+
+            Angle internalB; 
+            if (angle2.Degrees > inverseAng.Flip().Degrees)
+                internalB = angle2 - inverseAng.Flip();
+            else
+                internalB = inverseAng.Flip() - angle2;
+
+            Angle internalC = new Angle(180) - internalA - internalB;
+
+            if (internalC.Equals(new Angle(180)))
+                return Point.Origin;
+            
+            var radA = internalA.ToRadians();
+            var radB = internalC.ToRadians();
+
+            var dist1 = Math.Sin(radA) * inverseDist / Math.Sin(radB);
+
+            return AngleAndDistanceToPoint(angle2, dist1, point2, 5);
+        }
+
+        /// <summary>
+        /// Calculates two possible <see cref="Point"/> objects from a distance-distance intersection.
+        /// </summary>
+        /// <param name="point1">The point1.</param>
+        /// <param name="dist1">The dist1.</param>
+        /// <param name="point2">The point2.</param>
+        /// <param name="dist2">The dist2.</param>
+        /// <param name="solution1">The solution1.</param>
+        /// <param name="solution2">The solution2.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool DistanceDistanceIntersection(Point point1, double dist1, Point point2, double dist2, out Point solution1, out Point solution2)
+        {
+            solution1 = Point.Origin;
+            solution2 = Point.Origin;
+
+            double distBetweenPoints = DistanceBetweenPoints(point1, point2);
+            if (distBetweenPoints <= dist1 + dist2 && distBetweenPoints >= Math.Abs(dist1 - dist2))
+            {
+                double xDifference = point2.X - point1.X;
+                double yDifference = point2.Y - point1.Y;
+                double num4 = (dist1 * dist1 - dist2 * dist2 + distBetweenPoints * distBetweenPoints) / (2.0 * distBetweenPoints);
+                double num5 = point1.X + xDifference * num4 / distBetweenPoints;
+                double num6 = point1.Y + yDifference * num4 / distBetweenPoints;
+                double num7 = Math.Sqrt(dist1 * dist1 - num4 * num4);
+                double num8 = -yDifference * (num7 / distBetweenPoints);
+                double num9 = xDifference * (num7 / distBetweenPoints);
+
+                solution1 = new Point(num5 + num8, num6 + num9, 0.0);
+                solution2 = new Point(num5 - num8, num6 - num9, 0.0);
+
+                return true;
+            }
+            return false;
         }
     }
 }

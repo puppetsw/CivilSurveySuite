@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using _3DS_CivilSurveySuite.ViewModels;
-using Castle.Core.Internal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests

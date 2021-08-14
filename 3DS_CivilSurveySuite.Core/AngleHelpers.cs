@@ -10,7 +10,7 @@ namespace _3DS_CivilSurveySuite.Core
 {
     public static class AngleHelpers
     {
-                /// <summary>
+        /// <summary>
         /// Converts a <see cref="Angle"/> to decimal degrees.
         /// </summary>
         /// <param name="angle">The <see cref="Angle"/> to convert.</param>
@@ -39,7 +39,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <returns>A double representing the <see cref="Angle"/> in radians.</returns>
         public static double ToRadians(this Angle angle, int decimalPlaces = 15)
         {
-            return MathHelpers.DecimalDegreesToRadians(angle.ToDecimalDegrees());
+            return Math.Round(MathHelpers.DecimalDegreesToRadians(angle.ToDecimalDegrees()), decimalPlaces);
         }
 
         /// <summary>
@@ -136,6 +136,17 @@ namespace _3DS_CivilSurveySuite.Core
         public static bool IsOrdinaryAngle(Angle angle)
         {
             return angle.Degrees < 180 && angle.Degrees > 0;
+        }
+
+        /// <summary>
+        /// Gets an ordinary <see cref="Angle"/> based on the given <see cref="Angle"/>.
+        /// </summary>
+        /// <param name="angle">The angle.</param>
+        /// <returns>A <see cref="Angle"/> containing the ordinary angle within degree range
+        /// of (360)0-180°.</returns>
+        public static Angle GetOrdinaryAngle(this Angle angle)
+        {
+            return IsOrdinaryAngle(angle) ? angle : angle.Flip();
         }
     }
 }

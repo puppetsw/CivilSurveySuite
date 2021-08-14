@@ -76,7 +76,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Ribbon.cs" />
     <Compile Include="Traverse.cs" />
     <Compile Include="Services\IPaletteService.cs" />
     <Compile Include="Keywords.cs" />

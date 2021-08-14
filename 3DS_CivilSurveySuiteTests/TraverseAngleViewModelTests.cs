@@ -87,6 +87,25 @@ namespace _3DS_CivilSurveySuiteTests
             vm.AddRowCommand.Execute(null);
 
             Assert.IsTrue(vm.TraverseAngles.Count == 1);
+            Assert.AreEqual(0, vm.TraverseAngles[0].Index);
+        }
+
+        [TestMethod]
+        [TestCategory("Commands")]
+        public void AddRowCommand_Execute_MultipleAdd_IndexShouldIncrease()
+        {
+            Mock<IViewerService> mockService = new Mock<IViewerService>();
+            var vm = new TraverseAngleViewModel(mockService.Object, null);
+
+            vm.AddRowCommand.CanExecute(true);
+            vm.AddRowCommand.Execute(null);
+            vm.AddRowCommand.Execute(null);
+            vm.AddRowCommand.Execute(null);
+
+            Assert.IsTrue(vm.TraverseAngles.Count == 3);
+            Assert.AreEqual(0, vm.TraverseAngles[0].Index);
+            Assert.AreEqual(1, vm.TraverseAngles[1].Index);
+            Assert.AreEqual(2, vm.TraverseAngles[2].Index);
         }
 
         [TestMethod]

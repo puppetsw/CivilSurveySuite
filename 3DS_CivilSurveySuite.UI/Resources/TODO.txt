@@ -14,6 +14,8 @@ ADD SAVE/LOAD feature to traverse window
 //Bearing Calculator
 XYZ point label (for autocad mainly)
 
+Add Curves to traverse?
+
 Insert picture(s) tool
 
 When you apply the CommandMethod attribute to a non-static method, AutoCAD's
@@ -33,6 +35,8 @@ difference between static and non-static (or 'instance') methods, get a hold of
 some basic C# learning materials, and try to become more familar with the basic
 concepts that underly the tools you're working with.
 
+
+POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
 
 Settings
 ----------------

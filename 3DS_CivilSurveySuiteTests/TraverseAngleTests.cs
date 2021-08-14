@@ -137,8 +137,8 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(0, 60.35),
                 new Point(-109.9599, 77.1108),
                 new Point(-109.8494, 88.6203),
-                new Point(-111.8904, 126.7157),
-                new Point(164.5528, 168.2771)
+                new Point(-111.8903, 126.7157),
+                new Point(164.5529, 168.2771)
             };
 
             CollectionAssert.AreEqual(expectedList, newPointList);

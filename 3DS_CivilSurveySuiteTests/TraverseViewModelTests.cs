@@ -66,6 +66,24 @@ namespace _3DS_CivilSurveySuiteTests
 
         [TestMethod]
         [TestCategory("Commands")]
+        public void AddRowCommand_Execute_MultipleAdd_IndexShouldIncrease()
+        {
+            Mock<IViewerService> mockService = new Mock<IViewerService>();
+            var vm = new TraverseViewModel(mockService.Object, null);
+
+            vm.AddRowCommand.CanExecute(true);
+            vm.AddRowCommand.Execute(null);
+            vm.AddRowCommand.Execute(null);
+            vm.AddRowCommand.Execute(null);
+
+            Assert.IsTrue(vm.TraverseItems.Count == 3);
+            Assert.AreEqual(0, vm.TraverseItems[0].Index);
+            Assert.AreEqual(1, vm.TraverseItems[1].Index);
+            Assert.AreEqual(2, vm.TraverseItems[2].Index);
+        }
+
+        [TestMethod]
+        [TestCategory("Commands")]
         public void RemoveRowCommand_Execute()
         {
             Mock<IViewerService> mockService = new Mock<IViewerService>();

@@ -64,14 +64,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Inverses between points (pick or number), echoes coordinates, 
-        /// azimuths, bearings, horz/vert distance and slope.
-        /// </summary>
-        private void InverseBetweenPoints()
-        {
-        }
-
-        /// <summary>
         /// The CreatePointsFromLabels command can be used to create Civil-3D Points at the 
         /// exact location and elevation of Surface Elevation Labels found in a drawing.
         /// </summary>

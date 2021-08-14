@@ -3,12 +3,15 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Points))]
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -17,7 +20,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private const int GraphicPixelSize = 6;
 
-        [CommandMethod("3DS", "_3DSPTCreateAtProduction", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public void AcadPoint_Create_At_Production_Of_Line_And_Distance()
         {
             using (Transaction tr = AcadApp.StartTransaction())
@@ -113,7 +116,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSPTCreateAtOffsetTwoLines", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSPtOffsetLn", CommandFlags.Modal)]
         public void AcadPoint_Create_At_Offset_Two_Lines()
         {
             if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select first line or polyline to offset: "))
@@ -194,7 +197,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSPTCreateAtAngleAndDistance", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSPtBrgDist", CommandFlags.Modal)]
         public void AcadPoint_Create_At_Angle_And_Distance()
         {
             if (!EditorUtils.GetBasePoint3d(out Point3d basePoint, "\n3DS> Select a base point: "))
@@ -255,30 +258,36 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        [CommandMethod("3DS", "_3DSPTInverse", CommandFlags.Modal)]
-        public void AcadPoint_Inverse()
+        /// <summary>
+        /// Inverses between points (pick or number), echoes coordinates, 
+        /// azimuths, bearings, horz/vert distance and slope.
+        /// </summary>
+        [CommandMethod("3DS", "_3DSPtInverse", CommandFlags.Modal)]
+        public void AcadPoint_Inverse_CommandLine()
         {
             var graphics = new TransientGraphics();
             try
             {
                 // Pick first point.
-                if (!EditorUtils.GetBasePoint3d(out Point3d firstPoint, "\n3DS> Select first point: "))
+                if (!EditorUtils.GetBasePoint3d(out Point3d firstPoint, "\n3DS> Pick first point: "))
                     return;
 
                 // Highlight first point.
                 graphics.DrawX(firstPoint, GraphicPixelSize);
 
                 // Pick second point.
-                if (!EditorUtils.GetBasePoint3d(out Point3d secondPoint, "\n3DS> Select second point: "))
+                if (!EditorUtils.GetBasePoint3d(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
             
                 var angle = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                 var distance = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                 var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
 
                 AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
                 AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
                 AcadApp.Editor.WriteMessage($"\n3DS> dX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
+                AcadApp.Editor.WriteMessage($"\n3DS> Slope:{slope}%");
             }
             catch (Exception e)
             {
@@ -288,6 +297,131 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             {
                 graphics.Dispose();
             }
+        }
+
+        [CommandMethod("3DS", "_3DSPtInverseDisp", CommandFlags.Modal)]
+        public void AcadPoint_Inverse_ScreenDisplay()
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                while (true)
+                {
+                    bool loopPick = EditorUtils.GetBasePoint3d(out Point3d firstPoint, "\n3DS> Pick first point: ");
+
+                    if (!loopPick)
+                        break;
+
+                    // Highlight first point.
+                    graphics.DrawX(firstPoint, GraphicPixelSize);
+
+                    // Pick second point.
+                    if (!EditorUtils.GetBasePoint3d(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                        return;
+            
+                    var angle = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var distance = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
+
+                    var midPoint = PointHelpers.MidpointBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    graphics.ClearGraphics();
+                    graphics.DrawX(firstPoint, GraphicPixelSize);
+                    graphics.DrawX(secondPoint, GraphicPixelSize);
+                    graphics.DrawLine(firstPoint, secondPoint);
+                    graphics.DrawText(midPoint.ToPoint3d(), $"bearing: {angle} \\P dist: {distance} \\P dX:{delta.X} dY:{delta.Y} dZ:{delta.Z} \\P Slope:{slope}%", 1.0, angle.GetOrdinaryAngle());
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage(e.ToString());
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Places a point at the intersection of two bearings from two base points.
+        /// </summary>
+        [CommandMethod("3DS", "_3DSPtIntBrg", CommandFlags.Modal)]
+        public void AcadPoint_Create_At_Intersection_Two_Bearings()
+        {
+            if (!EditorUtils.GetBasePoint3d(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                return;
+
+            if (!EditorUtils.GetAngle(out Angle firstAngle, "\n3DS> Enter first bearing: ", firstPoint))
+                return;
+
+            if (!EditorUtils.GetBasePoint3d(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                return;
+
+            if (!EditorUtils.GetAngle(out Angle secondAngle, "\n3DS> Enter second bearing: ", secondPoint))
+                return;
+
+            var pt = PointHelpers.AngleAngleIntersection(firstPoint.ToPoint(), firstAngle, secondPoint.ToPoint(), secondAngle);
+
+            PointUtils.CreatePoint(pt.ToPoint3d());
+        }
+
+        //intersection
+        [CommandMethod("INS")]
+        public void InterSectionPoint()
+        {
+            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            Editor ed = doc.Editor;
+            Line pl1 = null;
+            Line pl2 = null;
+            Entity ent = null;
+            PromptEntityOptions peo = null;
+            PromptEntityResult per = null;
+            using (Transaction tx = db.TransactionManager.StartTransaction())
+            {
+//Select first polyline
+                peo = new PromptEntityOptions("Select firtst line:");
+                per = ed.GetEntity(peo);
+                if (per.Status != PromptStatus.OK)
+                {
+                    return;
+                }
+
+//Get the polyline entity
+                ent = (Entity)tx.GetObject(per.ObjectId, OpenMode.ForRead);
+                if (ent is Line)
+                {
+                    pl1 = ent as Line;
+                }
+
+//Select 2nd polyline
+                peo = new PromptEntityOptions("\n Select Second line:");
+                per = ed.GetEntity(peo);
+                if (per.Status != PromptStatus.OK)
+                {
+                    return;
+                }
+
+                ent = (Entity)tx.GetObject(per.ObjectId, OpenMode.ForRead);
+                if (ent is Line)
+                {
+                    pl2 = ent as Line;
+                }
+
+                Point3dCollection pts3D = new Point3dCollection();
+//Get the intersection Points between line 1 and line 2
+                pl1.IntersectWith(pl2, Intersect.OnBothOperands, pts3D, IntPtr.Zero, IntPtr.Zero);
+                foreach (Point3d pt in pts3D)
+                {
+// ed.WriteMessage("\n intersection point :",pt);
+// ed.WriteMessage("Point number: ", pt.X, pt.Y, pt.Z);
+
+                    Application.ShowAlertDialog("\n Intersection Point: " + "\nX = " + pt.X + "\nY = " + pt.Y + "\nZ = " + pt.Z);
+                }
+
+                tx.Commit();
+            }
+
         }
     }
 }

@@ -4,13 +4,13 @@
 // prior written consent of the copyright owner.
 
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class PointUtils
     {
+        //TODO: Move transaction out of this method and take it as a parameter.
         public static void CreatePoint(Point3d position)
         {
             using (Transaction tr = AcadApp.StartTransaction())

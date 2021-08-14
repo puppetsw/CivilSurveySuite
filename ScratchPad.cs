@@ -285,3 +285,105 @@ public static void ZoomTo()
                 }
             }
         }
+
+
+
+public static int PntIntDirDir(
+    Point3d BasPt1,
+    Point3d PrjPt1,
+    Point3d BasPt2,
+    Point3d PrjPt2,
+    ref Point3d RetPnt)
+{
+    int num1 = 0;
+    double x1 = ((Point3d) ref BasPt1 ).X;
+    double y1 = ((Point3d) ref BasPt1 ).Y;
+    double x2 = ((Point3d) ref PrjPt1 ).X;
+    double y2 = ((Point3d) ref PrjPt1 ).Y;
+    double x3 = ((Point3d) ref BasPt2 ).X;
+    double y3 = ((Point3d) ref BasPt2 ).Y;
+    double x4 = ((Point3d) ref PrjPt2 ).X;
+    double y4 = ((Point3d) ref PrjPt2 ).Y;
+    double num2 = (y1 - y3) * (x4 - x3) - (x1 - x3) * (y4 - y3);
+    double num3 = (y1 - y3) * (x2 - x1) - (x1 - x3) * (y2 - y1);
+    double num4 = (x2 - x1) * (y4 - y3) - (y2 - y1) * (x4 - x3);
+    if (num4 != 0.0)
+    {
+        double num5 = num2 / num4;
+        double num6 = num3 / num4;
+        double num7 = x1 + num5 * (x2 - x1);
+        double num8 = y1 + num5 * (y2 - y1);
+        // ISSUE: explicit constructor call
+        //((Point3d) ref RetPnt).\u002Ector(num7, num8, 0.0);
+        var RetPnt = new Point3d(num7, num8, 0.0);
+
+        if (num5 > 0.0 && num5 < 1.0 && num6 > 0.0 && num6 < 1.0)
+            num1 = 1;
+        else if (num5 < 0.0 || num5 > 1.0 || num6 < 0.0 || num6 > 1.0)
+            num1 = 2;
+        else if (((Point3d) ref RetPnt).X == ((Point3d) ref BasPt2).X && ((Point3d) ref RetPnt).Y == ((Point3d) ref BasPt2).Y)
+            num1 = 3;
+        else if (((Point3d) ref RetPnt).X == ((Point3d) ref PrjPt2).X && ((Point3d) ref RetPnt).Y == ((Point3d) ref PrjPt2).Y)
+            num1 = 4;
+    }
+
+    return num1;
+}
+
+
+public static int PntIntDirDis(
+    Point3d LinPt1,
+    Point3d LinPt2,
+    Point3d CenPnt,
+    double Radius,
+    ref Point3d SolPt1,
+    ref Point3d SolPt2)
+{
+    double num1 = ((Point3d) ref LinPt2).X - ((Point3d) ref LinPt1).X;
+    double num2 = ((Point3d) ref LinPt2).Y - ((Point3d) ref LinPt1).Y;
+    double num3 = num1 * num1 + num2 * num2;
+    double num4 = 2.0 * (num1 * (((Point3d) ref LinPt1).X - ((Point3d) ref CenPnt).X) + num2 * (((Point3d) ref LinPt1).Y - ((Point3d) ref CenPnt).Y));
+    double num5 = (((Point3d) ref LinPt1).X - ((Point3d) ref CenPnt).X) * (((Point3d) ref LinPt1).X - ((Point3d) ref CenPnt).X) + (((Point3d) ref LinPt1).Y - ((Point3d) ref CenPnt).Y) * (((Point3d) ref LinPt1).Y - ((Point3d) ref CenPnt).Y) - Radius * Radius;
+    double d = num4 * num4 - 4.0 * num3 * num5;
+    if (num3 <= 1E-07 | d < 0.0)
+        return 0;
+    if (d == 0.0)
+    {
+        double num6 = -num4 / (2.0 * num3);
+        // ISSUE: explicit constructor call
+        ((Point3d) ref SolPt1).\u002Ector(((Point3d) ref LinPt1).X + num6 * num1, ((Point3d) ref LinPt1).Y + num6 * num2, 0.0);
+        // ISSUE: explicit constructor call
+        ((Point3d) ref SolPt2).\u002Ector(0.0, 0.0, 0.0);
+        return 1;
+    }
+    double num7 = (-num4 + Math.Sqrt(d)) / (2.0 * num3);
+    // ISSUE: explicit constructor call
+    ((Point3d) ref SolPt1).\u002Ector(((Point3d) ref LinPt1).X + num7 * num1, ((Point3d) ref LinPt1).Y + num7 * num2, 0.0);
+    double num8 = (-num4 - Math.Sqrt(d)) / (2.0 * num3);
+    // ISSUE: explicit constructor call
+    ((Point3d) ref SolPt2).\u002Ector(((Point3d) ref LinPt1).X + num8 * num1, ((Point3d) ref LinPt1).Y + num8 * num2, 0.0);
+    return 2;
+}
+
+
+public static Point2d GetPolarPoint(this Point2d ptBase, double angle, double distance)
+{
+    short num1 = 0;
+    num1 = (short) 1;
+    if (num1 == (short) 0)
+        ;
+    num1 = (short) 5534;
+    int num2 = (int) num1;
+    num1 = (short) 5534;
+    int num3 = (int) num1;
+    switch (num2 == num3)
+    {
+        case true:
+            num1 = (short) 0;
+            if (num1 == (short) 0)
+                ;
+            return new Point2d(((Point2d) ref ptBase).X + distance * Math.Cos(angle), ((Point2d) ref ptBase).Y + distance * Math.Sin(angle));
+        default:
+            goto case 1;
+    }
+}

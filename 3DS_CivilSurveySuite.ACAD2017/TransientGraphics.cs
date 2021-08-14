@@ -50,6 +50,20 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return Convert.ToDouble(viewSize) / screenSize.Y * numPix;
         }
 
+        private static double TextSize(double textSize)
+        {
+            object viewSize = Application.GetSystemVariable(SystemVariables.VIEWSIZE);
+            var text = (Convert.ToDouble(viewSize) / 100) * textSize;
+            
+            return Math.Round(text, 2);
+        }
+
+        private static double TextOffset(double offsetDist)
+        {
+            object viewSize = Application.GetSystemVariable(SystemVariables.VIEWSIZE);
+            return (Convert.ToDouble(viewSize) / 100) * offsetDist;
+        }
+
         private void DrawAdd(DBObject entity)
         {
             _graphics.Add(entity);
@@ -249,15 +263,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void DrawArrow(Point3d position, double bearing, int size, bool fill = true) => DrawArrow(position, new Angle(bearing), size, fill);
 
-        public void DrawText(Point3d position, string text, double textSize, Angle angle)
+        public void DrawText(Point3d position, string text, double textSize, Angle angle, double offsetAmount = 0.5, bool planReadability = true)
         {
             var mText = new MText();
             mText.SetDatabaseDefaults();
-            mText.Rotation = angle.ToRadians();
-            mText.Location = position;
-            mText.Attachment = AttachmentPoint.MiddleLeft;
-            mText.TextHeight = textSize;
-            mText.SetContentsRtf(text);
+
+            mText.Rotation = planReadability ? 
+                    angle.GetOrdinaryAngle().ToCounterClockwise().ToRadians() : 
+                    angle.ToCounterClockwise().ToRadians();
+
+            Point insPoint = PointHelpers.AngleAndDistanceToPoint(angle.GetOrdinaryAngle() - 90, TextOffset(offsetAmount), position.ToPoint());
+
+            mText.Location = insPoint.ToPoint3d();
+            mText.Color = Color;
+            mText.Attachment = AttachmentPoint.BottomCenter;
+            mText.TextHeight = TextSize(textSize);
+            mText.Contents = text;
             DrawAdd(mText);
         }
 
