@@ -37,7 +37,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
-            var tg = new TransientGraphics(TransientDrawingMode.Highlight);
+            var tg = new TransientGraphics();
 
             try
             {
@@ -101,7 +101,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             pko.Keywords.Add(Keywords.Cancel);
             pko.Keywords.Add(Keywords.Redraw);
 
-            var tg = new TransientGraphics(TransientDrawingMode.Highlight);
+            var tg = new TransientGraphics();
 
             try
             {
@@ -157,7 +157,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 
             var points = coordinates.ToListOfPoint3d();
 
-            graphics.DrawLines(points);
+            graphics.DrawLines(points, TransientDrawingMode.Highlight);
 
             // If the list count is greater than 2, we show the boxes
             if (coordinates.Count >= 2)

@@ -59,8 +59,8 @@
   <ItemGroup>
     <Compile Include="C3DApp.cs" />
     <Compile Include="C3DPlugin.cs" />
-    <Compile Include="CogoPoints.cs" />
     <Compile Include="CogoPointUtils.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="LabelUtils.cs" />
     <Compile Include="C3DPalettes.cs" />

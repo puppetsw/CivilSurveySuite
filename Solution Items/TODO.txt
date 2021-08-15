@@ -18,6 +18,10 @@ Add Curves to traverse?
 
 Insert picture(s) tool
 
+running chainage inverse tool.
+
+
+//========================= NOTES ==========================
 When you apply the CommandMethod attribute to a non-static method, AutoCAD's
 managed runtime will create multiple instances of your class, one for each
 document that you invoke the command in. Those instances are not created until
@@ -37,6 +41,9 @@ concepts that underly the tools you're working with.
 
 
 POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
+What does this even mean? search on any field?
+
+
 
 Settings
 ----------------

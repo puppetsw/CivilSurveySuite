@@ -9,6 +9,7 @@ using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.GraphicsInterface;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -20,7 +21,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> from an angle and distance.
         /// </summary>
-        public static void Create_At_Angle_And_Distance()
+        public static void Create_At_Angle_And_Distance(Action<Transaction, Point3d> createPointAction)
         {
             if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select a base point: "))
                 return;
@@ -44,7 +45,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             using (var graphics = new TransientGraphics())
             {
                 graphics.DrawPlus(basePoint, GraphicPixelSize);
-                graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
+                graphics.DrawX(point.ToPoint3d(), GraphicPixelSize);
                 graphics.DrawLine(basePoint, point.ToPoint3d());
 
                 var cancelled = false;
@@ -62,7 +63,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         case Keywords.Accept:
                             using (var tr = AcadApp.StartTransaction())
                             {
-                                CreatePoint(tr, point.ToPoint3d());
+                                createPointAction(tr, point.ToPoint3d());
                                 tr.Commit();
                             }
 
@@ -76,7 +77,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                             point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                             graphics.ClearGraphics();
                             graphics.DrawPlus(basePoint, GraphicPixelSize);
-                            graphics.DrawDot(point.ToPoint3d(), GraphicPixelSize);
+                            graphics.DrawX(point.ToPoint3d(), GraphicPixelSize);
                             graphics.DrawLine(basePoint, point.ToPoint3d());
                             break;
                     }
@@ -88,7 +89,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the intersection of two bearings from two base points.
         /// </summary>
-        public static void Create_At_Intersection_Two_Bearings()
+        public static void Create_At_Intersection_Two_Bearings(Action<Transaction, Point3d> createPointAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -101,6 +102,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (!EditorUtils.GetAngle(out Angle firstAngle, "\n3DS> Enter first bearing: ", firstPoint))
                     return;
 
+                var endPoint1 = PointHelpers.AngleAndDistanceToPoint(firstAngle, 1000, firstPoint.ToPoint());
+                graphics.DrawLine(firstPoint, endPoint1.ToPoint3d());
+
                 if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
 
@@ -108,6 +112,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 if (!EditorUtils.GetAngle(out Angle secondAngle, "\n3DS> Enter second bearing: ", secondPoint))
                     return;
+
+                var endPoint2 = PointHelpers.AngleAndDistanceToPoint(secondAngle, 1000, secondPoint.ToPoint());
+                graphics.DrawLine(secondPoint, endPoint2.ToPoint3d());
 
                 var canIntersect = PointHelpers.AngleAngleIntersection(firstPoint.ToPoint(), firstAngle, secondPoint.ToPoint(), secondAngle, out Point intersectionPoint);
 
@@ -119,9 +126,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 AcadApp.Editor.WriteMessage($"\n3DS> Intersection found at X:{Math.Round(intersectionPoint.X, 4)} Y:{Math.Round(intersectionPoint.Y, 4)}");
 
+                graphics.DrawX(intersectionPoint.ToPoint3d(), GraphicPixelSize);
+
                 using (var tr = AcadApp.StartTransaction())
                 {
-                    CreatePoint(tr, intersectionPoint.ToPoint3d());
+                    //CreatePoint(tr, intersectionPoint.ToPoint3d());
+                    createPointAction(tr, intersectionPoint.ToPoint3d());
                     tr.Commit();
                 }
             }
@@ -138,7 +148,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at intersection of two distances.
         /// </summary>
-        public static void Create_At_Intersection_Two_Distances()
+        public static void Create_At_Intersection_Two_Distances(Action<Transaction, Point3d> createPointAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -171,8 +181,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     return;
                 }
 
-                graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize);
-                graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize);
+                graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
+                graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
                 AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
                 AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
 
@@ -181,15 +191,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 using (var tr = AcadApp.StartTransaction())
                 {
+                    graphics.ClearGraphics();
                     if (PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
                     {
                         //use first point
-                        CreatePoint(tr, firstInt.ToPoint3d());
+                        //CreatePoint(tr, firstInt.ToPoint3d());
+                        graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
+                        createPointAction(tr, firstInt.ToPoint3d());
                     }
                     else
                     {
                         //use second point
-                        CreatePoint(tr, secondInt.ToPoint3d());
+                        graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
+                        createPointAction(tr, secondInt.ToPoint3d());
                     }
 
                     tr.Commit();
@@ -208,145 +222,121 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the offset two lines with given distance.
         /// </summary>
-        public static void Create_At_Offset_Two_Lines()
+        public static void Create_At_Offset_Two_Lines(Action<Transaction, Point3d> createPointAction)
         {
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select first line or polyline to offset: "))
-                return;
-
-            if (!firstLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                return;
-
-            ObjectId firstLineId = firstLineResult.ObjectId;
-
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult secondLineResult, "\n3DS> Select second line or polyline to offset: "))
-                return;
-
-            if (!secondLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                return;
-
-            ObjectId secondLineId = secondLineResult.ObjectId;
-
-            // Pick offset side
-            if (!EditorUtils.GetPoint(out Point3d offsetPoint, "\n3DS> Select offset side: "))
-                return;
-
-            // Prompt for offset distance
-            if (!EditorUtils.GetDistance(out double dist, "\n3DS> Offset distance: "))
-                return;
-
-            using (Transaction tr = AcadApp.StartTransaction())
+            var graphics = new TransientGraphics();
+            try
             {
-                Line firstLineToOffset = null;
-                Line secondLineToOffset = null;
-
-                if (EditorUtils.IsType(firstLineId, typeof(Line)))
+                using (Transaction tr = AcadApp.StartTransaction())
                 {
-                    firstLineToOffset = firstLineId.GetObject(OpenMode.ForRead) as Line;
-                }
+                    AcadApp.Editor.WriteMessage("\n3DS> Select first line to offset.");
+                    Line firstLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
 
-                if (EditorUtils.IsType(firstLineId, typeof(Polyline)))
-                {
-                    var polyline = firstLineId.GetObject(OpenMode.ForRead) as Polyline;
-                    var segmentId = PolylineUtils.GetPolylineSegment(polyline, firstLineResult);
-
-                    if (polyline == null)
-                    {
-                        AcadApp.Editor.WriteMessage("\n3DS> Command Error: Unable to get first polyline.");
+                    if (firstLineToOffset == null)
                         return;
-                    }
 
-                    var segment = polyline.GetLineSegment2dAt(segmentId);
-                    firstLineToOffset = new Line(segment.StartPoint.ToPoint().ToPoint3d(), segment.EndPoint.ToPoint().ToPoint3d());
-                }
+                    // Highlight line.
+                    graphics.DrawLine(firstLineToOffset, TransientDrawingMode.Highlight);
 
-                if (EditorUtils.IsType(secondLineId, typeof(Line)))
-                {
-                    secondLineToOffset = secondLineId.GetObject(OpenMode.ForRead) as Line;
-                }
+                    AcadApp.Editor.WriteMessage("\n3DS> Select second line to offset.");
+                    Line secondLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
 
-                if (EditorUtils.IsType(secondLineId, typeof(Polyline)))
-                {
-                    var polyline = secondLineId.GetObject(OpenMode.ForRead) as Polyline;
-                    var segmentId = PolylineUtils.GetPolylineSegment(polyline, secondLineResult);
-
-                    if (polyline == null)
-                    {
-                        AcadApp.Editor.WriteMessage("\n3DS> Command Error: Unable to get second polyline.");
+                    if (secondLineToOffset == null)
                         return;
-                    }
 
-                    var segment = polyline.GetLineSegment2dAt(segmentId);
-                    secondLineToOffset = new Line(segment.StartPoint.ToPoint().ToPoint3d(), segment.EndPoint.ToPoint().ToPoint3d());
+                    // Highlight line.
+                    graphics.DrawLine(secondLineToOffset, TransientDrawingMode.Highlight);
+
+                    // Prompt for offset distance.
+                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance))
+                        return;
+
+                    // Pick offset side.
+                    if (!EditorUtils.GetPoint(out Point3d offsetPoint, "\n" + ResourceStrings.Pick_Offset_Side))
+                        return;
+
+                    Line firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
+                    Line secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
+                    Point intersectionPoint = LineUtils.FindIntersectionPoint(firstOffsetLine, secondOffsetLine);
+
+                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
+                    pko.Keywords.Add(Keywords.Accept);
+                    pko.Keywords.Add(Keywords.Cancel);
+                    pko.Keywords.Default = Keywords.Accept;
+
+                    graphics.ClearGraphics();
+                    graphics.DrawPlus(intersectionPoint.ToPoint3d(), GraphicPixelSize);
+
+                    var cancelled = false;
+                    do
+                    {
+                        PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
+
+                        switch (prResult.Status)
+                        {
+                            case PromptStatus.Cancel:
+                            case PromptStatus.None:
+                            case PromptStatus.Error:
+                                cancelled = true;
+                                break;
+                            case PromptStatus.OK:
+                            case PromptStatus.Keyword:
+                                switch (prResult.StringResult)
+                                {
+                                    case Keywords.Accept:
+                                        createPointAction(tr, intersectionPoint.ToPoint3d());
+                                        cancelled = true;
+                                        break;
+                                    case Keywords.Cancel:
+                                        cancelled = true;
+                                        break;
+                                }
+                                break;
+                        }
+
+                    } while (!cancelled);
+                    tr.Commit();
                 }
-
-                Curve firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
-                Curve secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
-
-                if (firstOffsetLine == null || secondOffsetLine == null)
-                {
-                    AcadApp.Editor.WriteMessage("\n3DS> Please select a line or polyline only.");
-                    return;
-                }
-
-                var p1 = new Vector(firstOffsetLine.StartPoint.X, firstOffsetLine.StartPoint.Y);
-                var p2 = new Vector(firstOffsetLine.EndPoint.X, firstOffsetLine.EndPoint.Y);
-                var q1 = new Vector(secondOffsetLine.StartPoint.X, secondOffsetLine.StartPoint.Y);
-                var q2 = new Vector(secondOffsetLine.EndPoint.X, secondOffsetLine.EndPoint.Y);
-
-                MathHelpers.LineSegementsIntersect(p1, p2, q1, q2, out Point intersectionPoint);
-                AcadApp.Editor.WriteMessage($"\n3DS> Intersection found at: X:{intersectionPoint.X} Y:{intersectionPoint.Y}");
-
-                CreatePoint(tr, intersectionPoint.ToPoint3d());
-
-                tr.Commit();
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage(e.Message);
+            }
+            finally
+            {
+                graphics.Dispose();
             }
         }
 
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the production of a line and distance.
         /// </summary>
-        public static void Create_At_Production_Of_Line_And_Distance()
+        public static void Create_At_Production_Of_Line_And_Distance(Action<Transaction, Point3d> createPointAction)
         {
+            var graphics = new TransientGraphics();
             using (Transaction tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult lineResult, "\n3DS> Select line or polyline: "))
-                    return;
-
-                if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
-                    return;
-
-                Point3d basePoint = default;
-                Line line = null;
-
                 try
                 {
-                    if (lineResult.ObjectId.IsType<Line>())
-                    {
-                        line = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
-                        basePoint = line.GetClosestEndPoint(lineResult.PickedPoint);
-                    }
-
-                    if (lineResult.ObjectId.IsType<Polyline>())
-                    {
-                        var polyline = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
-                        line = polyline.GetLineSegmentFromPolyline(lineResult.PickedPoint);
-                        basePoint = line.GetClosestEndPoint(lineResult.PickedPoint);
-                    }
+                    Line line = LineUtils.GetNearestPointOfLineOrPolylineSegment(tr, out Point3d basePoint);
 
                     if (line == null)
                         return;
 
-                    Angle angle = AngleHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+                    graphics.DrawLine(line, TransientDrawingMode.Highlight);
+                    graphics.DrawPlus(basePoint, GraphicPixelSize);
 
+                    Angle angle = LineUtils.GetAngleOfLine(line);
+
+                    // If the basePoint is equal to the lines StartPoint, we want the angle to go in the
+                    // opposite direction. So we Flip().
                     if (basePoint == line.StartPoint)
-                    {
                         angle = angle.Flip();
-                    }
 
-                    if (!EditorUtils.GetDistance(out double dist, "\n3DS> Offset distance: ", basePoint))
+                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance, basePoint))
                         return;
 
-                    var pko = new PromptKeywordOptions("\n3DS> Accept point position? ") { AppendKeywordsToMessage = true, AllowNone = true };
+                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
                     pko.Keywords.Add(Keywords.Accept);
                     pko.Keywords.Add(Keywords.Cancel);
                     pko.Keywords.Add(Keywords.Flip);
@@ -354,48 +344,51 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                     Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
-                    using (var graphics = new TransientGraphics())
+                    graphics.ClearGraphics();
+                    graphics.DrawPlus(basePoint, GraphicPixelSize);
+                    graphics.DrawX(point.ToPoint3d(), GraphicPixelSize);
+                    graphics.DrawLine(basePoint, point.ToPoint3d());
+
+                    var cancelled = false;
+                    PromptResult prResult;
+                    do
                     {
-                        graphics.DrawCircle(point.ToPoint3d());
-                        graphics.DrawLine(basePoint, point.ToPoint3d());
+                        prResult = AcadApp.Editor.GetKeywords(pko);
 
-                        var cancelled = false;
-                        PromptResult prResult;
-                        do
+                        if (prResult.Status != PromptStatus.Keyword &&
+                            prResult.Status != PromptStatus.OK)
+                            continue;
+
+                        switch (prResult.StringResult)
                         {
-                            prResult = AcadApp.Editor.GetKeywords(pko);
-
-                            if (prResult.Status != PromptStatus.Keyword &&
-                                prResult.Status != PromptStatus.OK)
-                                continue;
-
-                            switch (prResult.StringResult)
-                            {
-                                case Keywords.None: // If user doesn't enter anything.
-                                case Keywords.Accept:
-                                    CreatePoint(tr, point.ToPoint3d());
-                                    cancelled = true;
-                                    break;
-                                case Keywords.Cancel:
-                                    cancelled = true;
-                                    break;
-                                case Keywords.Flip:
-                                    angle = angle.Flip();
-                                    point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
-                                    graphics.ClearGraphics();
-                                    graphics.DrawCircle(point.ToPoint3d());
-                                    graphics.DrawLine(basePoint, point.ToPoint3d());
-                                    break;
-                            }
-                        } while (prResult.Status != PromptStatus.Cancel &&
-                                 prResult.Status != PromptStatus.Error && !cancelled);
-                    }
+                            case Keywords.None: // If user doesn't enter anything.
+                            case Keywords.Accept:
+                                createPointAction(tr, point.ToPoint3d());
+                                cancelled = true;
+                                break;
+                            case Keywords.Cancel:
+                                cancelled = true;
+                                break;
+                            case Keywords.Flip:
+                                angle = angle.Flip();
+                                point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
+                                graphics.ClearGraphics();
+                                graphics.DrawPlus(basePoint, GraphicPixelSize);
+                                graphics.DrawX(point.ToPoint3d(), GraphicPixelSize);
+                                graphics.DrawLine(basePoint, point.ToPoint3d());
+                                break;
+                        }
+                    } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
 
                     tr.Commit();
                 }
                 catch (Exception e)
                 {
                     AcadApp.Editor.WriteMessage(e.ToString());
+                }
+                finally
+                {
+                    graphics.Dispose();
                 }
             }
         }
@@ -491,7 +484,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="tr">The existing transaction.</param>
         /// <param name="position">The position to create the point at.</param>
         /// <remarks>Don't forget to commit the transaction after using.</remarks>
-        private static void CreatePoint(Transaction tr, Point3d position)
+        public static void CreatePoint(Transaction tr, Point3d position)
         {
             // Open the Block table for read
             var bt = tr.GetObject(AcadApp.ActiveDocument.Database.BlockTableId, OpenMode.ForRead) as BlockTable;

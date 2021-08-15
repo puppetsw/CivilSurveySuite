@@ -10,77 +10,76 @@ using _3DS_CivilSurveySuite.ViewModels;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Runtime;
 
-[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.C3DPalettes))]
 namespace _3DS_CivilSurveySuite.C3D2017
 {
     /// <summary>
     /// PaletteFactory class for hooking up Views and ViewModels to be
     /// displayed as Palettes in AutoCAD Civil3D.
     /// </summary>
-    public class C3DPalettes
+    public static class C3DPalettes
     {
-        private bool _paletteVisible;
-        private readonly IPaletteService _paletteService;
+        private static bool s_paletteVisible;
+        private static readonly IPaletteService s_paletteService;
 
-        public C3DPalettes()
+        static C3DPalettes()
         {
-            _paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
+            s_paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
         [CommandMethod("3DSShowConnectLinePalette")]
-        public void ShowConnectLinePalette()
+        public static void ShowConnectLinePalette()
         {
             var view = new ConnectLineworkView();
             var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", new ConnectLineworkService());
-            _paletteService.GeneratePalette(view, vm, "Linework");
+            s_paletteService.GeneratePalette(view, vm, "Linework");
         }
 
-        private void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteService.PaletteSet.Visible = e.Document != null && _paletteVisible;
+            s_paletteService.PaletteSet.Visible = e.Document != null && s_paletteVisible;
         }
 
-        private void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentCreated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteService.PaletteSet.Visible = _paletteVisible;
+            s_paletteService.PaletteSet.Visible = s_paletteVisible;
         }
 
-        private void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentToBeDeactivated(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteVisible = _paletteService.PaletteSet.Visible;
+            s_paletteVisible = s_paletteService.PaletteSet.Visible;
         }
 
-        private void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
+        private static void DocumentManager_DocumentToBeDestroyed(object sender, DocumentCollectionEventArgs e)
         {
-            if (_paletteService.PaletteSet == null)
+            if (s_paletteService.PaletteSet == null)
             {
                 return;
             }
 
-            _paletteVisible = _paletteService.PaletteSet.Visible;
+            s_paletteVisible = s_paletteService.PaletteSet.Visible;
 
             if (AcadApp.DocumentManager.Count == 1)
             {
-                _paletteService.PaletteSet.Visible = false;
+                s_paletteService.PaletteSet.Visible = false;
             }
         }
 
-        public void HookupEvents()
+        public static void HookupEvents()
         {
             AcadApp.DocumentManager.DocumentActivated += DocumentManager_DocumentActivated;
             AcadApp.DocumentManager.DocumentCreated += DocumentManager_DocumentCreated;
@@ -88,7 +87,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.DocumentManager.DocumentToBeDestroyed += DocumentManager_DocumentToBeDestroyed;
         }
 
-        public void UnhookEvents()
+        public static void UnhookEvents()
         {
             AcadApp.DocumentManager.DocumentActivated -= DocumentManager_DocumentActivated;
             AcadApp.DocumentManager.DocumentCreated -= DocumentManager_DocumentCreated;

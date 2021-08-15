@@ -24,20 +24,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private readonly DBObjectCollection _graphics;
 
-        public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
+        private const string DashedLineType = "DASHED";
 
-        public TransientDrawingMode DrawingMode { get; set; }
+        public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
 
         public TransientGraphics()
         {
             _graphics = new DBObjectCollection();
-            DrawingMode = TransientDrawingMode.Main;
-        }
-
-        public TransientGraphics(TransientDrawingMode mode)
-        {
-            _graphics = new DBObjectCollection();
-            DrawingMode = mode;
         }
 
         private static double ScreenSize(int numPix)
@@ -64,15 +57,21 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return (Convert.ToDouble(viewSize) / 100) * offsetDist;
         }
 
-        private void DrawAdd(DBObject entity)
+        private static void SetLineType(Entity entity)
         {
-            _graphics.Add(entity);
-            TransientManager.CurrentTransientManager.AddTransient(entity, DrawingMode, 0, new IntegerCollection());
+            if (LineTypeUtils.LoadLineType(DashedLineType))
+                entity.Linetype = DashedLineType;
         }
 
-        public void DrawLines(IReadOnlyList<Point2d> coordinates) => DrawLines(coordinates.ToListOfPoint3d());
+        private void DrawAdd(DBObject entity, TransientDrawingMode mode = TransientDrawingMode.Main)
+        {
+            _graphics.Add(entity);
+            TransientManager.CurrentTransientManager.AddTransient(entity, mode, 0, new IntegerCollection());
+        }
 
-        public void DrawLines(IReadOnlyList<Point3d> coordinates)
+        public void DrawLines(IReadOnlyList<Point2d> coordinates, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLines(coordinates.ToListOfPoint3d(), mode);
+
+        public void DrawLines(IReadOnlyList<Point3d> coordinates, TransientDrawingMode mode = TransientDrawingMode.Main)
         {
             // Start a count for the next coordinate in the collection.
             var nextCoord = 1; 
@@ -84,19 +83,21 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 var startPoint = new Point3d(point.X, point.Y, 0);
                 var endPoint = new Point3d(coordinates[nextCoord].X, coordinates[nextCoord].Y, 0);
-                DrawLine(startPoint, endPoint);
+                DrawLine(startPoint, endPoint, mode);
                 nextCoord++;
             }
         }
 
-        public void DrawLine(Point2d point1, Point2d point2) => DrawLine(point1.ToPoint3d(), point2.ToPoint3d());
+        public void DrawLine(Point2d point1, Point2d point2, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLine(point1.ToPoint3d(), point2.ToPoint3d(), mode);
 
-        public void DrawLine(Line line) => DrawLine(line.StartPoint, line.EndPoint);
+        public void DrawLine(Line line, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLine(line.StartPoint, line.EndPoint, mode);
 
-        public void DrawLine(Point3d point1, Point3d point2)
+        public void DrawLine(Point3d point1, Point3d point2, TransientDrawingMode mode = TransientDrawingMode.Main)
         {
             var line = new Line(point1, point2) { Color = Color };
-            DrawAdd(line);
+
+            SetLineType(line);
+            DrawAdd(line, mode);
         }
 
         public void DrawSquare(Point3d position, double squareSize)
@@ -112,6 +113,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void DrawCircle(Point3d position, double circleSize = 0.5)
         {
             var circle = new Circle(position, Vector3d.ZAxis, circleSize) { Color = Color };
+
+            SetLineType(circle);
             DrawAdd(circle);
         }
 

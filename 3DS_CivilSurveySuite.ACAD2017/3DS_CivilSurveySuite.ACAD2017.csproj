@@ -71,6 +71,7 @@
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="LineTypeUtils.cs" />
     <Compile Include="ResourceStrings.Designer.cs">
       <DependentUpon>ResourceStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>

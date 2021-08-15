@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static void Traverse()
         {
-            var graphics = new TransientGraphics(TransientDrawingMode.Main);
+            var graphics = new TransientGraphics();
             try
             {
                 if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))

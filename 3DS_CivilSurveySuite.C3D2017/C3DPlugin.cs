@@ -1,20 +1,18 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 
+[assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.C3D2017.C3DPlugin))]
 namespace _3DS_CivilSurveySuite.C3D2017
 {
     public class C3DPlugin : IExtensionApplication
     {
-        private C3DPalettes _palettes;
-
         public void Initialize()
         {
-            _palettes = new C3DPalettes();
-            _palettes.HookupEvents();
+            C3DPalettes.HookupEvents();
         }
 
         public void Terminate()
         {
-            _palettes.UnhookEvents();
+            C3DPalettes.UnhookEvents();
         }
     }
 }

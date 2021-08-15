@@ -372,5 +372,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             ZoomToWindow(AcadApp.ActiveDatabase.Extmin, AcadApp.ActiveDatabase.Extmax);
         }
+
+        /// <summary>
+        /// Gets a string from user input.
+        /// </summary>
+        /// <param name="input">The typed input string.</param>
+        /// <param name="message">The message to display to the user.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool GetString(out string input, string message)
+        {
+            input = string.Empty;
+            var pso = new PromptStringOptions(message) { AllowSpaces = false };
+            var psr = AcadApp.ActiveDocument.Editor.GetString(pso);
+
+            if (psr.Status != PromptStatus.OK)
+                return false;
+
+            input = psr.StringResult;
+            return true;
+        }
     }
 }

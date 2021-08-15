@@ -14,21 +14,36 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public static void PtProdDist()
         {
-            PointUtils.Create_At_Production_Of_Line_And_Distance();
+            PointUtils.Create_At_Production_Of_Line_And_Distance(PointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSPtOffsetLn", CommandFlags.Modal)]
         public static void PtOffsetLn()
         {
-            PointUtils.Create_At_Offset_Two_Lines();
+            PointUtils.Create_At_Offset_Two_Lines(PointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSPtBrgDist", CommandFlags.Modal)]
         public static void PtBrgDist()
         {
-            PointUtils.Create_At_Angle_And_Distance();
+            PointUtils.Create_At_Angle_And_Distance(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtIntBrg", CommandFlags.Modal)]
+        public static void PtIntBrg()
+        {
+            PointUtils.Create_At_Intersection_Two_Bearings(PointUtils.CreatePoint);
+        }
+
+        [CommandMethod("3DS", "_3DSPtIntDist", CommandFlags.Modal)]
+        public static void PtIntDist()
+        {
+            PointUtils.Create_At_Intersection_Two_Distances(PointUtils.CreatePoint);
+        }
+
+
+
+        // Utils
         [CommandMethod("3DS", "_3DSPtInverse", CommandFlags.Modal)]
         public static void PtInverse()
         {
@@ -41,21 +56,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Inverse_ScreenDisplay();
         }
 
-        [CommandMethod("3DS", "_3DSPtIntBrg", CommandFlags.Modal)]
-        public static void PtIntBrg()
-        {
-            PointUtils.Create_At_Intersection_Two_Bearings();
-        }
-
-        [CommandMethod("3DS", "_3DSPtIntDist", CommandFlags.Modal)]
-        public static void PtIntDist()
-        {
-            PointUtils.Create_At_Intersection_Two_Distances();
-        }
-
-
-
-        // Utils
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public static void Traverse()
         {
