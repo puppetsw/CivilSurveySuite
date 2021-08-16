@@ -84,7 +84,6 @@ namespace _3DS_CivilSurveySuiteTests
             var resultBool = PointHelpers.DistanceDistanceIntersection(point1, dist1, point2, dist2, out Point result1, out Point result2);
 
             Assert.IsTrue(resultBool);
-
             Assert.AreEqual(expectedPoint1, result1);
             Assert.AreEqual(expectedPoint2, result2);
         }
@@ -107,6 +106,42 @@ namespace _3DS_CivilSurveySuiteTests
 
             //Assert.AreEqual(expectedPoint1, result1);
             //Assert.AreEqual(expectedPoint2, result2);
+        }
+
+        [TestMethod]
+        public void BearingDistance_IntersectTwo_ShouldReturnTrue()
+        {
+            var point1 = new Point(0, 0);
+            var angle = new Angle(0);
+
+            var point2 = new Point(10, 50);
+            var distance = 20;
+
+            var expectedPoint1 = new Point(0, 67.32051);
+            var expectedPoint2 = new Point(0, 32.67949);
+
+            var resultBool = PointHelpers.AngleDistanceIntersection(point1, angle, point2, distance, out Point result1, out Point result2);
+            Assert.IsTrue(resultBool);
+            Assert.AreEqual(expectedPoint1, result1);
+            Assert.AreEqual(expectedPoint2, result2);
+        }
+
+        [TestMethod]
+        public void BearingDistance_IntersectNone_ShouldReturnFalse()
+        {
+            var point1 = new Point(0, 0);
+            var angle = new Angle(45);
+
+            var point2 = new Point(100, 0);
+            var distance = 20;
+
+            var expectedPoint1 = Point.Origin;
+            var expectedPoint2 = Point.Origin;
+
+            var resultBool = PointHelpers.AngleDistanceIntersection(point1, angle, point2, distance, out Point result1, out Point result2);
+            Assert.IsFalse(resultBool);
+            Assert.AreEqual(expectedPoint1, result1);
+            Assert.AreEqual(expectedPoint2, result2);
         }
     }
 }

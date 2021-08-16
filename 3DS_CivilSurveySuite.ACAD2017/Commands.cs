@@ -41,17 +41,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Intersection_Two_Distances(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtIntBrd", CommandFlags.Modal)]
+        public static void PtIntBearingDist()
+        {
+            PointUtils.Create_At_Intersection_Of_Angle_And_Distance(PointUtils.CreatePoint);
+        }
 
 
         // Utils
-        [CommandMethod("3DS", "_3DSPtInverse", CommandFlags.Modal)]
-        public static void PtInverse()
+        [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]
+        public static void Inverse()
         {
             PointUtils.Inverse();
         }
 
-        [CommandMethod("3DS", "_3DSPtInverseDisp", CommandFlags.Modal)]
-        public static void PtInverseDisp()
+        [CommandMethod("3DS", "_3DSInverseDisp", CommandFlags.Modal)]
+        public static void InverseDisplay()
         {
             PointUtils.Inverse_ScreenDisplay();
         }

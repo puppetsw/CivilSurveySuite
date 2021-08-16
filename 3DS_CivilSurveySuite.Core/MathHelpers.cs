@@ -105,7 +105,7 @@ namespace _3DS_CivilSurveySuite.Core
                 // 1. If either  0 <= (q - p) * r <= r * r or 0 <= (p - q) * s <= * s
                 // then the two lines are overlapping,
                 if (considerCollinearOverlapAsIntersect)
-                    if ((0 <= (q - p)*r && (q - p)*r <= r*r) || (0 <= (p - q)*s && (p - q)*s <= s*s))
+                    if (0 <= (q - p) * r && (q - p) * r <= r * r || 0 <= (p - q) * s && (p - q) * s <= s * s)
                         return true;
 
                 // 2. If neither 0 <= (q - p) * r = r * r nor 0 <= (p - q) * s <= s * s
@@ -126,7 +126,7 @@ namespace _3DS_CivilSurveySuite.Core
 
             // 4. If r x s != 0 and 0 <= t <= 1 and 0 <= u <= 1
             // the two line segments meet at the point p + t r = q + u s.
-            if (!Vector.IsZero(rxs) && (0 <= t && t <= 1) && (0 <= u && u <= 1))
+            if (!Vector.IsZero(rxs) && 0 <= t && t <= 1 && 0 <= u && u <= 1)
             {
                 // We can calculate the intersection point using either t or u.
                 Vector intersection = p + t*r;

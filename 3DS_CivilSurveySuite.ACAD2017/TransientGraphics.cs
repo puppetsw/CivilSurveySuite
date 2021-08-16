@@ -35,26 +35,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private static double ScreenSize(int numPix)
         {
-            object systemVariable = Application.GetSystemVariable(SystemVariables.SCREENSIZE);
-            object viewSize = Application.GetSystemVariable(SystemVariables.VIEWSIZE);
-
-            Point2d screenSize = (Point2d)systemVariable;
-            
-            return Convert.ToDouble(viewSize) / screenSize.Y * numPix;
+            var viewSize = SystemVariables.VIEWSIZE;
+            var screenSize = SystemVariables.SCREENSIZE;
+            return viewSize / screenSize.Y * numPix;
         }
 
         private static double TextSize(double textSize)
         {
-            object viewSize = Application.GetSystemVariable(SystemVariables.VIEWSIZE);
-            var text = (Convert.ToDouble(viewSize) / 100) * textSize;
-            
+            var viewSize = SystemVariables.VIEWSIZE;
+            var text = viewSize / 100 * textSize;
             return Math.Round(text, 2);
         }
 
         private static double TextOffset(double offsetDist)
         {
-            object viewSize = Application.GetSystemVariable(SystemVariables.VIEWSIZE);
-            return (Convert.ToDouble(viewSize) / 100) * offsetDist;
+            var viewSize = SystemVariables.VIEWSIZE;
+            return viewSize / 100 * offsetDist;
         }
 
         private static void SetLineType(Entity entity)

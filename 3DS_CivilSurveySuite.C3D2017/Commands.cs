@@ -41,6 +41,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Intersection_Two_Distances(CogoPointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSCptIntBrd", CommandFlags.Modal)]
+        public static void PtIntBearingDist()
+        {
+            PointUtils.Create_At_Intersection_Of_Angle_And_Distance(CogoPointUtils.CreatePoint);
+        }
+
 
 
         [CommandMethod("3DS", "_3DSCptTrunkAtTrees", CommandFlags.Modal)]
@@ -71,8 +77,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        [CommandMethod("3DS", "_3DSZoomToPt", CommandFlags.Modal)]
+        public static void ZoomToPt()
+        {
+            CogoPointUtils.ZoomPoint();
+        }
 
-        [CommandMethod("3DS", "_3DSCpUsedPts", CommandFlags.Modal)]
+
+
+        [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()
         {
             CogoPointUtils.UsedPoints();

@@ -149,6 +149,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="angle1">The angle1.</param>
         /// <param name="point2">The point2.</param>
         /// <param name="angle2">The angle2.</param>
+        /// <param name="intersectionPoint"></param>
         /// <returns>A <see cref="Point"/> representing the intersection of two <see cref="Angle"/> objects.</returns>
         /// <remarks>
         /// Seems to be a rounding issue that I've yet to fix.
@@ -226,6 +227,51 @@ namespace _3DS_CivilSurveySuite.Core
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Calculates a point at the intersection of a bearing from one point and distance from a second.
+        /// </summary>
+        /// <param name="point1">The point1.</param>
+        /// <param name="angle1">The angle1.</param>
+        /// <param name="point2">The point2.</param>
+        /// <param name="radius">The dist.</param>
+        /// <param name="solution1"></param>
+        /// <param name="solution2"></param>
+        /// <param name="decimalPlaces"></param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool AngleDistanceIntersection(Point point1, Angle angle1, Point point2, double radius, out Point solution1, out Point solution2, int decimalPlaces = 5)
+        {
+            var point1A = AngleAndDistanceToPoint(angle1, 32000, point1, 15);
+
+            solution1 = Point.Origin;
+            solution2 = Point.Origin;
+
+            double num1 = point1A.X - point1.X;
+            double num2 = point1A.Y - point1.Y;
+            double num3 = num1 * num1 + num2 * num2;
+            double num4 = 2.0 * (num1 * (point1.X - point2.X) + num2 * (point1.Y - point2.Y));
+            double num5 = (point1.X - point2.X) * (point1.X - point2.X) + (point1.Y - point2.Y) * (point1.Y - point2.Y) - radius * radius;
+            double d = num4 * num4 - 4.0 * num3 * num5;
+
+            if (num3 <= 1E-07 | d < 0.0)
+                return false; // No intersection found.
+
+            //if (d == 0.0) // Only one intersection? // Not needed?
+            //{
+            //    double num6 = -num4 / (2.0 * num3);
+            //    solution1 = new Point(Math.Round(point1.X + num6 * num1, decimalPlaces), Math.Round(point1.Y + num6 * num2, decimalPlaces), 0.0);
+            //    solution2 = Point.Origin;
+            //    return true;
+            //}
+
+            double num7 = (-num4 + Math.Sqrt(d)) / (2.0 * num3);
+            solution1 = new Point(Math.Round(point1.X + num7 * num1, decimalPlaces), Math.Round(point1.Y + num7 * num2, decimalPlaces), 0.0);
+
+            double num8 = (-num4 - Math.Sqrt(d)) / (2.0 * num3);
+            solution2 = new Point(Math.Round(point1.X + num8 * num1, decimalPlaces), Math.Round(point1.Y + num8 * num2, decimalPlaces), 0.0);
+
+            return true;
         }
     }
 }

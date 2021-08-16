@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -376,7 +377,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a string from user input.
         /// </summary>
-        /// <param name="input">The typed input string.</param>
+        /// <param name="input">The typed input string.</param>   
         /// <param name="message">The message to display to the user.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool GetString(out string input, string message)
@@ -391,5 +392,27 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             input = psr.StringResult;
             return true;
         }
+
+
+        /// <summary>
+        /// Gets a integer from user input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="message">The message.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool GetInt(out int input, string message)
+        {
+            input = int.MinValue;
+
+            var pio = new PromptIntegerOptions(message);
+            var pir = AcadApp.Editor.GetInteger(pio);
+
+            if (pir.Status != PromptStatus.OK)
+                return false;
+
+            input = pir.Value;
+            return true;
+        }
+
     }
 }
