@@ -47,6 +47,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Intersection_Of_Angle_And_Distance(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtBetweenPts", CommandFlags.Modal)]
+        public static void PtBetweenPts()
+        {
+            PointUtils.Create_Between_Points(PointUtils.CreatePoint);
+        }
+
+
 
         // Utils
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.Civil.ApplicationServices;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
@@ -72,7 +70,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-
         public static void Label_Rotate_Match()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
@@ -109,7 +106,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                         break;
                     case DxfNames.LINE:
-                        var line = (Line) perLines.ObjectId.GetObject(OpenMode.ForRead);
+                        var line = (Line) perLines.ObjectId.GetObject(OpenMode.ForRead); //TODO: Add method for detecting angle like above.
                         angle = line.Angle;
                         break;
                 }
@@ -142,6 +139,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         }
 
+        public static void Marker_Rotate_Match()
+        {
+
+        }
 
         public static void Create_Trunks_At_Trees()
         {
@@ -182,42 +183,35 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.WriteMessage(completeMessage);
         }
 
-        /// <summary>
-        /// Add multiple points (with interpolated elevation) between two points.
-        /// </summary>
-        //private void CreatePointBetweenPoints()
-        //{
-        //}
+
 
         /// <summary>
         /// Add multiple points that are offsets of a line defined by two points.
         /// </summary>
-        //private void CreatePointBetweenPointsAtOffset()
-        //{
-        //}
+        private static void CreatePointBetweenPointsAtOffset()
+        {
+        }
 
         /// <summary>
         /// Add a point at a picked location with elevation calculated at designated slope.
         /// </summary>
-        //private void CreatePointAtLocationWithSlope()
-        //{
-        //}
+        private static void CreatePointAtLocationWithSlope()
+        {
+        }
 
         /// <summary>
         /// Create point at extension distance on grade between 2 points.
         /// </summary>
-        //private void CreatePointAtExtensionBetweenPoints()
-        //{
-        //}
+        private static void CreatePointAtExtensionBetweenPoints()
+        {
+        }
 
-      
-        /// <summary>
-        /// The CreatePointsFromLabels command can be used to create Civil-3D Points at the 
-        /// exact location and elevation of Surface Elevation Labels found in a drawing.
-        /// </summary>
-        //private void CreatePointAtLabel()
-        //{
-        //}
+
+        public static void Inverse_ByPointNumber()
+        {
+
+        }
+
 
         /// <summary>
         /// The UsedPt command displays a list of used point numbers in the command window.

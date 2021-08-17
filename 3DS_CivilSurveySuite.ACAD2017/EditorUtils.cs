@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -59,6 +58,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         //TODO: Remove this method.
+        [Obsolete("This method is obsolete. Use GetPoint()", false)]
         public static Point3d? GetBasePoint3d()
         {
             Utils.SetFocusToDwgView();
@@ -74,6 +74,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         //TODO: Remove this method.
+        [Obsolete("This method is obsolete. Use GetPoint()", false)]
         public static Point2d? GetBasePoint2d()
         {
             var point = GetBasePoint3d();
@@ -108,6 +109,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetEntity(peo);
         }
 
+        [Obsolete("This method is obsolete and will not be used. To be removed.", true)]
         public static PromptNestedEntityResult GetNestedEntity(string message)
         {
             var pneo = new PromptNestedEntityOptions(message) { AllowNone = false };
@@ -290,18 +292,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="basePoint">Optional base point parameter. If null, will prompt
         /// the user to select a base point.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool GetDistance(out double distance, string message, Point3d? basePoint)
+        public static bool GetDistance(out double distance, string message, Point3d basePoint)
         {
-            if (basePoint == null)
-                basePoint = GetBasePoint3d();
-
             distance = double.NaN;
 
-            // If base point is still null, return null.
-            if (basePoint == null) 
-                return false;
-
-            var pdo = new PromptDistanceOptions(message) { BasePoint = basePoint.Value, Only2d = true, UseDashedLine = true };
+            var pdo = new PromptDistanceOptions(message)
+            {
+                BasePoint = basePoint, 
+                UseBasePoint = true,
+                Only2d = true, 
+                UseDashedLine = true
+            };
 
             PromptDoubleResult pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
 
@@ -313,6 +314,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        /// <summary>
+        /// Gets the distance from the user input.
+        /// </summary>
+        /// <param name="distance">A double containing the output distance.</param>
+        /// <param name="message">The message to display to the user.</param>
+        /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
         public static bool GetDistance(out double distance, string message)
         {
             distance = double.NaN;
@@ -393,13 +400,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-
         /// <summary>
         /// Gets a integer from user input.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="message">The message.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if a integer was input successfully, <c>false</c> otherwise.</returns>
         public static bool GetInt(out int input, string message)
         {
             input = int.MinValue;

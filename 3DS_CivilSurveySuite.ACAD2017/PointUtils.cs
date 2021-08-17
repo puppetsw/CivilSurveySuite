@@ -469,6 +469,66 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Add multiple points (with interpolated elevation) between two points.
+        /// </summary>
+        public static void Create_Between_Points(Action<Transaction, Point3d> createPointAction)
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, GraphicPixelSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, GraphicPixelSize);
+                graphics.DrawLine(firstPoint, secondPoint);
+
+                // Calculate angle and distances from picked points.
+                Angle angleBetweenPoints = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                double distanceBetweenPoints = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                double elevationDifference = secondPoint.Z - firstPoint.Z;
+
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    bool cancelled = false;
+                    do
+                    {
+                        //TODO: Implement way to show point moving along line relative to mouse position for point creation.
+                        //AcadApp.Editor.PointMonitor += CreatePointBetweenPoints_PointMonitor;
+                        //Having brain wave moment. Can use methods like intersect 2 bearings to calculate point
+                        //on the line relative to the mouse position. if we take the line and add 90°? depending
+                        //on which side of the line the mouse is. we can use the IsLeft() method.
+
+                        if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter distance: ", firstPoint))
+                            cancelled = true;
+
+                        var newPoint = PointHelpers.AngleAndDistanceToPoint(angleBetweenPoints, distance, firstPoint.ToPoint());
+                        var point3d = new Point3d(newPoint.X, newPoint.Y, firstPoint.Z + elevationDifference * (distance / distanceBetweenPoints));
+                    
+                        graphics.DrawDot(newPoint.ToPoint3d(), GraphicPixelSize);
+                        
+                        createPointAction(tr, point3d);
+                        
+                    } while (!cancelled);
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage($"3DS> Command Exception: {e.Message}");
+            }
+            finally
+            {
+                //AcadApp.Editor.PointMonitor -= CreatePointBetweenPoints_PointMonitor;
+                graphics.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Inverses between points (pick), echoes coordinates, 
         /// azimuths, bearings, horz/vert distance and slope.
         /// </summary>
@@ -552,6 +612,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 graphics.Dispose();
             }
         }
+
+
+        /// <summary>
+        /// The CreatePointsFromLabels command can be used to create Civil-3D Points at the 
+        /// exact location and elevation of Surface Elevation Labels found in a drawing.
+        /// </summary>
+        public static void CreatePointAtLabel(Action<Transaction, Point3d> createPointAction)
+        {
+
+        }
+
+
+        //TODO: Hookup with create_between_points when I figure it out.
+        private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
+        {
+            
+        }
+
 
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the specified location.
