@@ -327,11 +327,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             distance = double.NaN;
 
-            var pdo = new PromptDistanceOptions(message) { Only2d = true, UseDashedLine = true };
+            var pdo = new PromptDistanceOptions(message)
+            {
+                Only2d = true, 
+                UseDashedLine = true, 
+                AllowNone = true
+            };
 
             PromptDoubleResult pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
 
             if (pdrDistance.Status != PromptStatus.OK)
+                return false;
+
+            if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
                 return false;
 
             distance = pdrDistance.Value;
