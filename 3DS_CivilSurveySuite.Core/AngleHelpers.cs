@@ -80,7 +80,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="y1">Northing of first coordinate</param>
         /// <param name="y2">Northing of second coordinate</param>
         /// <returns>A <see cref="Angle"/> representing the angle/bearing between the two coordinates.</returns>
-        public static Angle AngleBetweenPoints(double x1, double x2, double y1, double y2)
+        public static Angle GetAngleBetweenPoints(double x1, double x2, double y1, double y2)
         {
             double rad = Math.Atan2(x2 - x1, y2 - y1);
 
@@ -97,9 +97,9 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="point1">The first coordinate.</param>
         /// <param name="point2">The second coordinate.</param>
         /// <returns>A <see cref="Angle"/> representing the angle/bearing between the two coordinates.</returns>
-        public static Angle AngleBetweenPoints(Point point1, Point point2)
+        public static Angle GetAngleBetweenPoints(Point point1, Point point2)
         {
-            return AngleBetweenPoints(point1.X, point2.X, point1.Y, point2.Y);
+            return GetAngleBetweenPoints(point1.X, point2.X, point1.Y, point2.Y);
         }
 
         /// <summary>

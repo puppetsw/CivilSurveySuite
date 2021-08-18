@@ -79,7 +79,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="y2">Northing of second coordinate.</param>
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double DistanceBetweenPoints(double x1, double x2, double y1, double y2, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(double x1, double x2, double y1, double y2, int decimalPlaces = 4)
         {
             double x = Math.Abs(x1 - x2);
             double y = Math.Abs(y1 - y2);

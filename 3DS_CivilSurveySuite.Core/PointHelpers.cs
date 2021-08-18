@@ -18,9 +18,9 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="point2">The second coordinate.</param>
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double DistanceBetweenPoints(Point point1, Point point2, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(Point point1, Point point2, int decimalPlaces = 4)
         {
-            return MathHelpers.DistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, decimalPlaces);
+            return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, decimalPlaces);
         }
         
         /// <summary>
@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="point1">First point.</param>
         /// <param name="point2">Second point.</param>
         /// <returns>A <see cref="Point"/> representing the mid-point between the two <see cref="Point"/>s.</returns>
-        public static Point MidpointBetweenPoints(Point point1, Point point2)
+        public static Point GetMidpointBetweenPoints(Point point1, Point point2)
         {
             double x = (point1.X + point2.X) / 2;
             double y = (point1.Y + point2.Y) / 2;
@@ -159,8 +159,8 @@ namespace _3DS_CivilSurveySuite.Core
         public static bool AngleAngleIntersection(Point point1, Angle angle1, Point point2, Angle angle2, out Point intersectionPoint)
         {
             intersectionPoint = Point.Origin;
-            var inverseAng = AngleHelpers.AngleBetweenPoints(point1, point2);
-            var inverseDist = DistanceBetweenPoints(point1, point2);
+            var inverseAng = AngleHelpers.GetAngleBetweenPoints(point1, point2);
+            var inverseDist = GetDistanceBetweenPoints(point1, point2);
 
             Angle internalA;
             if (angle1.Degrees > inverseAng.Degrees)
@@ -207,7 +207,7 @@ namespace _3DS_CivilSurveySuite.Core
             solution1 = Point.Origin;
             solution2 = Point.Origin;
 
-            double distBetweenPoints = DistanceBetweenPoints(point1, point2);
+            double distBetweenPoints = GetDistanceBetweenPoints(point1, point2);
             if (distBetweenPoints <= dist1 + dist2 && distBetweenPoints >= Math.Abs(dist1 - dist2))
             {
                 // Borrowed from C3DTools.

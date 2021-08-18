@@ -295,18 +295,21 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static bool GetDistance(out double distance, string message, Point3d basePoint)
         {
             distance = double.NaN;
-
             var pdo = new PromptDistanceOptions(message)
             {
                 BasePoint = basePoint, 
                 UseBasePoint = true,
                 Only2d = true, 
-                UseDashedLine = true
+                UseDashedLine = true,
+                AllowNone = true
             };
 
             PromptDoubleResult pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
 
             if (pdrDistance.Status != PromptStatus.OK)
+                return false;
+
+            if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
                 return false;
 
             distance = pdrDistance.Value;

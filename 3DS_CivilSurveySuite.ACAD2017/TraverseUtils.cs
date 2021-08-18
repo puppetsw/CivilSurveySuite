@@ -44,7 +44,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
                 graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                 graphics.DrawPlus(newPoint.ToPoint3d(), GraphicsSize);
-                graphics.DrawArrow(PointHelpers.MidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GraphicsSize);
+                graphics.DrawArrow(PointHelpers.GetMidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GraphicsSize);
 
                 PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 

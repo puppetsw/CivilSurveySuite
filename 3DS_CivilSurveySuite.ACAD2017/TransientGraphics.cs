@@ -20,6 +20,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     /// A helper class to display and manage TransientGraphics
     /// within AutoCAD.
     /// </summary>
+    /// <remarks>
+    /// Always wrap in a try/catch/finally block or use
+    /// a using statement to dispose of the graphics correctly.
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// var graphics = new TransientGraphics();
+    /// try
+    /// {
+    ///   graphics.DrawLine(point1, point2);
+    /// }
+    /// finally
+    /// {
+    ///   graphics.Dispose();
+    /// }
+    /// </code>
+    /// </example>
     public class TransientGraphics : IDisposable
     {
         private readonly DBObjectCollection _graphics;
@@ -88,11 +105,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void DrawLine(Line line, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLine(line.StartPoint, line.EndPoint, mode);
 
-        public void DrawLine(Point3d point1, Point3d point2, TransientDrawingMode mode = TransientDrawingMode.Main)
+        public void DrawLine(Point3d point1, Point3d point2, TransientDrawingMode mode = TransientDrawingMode.Main, bool useDashedLine = true)
         {
             var line = new Line(point1, point2) { Color = Color };
 
-            SetLineType(line);
+            if (useDashedLine)
+                SetLineType(line);
+
             DrawAdd(line, mode);
         }
 

@@ -87,8 +87,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
             var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(TraverseAngles, new Point(0, 0));
 
-            double distance = PointHelpers.DistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
-            Angle angle = AngleHelpers.AngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            double distance = PointHelpers.GetDistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            Angle angle = AngleHelpers.GetAngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
 
             CloseDistance = $"{distance:0.000}";
             CloseBearing = angle.ToString();

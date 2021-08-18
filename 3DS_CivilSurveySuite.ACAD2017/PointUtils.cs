@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -192,7 +193,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 using (var tr = AcadApp.StartTransaction())
                 {
                     graphics.ClearGraphics();
-                    if (PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
+                    if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
                     {
                         //use first point
                         //CreatePoint(tr, firstInt.ToPoint3d());
@@ -441,7 +442,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 using (var tr = AcadApp.StartTransaction())
                 {
                     graphics.ClearGraphics();
-                    if (PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.DistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
+                    if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
                     {
                         //use first point
                         //CreatePoint(tr, firstInt.ToPoint3d());
@@ -487,9 +488,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 graphics.DrawPlus(secondPoint, GraphicPixelSize);
                 graphics.DrawLine(firstPoint, secondPoint);
 
+                graphics.DrawChainage(firstPoint, secondPoint);
+
                 // Calculate angle and distances from picked points.
-                Angle angleBetweenPoints = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                double distanceBetweenPoints = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                Angle angleBetweenPoints = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                double distanceBetweenPoints = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                 double elevationDifference = secondPoint.Z - firstPoint.Z;
 
                 using (var tr = AcadApp.StartTransaction())
@@ -498,10 +501,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     do
                     {
                         //TODO: Implement way to show point moving along line relative to mouse position for point creation.
-                        //AcadApp.Editor.PointMonitor += CreatePointBetweenPoints_PointMonitor;
-                        //Having brain wave moment. Can use methods like intersect 2 bearings to calculate point
-                        //on the line relative to the mouse position. if we take the line and add 90°? depending
-                        //on which side of the line the mouse is. we can use the IsLeft() method.
+                        /*
+                        var pointerGraphics = new TransientGraphics();
+                        AcadApp.Editor.PointMonitor += CreatePointBetweenPoints_PointMonitor;
+                        Having brain wave moment. Can use methods like intersect 2 bearings to calculate point
+                        on the line relative to the mouse position. if we take the line and add 90°? depending
+                        on which side of the line the mouse is. we can use the IsLeft() method.
+                        need to pass in new graphics object so we can clear it each move.
+                        write own event and handler. to pass points etc.
+                        */
 
                         if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter distance: ", firstPoint))
                             cancelled = true;
@@ -528,6 +536,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
+        //TODO: Hookup with create_between_points when I figure it out.
+        private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
+        {
+            
+        }
+
         /// <summary>
         /// Inverses between points (pick), echoes coordinates, 
         /// azimuths, bearings, horz/vert distance and slope.
@@ -548,8 +562,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
 
-                var angle = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                var distance = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                 var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
                 var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
 
@@ -590,12 +604,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                         return;
 
-                    var angle = AngleHelpers.AngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                    var distance = PointHelpers.DistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                     var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
                     var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
 
-                    var midPoint = PointHelpers.MidpointBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                    var midPoint = PointHelpers.GetMidpointBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                     graphics.ClearGraphics();
                     graphics.DrawX(firstPoint, GraphicPixelSize);
                     graphics.DrawX(secondPoint, GraphicPixelSize);
@@ -614,6 +628,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
 
+        public static void Inverse_Chainage_Offset()
+        {
+
+        }
+
         /// <summary>
         /// The CreatePointsFromLabels command can be used to create Civil-3D Points at the 
         /// exact location and elevation of Surface Elevation Labels found in a drawing.
@@ -621,13 +640,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void CreatePointAtLabel(Action<Transaction, Point3d> createPointAction)
         {
 
-        }
-
-
-        //TODO: Hookup with create_between_points when I figure it out.
-        private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
-        {
-            
         }
 
 

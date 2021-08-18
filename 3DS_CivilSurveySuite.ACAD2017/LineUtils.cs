@@ -143,7 +143,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static Angle GetAngleOfLine(Line line)
         {
-            return AngleHelpers.AngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+            return AngleHelpers.GetAngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
         }
 
         public static Point FindIntersectionPoint(Line line1, Line line2)

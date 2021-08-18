@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = 141.4214;
 
-            var result = MathHelpers.DistanceBetweenPoints(x1, x2, y1, y2);
+            var result = MathHelpers.GetDistanceBetweenPoints(x1, x2, y1, y2);
 
             Assert.AreEqual(expectedDistance, result);
         }
@@ -127,7 +127,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = 141.4214;
 
-            var result = PointHelpers.DistanceBetweenPoints(point1, point2);
+            var result = PointHelpers.GetDistanceBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
@@ -143,7 +143,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(45);
 
-            var result = AngleHelpers.AngleBetweenPoints(x1, x2, y1, y2);
+            var result = AngleHelpers.GetAngleBetweenPoints(x1, x2, y1, y2);
 
             Assert.AreEqual(expectedDistance, result);
         }
@@ -157,7 +157,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(45);
 
-            var result = AngleHelpers.AngleBetweenPoints(point1, point2);
+            var result = AngleHelpers.GetAngleBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
@@ -171,7 +171,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedDistance = new Angle(225);
 
-            var result = AngleHelpers.AngleBetweenPoints(point1, point2);
+            var result = AngleHelpers.GetAngleBetweenPoints(point1, point2);
 
             Assert.AreEqual(expectedDistance, result);
         }
@@ -504,7 +504,7 @@ namespace _3DS_CivilSurveySuiteTests
             var startPoint = new Point(10, 10);
             var endPoint = new Point(100, 100);
 
-            var actual = PointHelpers.MidpointBetweenPoints(startPoint, endPoint);
+            var actual = PointHelpers.GetMidpointBetweenPoints(startPoint, endPoint);
 
             Assert.AreEqual(expectedPoint, actual);
         }
