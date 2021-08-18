@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -6,6 +7,7 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
+using Autodesk.Civil.Settings;
 
 namespace _3DS_CivilSurveySuite.C3D2017
 {
@@ -13,7 +15,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
     {
         public static void CreatePoint(Transaction tr, Point3d position)
         {
-            CogoPointCollection cogoPoints = C3DApp.ActiveCivilDocument.CogoPoints;
+            CogoPointCollection cogoPoints = C3DApp.ActiveDocument.CogoPoints;
             var cogoPointId = cogoPoints.Add(position, true);
 
             if (!EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: "))
@@ -152,7 +154,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             using (Transaction tr = AcadApp.StartTransaction())
             {
-                foreach (ObjectId pointId in C3DApp.ActiveCivilDocument.CogoPoints)
+                foreach (ObjectId pointId in C3DApp.ActiveDocument.CogoPoints)
                 {
                     var cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
 
@@ -162,7 +164,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (!cogoPoint.RawDescription.Contains("TRE ")) 
                         continue;
                     
-                    ObjectId trunkPointId = C3DApp.ActiveCivilDocument.CogoPoints.Add(cogoPoint.Location, true);
+                    ObjectId trunkPointId = C3DApp.ActiveDocument.CogoPoints.Add(cogoPoint.Location, true);
                     CogoPoint trunkPoint = trunkPointId.GetObject(OpenMode.ForWrite) as CogoPoint;
 
                     if (trunkPoint != null)
@@ -182,8 +184,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             string completeMessage = "Changed " + counter + " TRE points, and created " + counter + " TRNK points";
             AcadApp.Editor.WriteMessage(completeMessage);
         }
-
-
 
         /// <summary>
         /// Add multiple points that are offsets of a line defined by two points.
@@ -232,46 +232,88 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
 
 
+
+        /// <summary>
+        /// Provides a quick prompt allowing you to set the default for the next point number
+        /// created (the current default is shown).
+        /// </summary>
+        public static void Set_Next_PointNumber()
+        {
+            using (var tr = AcadApp.StartTransaction())
+            {
+                PromptIntegerOptions pio = new PromptIntegerOptions("\n3DS> Set Number: ")
+                {
+                    AllowZero = false,
+                    AllowNegative = false,
+                    DefaultValue = Get_Next_PointNumber(tr),
+                    UseDefaultValue = true
+                };
+                var integer = AcadApp.Editor.GetInteger(pio);
+
+                if (integer.Status == PromptStatus.OK)
+                {
+                    C3DApp.ActiveDocument.Settings.GetSettings<SettingsCmdCreatePoints>().PointIdentity.NextPointNumber.Value = (uint)integer.Value;
+                }
+
+                tr.Commit();
+            }
+        }
+
+        private static int Get_Next_PointNumber(Transaction tr)
+        {
+            var pointGroup = PointGroupUtils.GetPointGroupByName(tr, "_All Points");
+
+            long num = 0;
+            if (pointGroup.ObjectId.IsValid)
+            {
+                var uintList = new List<uint>(pointGroup.GetPointNumbers());
+                if (uintList.Count > 0)
+                {
+                    uintList.Sort();
+                    num = uintList[uintList.Count - 1];
+                }
+            }
+            return (int)(num + 1L);
+        }
+
         /// <summary>
         /// The ZoomPt command zooms the display to the specified point number.
-        /// Usage
-        /// Type ZoomPt at the command line.You will be prompted to enter either the Number or Name of the CogoPoint to zoom to.
-        /// You may also hit ENTER without typing anything to enter a new height factor.The zoom height is determined by taking the current Annotation Scale
-        /// and multiplying it by this number.Enter a lower number for the zoom height factor to zoom in closer to the point, or a higher number to zoom out
-        /// further. The default zoom height factor is 4.
         /// </summary>
         public static void ZoomPoint()
         {
             using (var tr = AcadApp.StartTransaction())
             {
-                var cogoPoints = C3DApp.ActiveCivilDocument.CogoPoints;
+                var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
 
-                if (!EditorUtils.GetString(out string textInput, "\n3DS> Enter point number: "))
+                if (!EditorUtils.GetInt(out int textInput, "\n3DS> Enter point number: "))
                     return;
 
-                if (!StringHelpers.IsNumeric(textInput))
-                    return;
-
-                var zoomPtNum = Convert.ToInt32(textInput);
                 CogoPoint zoomPt = null;
-
                 foreach (ObjectId objectId in cogoPoints)
                 {
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
 
                     if (cogoPoint == null)
+                    {
                         continue;
+                    }
 
-                    if (cogoPoint.PointNumber == zoomPtNum)
+                    if (cogoPoint.PointNumber == textInput)
                     {
                         zoomPt = cogoPoint;
                         break;
                     }
                 }
 
-                EditorUtils.ZoomToEntity(zoomPt);
+                if (zoomPt == null)
+                {
+                    AcadApp.Editor.WriteMessage("\n3DS> Invalid point number. ");
+                }
+                else
+                {
+                    EditorUtils.ZoomToEntity(zoomPt);
+                }
 
-                //SupExtEditor.ActEdt().ZoomCenter(surveyPoint1.Location, Conversions.ToDouble(Application.GetSystemVariable("VIEWSIZE")
                 tr.Commit();
             }
         }

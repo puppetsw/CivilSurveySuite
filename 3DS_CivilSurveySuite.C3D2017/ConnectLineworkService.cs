@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             {
                 var desMapping = new Dictionary<string, DescriptionKeyMatch>();
 
-                foreach (ObjectId pointId in C3DApp.ActiveCivilDocument.CogoPoints)
+                foreach (ObjectId pointId in C3DApp.ActiveDocument.CogoPoints)
                 {
                     //BUG: Seems like there could be a problem with the keys and stuff if they don't match up
                     //TODO: add way to check for special codes e.g. SL or RECT

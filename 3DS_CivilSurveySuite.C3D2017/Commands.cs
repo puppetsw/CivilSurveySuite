@@ -12,40 +12,44 @@ namespace _3DS_CivilSurveySuite.C3D2017
     public static class Commands
     {
         [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
-        public static void PtBrgDist()
+        public static void CptBrgDist()
         {
             PointUtils.Create_At_Angle_And_Distance(CogoPointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSCptProdDist", CommandFlags.Modal)]
-        public static void PtProdDist()
+        public static void CptProdDist()
         {
             PointUtils.Create_At_Production_Of_Line_And_Distance(CogoPointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSCptOffsetLn", CommandFlags.Modal)]
-        public static void PtOffsetLn()
+        public static void CptOffsetLn()
         {
             PointUtils.Create_At_Offset_Two_Lines(CogoPointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSCptIntBrg", CommandFlags.Modal)]
-        public static void PtIntBrg()
+        public static void CptIntBrg()
         {
             PointUtils.Create_At_Intersection_Two_Bearings(CogoPointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSCptIntDist", CommandFlags.Modal)]
-        public static void PtIntDist()
+        public static void CptIntDist()
         {
             PointUtils.Create_At_Intersection_Two_Distances(CogoPointUtils.CreatePoint);
         }
 
         [CommandMethod("3DS", "_3DSCptIntBrd", CommandFlags.Modal)]
-        public static void PtIntBearingDist()
+        public static void CptIntBearingDist()
         {
             PointUtils.Create_At_Intersection_Of_Angle_And_Distance(CogoPointUtils.CreatePoint);
         }
+
+
+
+
 
 
 
@@ -77,7 +81,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-        [CommandMethod("3DS", "_3DSZoomToPt", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSZoomToCpt", CommandFlags.Modal)]
         public static void ZoomToPt()
         {
             CogoPointUtils.ZoomPoint();
@@ -89,6 +93,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static void UsedPts()
         {
             CogoPointUtils.UsedPoints();
+        }
+
+        [CommandMethod("3DS", "_3DSCptSetNext", CommandFlags.Modal)]
+        public static void CptSetNextPointNumber()
+        {
+            CogoPointUtils.Set_Next_PointNumber();
         }
 
 

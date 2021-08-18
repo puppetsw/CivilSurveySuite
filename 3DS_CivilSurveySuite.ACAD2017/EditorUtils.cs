@@ -226,6 +226,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        //TODO: Replace with bool method.
         public static PromptSelectionResult GetEntities<T>(string addMessage, string removeMessage = "") where T : Entity
         {
             RXClass entityType = RXObject.GetClass(typeof(T));
@@ -241,6 +242,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetSelection(pso, ss);
         }
 
+        [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
         public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
             var peo = new PromptEntityOptions(addMessage);
@@ -254,6 +256,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetEntity(peo);
         }
 
+        /// <summary>
+        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the
+        /// <param name="allowedClasses">allowedClasses</param>
+        /// </summary>
+        /// <param name="objectId">The object identifier.</param>
+        /// <param name="allowedClasses">The allowed classes.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <returns><c>true</c> if got the <see cref="ObjectId"/> successfully, <c>false</c> otherwise.</returns>
         public static bool GetEntity(out ObjectId objectId, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
             var peo = new PromptEntityOptions(addMessage);
@@ -299,13 +310,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="message">The message.</param>
+        /// <param name="useDefaultValue"></param>
+        /// <param name="defaultValue"></param>
         /// <returns><c>true</c> if a integer was input successfully, <c>false</c> otherwise.</returns>
-        public static bool GetInt(out int input, string message)
+        public static bool GetInt(out int input, string message, bool useDefaultValue = false, int defaultValue = 0)
         {
             input = int.MinValue;
 
             var pio = new PromptIntegerOptions(message);
             var pir = AcadApp.Editor.GetInteger(pio);
+
+            if (useDefaultValue)
+                pio.DefaultValue = defaultValue;
 
             if (pir.Status != PromptStatus.OK)
                 return false;
@@ -321,6 +337,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetNestedEntity(pneo);
         }
 
+        /// <summary>
+        /// Gets the nested entity.
+        /// </summary>
+        /// <param name="entityResult">The entity result.</param>
+        /// <param name="message">The message.</param>
+        /// <returns><c>true</c> if successfully got an entity, <c>false</c> otherwise.</returns>
         public static bool GetNestedEntity(out PromptNestedEntityResult entityResult, string message)
         {
             var pneo = new PromptNestedEntityOptions(message) { AllowNone = false };
@@ -373,11 +395,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <param name="input">The typed input string.</param>   
         /// <param name="message">The message to display to the user.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool GetString(out string input, string message)
+        /// <param name="useDefaultValue"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns><c>true</c> if got a string successfully, <c>false</c> otherwise.</returns>
+        public static bool GetString(out string input, string message, bool useDefaultValue = false, string defaultValue = "")
         {
             input = string.Empty;
             var pso = new PromptStringOptions(message) { AllowSpaces = false };
+
+            if (useDefaultValue)
+                pso.DefaultValue = defaultValue;
+
             var psr = AcadApp.ActiveDocument.Editor.GetString(pso);
 
             if (psr.Status != PromptStatus.OK)

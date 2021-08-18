@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
     /// </summary>
     public static class C3DApp
     {
-        public static CivilDocument ActiveCivilDocument => CivilApplication.ActiveDocument;
+        public static CivilDocument ActiveDocument => CivilApplication.ActiveDocument;
 
         public static bool IsCivil3D() => SystemObjects.DynamicLinker.GetLoadedModules().Contains("AecBase.dbx".ToLower());
     }

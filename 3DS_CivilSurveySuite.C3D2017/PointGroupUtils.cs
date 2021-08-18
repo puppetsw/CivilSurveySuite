@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static PointGroup GetPointGroupByName(Transaction tr, string groupName)
         {
-            foreach (ObjectId objectId in C3DApp.ActiveCivilDocument.PointGroups)
+            foreach (ObjectId objectId in C3DApp.ActiveDocument.PointGroups)
             {
                 var pointGroup = tr.GetObject(objectId, OpenMode.ForRead) as PointGroup;
                 if (pointGroup != null && string.Equals(pointGroup.Name, groupName, StringComparison.CurrentCultureIgnoreCase))

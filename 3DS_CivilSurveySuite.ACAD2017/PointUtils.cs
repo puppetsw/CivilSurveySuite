@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System;
-using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
