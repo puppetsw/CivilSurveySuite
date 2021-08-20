@@ -226,6 +226,33 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        /// <summary>
+        /// Gets a double value from user input.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="useDefaultValue">if set to <c>true</c> [use default value].</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns><c>true</c> if a double was successfully entered, <c>false</c> otherwise.</returns>
+        public static bool GetDouble(out double value, string message, bool useDefaultValue = false, double defaultValue = 0)
+        {
+            value = double.MinValue;
+
+            var pdo = new PromptDoubleOptions(message);
+
+            if (useDefaultValue)
+                pdo.DefaultValue = defaultValue;
+
+            var pdr = AcadApp.Editor.GetDouble(pdo);
+
+            if (pdr.Status != PromptStatus.OK)
+                return false;
+
+            value = pdr.Value;
+            return true;
+        }
+
+
         //TODO: Replace with bool method.
         public static PromptSelectionResult GetEntities<T>(string addMessage, string removeMessage = "") where T : Entity
         {
@@ -318,10 +345,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             input = int.MinValue;
 
             var pio = new PromptIntegerOptions(message);
-            var pir = AcadApp.Editor.GetInteger(pio);
 
             if (useDefaultValue)
                 pio.DefaultValue = defaultValue;
+
+            var pir = AcadApp.Editor.GetInteger(pio);
 
             if (pir.Status != PromptStatus.OK)
                 return false;

@@ -77,6 +77,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="TransientGraphicsUtils.cs" />
     <Compile Include="TraverseUtils.cs" />
     <Compile Include="Services\IPaletteService.cs" />

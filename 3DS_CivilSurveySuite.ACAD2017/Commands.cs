@@ -53,20 +53,42 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_Between_Points(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtDistSlope", CommandFlags.Modal)]
+        public static void PtDistSlope()
+        {
+            PointUtils.Create_At_Angle_Distance_And_Slope(PointUtils.CreatePoint);
+        }
+
+
+        // Lines
+        [CommandMethod("3DS", "_3DSLnDrawLeg", CommandFlags.Modal)]
+        public static void LnDrawLeg()
+        {
+            LineUtils.Draw_Leg_Line();
+        }
 
 
         // Utils
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]
         public static void Inverse()
         {
-            PointUtils.Inverse();
+            PointUtils.Inverse_Pick();
         }
 
-        [CommandMethod("3DS", "_3DSInverseDisp", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSInverseOS", CommandFlags.Modal)]
         public static void InverseDisplay()
         {
-            PointUtils.Inverse_ScreenDisplay();
+            PointUtils.Inverse_Pick_Display();
         }
+        
+        [CommandMethod("3DS", "_3DSInverseChOff", CommandFlags.Modal)]
+        public static void InverseChainageOffset()
+        {
+            PointUtils.Inverse_Pick_Perpendicular();
+        }
+
+
+
 
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public static void Traverse()

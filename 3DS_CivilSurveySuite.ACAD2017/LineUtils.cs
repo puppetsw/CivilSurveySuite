@@ -172,5 +172,70 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
 
+
+        public static void Draw_Leg_Line()
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point on line: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point on line: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter leg distance: "))
+                    return;
+
+                // Get angle and add 90° to it.
+                var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint()) + 90;
+                var newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
+
+                graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
+
+                var pko = new PromptKeywordOptions("\n3DS> Accept leg? ") { AppendKeywordsToMessage = true, AllowNone = true };
+                pko.Keywords.Add(Keywords.Accept);
+                pko.Keywords.Add(Keywords.Flip);
+                pko.Keywords.Default = Keywords.Accept;
+                
+                PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
+
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    switch (prResult.StringResult)
+                    {
+                        case Keywords.Accept:
+                            DrawLine(tr, firstPoint, newPoint.ToPoint3d());
+                            break;
+                        case Keywords.Flip:
+                            angle = angle.Flip();
+                            newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
+                            graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
+                            DrawLine(tr, firstPoint, newPoint.ToPoint3d());
+                            break;
+                    }
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage($"\n3DS> Command exception: {e.Message}");
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
+
+
+
+
+
+
+
     }
 }

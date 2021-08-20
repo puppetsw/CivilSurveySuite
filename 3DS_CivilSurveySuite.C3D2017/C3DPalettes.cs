@@ -8,7 +8,6 @@ using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
 using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite.C3D2017
 {
@@ -26,12 +25,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
             s_paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
-        [CommandMethod("3DSShowConnectLinePalette")]
         public static void ShowConnectLinePalette()
         {
             var view = new ConnectLineworkView();
             var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", new ConnectLineworkService());
             s_paletteService.GeneratePalette(view, vm, "Linework");
+        }
+        public static void ShowCogoPointViewer()
+        {
+            var view = new CogoPointViewer();
+            var vm = new CogoPointViewerViewModel(new CogoPointViewerService());
+            view.DataContext = vm;
+            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
         }
 
         private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)

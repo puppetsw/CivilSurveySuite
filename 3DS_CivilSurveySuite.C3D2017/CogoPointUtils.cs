@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -108,12 +109,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                         break;
                     case DxfNames.LINE:
-                        var line = (Line) perLines.ObjectId.GetObject(OpenMode.ForRead); //TODO: Add method for detecting angle like above.
-                        angle = line.Angle;
+                        var line = (Line) perLines.ObjectId.GetObject(OpenMode.ForRead);
+
+                        // Check if the points of the line form and ordinary angle.
+                        if (MathHelpers.IsOrdinaryAngle(line.StartPoint.ToPoint(), line.EndPoint.ToPoint()))
+                        {
+                            angle = line.Angle;
+                        }
+                        else
+                        {
+                            // if it isn't an ordinary angle, we flip it.
+                            // because we don't really care if the radians are in clockwise or not
+                            // we can just flip the angle without it being in the correct system. 
+                            angle = AngleHelpers.RadiansToAngle(line.Angle).Flip().ToRadians();
+                        }
+
                         break;
                 }
 
-                AcadApp.Editor.WriteMessage("Polyline segment angle (radians): " + angle);
+                AcadApp.Editor.WriteMessage("\n3DS> Polyline segment angle (radians): " + angle);
 
                 foreach (ObjectId id in pso.Value.GetObjectIds())
                 {
@@ -121,8 +135,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
                     double textAngle = LabelUtils.GetLabelStyleComponentAngle(style);
 
-                    AcadApp.Editor.WriteMessage($"Point label style current rotation (radians): {textAngle}");
-                    AcadApp.Editor.WriteMessage($"Rotating label to {angle} to match polyline segment");
+                    AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
+                    AcadApp.Editor.WriteMessage($"\n3DS> Rotating label to {angle} to match polyline segment");
 
                     pt.UpgradeOpen();
                     pt.LabelRotation = 0;
@@ -207,9 +221,29 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        /// <summary>
+        /// Inverses two     <see cref="CogoPoint"/> entities by their point number.
+        /// </summary>
         public static void Inverse_ByPointNumber()
         {
+            if (!EditorUtils.GetInt(out int firstPointNumber, "\n3DS> Enter first point number: "))
+                return;
 
+            if (!EditorUtils.GetInt(out int secondPointNumber, "\n3DS> Enter second point number: "))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint1 = GetCogoPointByPointNumber(tr, firstPointNumber);
+                var cogoPoint2 = GetCogoPointByPointNumber(tr, secondPointNumber);
+
+                if (cogoPoint1 != null && cogoPoint2 != null)
+                {
+                    PointUtils.Inverse(cogoPoint1.Location, cogoPoint2.Location);
+                }
+
+                tr.Commit();
+            }
         }
 
 
@@ -230,8 +264,28 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        /// <summary>
+        /// Gets a <see cref="CogoPoint"/> by it's point number.
+        /// </summary>
+        /// <param name="tr">Transaction.</param>
+        /// <param name="pointNumber">The point number of the <see cref="CogoPoint"/>.</param>
+        /// <returns>A <see cref="CogoPoint"/> matching the <param name="pointNumber">point number</param>
+        /// otherwise null if no matching <see cref="CogoPoint"/> found.
+        /// </returns>
+        public static CogoPoint GetCogoPointByPointNumber(Transaction tr, int pointNumber)
+        {
+            foreach (ObjectId objectId in C3DApp.ActiveDocument.CogoPoints)
+            {
+                var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
 
+                if (cogoPoint == null)
+                    continue;
 
+                if (cogoPoint.PointNumber == pointNumber)
+                    return cogoPoint;
+            }
+            return null;
+        }
 
         /// <summary>
         /// Provides a quick prompt allowing you to set the default for the next point number
@@ -241,19 +295,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             using (var tr = AcadApp.StartTransaction())
             {
-                PromptIntegerOptions pio = new PromptIntegerOptions("\n3DS> Set Number: ")
-                {
-                    AllowZero = false,
-                    AllowNegative = false,
-                    DefaultValue = Get_Next_PointNumber(tr),
-                    UseDefaultValue = true
-                };
-                var integer = AcadApp.Editor.GetInteger(pio);
-
-                if (integer.Status == PromptStatus.OK)
-                {
-                    C3DApp.ActiveDocument.Settings.GetSettings<SettingsCmdCreatePoints>().PointIdentity.NextPointNumber.Value = (uint)integer.Value;
-                }
+                if (EditorUtils.GetInt(out int integer, "\n3DS> Set Number: ", true, Get_Next_PointNumber(tr)))
+                    C3DApp.ActiveDocument.Settings.GetSettings<SettingsCmdCreatePoints>().PointIdentity.NextPointNumber.Value = (uint)integer;
 
                 tr.Commit();
             }

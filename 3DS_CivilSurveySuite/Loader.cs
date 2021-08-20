@@ -24,7 +24,15 @@ namespace _3DS_CivilSurveySuite
 
             //TODO: Add checks for versions and file paths etc.
 
+            //DataGridExtensions
+
+            // load reference dlls.
+
             Assembly.Load("Microsoft.Xaml.Behaviors");
+            Assembly.Load("DataGridExtensions");
+
+            // Load plugin dlls
+
             Assembly.Load("3DS_CivilSurveySuite.ACAD2017");
             Assembly.Load("3DS_CivilSurveySuite.C3D2017");
         }

@@ -16,11 +16,12 @@ namespace _3DS_CivilSurveySuite.Core
         /// </summary>
         /// <param name="point1">The first coordinate.</param>
         /// <param name="point2">The second coordinate.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
+        /// <param name="useRounding"></param>
+        /// <param name="decimalPlaces"></param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double GetDistanceBetweenPoints(Point point1, Point point2, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(Point point1, Point point2, bool useRounding = false, int decimalPlaces = 4)
         {
-            return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, decimalPlaces);
+            return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, useRounding, decimalPlaces);
         }
         
         /// <summary>
@@ -115,19 +116,18 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="angle">The angle.</param>
         /// <param name="distance">The distance.</param>
         /// <param name="basePoint">The base point to calculate the new <see cref="Point"/> from.</param>
-        /// <param name="decimalPlaces"></param>
         /// <returns>A <see cref="Point"/> containing the coordinates generated from the <see cref="Angle"/>
         /// and distance.</returns>
-        public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint, int decimalPlaces = 4)
+        public static Point AngleAndDistanceToPoint(Angle angle, double distance, Point basePoint)
         {
-            double dec = angle.ToDecimalDegrees(15);
-            double rad = MathHelpers.DecimalDegreesToRadians(dec);
+            double dec = angle.ToDecimalDegrees();
+            double rad = MathHelpers.DecimalDegreesToRadians(dec); //Millionths
 
-            double departure = distance * Math.Sin(rad);
-            double latitude = distance * Math.Cos(rad);
+            double departure = Math.Round(Math.Sin(rad) * distance, 10);
+            double latitude = Math.Round(Math.Cos(rad) * distance, 10);
 
-            double newX = Math.Round(basePoint.X + departure, decimalPlaces);
-            double newY = Math.Round(basePoint.Y + latitude, decimalPlaces);
+            double newX = basePoint.X + departure;
+            double newY = basePoint.Y + latitude;
 
             return new Point(newX, newY);
         }
@@ -162,17 +162,15 @@ namespace _3DS_CivilSurveySuite.Core
             var inverseAng = AngleHelpers.GetAngleBetweenPoints(point1, point2);
             var inverseDist = GetDistanceBetweenPoints(point1, point2);
 
-            Angle internalA;
-            if (angle1.Degrees > inverseAng.Degrees)
-                internalA = angle1 - inverseAng;
-            else
-                internalA = inverseAng - angle1;
+            Angle internalA = angle1 - inverseAng;
 
-            Angle internalB; 
-            if (angle2.Degrees > inverseAng.Flip().Degrees)
-                internalB = angle2 - inverseAng.Flip();
-            else
-                internalB = inverseAng.Flip() - angle2;
+            if (internalA.Degrees > 180 && internalA.Minutes >= 0 && internalA.Seconds >= 0)
+                internalA = new Angle(360) - internalA;
+
+            Angle internalB = angle2 - inverseAng.Flip();
+
+            if (internalB.Degrees > 180 && internalB.Minutes >= 0 && internalB.Seconds >= 0)
+                internalB = new Angle(360) - internalB;
 
             // Calculate remaining internal angle.
             Angle internalC = new Angle(180) - internalA - internalB;
@@ -188,9 +186,29 @@ namespace _3DS_CivilSurveySuite.Core
 
             var dist1 = Math.Sin(radA) * inverseDist / Math.Sin(radB);
 
-            intersectionPoint = AngleAndDistanceToPoint(angle2, dist1, point2, 5);
+            intersectionPoint = AngleAndDistanceToPoint(angle2, dist1, point2);
             return true;
         }
+
+
+        /// <summary>
+        /// Calculates a point perpendicular to a line.
+        /// </summary>
+        /// <param name="firstPoint">The first point.</param>
+        /// <param name="secondPoint">The second point.</param>
+        /// <param name="pickedPoint">The picked point.</param>
+        /// <param name="intersectionPoint">The intersection point.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool PerpendicularIntersection(Point firstPoint, Point secondPoint, Point pickedPoint, out Point intersectionPoint)
+        {
+            var k = ((secondPoint.Y - firstPoint.Y) * (pickedPoint.X - firstPoint.X) - (secondPoint.X - firstPoint.X) * (pickedPoint.Y - firstPoint.Y)) / (Math.Pow(secondPoint.Y - firstPoint.Y, 2) + Math.Pow(secondPoint.X - firstPoint.X, 2));
+            var x = pickedPoint.X - k * (secondPoint.Y - firstPoint.Y);
+            var y = pickedPoint.Y + k * (secondPoint.X - firstPoint.X);
+
+            intersectionPoint = new Point(x, y);
+            return intersectionPoint.IsValid();
+        }
+
 
         /// <summary>
         /// Calculates two possible <see cref="Point"/> objects from a distance-distance intersection.
@@ -210,8 +228,6 @@ namespace _3DS_CivilSurveySuite.Core
             double distBetweenPoints = GetDistanceBetweenPoints(point1, point2);
             if (distBetweenPoints <= dist1 + dist2 && distBetweenPoints >= Math.Abs(dist1 - dist2))
             {
-                // Borrowed from C3DTools.
-                // TODO: Write own calculations.
                 double xDifference = point2.X - point1.X;
                 double yDifference = point2.Y - point1.Y;
                 double num1 = (dist1 * dist1 - dist2 * dist2 + distBetweenPoints * distBetweenPoints) / (2.0 * distBetweenPoints);
@@ -242,7 +258,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool AngleDistanceIntersection(Point point1, Angle angle1, Point point2, double radius, out Point solution1, out Point solution2, int decimalPlaces = 5)
         {
-            var point1A = AngleAndDistanceToPoint(angle1, 32000, point1, 15);
+            var point1A = AngleAndDistanceToPoint(angle1, 32000, point1);
 
             solution1 = Point.Origin;
             solution2 = Point.Origin;

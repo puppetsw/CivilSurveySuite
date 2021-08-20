@@ -88,6 +88,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        [CommandMethod("3DS", "_3DSCptInverse", CommandFlags.Modal)]
+        public static void InverseCogoPoint()
+        {
+            CogoPointUtils.Inverse_ByPointNumber();
+        }
+
+
+
 
         [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()
@@ -107,6 +115,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static void ShowConnectLinePalette()
         {
             C3DPalettes.ShowConnectLinePalette();
+        }
+
+        [CommandMethod("3DS", "3DSShowCogoPointViewer", CommandFlags.Modal)]
+        public static void ShowCogoPointViewer()
+        {
+            C3DPalettes.ShowCogoPointViewer();
         }
     }
 }

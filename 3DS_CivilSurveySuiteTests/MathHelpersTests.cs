@@ -115,7 +115,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var result = MathHelpers.GetDistanceBetweenPoints(x1, x2, y1, y2);
 
-            Assert.AreEqual(expectedDistance, result);
+            Assert.AreEqual(expectedDistance, Math.Round(result, 4));
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var result = PointHelpers.GetDistanceBetweenPoints(point1, point2);
 
-            Assert.AreEqual(expectedDistance, result);
+            Assert.AreEqual(expectedDistance, Math.Round(result, 4));
         }
 
         [TestMethod]
@@ -306,6 +306,18 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.IsTrue(actual);
             Assert.AreEqual(0, intersection.X);
             Assert.AreEqual(0, intersection.Y);
+        }
+
+        [TestMethod]
+        [TestCategory("Math")]
+        public void Vector_Multiply_By_Double()
+        {
+            var vector = new Vector(5, 5);
+            var result = vector * 2;
+
+            var emptyVec = new Vector(); //meh
+
+            Assert.AreEqual(new Vector(10, 10), result);
         }
 
         [TestMethod]

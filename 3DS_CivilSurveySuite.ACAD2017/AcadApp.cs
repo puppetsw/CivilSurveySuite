@@ -8,6 +8,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
@@ -104,6 +105,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 }
                 tr.Commit();
             }
+        }
+
+        public static void WriteMessage(string message)
+        {
+            Editor.WriteMessage($"\n3DS> {message}");
+        }
+
+        public static void WriteErrorMessage(Exception e)
+        {
+            Editor.WriteMessage($"\n3DS> Error: {e.ErrorStatus}");
+            Editor.WriteMessage($"\n3DS> Exception: {e.Message}");
         }
     }
 }

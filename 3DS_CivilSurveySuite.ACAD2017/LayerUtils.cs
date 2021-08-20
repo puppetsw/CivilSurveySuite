@@ -8,7 +8,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public class LayerUtils
+    public static class LayerUtils
     {
         /// <summary>
         /// Check if the database contains the specified layer

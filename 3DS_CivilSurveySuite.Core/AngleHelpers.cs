@@ -14,10 +14,9 @@ namespace _3DS_CivilSurveySuite.Core
         /// Converts a <see cref="Angle"/> to decimal degrees.
         /// </summary>
         /// <param name="angle">The <see cref="Angle"/> to convert.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the <see cref="Angle"/> in decimal degrees.</returns>
         /// <remarks>The returned value is rounded to 4 decimal places, unless otherwise specified.</remarks>
-        public static double ToDecimalDegrees(this Angle angle, int decimalPlaces = 4)
+        public static double ToDecimalDegrees(this Angle angle)
         {
             if (angle == null)
                 return 0;
@@ -25,21 +24,17 @@ namespace _3DS_CivilSurveySuite.Core
             double minutes = (double) angle.Minutes / 60;
             double seconds = (double) angle.Seconds / 3600;
 
-            double decimalDegree = angle.Degrees + minutes + seconds;
-
-            return Math.Round(decimalDegree, decimalPlaces);
+            return angle.Degrees + minutes + seconds;
         }
 
         /// <summary>
         /// Converts a <see cref="Angle"/> to radians.
         /// </summary>
         /// <param name="angle">The angle.</param>
-        /// <param name="decimalPlaces">The decimal places to round to. You should
-        /// probably leave this as 15, otherwise rounding issues will occur.</param>
         /// <returns>A double representing the <see cref="Angle"/> in radians.</returns>
-        public static double ToRadians(this Angle angle, int decimalPlaces = 15)
+        public static double ToRadians(this Angle angle)
         {
-            return Math.Round(MathHelpers.DecimalDegreesToRadians(angle.ToDecimalDegrees()), decimalPlaces);
+            return MathHelpers.DecimalDegreesToRadians(angle.ToDecimalDegrees());
         }
 
         /// <summary>

@@ -113,14 +113,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
-        /// Gets the index of the selected polyline segment.
+        /// Gets the segment index of the selected polyline segment.
         /// </summary>
         /// <param name="polyline">The polyline.</param>
         /// <param name="nestedEntity">The nested entity.</param>
         /// <returns>System.Int32.</returns>
         /// <exception cref="ArgumentNullException">polyline</exception>
         /// <exception cref="ArgumentNullException">nestedEntity</exception>
-        /// TODO Edit XML Comment Template for GetPolylineSegment
         public static int GetPolylineSegment(Polyline polyline, PromptNestedEntityResult nestedEntity)
         {
             if (polyline == null)
@@ -144,12 +143,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
-        /// Gets the line segment from polyline.
+        /// Gets the <see cref="Line"/> segment from polyline.
         /// </summary>
         /// <param name="polyline">The polyline.</param>
         /// <param name="pickedPoint">The picked point.</param>
         /// <returns>Line.</returns>
-        /// TODO Edit XML Comment Template for GetLineSegmentFromPolyline
         public static Line GetLineSegmentFromPolyline(this Polyline polyline, Point3d pickedPoint)
         {
             var segmentStart = 0;
@@ -173,8 +171,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
 
             var segment = polyline.GetLineSegmentAt(segmentStart);
-            var line = new Line(segment.StartPoint, segment.EndPoint);
-            return line;
+            return new Line(segment.StartPoint, segment.EndPoint);
         }
     }
 }

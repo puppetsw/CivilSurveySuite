@@ -21,7 +21,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> from an angle and distance.
         /// </summary>
-        public static void Create_At_Angle_And_Distance(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Angle_And_Distance(Action<Transaction, Point3d> createAction)
         {
             if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select a base point: "))
                 return;
@@ -63,7 +63,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         case Keywords.Accept:
                             using (var tr = AcadApp.StartTransaction())
                             {
-                                createPointAction(tr, point.ToPoint3d());
+                                createAction(tr, point.ToPoint3d());
                                 tr.Commit();
                             }
 
@@ -87,9 +87,53 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Creates at angle distance and slope.
+        /// </summary>
+        public static void Create_At_Angle_Distance_And_Slope(Action<Transaction, Point3d> createAction)
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Pick starting point: "))
+                    return;
+
+                graphics.DrawX(basePoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Enter angle: ", basePoint))
+                    return;
+
+                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter distance: ", basePoint))
+                    return;
+
+                var point = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
+                graphics.DrawX(point.ToPoint3d(), Settings.GraphicsSize);
+                graphics.DrawLine(basePoint, point.ToPoint3d());
+
+                if (!EditorUtils.GetDouble(out double slope, "\n3DS> Enter slope (%): "))
+                    return;
+
+                var newPoint = new Point(point.X, point.Y, basePoint.Z + distance * (slope / 100.0));
+
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    createAction(tr, newPoint.ToPoint3d());
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.WriteErrorMessage(e);
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Creates a <see cref="DBPoint"/> at the intersection of two bearings from two base points.
         /// </summary>
-        public static void Create_At_Intersection_Two_Bearings(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Intersection_Two_Bearings(Action<Transaction, Point3d> createAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -130,8 +174,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 using (var tr = AcadApp.StartTransaction())
                 {
-                    //CreatePoint(tr, intersectionPoint.ToPoint3d());
-                    createPointAction(tr, intersectionPoint.ToPoint3d());
+                    createAction(tr, intersectionPoint.ToPoint3d());
                     tr.Commit();
                 }
             }
@@ -148,7 +191,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at intersection of two distances.
         /// </summary>
-        public static void Create_At_Intersection_Two_Distances(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Intersection_Two_Distances(Action<Transaction, Point3d> createAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -197,13 +240,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         //use first point
                         //CreatePoint(tr, firstInt.ToPoint3d());
                         graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
-                        createPointAction(tr, firstInt.ToPoint3d());
+                        createAction(tr, firstInt.ToPoint3d());
                     }
                     else
                     {
                         //use second point
                         graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
-                        createPointAction(tr, secondInt.ToPoint3d());
+                        createAction(tr, secondInt.ToPoint3d());
                     }
 
                     tr.Commit();
@@ -222,7 +265,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the offset two lines with given distance.
         /// </summary>
-        public static void Create_At_Offset_Two_Lines(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Offset_Two_Lines(Action<Transaction, Point3d> createAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -284,7 +327,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                                 switch (prResult.StringResult)
                                 {
                                     case Keywords.Accept:
-                                        createPointAction(tr, intersectionPoint.ToPoint3d());
+                                        createAction(tr, intersectionPoint.ToPoint3d());
                                         cancelled = true;
                                         break;
                                     case Keywords.Cancel:
@@ -311,7 +354,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the production of a line and distance.
         /// </summary>
-        public static void Create_At_Production_Of_Line_And_Distance(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Production_Of_Line_And_Distance(Action<Transaction, Point3d> createAction)
         {
             var graphics = new TransientGraphics();
             using (Transaction tr = AcadApp.StartTransaction())
@@ -363,7 +406,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         {
                             case Keywords.None: // If user doesn't enter anything.
                             case Keywords.Accept:
-                                createPointAction(tr, point.ToPoint3d());
+                                createAction(tr, point.ToPoint3d());
                                 cancelled = true;
                                 break;
                             case Keywords.Cancel:
@@ -396,7 +439,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Creates a point at the intersection of a bearing from one point and distance from a second.
         /// </summary>
-        public static void Create_At_Intersection_Of_Angle_And_Distance(Action<Transaction, Point3d> createPointAction)
+        public static void Create_At_Intersection_Of_Angle_And_Distance(Action<Transaction, Point3d> createAction)
         { 
             var graphics = new TransientGraphics();
             try
@@ -446,13 +489,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         //use first point
                         //CreatePoint(tr, firstInt.ToPoint3d());
                         graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
-                        createPointAction(tr, firstInt.ToPoint3d());
+                        createAction(tr, firstInt.ToPoint3d());
                     }
                     else
                     {
                         //use second point
                         graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
-                        createPointAction(tr, secondInt.ToPoint3d());
+                        createAction(tr, secondInt.ToPoint3d());
                     }
 
                     tr.Commit();
@@ -471,7 +514,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Add multiple points (with interpolated elevation) between two points.
         /// </summary>
-        public static void Create_Between_Points(Action<Transaction, Point3d> createPointAction)
+        public static void Create_Between_Points(Action<Transaction, Point3d> createAction)
         {
             var graphics = new TransientGraphics();
             try
@@ -483,7 +526,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
-
+                
                 graphics.DrawPlus(secondPoint, GraphicPixelSize);
                 graphics.DrawLine(firstPoint, secondPoint);
 
@@ -518,7 +561,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     
                         graphics.DrawDot(newPoint.ToPoint3d(), GraphicPixelSize);
                         
-                        createPointAction(tr, point3d);
+                        createAction(tr, point3d);
                         
                     } while (!cancelled);
                     tr.Commit();
@@ -535,17 +578,35 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
+
+
+
+
         //TODO: Hookup with create_between_points when I figure it out.
         private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
         {
             
         }
 
+        public static void Inverse(Point3d firstPoint, Point3d secondPoint)
+        {
+            var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+            var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint(), true, SystemVariables.LUPREC);
+            var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
+            var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
+
+            AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
+            AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
+            AcadApp.Editor.WriteMessage($"\n3DS> dX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
+            AcadApp.Editor.WriteMessage($"\n3DS> Slope:{slope}%");
+        }
+
+
         /// <summary>
         /// Inverses between points (pick), echoes coordinates, 
         /// azimuths, bearings, horz/vert distance and slope.
         /// </summary>
-        public static void Inverse()
+        public static void Inverse_Pick()
         {
             var graphics = new TransientGraphics();
             try
@@ -561,15 +622,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
 
-                var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
-                var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
-
-                AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
-                AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
-                AcadApp.Editor.WriteMessage($"\n3DS> dX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
-                AcadApp.Editor.WriteMessage($"\n3DS> Slope:{slope}%");
+                Inverse(firstPoint, secondPoint);
             }
             catch (Exception e)
             {
@@ -582,9 +635,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
-        /// Does the same as <see cref="Inverse"/> but displays the information on the screen.
+        /// Does the same as <see cref="Inverse_Pick"/> but displays the information on the screen.
         /// </summary>
-        public static void Inverse_ScreenDisplay()
+        public static void Inverse_Pick_Display()
         {
             var graphics = new TransientGraphics();
             try
@@ -626,10 +679,62 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-
-        public static void Inverse_Chainage_Offset()
+        /// <summary>
+        /// Inverses the perpendicular.
+        /// </summary>
+        public static void Inverse_Pick_Perpendicular()
         {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                    return;
 
+                graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
+                graphics.DrawLine(firstPoint, secondPoint);
+
+                do
+                {
+                    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick offset point: "))
+                        break;
+
+                    var canIntersect = PointHelpers.PerpendicularIntersection(firstPoint.ToPoint(), secondPoint.ToPoint(), pickedPoint.ToPoint(), out Point intersectionPoint);
+
+                    if (!canIntersect)
+                    {
+                        AcadApp.Editor.WriteMessage("\n3DS> No intersection found. ");
+                        continue;
+                    }
+
+                    graphics.DrawX(intersectionPoint.ToPoint3d(), Settings.GraphicsSize);
+                    graphics.DrawX(pickedPoint, Settings.GraphicsSize);
+                    graphics.DrawLine(pickedPoint, intersectionPoint.ToPoint3d());
+
+                    var distance = PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), intersectionPoint, true);
+                    var angle = AngleHelpers.GetAngleBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
+
+                    var midPt = PointHelpers.GetMidpointBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
+                    
+                    graphics.DrawText(midPt.ToPoint3d(), $"bearing: {angle} \\P dist: {distance}", 1, angle);
+
+                    AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle}");
+                    AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
+
+                } while (true);
+            }
+            catch (Exception e)
+            {
+                AcadApp.WriteErrorMessage(e);
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
         }
 
         /// <summary>
@@ -647,7 +752,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <param name="tr">The existing transaction.</param>
         /// <param name="position">The position to create the point at.</param>
-        /// <remarks>Don't forget to commit the transaction after using.</remarks>
+        /// <remarks>Don't forget to Commit(); the transaction after using.</remarks>
         public static void CreatePoint(Transaction tr, Point3d position)
         {
             // Open the Block table for read
@@ -671,7 +776,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             // Save the new object to the database
             // Don't commit, leave it up to the calling method.
-            // tr.Commit();
         }
 
     }

@@ -38,5 +38,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static Point2d SCREENSIZE => GetSystemVariable<Point2d>();
 
         public static double VIEWSIZE => GetSystemVariable<double>();
+
+        public static int LUPREC => GetSystemVariable<int>();
+
+
     }
 }

@@ -56,7 +56,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <returns>A double value containing the decimal degrees in radians.</returns>
         public static double DecimalDegreesToRadians(double decimalDegrees, int decimalPlaces = 15)
         {
-            return (decimalDegrees / 180) * Math.PI;
+            return decimalDegrees / 180 * Math.PI;
         }
 
         /// <summary>
@@ -77,14 +77,15 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="x2">Easting of second coordinate.</param>
         /// <param name="y1">Northing of first coordinate.</param>
         /// <param name="y2">Northing of second coordinate.</param>
+        /// <param name="useRounding"></param>
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double GetDistanceBetweenPoints(double x1, double x2, double y1, double y2, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(double x1, double x2, double y1, double y2, bool useRounding = false, int decimalPlaces = 4)
         {
             double x = Math.Abs(x1 - x2);
             double y = Math.Abs(y1 - y2);
 
-            return Math.Round(Math.Sqrt(x * x + y * y), decimalPlaces);
+            return Math.Sqrt(x * x + y * y);
         }
 
 
@@ -170,6 +171,11 @@ namespace _3DS_CivilSurveySuite.Core
         {
             double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
             return Math.Abs(x - y) <= epsilon;
+        }
+
+        public static bool NearlyEqual(double x, double y, double tolerance)
+        {
+            return !(x - y > tolerance);
         }
 
         /// <summary>

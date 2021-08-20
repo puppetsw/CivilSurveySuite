@@ -18,10 +18,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void Register()
         {
-            ServiceLocator.Container.Register<ITraverseService, TraverseService>();
-            ServiceLocator.Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
-            ServiceLocator.Container.Register<IPaletteService, PaletteService>(Lifestyle.Singleton);
-            ServiceLocator.Container.Verify();
+            Container.Register<ITraverseService, TraverseService>();
+            Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
+            Container.Register<IPaletteService, PaletteService>(Lifestyle.Singleton);
+            Container.Verify();
         }
     }
 }

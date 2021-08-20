@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _3DS_CivilSurveySuite.Model;
@@ -44,5 +45,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return points.Select(point => new Point3d(point.X, point.Y, elevation)).ToList();
         }
 
+        public static bool IsValid(this Point3d point)
+        {
+            if (Math.Abs(point.X) < 1E+20 && Math.Abs(point.Y) < 1E+20 && Math.Abs(point.Z) < 1E+20)
+                return point.X + point.Y + point.Z != 0.0;
+            return false;
+        }
     }
 }

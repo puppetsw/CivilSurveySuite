@@ -261,6 +261,22 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedAngle, angle.Flip());
         }
 
+        [TestMethod]
+        public void Angle_Subtract_90_PossibleIssue()
+        {
+            var angle = new Angle(209, 09, 22);
+            angle -= 90;
 
+            Assert.AreEqual(new Angle(119, 09, 22), angle);
+        }
+
+        [TestMethod]
+        public void Angle_Add_90_PossibleIssue()
+        {
+            var angle = new Angle(209, 9, 22);
+            angle += 90;
+
+            Assert.AreEqual(new Angle(299, 9, 22), angle);
+        }
     }
 }
