@@ -59,6 +59,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Angle_Distance_And_Slope(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtIntFour", CommandFlags.Modal)]
+        public static void PtIntFour()
+        {
+            PointUtils.Create_At_Intersection_Of_Four_Points(PointUtils.CreatePoint);
+        }
+
+
 
         // Lines
         [CommandMethod("3DS", "_3DSLnDrawLeg", CommandFlags.Modal)]

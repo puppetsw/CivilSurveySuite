@@ -32,7 +32,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId objectId in C3DApp.ActiveDocument.CogoPoints)
                 {
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
-                    var civilPoint = new CivilPoint(cogoPoint.PointNumber, cogoPoint.Easting, cogoPoint.Northing, cogoPoint.Elevation, cogoPoint.RawDescription, cogoPoint.FullDescription, cogoPoint.ObjectId.Handle.ToString(), "", cogoPoint.PointName);
+                    var civilPoint = 
+                        new CivilPoint
+                        {
+                            PointNumber = cogoPoint.PointNumber,
+                            Easting = cogoPoint.Easting,
+                            Northing = cogoPoint.Northing,
+                            Elevation = cogoPoint.Elevation,
+                            RawDescription = cogoPoint.RawDescription,
+                            FullDescription = cogoPoint.FullDescription,
+                            ObjectIdHandle = cogoPoint.ObjectId.Handle.ToString(),
+                            PointName = cogoPoint.PointName
+                        };
 
                     list.Add(civilPoint);
                 }

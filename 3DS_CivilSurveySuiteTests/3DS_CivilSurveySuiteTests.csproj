@@ -70,6 +70,7 @@
     <Compile Include="CoordinateTests.cs" />
     <Compile Include="AngleCalculatorTests.cs" />
     <Compile Include="MathHelpersTests.cs" />
+    <Compile Include="PointTests.cs" />
     <Compile Include="StringHelpersTests.cs" />
     <Compile Include="TraverseViewModelTests.cs" />
     <Compile Include="TraverseObjectTests.cs" />

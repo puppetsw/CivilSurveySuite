@@ -1,8 +1,11 @@
-﻿using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
-using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -14,6 +17,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class CogoPointUtils
     {
+        //TODO: add more parameters for setting elevation etc.
         public static void CreatePoint(Transaction tr, Point3d position)
         {
             CogoPointCollection cogoPoints = C3DApp.ActiveDocument.CogoPoints;
@@ -222,7 +226,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
 
         /// <summary>
-        /// Inverses two     <see cref="CogoPoint"/> entities by their point number.
+        /// Inverses two <see cref="CogoPoint"/> entities by their point number.
         /// </summary>
         public static void Inverse_ByPointNumber()
         {
@@ -246,7 +250,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-
         /// <summary>
         /// The UsedPt command displays a list of used point numbers in the command window.
         /// Usage
@@ -262,7 +265,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 tr.Commit();
             }
         }
-
 
         /// <summary>
         /// Gets a <see cref="CogoPoint"/> by it's point number.

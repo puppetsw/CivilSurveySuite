@@ -190,7 +190,6 @@ namespace _3DS_CivilSurveySuite.Core
             return true;
         }
 
-
         /// <summary>
         /// Calculates a point perpendicular to a line.
         /// </summary>
@@ -208,7 +207,6 @@ namespace _3DS_CivilSurveySuite.Core
             intersectionPoint = new Point(x, y);
             return intersectionPoint.IsValid();
         }
-
 
         /// <summary>
         /// Calculates two possible <see cref="Point"/> objects from a distance-distance intersection.
@@ -287,6 +285,44 @@ namespace _3DS_CivilSurveySuite.Core
             double num8 = (-num4 - Math.Sqrt(d)) / (2.0 * num3);
             solution2 = new Point(Math.Round(point1.X + num8 * num1, decimalPlaces), Math.Round(point1.Y + num8 * num2, decimalPlaces), 0.0);
 
+            return true;
+        }
+
+        /// <summary>
+        /// Calculates a point at the intersection of four <see cref="Point"/> objects.
+        /// </summary>
+        /// <param name="a">First point.</param>
+        /// <param name="b">Second point.</param>
+        /// <param name="c">Third point.</param>
+        /// <param name="d">Fourth point.</param>
+        /// <param name="intersectionPoint">The resulting intersection point.</param>
+        /// <param name="decimalPlaces">Number of decimal places to round to. Set to 8 by default.</param>
+        /// <returns><c>true</c> if can calculate intersection, <c>false</c> otherwise.</returns>
+        public static bool FourPointIntersection(Point a, Point b, Point c, Point d, out Point intersectionPoint, int decimalPlaces = 8)
+        {
+            intersectionPoint = Point.Origin;
+
+            // Line AB represented as a1x + b1y = c1 
+            double a1 = b.Y - a.Y;
+            double b1 = a.X - b.X;
+            double c1 = a1 * a.X + b1 * a.Y;
+  
+            // Line CD represented as a2x + b2y = c2 
+            double a2 = d.Y - c.Y;
+            double b2 = c.X - d.X;
+            double c2 = a2 * c.X + b2 * c.Y;
+  
+            double determinant = a1 * b2 - a2 * b1;
+  
+            if (determinant == 0)
+            {
+                intersectionPoint = Point.Origin;
+                return false;
+            }
+
+            double x = Math.Round((b2 * c1 - b1 * c2) / determinant, decimalPlaces);
+            double y = Math.Round((a1 * c2 - a2 * c1) / determinant, decimalPlaces);
+            intersectionPoint = new Point(x, y);
             return true;
         }
     }

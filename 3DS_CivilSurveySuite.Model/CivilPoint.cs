@@ -22,24 +22,12 @@ namespace _3DS_CivilSurveySuite.Model
 
         public string FullDescription { get; set; }
 
-        public string ObjectIdHandle { get; }
+        public string ObjectIdHandle { get; set; }
 
-        public string Tag { get; }
+        public string Tag { get; set; }
 
-        public string Name { get; }
+        public string PointName { get; set; }
 
-        public CivilPoint(uint pointNumber, double easting, double northing, double elevation, string rawDescription, string fullDescription, string objectIdHandle, string tag, string name)
-        {
-            PointNumber = pointNumber;
-            Easting = easting;
-            Northing = northing;
-            Elevation = elevation;
-            RawDescription = rawDescription;
-            FullDescription = fullDescription;
-            ObjectIdHandle = objectIdHandle;
-            Tag = tag;
-            Name = name;
-        }
     }
 
    

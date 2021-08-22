@@ -18,7 +18,6 @@ Add Curves to traverse?
 
 Insert picture(s) tool
 
-running chainage inverse tool.
 
 
 //========================= NOTES ==========================
@@ -51,30 +50,28 @@ Properties.Settings.Default.MyConnection);
 
 --adding/removing breakline to/from surface
 
-Linework tool to replace SmartDraft
+Linework tool to replace SmartDraft -- in progress
 
 point report /w alingments
 Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 
----Add multiple points (with interpolated elevation) between two points.
+
 ---Add multiple points that are offsets of a line defined by two points.
----Add a point at a picked location with elevation calculated at designated slope.
+
 ---Create point at extension distance on grade between 2 points.
 
 ---Quickly add/remove points by description match, elevation range, inside linear object or window, number range, etc.
 
----Intersection of Bearing-Bearing, Bearing-Distance, Distance-Distance, 4 Points.
 
----Inverses between points (pick or number), echoes coordinates, azimuths, bearings, horz/vert distance and slope.
+
+
 
 Label Mask on/off for labels
 
 ---The CreatePointsFromLabels command can be used to create Civil-3D Points at the exact location and elevation of Surface Elevation Labels found in a drawing.
 
----The UsedPt command displays a list of used point numbers in the command window.
----Usage
----Type UsedPt at the command line. The available point numbers in the drawing are displayed in the command window, as in the following example:
+
 
 ---The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
 ---After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare, 
@@ -87,12 +84,7 @@ Label Mask on/off for labels
 the midpoint between the 2 polylines. This can be useful for using the BestFit Alignment tool in Civil 3D when the surveyor only provided edge of pavement 
 shots. At the command prompt for selecting the polylines you may enter T to bring up the Settings dialog.
 
----The ZoomPt command zooms the display to the specified point number.
----Usage
----Type ZoomPt at the command line. You will be prompted to enter either the Number or Name of the Cogo Point to zoom to.
----You may also hit ENTER without typing anything to enter a new height factor. The zoom height is determined by taking the current Annotation Scale and 
----multiplying it by this number. Enter a lower number for the zoom height factor to zoom in closer to the point, or a higher number to zoom out further. 
----The default zoom height factor is 4.
+
 
 ---The RemoveBreaklineFromSurface command allows the user to remove selected objects from the Surface definition to which it is connected. This command is
 ---only available in Sincpac C3D version 3 and newer.

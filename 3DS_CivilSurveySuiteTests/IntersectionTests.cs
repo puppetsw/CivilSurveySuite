@@ -143,5 +143,54 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedPoint1, result1);
             Assert.AreEqual(expectedPoint2, result2);
         }
+
+
+        [TestMethod]
+        public void Perpendicular_Intersection_ShouldBeTrue()
+        {
+            var pointA = new Point(0, 0);
+            var pointB = new Point(0, 100);
+            var pointC = new Point(10, 50);
+
+            var expectedPoint = new Point(0, 50);
+
+            var result = PointHelpers.PerpendicularIntersection(pointA, pointB, pointC, out Point intersectionPoint);
+
+            Assert.AreEqual(expectedPoint, intersectionPoint);
+
+        }
+
+
+        [TestMethod]
+        public void FourPoint_Intersection_ShouldReturnTrue()
+        {
+            var pointA = new Point(218.26792775, 127.56814117);
+            var pointB = new Point(272.08656829, 220.3042242);
+            var pointC = new Point(327.23079203, 125.71341979);
+            var pointD = new Point(168.95626798, 236.99671873);
+
+            var expectedIntersection = new Point(249.08015611, 180.66136945);
+
+            var result = PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out Point resultIntersection);
+
+            Assert.AreEqual(expectedIntersection, resultIntersection);
+        }
+
+        [TestMethod]
+        public void FourPoint_Intersection_ParallelLines_ShouldReturnFalse()
+        {
+            var pointA = new Point(0, 0);
+            var pointB = new Point(0, 100);
+            var pointC = new Point(10, 100);
+            var pointD = new Point(10, 100);
+
+            var result = PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out Point resultIntersection);
+
+            Assert.IsFalse(result);
+        }
+
+
+
+
     }
 }

@@ -130,6 +130,64 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
+
+        /// <summary>
+        /// Places a point at the intersection of two bearings defined by four points.
+        /// </summary>
+        public static void Create_At_Intersection_Of_Four_Points(Action<Transaction, Point3d> createAction)
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d thirdPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(thirdPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d fourthPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(fourthPoint, Settings.GraphicsSize);
+                graphics.DrawLine(firstPoint, secondPoint);
+                graphics.DrawLine(thirdPoint, fourthPoint);
+
+                var canIntersect = PointHelpers.FourPointIntersection(firstPoint.ToPoint(), secondPoint.ToPoint(), thirdPoint.ToPoint(), fourthPoint.ToPoint(), out Point intersectionPoint);
+
+                if (!canIntersect)
+                {
+                    AcadApp.WriteMessage("No intersection point found!");
+                    return;
+                }
+
+                graphics.DrawDot(intersectionPoint.ToPoint3d(), Settings.GraphicsSize);
+
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    createAction(tr, intersectionPoint.ToPoint3d());
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.WriteErrorMessage(e);
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
+
+
         /// <summary>
         /// Creates a <see cref="DBPoint"/> at the intersection of two bearings from two base points.
         /// </summary>
@@ -352,6 +410,81 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Creates a point at the intersection of a bearing from one point and distance from a second.
+        /// </summary>
+        public static void Create_At_Intersection_Of_Angle_And_Distance(Action<Transaction, Point3d> createAction)
+        { 
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, GraphicPixelSize);
+
+                if (!EditorUtils.GetAngle(out Angle angle1, "\n3DS> Enter angle: ", firstPoint))
+                    return;
+
+                var constructionPoint = PointHelpers.AngleAndDistanceToPoint(angle1, 32000, firstPoint.ToPoint());
+                graphics.DrawLine(firstPoint, constructionPoint.ToPoint3d());
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, GraphicPixelSize);
+
+                if (!EditorUtils.GetDistance(out double dist, "\n3DS> Enter distance: ", secondPoint))
+                    return;
+
+                graphics.DrawCircle(secondPoint, dist);
+
+                var canIntersect = PointHelpers.AngleDistanceIntersection(firstPoint.ToPoint(), angle1, secondPoint.ToPoint(), dist, out Point firstInt, out Point secondInt);
+
+                if (!canIntersect)
+                {
+                    AcadApp.Editor.WriteMessage("\n3DS> No intersection found! ");
+                    return;
+                }
+
+                graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
+                graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
+                AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
+
+                if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick near desired intersection: "))
+                    return;
+
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    graphics.ClearGraphics();
+                    if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
+                    {
+                        //use first point
+                        //CreatePoint(tr, firstInt.ToPoint3d());
+                        graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
+                        createAction(tr, firstInt.ToPoint3d());
+                    }
+                    else
+                    {
+                        //use second point
+                        graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
+                        createAction(tr, secondInt.ToPoint3d());
+                    }
+
+                    tr.Commit();
+                }
+            }
+            catch (Exception e)
+            {
+                AcadApp.Editor.WriteMessage($"3DS> Command Exception: {e.Message}");
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Creates a <see cref="DBPoint"/> at the production of a line and distance.
         /// </summary>
         public static void Create_At_Production_Of_Line_And_Distance(Action<Transaction, Point3d> createAction)
@@ -433,81 +566,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 {
                     graphics.Dispose();
                 }
-            }
-        }
-
-        /// <summary>
-        /// Creates a point at the intersection of a bearing from one point and distance from a second.
-        /// </summary>
-        public static void Create_At_Intersection_Of_Angle_And_Distance(Action<Transaction, Point3d> createAction)
-        { 
-            var graphics = new TransientGraphics();
-            try
-            {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
-                    return;
-
-                graphics.DrawPlus(firstPoint, GraphicPixelSize);
-
-                if (!EditorUtils.GetAngle(out Angle angle1, "\n3DS> Enter angle: ", firstPoint))
-                    return;
-
-                var constructionPoint = PointHelpers.AngleAndDistanceToPoint(angle1, 32000, firstPoint.ToPoint());
-                graphics.DrawLine(firstPoint, constructionPoint.ToPoint3d());
-
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
-                    return;
-
-                graphics.DrawPlus(secondPoint, GraphicPixelSize);
-
-                if (!EditorUtils.GetDistance(out double dist, "\n3DS> Enter distance: ", secondPoint))
-                    return;
-
-                graphics.DrawCircle(secondPoint, dist);
-
-                var canIntersect = PointHelpers.AngleDistanceIntersection(firstPoint.ToPoint(), angle1, secondPoint.ToPoint(), dist, out Point firstInt, out Point secondInt);
-
-                if (!canIntersect)
-                {
-                    AcadApp.Editor.WriteMessage("\n3DS> No intersection found! ");
-                    return;
-                }
-
-                graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
-                graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
-                AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
-                AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
-
-                if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick near desired intersection: "))
-                    return;
-
-                using (var tr = AcadApp.StartTransaction())
-                {
-                    graphics.ClearGraphics();
-                    if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
-                    {
-                        //use first point
-                        //CreatePoint(tr, firstInt.ToPoint3d());
-                        graphics.DrawDot(firstInt.ToPoint3d(), GraphicPixelSize/2);
-                        createAction(tr, firstInt.ToPoint3d());
-                    }
-                    else
-                    {
-                        //use second point
-                        graphics.DrawDot(secondInt.ToPoint3d(), GraphicPixelSize/2);
-                        createAction(tr, secondInt.ToPoint3d());
-                    }
-
-                    tr.Commit();
-                }
-            }
-            catch (Exception e)
-            {
-                AcadApp.Editor.WriteMessage($"3DS> Command Exception: {e.Message}");
-            }
-            finally
-            {
-                graphics.Dispose();
             }
         }
 
