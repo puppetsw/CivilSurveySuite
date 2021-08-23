@@ -47,9 +47,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Intersection_Of_Angle_And_Distance(CogoPointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSCptIntFour", CommandFlags.Modal)]
+        public static void CptIntFourPoint()
+        {
+            PointUtils.Create_At_Intersection_Of_Four_Points(CogoPointUtils.CreatePoint);
+        }
 
 
-
+        [CommandMethod("3DS", "_3DSCptLabelIns", CommandFlags.Modal)]
+        public static void CptAtLabelIns()
+        {
+            PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint);
+        }
 
 
 

@@ -95,6 +95,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
 
+        [CommandMethod("3DS", "_3DSPtLabelIns", CommandFlags.Modal)]
+        public static void PtAtLabelIns()
+        {
+            PointUtils.Create_At_Label_Location(PointUtils.CreatePoint);
+        }
+
+
+
 
 
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]

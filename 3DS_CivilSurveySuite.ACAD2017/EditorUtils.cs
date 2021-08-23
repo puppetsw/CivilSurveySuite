@@ -333,6 +333,46 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Gets a selection set. Selection set uses <param name="typedValues">TypedValues[]</param>
+        /// to determine the selection filter.
+        /// </summary>
+        /// <param name="objectIds">List of <see cref="ObjectId"/> objects that the selection gets.</param>
+        /// <param name="typedValues">The typed values to filter by</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <returns><c>true</c> if selection set was successful, <c>false</c> otherwise.</returns>
+        /// <remarks>
+        /// <code>
+        /// TypedValue[] acTypValAr = new TypedValue[1];
+        /// acTypValAr.SetValue(new TypedValue((int)DxfCode.Start, "CIRCLE"), 0);
+        /// </code>
+        /// </remarks>
+        public static bool GetSelection(out List<ObjectId> objectIds, TypedValue[] typedValues, string addMessage, string removeMessage = "")
+        {
+            objectIds = new List<ObjectId>();
+
+            var filter = new SelectionFilter(typedValues);
+            
+            var pso = new PromptSelectionOptions
+            {
+                MessageForAdding = addMessage,
+                MessageForRemoval = removeMessage
+            };
+
+            var psr = AcadApp.Editor.GetSelection(pso, filter);
+
+            if (psr.Status != PromptStatus.OK)
+                return false;
+
+            foreach (SelectedObject selectedObject in psr.Value)
+            {
+                objectIds.Add(selectedObject.ObjectId);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets a integer from user input.
         /// </summary>
         /// <param name="input">The input.</param>
@@ -487,5 +527,20 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AcadApp.Editor.SetCurrentView(view);
             }
         }
+
+
+
+
+        public static string BuildTypedValueString()
+        {
+
+
+
+
+            throw new NotImplementedException();
+        }
+
+
+
     }
 }
