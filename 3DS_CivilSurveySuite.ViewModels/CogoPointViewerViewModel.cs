@@ -26,10 +26,28 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public RelayCommand ZoomToCommand => new RelayCommand(_ => ZoomToPoint(), _ => true);
 
+        public RelayCommand UpdateCommand => new RelayCommand(_ => Update(), _ => true);
+
+        public RelayCommand SelectCommand => new RelayCommand(_ => Select(), _ => true);
+
         public CogoPointViewerViewModel(ICogoPointViewerService cogoPointViewerService)
         {
             _cogoPointViewerService = cogoPointViewerService;
             CogoPoints = new ObservableCollection<CivilPoint>(_cogoPointViewerService.GetPoints());
+        }
+
+
+        private void Select()
+        {
+            if (SelectedItem != null)
+                _cogoPointViewerService.Select(SelectedItem);
+        }
+
+
+        private void Update()
+        {
+            if (SelectedItem != null)
+                _cogoPointViewerService.Update(SelectedItem);
         }
 
 

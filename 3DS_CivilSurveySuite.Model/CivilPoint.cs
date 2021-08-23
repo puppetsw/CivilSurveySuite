@@ -20,11 +20,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public string RawDescription { get; set; }
 
-        public string FullDescription { get; set; }
+        public string DescriptionFormat { get; set; }
 
         public string ObjectIdHandle { get; set; }
-
-        public string Tag { get; set; }
 
         public string PointName { get; set; }
 
