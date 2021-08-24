@@ -53,6 +53,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_Between_Points(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtOffsetBetweenPts", CommandFlags.Modal)]
+        public static void PtOffsetBetweenPts()
+        {
+            PointUtils.Create_At_Offset_Between_Points(PointUtils.CreatePoint);
+        }
+
         [CommandMethod("3DS", "_3DSPtDistSlope", CommandFlags.Modal)]
         public static void PtDistSlope()
         {

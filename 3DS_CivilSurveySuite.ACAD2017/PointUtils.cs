@@ -4,8 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System;
-using System.Collections.Generic;
-using System.Windows.Documents;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -586,13 +584,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
                     Point3d point = Point3d.Origin;
 
-                    //TODO: add way to use text contents as elevation.
-
                     if (objectId.IsType<DBText>())
                     {
                         var text = textEnt as DBText;
                         // ReSharper disable PossibleNullReferenceException
                         point = new Point3d(text.Position.X, text.Position.Y, text.Position.Z);
+
+                        if (useTextAsElevation)
+                        {
+                            //TODO: add way to use text contents as elevation.
+
+                        }
                     }
 
                     if (objectId.IsType<MText>())
@@ -607,6 +609,76 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 tr.Commit();
             }
         }
+
+
+        /// <summary>
+        /// Creates points at an offset between points.
+        /// </summary>
+        public static void Create_At_Offset_Between_Points(Action<Transaction, Point3d> createAction)
+        {
+            var graphics = new TransientGraphics();
+            try
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                    return;
+
+                graphics.DrawX(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                    return;
+
+                graphics.DrawX(secondPoint, Settings.GraphicsSize);
+                graphics.DrawLine(firstPoint, secondPoint);
+
+                var baseLine = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+
+                do
+                {
+                    using (var tr = AcadApp.StartTransaction())
+                    {
+                        if (!EditorUtils.GetDistance(out double horizontalDist, "\n3DS> Enter distance along line: ", firstPoint))
+                            break;
+
+                        var basePoint = PointHelpers.AngleAndDistanceToPoint(baseLine, horizontalDist, firstPoint.ToPoint());
+
+                        if (!EditorUtils.GetDistance(out double leftOffsetDist, "\n3DS> Enter left offset: ", basePoint.ToPoint3d()))
+                            break;
+
+                        var leftOffsetPt = PointHelpers.AngleAndDistanceToPoint(baseLine - 90, leftOffsetDist, basePoint);
+                        graphics.DrawDot(leftOffsetPt.ToPoint3d(), Settings.GraphicsSize);
+                        createAction(tr, leftOffsetPt.ToPoint3d());
+
+                        if (!EditorUtils.GetDistance(out double rightOffsetDist, "\n3DS> Enter right offset: ", basePoint.ToPoint3d()))
+                            break;
+
+                        var rightOffsetPt = PointHelpers.AngleAndDistanceToPoint(baseLine + 90, rightOffsetDist, basePoint);
+                        graphics.DrawDot(rightOffsetPt.ToPoint3d(), Settings.GraphicsSize);
+                        createAction(tr, rightOffsetPt.ToPoint3d());
+
+                        tr.Commit();
+
+                        graphics.ClearGraphics();
+                        //redraw base graphics.
+                        graphics.DrawX(firstPoint, Settings.GraphicsSize);
+                        graphics.DrawX(secondPoint, Settings.GraphicsSize);
+                        graphics.DrawLine(firstPoint, secondPoint);
+                    }
+                } while (true);
+            }
+            catch (Exception e)
+            {
+                AcadApp.WriteErrorMessage(e);
+            }
+            finally
+            {
+                graphics.Dispose();
+            }
+
+ 
+
+
+        }
+
 
         /// <summary>
         /// Add multiple points (with interpolated elevation) between two points.

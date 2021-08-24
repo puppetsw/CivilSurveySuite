@@ -163,6 +163,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return pdrDistance.Value;
         }
 
+
+
+        //TODO: Maybe better to change the return type of these methods to PromptStatus?
+
+
         /// <summary>
         /// Gets the distance from the user input.
         /// </summary>
@@ -188,8 +193,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (pdrDistance.Status != PromptStatus.OK)
                 return false;
 
-            if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
-                return false;
+            //UNDONE: If nothing entered, 0 distance.
+            //if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
+            //    return false;
 
             distance = pdrDistance.Value;
 
@@ -218,8 +224,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (pdrDistance.Status != PromptStatus.OK)
                 return false;
 
-            if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
-                return false;
+            //if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
+            //    return false;
 
             distance = pdrDistance.Value;
 

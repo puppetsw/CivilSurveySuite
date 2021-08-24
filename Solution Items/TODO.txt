@@ -57,7 +57,6 @@ Generates detailed point reports with user controlled columns.  Includes Lat/Lon
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 
 
----Add multiple points that are offsets of a line defined by two points.
 
 ---Create point at extension distance on grade between 2 points.
 
