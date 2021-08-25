@@ -86,13 +86,43 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void RangeString_InvalidValueInList() //TODO: Investigate and fix issue with invalid values.
+        public void RangeString_InvalidValueInList() 
+            //TODO: Investigate and fix issue with invalid values.
+            //forgotten what this comment means
         {
             var expectedString = "1-4,10,test";
             var list = new List<string> { "1", "2", "3", "test","4", "10", "11", "12" };
             var result = StringHelpers.RangeString(list);
             Assert.AreEqual(expectedString, result);
         }
+
+        [TestMethod]
+        public void SentenceCase()
+        {
+            var sourceString = "THIS IS A SENTENCE.";
+
+            var expectedString = "This is a sentence.";
+
+            var result = sourceString.ToSentence();
+
+            Assert.AreEqual(expectedString, result);
+        }
+
+        [TestMethod]
+        public void SentenceCase_MultiSentence()
+        {
+            var sourceString = "THIS IS A SENTENCE. THIS IS ANOTHER SENTENCE";
+
+            var expectedString = "This is a sentence. This is another sentence";
+
+            var result = sourceString.ToSentence();
+
+            Assert.AreEqual(expectedString, result);
+        }
+
+
+
+
 
     }
 }

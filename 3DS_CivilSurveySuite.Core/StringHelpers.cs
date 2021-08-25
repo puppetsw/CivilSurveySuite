@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuite.Core
             return string.Concat(targetString.Where(c => !char.IsWhiteSpace(c)));
         }
 
-        public static bool IsNumeric(string text)
+        public static bool IsNumeric(this string text)
         {
             return double.TryParse(text, out double _);
         }
@@ -86,7 +86,6 @@ namespace _3DS_CivilSurveySuite.Core
                 left = left + "-" + currentPointNumber;
             return left;
         }
-
 
         public static void SortNumericAlpha(ref List<string> listToBeSorted)
         {
@@ -139,5 +138,18 @@ namespace _3DS_CivilSurveySuite.Core
             
             listToBeSorted = stringList;
         }
+
+        public static string ToSentence(this string sourceString)
+        {
+            // start by converting entire string to lower case
+            var lowerCase = sourceString.ToLower();
+            // matches the first sentence of a string, as well as subsequent sentences
+            var r = new Regex(@"(^[a-z])|\.\s+(.)", RegexOptions.ExplicitCapture);
+            // MatchEvaluator delegate defines replacement of sentence starts to uppercase
+            return r.Replace(lowerCase, s => s.Value.ToUpper());
+        }
+
+
+
     }
 }

@@ -1,9 +1,4 @@
-Text Commands
--------------------
----Add Prefix
----Add Suffix
----Remove AlphaCharacters
----Math commands
+
 
 CREATE METHOD TO DETECT HEIGHT ERRORS?
 CREATE METHOD TO ALIGN TEXT AT 45°

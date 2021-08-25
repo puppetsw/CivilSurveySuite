@@ -118,6 +118,71 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
 
+        // Text commands
+        [CommandMethod("3DS", "_3DSTxtUpper", CommandFlags.Modal)]
+        public static void TextToUpper()
+        {
+            TextUtils.TextToUpper();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtLower", CommandFlags.Modal)]
+        public static void TextToLower()
+        {
+            TextUtils.TextToLower();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtSentence", CommandFlags.Modal)]
+        public static void TextToSentence()
+        {
+            TextUtils.TextToSentence();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtPrefix", CommandFlags.Modal)]
+        public static void TextPrefix()
+        {
+            TextUtils.AddPrefixToText();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtSuffix", CommandFlags.Modal)]
+        public static void TextSuffix()
+        {
+            TextUtils.AddSuffixToText();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtRmvAlpha", CommandFlags.Modal)]
+        public static void TextRemoveAlpha()
+        {
+            TextUtils.RemoveAlphaCharactersFromText();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtMathAdd", CommandFlags.Modal)]
+        public static void TextMathAdd()
+        {
+            TextUtils.AddNumberToText();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtMathSub", CommandFlags.Modal)]
+        public static void TextMathSub()
+        {
+            TextUtils.SubtractNumberFromText();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtMathMult", CommandFlags.Modal)]
+        public static void TextMathMultiply()
+        {
+            TextUtils.MultiplyTextByNumber();
+        }
+
+        [CommandMethod("3DS", "_3DSTxtMathDiv", CommandFlags.Modal)]
+        public static void TextMathDivide()
+        {
+            TextUtils.DivideTextByNumber();
+        }
+
+
+
+
+
 
 
         // Palettes

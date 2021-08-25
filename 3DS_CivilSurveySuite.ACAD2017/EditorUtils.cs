@@ -353,9 +353,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// acTypValAr.SetValue(new TypedValue((int)DxfCode.Start, "CIRCLE"), 0);
         /// </code>
         /// </remarks>
-        public static bool GetSelection(out List<ObjectId> objectIds, TypedValue[] typedValues, string addMessage, string removeMessage = "")
+        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage, string removeMessage = "")
         {
-            objectIds = new List<ObjectId>();
+            //TODO: Change List to ObjectIdCollection class
+            objectIds = new ObjectIdCollection();
 
             var filter = new SelectionFilter(typedValues);
             
