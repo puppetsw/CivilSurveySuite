@@ -119,6 +119,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        // Surfaces
+        [CommandMethod("3DS", "_3DSSurfaceElAtPt", CommandFlags.Modal)]
+        public static void SurfaceElevationAtPoint()
+        {
+            SurfaceUtils.GetSurfaceElevationAtPoint();
+        }
+
+
+
         // Palettes
         [CommandMethod("3DS", "3DSShowConnectLinePalette", CommandFlags.Modal)]
         public static void ShowConnectLinePalette()

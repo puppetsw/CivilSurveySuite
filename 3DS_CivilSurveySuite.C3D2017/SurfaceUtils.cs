@@ -1,11 +1,56 @@
-﻿namespace _3DS_CivilSurveySuite.C3D2017
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
+using System;
+using _3DS_CivilSurveySuite.ACAD2017;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
+using Surface = Autodesk.Civil.DatabaseServices.Surface;
+
+namespace _3DS_CivilSurveySuite.C3D2017
 {
-    class SurfacesUtils
+    public static class SurfaceUtils
     {
+        /// <summary>
+        /// Gets the surface elevation at picked point.
+        /// </summary>
+        public static void GetSurfaceElevationAtPoint()
+        {
+            if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick point: "))
+                return;
+
+            var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId surfaceId in surfaceIds)
+                {
+                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as Surface;
+
+                    if (surface == null)
+                        continue;
+
+                    var surfaceElev = surface.FindElevationAtXY(pickedPoint.X, pickedPoint.Y);
+                    AcadApp.Editor.WriteMessage($"\n3DS> Surface Name: {surface.Name} Elevation: {Math.Round(surfaceElev, SystemVariables.LUPREC)}");
+                }
+
+                tr.Commit();
+            }
+        }
+
+        public static Surface GetSurfaceByName(string surfaceName)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         /// <summary>
         /// Adds the selected breakline(s) to a surface
         /// </summary>
-        void AddBreaklineToSurface()
+        static void AddBreaklineToSurface()
         { }
 
         /// <summary>
@@ -15,7 +60,7 @@
         /// be ignored during processing. Should a breakline be encountered which is used in more than one surface, you will be prompted to choose which surface(s)
         /// you want it to be removed from. The surface will be rebuilt upon completion of the command.
         /// </summary>
-        void RemoveBreaklineFromSurface()
+        static void RemoveBreaklineFromSurface()
         { }
 
         /// <summary>
@@ -26,7 +71,7 @@
         /// the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
         /// also include station/offset information, use the DL_Points tool to link the points to alignment(s).
         /// </summary>
-        void PointElevationsFromSurface()
+        static void PointElevationsFromSurface()
         { }
 
         /// <summary>
@@ -39,7 +84,7 @@
         /// present you with a small form with which to choose the Surface.
         /// Note that you may not see the selection on screen as gripped objects, as the number of gripped objects is limited by the AutoCAD Sysvar GRIPOBJLIMIT.
         /// </summary>
-        void SelectPointsAboveOrBelowSurface()
+        static void SelectPointsAboveOrBelowSurface()
         { }
     }
 }

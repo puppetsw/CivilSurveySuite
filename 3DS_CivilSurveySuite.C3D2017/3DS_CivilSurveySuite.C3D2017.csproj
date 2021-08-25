@@ -43,6 +43,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AecBaseMgd">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AecBaseMgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="AeccDbMgd">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\C3D\AeccDbMgd.dll</HintPath>
       <Private>False</Private>
@@ -67,7 +71,7 @@
     <Compile Include="C3DPalettes.cs" />
     <Compile Include="PointGroupUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SurfacesUtils.cs" />
+    <Compile Include="SurfaceUtils.cs" />
     <Compile Include="ConnectLineworkService.cs" />
   </ItemGroup>
   <ItemGroup>
