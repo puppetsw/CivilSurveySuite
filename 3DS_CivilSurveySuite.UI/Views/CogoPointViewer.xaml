@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="CogoPoint Viewer" Height="450" Width="800">
+        Title="CogoPoint Viewer" Height="450" Width="800"
+        x:Name="Window"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
@@ -21,13 +24,17 @@
             <RowDefinition/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding ItemsView}" SelectedItem="{Binding SelectedItem}" 
+        <DataGrid Grid.Row="0" x:Name="DataGrid" ItemsSource="{Binding ItemsView}" SelectedItem="{Binding SelectedItem}"
                   SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
                   Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
                   RowHeight="22" HorizontalContentAlignment="Center"
-                  EnableColumnVirtualization="True" EnableRowVirtualization="True"
-        >
+                  EnableColumnVirtualization="True" EnableRowVirtualization="True">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="SelectionChanged">
+                    <b:InvokeCommandAction Command="{Binding DataContext.SelectionChangedCommand, ElementName=Window}" CommandParameter="{Binding SelectedItems, ElementName=DataGrid}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Zoom To" Command="{Binding ZoomToCommand}" />
@@ -44,6 +51,7 @@
                 <DataGridTextColumn Header="Raw Description" Binding="{Binding RawDescription}" Width="150" />
                 <DataGridTextColumn Header="Description Format" Binding="{Binding DescriptionFormat}" Width="150" />
             </DataGrid.Columns>
+            
         </DataGrid>
 
         <DockPanel Grid.Row="1" LastChildFill="True">

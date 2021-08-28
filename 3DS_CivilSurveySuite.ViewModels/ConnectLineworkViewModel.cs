@@ -30,11 +30,11 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         public DescriptionKey SelectedKey { get; set; }
 
-        public RelayCommand AddRowCommand => new RelayCommand((_) => AddRow(), (_) => true);
+        public RelayCommand AddRowCommand => new RelayCommand(AddRow, () => true);
 
-        public RelayCommand RemoveRowCommand => new RelayCommand((_) => RemoveRow(), (_) => true);
+        public RelayCommand RemoveRowCommand => new RelayCommand(RemoveRow, () => true);
 
-        public RelayCommand ConnectCommand => new RelayCommand((_) => ConnectLinework(), (_) => true);
+        public RelayCommand ConnectCommand => new RelayCommand(ConnectLinework, () => true);
 
         public ConnectLineworkViewModel(string settingsFileName, IConnectLineworkService connectLineworkService)
         {

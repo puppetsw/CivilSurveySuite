@@ -6,6 +6,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using _3DS_CivilSurveySuite.Model;
 
@@ -28,6 +29,8 @@ namespace _3DS_CivilSurveySuite.ViewModels
             set => SetProperty(ref _selectedCivilPoint, value);
         }
 
+        public ObservableCollection<CivilPoint> SelectedItems { get; private set; }
+
         public ICollectionView ItemsView => CollectionViewSource.GetDefaultView(CogoPoints);
 
         public string FilterText
@@ -46,11 +49,13 @@ namespace _3DS_CivilSurveySuite.ViewModels
         //TODO: Select all points and change description format, raw description or pointname etc.
         //TODO: Add ability to load user-defined-properties.
 
-        public RelayCommand ZoomToCommand => new RelayCommand(_ => ZoomToPoint(), _ => true);
+        public RelayCommand ZoomToCommand => new RelayCommand(ZoomToPoint, () => true);
 
-        public RelayCommand UpdateCommand => new RelayCommand(_ => Update(), _ => true);
+        public RelayCommand UpdateCommand => new RelayCommand(Update, () => true);
 
-        public RelayCommand SelectCommand => new RelayCommand(_ => Select(), _ => true);
+        public RelayCommand SelectCommand => new RelayCommand(Select, () => true);
+
+        public RelayCommand<object> SelectionChangedCommand => new RelayCommand<object>(SelectionChanged, _ => true);
 
         public CogoPointViewerViewModel(ICogoPointViewerService cogoPointViewerService)
         {
@@ -69,13 +74,17 @@ namespace _3DS_CivilSurveySuite.ViewModels
                    || civilPoint.DescriptionFormat.StartsWith(FilterText, StringComparison.CurrentCultureIgnoreCase);
         }
 
+        private void SelectionChanged(object items)
+        {
+            var itemList = (items as ObservableCollection<CivilPoint>).ToList();
+            SelectedItems = new ObservableCollection<CivilPoint>(itemList);
+        }
 
         private void Select()
         {
             if (SelectedItem != null)
                 _cogoPointViewerService.Select(SelectedItem);
         }
-
 
         private void Update()
         {

@@ -25,9 +25,8 @@ namespace _3DS_CivilSurveySuiteTests
 
         }
 
-
         [TestMethod]
-        public void SelectedCommand_Execute_HasSelectedItem()
+        public void SelectedCommand_Execute()
         {
             var vm = new CogoPointViewerViewModel(_mock.Object);
 
@@ -38,7 +37,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void UpdateCommand_Execute_HasSelectedItem()
+        public void UpdateCommand_Execute()
         {
             var vm = new CogoPointViewerViewModel(_mock.Object);
 
@@ -49,7 +48,7 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void ZoomToCommand_Execute_HasSelectedItem()
+        public void ZoomToCommand_Execute()
         {
             var vm = new CogoPointViewerViewModel(_mock.Object);
 
@@ -60,7 +59,18 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void Filter()
+        public void SelectionChangedCommand_Execute()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.SelectionChangedCommand.CanExecute(true);
+            vm.SelectionChangedCommand.Execute(vm.CogoPoints);
+
+            Assert.AreEqual(3, vm.SelectedItems.Count);
+        }
+
+        [TestMethod]
+        public void Filter_Property_Changed()
         {
             var vm = new CogoPointViewerViewModel(_mock.Object);
             Assert.AreEqual(3, vm.CogoPoints.Count);
