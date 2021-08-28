@@ -105,6 +105,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
 
 
+        [CommandMethod("3DS", "_3DSStackLabels", CommandFlags.Modal)]
+        public static void StackLabels()
+        {
+            CogoPointUtils.Stack_CogoPoint_Labels();
+        }
+
+
 
         [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()

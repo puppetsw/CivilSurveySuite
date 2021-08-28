@@ -275,6 +275,38 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetSelection(pso, ss);
         }
 
+        /// <summary>
+        /// Gets the type of the entities of.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectIds">The object ids.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <returns><c>true</c> if successfully got a selection, <c>false</c> otherwise.</returns>
+        public static bool GetSelectionOfType<T>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "") where T : Entity
+        {
+            RXClass entityType = RXObject.GetClass(typeof(T));
+
+            objectIds = new ObjectIdCollection();
+
+            TypedValue[] typedValues = { new TypedValue((int)DxfCode.Start, entityType.DxfName) };
+            var ss = new SelectionFilter(typedValues);
+            var pso = new PromptSelectionOptions
+            {
+                MessageForAdding = addMessage,
+                MessageForRemoval = removeMessage
+            };
+
+            var result = AcadApp.Editor.GetSelection(pso, ss);
+
+            if (result.Status != PromptStatus.OK)
+                return false;
+
+            objectIds = new ObjectIdCollection(result.Value.GetObjectIds());
+
+            return true;
+        }
+
         [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
         public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
@@ -540,7 +572,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static string BuildTypedValueString()
         {
-
+            //TODO: Implement this for easier typed values?
 
 
 

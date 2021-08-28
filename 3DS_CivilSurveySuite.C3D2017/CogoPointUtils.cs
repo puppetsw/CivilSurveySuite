@@ -203,12 +203,79 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.WriteMessage(completeMessage);
         }
 
-        /// <summary>
-        /// Add multiple points that are offsets of a line defined by two points.
-        /// </summary>
-        private static void CreatePointBetweenPointsAtOffset()
+
+
+
+
+        public static void Stack_CogoPoint_Labels()
         {
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: "))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                Point3d startLocation = default;
+                double labelOffset = 0;
+
+                //for (int i = list.Length; i-- > 0;)
+
+                //for (var i = 0; i < objectIds.Count; i++)
+                //Do loop in reverse cause we mainly do a crossing selection.
+                //Maybe add option to flip order.
+
+                // Point3d newLocation = label.AnchorInfo.Location + offset;
+                // label.LabelLocation = newLocation;
+                for (var i = objectIds.Count; i-- > 0;) 
+                {
+                    ObjectId objectId = objectIds[i];
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                    var labelHeight = LabelUtils.CalculateLabelHeight(labelStyle);
+                    double textAngle = LabelUtils.GetLabelStyleComponentAngle(labelStyle);
+                    AcadApp.WriteMessage($"Label height {labelHeight}");
+
+                    //TODO: This needs to be worked on further, not 100% working yet.
+                    //The whole method I mean. 28/8
+                    //Possilbe issue with using current location
+                    //Need to reset label first?
+                    cogoPoint.ResetLabelLocation();
+
+                    if (i == objectIds.Count - 1)
+                    {
+                        startLocation = cogoPoint.LabelLocation;
+                        continue;
+                    }
+
+                    labelOffset += labelHeight;
+                    var angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
+                    var newPoint = PointHelpers.AngleAndDistanceToPoint(angle + 90, labelOffset, startLocation.ToPoint());
+
+                    //cogoPoint.LabelLocation = new Point3d(startLocation.X, startLocation.Y - labelOffset, 0);
+                    cogoPoint.LabelLocation = newPoint.ToPoint3d();
+                }
+
+                AcadApp.Editor.Regen();
+                tr.Commit();
+            }
+
+
+           
+
+
+
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Add a point at a picked location with elevation calculated at designated slope.

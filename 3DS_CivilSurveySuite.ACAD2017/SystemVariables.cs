@@ -5,6 +5,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using System.Security.RightsManagement;
 using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.Geometry;
 
@@ -41,6 +42,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static short LUPREC => GetSystemVariable<short>();
 
-        
+        public static double CANNOSCALEVALUE => GetSystemVariable<double>();
+
     }
 }
