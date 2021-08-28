@@ -3,9 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
-        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:dgx="urn:tom-englert.de/DataGridExtensions"
         mc:Ignorable="d"
         Title="CogoPoint Viewer" Height="450" Width="800">
     <Window.Resources>
@@ -20,13 +17,17 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding CogoPoints}" SelectedItem="{Binding SelectedItem}" 
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" ItemsSource="{Binding ItemsView}" SelectedItem="{Binding SelectedItem}" 
                   SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
                   Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
-                  RowHeight="22" HorizontalContentAlignment="Center" dgx:DataGridFilter.IsAutoFilterEnabled="True" 
+                  RowHeight="22" HorizontalContentAlignment="Center"
                   EnableColumnVirtualization="True" EnableRowVirtualization="True"
-                  >
+        >
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Zoom To" Command="{Binding ZoomToCommand}" />
@@ -44,5 +45,11 @@
                 <DataGridTextColumn Header="Description Format" Binding="{Binding DescriptionFormat}" Width="150" />
             </DataGrid.Columns>
         </DataGrid>
+
+        <DockPanel Grid.Row="1" LastChildFill="True">
+            <TextBlock Text="Search" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="3"/>
+            <TextBox VerticalAlignment="Center" Height="23" Margin="5,0,3,0" Text="{Binding Path=FilterText, UpdateSourceTrigger=PropertyChanged}" />
+        </DockPanel>
+
     </Grid>
 </Window>

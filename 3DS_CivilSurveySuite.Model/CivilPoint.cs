@@ -18,13 +18,13 @@ namespace _3DS_CivilSurveySuite.Model
 
         public double Elevation { get; set;  }
 
-        public string RawDescription { get; set; }
+        public string RawDescription { get; set; } = string.Empty;
 
-        public string DescriptionFormat { get; set; }
+        public string DescriptionFormat { get; set; } = string.Empty;
 
         public string ObjectIdHandle { get; set; }
 
-        public string PointName { get; set; }
+        public string PointName { get; set; } = string.Empty;
 
     }
 

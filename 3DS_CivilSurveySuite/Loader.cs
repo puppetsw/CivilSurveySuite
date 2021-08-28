@@ -29,7 +29,6 @@ namespace _3DS_CivilSurveySuite
             // load reference dlls.
 
             Assembly.Load("Microsoft.Xaml.Behaviors");
-            Assembly.Load("DataGridExtensions");
 
             // Load plugin dlls
 

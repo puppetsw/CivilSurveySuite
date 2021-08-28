@@ -307,6 +307,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        //HACK: is this really necessary?
+        public static bool GetSelectionOfType<T1, T2, T3, T4, T5>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "") where T1 : Entity where T2 : Entity where T3 : Entity where T4 : Entity where T5 : Entity
+        {
+            RXClass entityType1 = RXObject.GetClass(typeof(T1));
+            RXClass entityType2 = RXObject.GetClass(typeof(T2));
+
+            objectIds = new ObjectIdCollection();
+
+            throw new NotImplementedException();
+        }
+
+
+
         [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
         public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
