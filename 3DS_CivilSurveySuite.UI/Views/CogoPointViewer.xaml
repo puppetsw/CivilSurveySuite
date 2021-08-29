@@ -25,7 +25,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <DataGrid Grid.Row="0" x:Name="DataGrid" ItemsSource="{Binding ItemsView}" SelectedItem="{Binding SelectedItem}"
-                  SelectionMode="Single" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
+                  SelectionMode="Extended" SelectionUnit="FullRow"  GridLinesVisibility="All" AutoGenerateColumns="False" 
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
                   Background="{StaticResource YellowBackground}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
                   RowHeight="22" HorizontalContentAlignment="Center"
@@ -40,6 +40,9 @@
                     <MenuItem Header="Zoom To" Command="{Binding ZoomToCommand}" />
                     <MenuItem Header="Update" Command="{Binding UpdateCommand}" />
                     <MenuItem Header="Select" Command="{Binding SelectCommand}" />
+                    <Separator />
+                    <MenuItem Header="Copy RawDescription to selected." Command="{Binding CopyRawDescriptionCommand}" />
+                    <MenuItem Header="Copy DescriptionFormat to selected." Command="{Binding CopyDescriptionFormatCommand}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>

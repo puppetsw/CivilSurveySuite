@@ -81,18 +81,31 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var expectedString = "1-4,10-12";
             var list = new List<string> { "1", "2", "3", "4", "10", "11", "12" };
-            var result = StringHelpers.RangeString(list);
+            var result = StringHelpers.GetRangeString(list);
             Assert.AreEqual(expectedString, result);
         }
 
         [TestMethod]
-        public void RangeString_InvalidValueInList() 
+        public void RangeString_InvalidValueInList()
             //TODO: Investigate and fix issue with invalid values.
             //forgotten what this comment means
+            //OHHH Look at the exepected string, durrr. It doesn't have the missing values from the list
         {
-            var expectedString = "1-4,10,test";
-            var list = new List<string> { "1", "2", "3", "test","4", "10", "11", "12" };
-            var result = StringHelpers.RangeString(list);
+            var expectedString = "1-4,10-12";
+            var list = new[] { "1", "2", "3", "test","4", "10", "11", "12" };
+            //var result = StringHelpers.RangeString(list);
+            var result = StringHelpers.GetRangeString(list);
+            Assert.AreEqual(expectedString, result);
+        }
+
+        [TestMethod]
+        public void GetRangeString()
+        {
+            var array = new[] { "1", "2", "10", "11", "12" };
+            var expectedString = "1-2,10-12";
+
+            var result = StringHelpers.GetRangeString(array);
+
             Assert.AreEqual(expectedString, result);
         }
 

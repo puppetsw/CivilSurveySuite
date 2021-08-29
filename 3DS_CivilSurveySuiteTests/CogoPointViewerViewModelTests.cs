@@ -37,6 +37,46 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void CopyDescriptionFormatCommand_SelectedItems()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.SelectionChangedCommand.CanExecute(true);
+            vm.SelectionChangedCommand.Execute(vm.CogoPoints);
+
+            vm.CopyDescriptionFormatCommand.Execute(null);
+        }
+
+        [TestMethod]
+        public void CopyDescriptionFormatCommand_NoSelectedItems()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.CopyDescriptionFormatCommand.CanExecute(true);
+            vm.CopyDescriptionFormatCommand.Execute(null);
+        }
+
+        [TestMethod]
+        public void CopyRawDescriptionCommand_SelectedItems()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.SelectionChangedCommand.CanExecute(true);
+            vm.SelectionChangedCommand.Execute(vm.CogoPoints);
+
+            vm.CopyRawDescriptionCommand.Execute(null);
+        }
+
+        [TestMethod]
+        public void CopyRawDescriptionCommand_NoSelectedItems()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.CopyRawDescriptionCommand.CanExecute(true);
+            vm.CopyRawDescriptionCommand.Execute(null);
+        }
+
+        [TestMethod]
         public void UpdateCommand_Execute()
         {
             var vm = new CogoPointViewerViewModel(_mock.Object);
@@ -67,6 +107,15 @@ namespace _3DS_CivilSurveySuiteTests
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
 
             Assert.AreEqual(3, vm.SelectedItems.Count);
+        }
+
+        [TestMethod]
+        public void SelectionChangedCommand_Execute_NoItems()
+        {
+            var vm = new CogoPointViewerViewModel(_mock.Object);
+
+            vm.SelectionChangedCommand.CanExecute(true);
+            vm.SelectionChangedCommand.Execute(null);
         }
 
         [TestMethod]

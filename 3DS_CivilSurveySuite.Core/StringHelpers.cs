@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace _3DS_CivilSurveySuite.Core
@@ -40,6 +41,43 @@ namespace _3DS_CivilSurveySuite.Core
             return double.TryParse(text, out double _);
         }
 
+        public static string GetRangeString(IEnumerable<string> strings)
+        {
+            var cleanedString = strings.Where(IsNumeric).ToArray();
+            int[] arr = Array.ConvertAll(cleanedString, int.Parse);
+
+            // Return fast if array is null or contains less than 2 items
+            if (!arr.Any()) return string.Empty;
+            if (arr.Length == 1) return arr[0].ToString();
+
+            Array.Sort(arr);
+
+            var rangeString = new StringBuilder();
+            bool isRange = false;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                while (i < arr.Length - 1 && arr[i] + 1 == arr[i + 1])
+                {
+                    if (!isRange) rangeString.Append($"{arr[i]}");
+                    isRange = true;
+                    i++;
+                }
+
+                if (isRange)
+                {
+                    rangeString.Append("-");
+                    isRange = false;
+                }
+
+                rangeString.Append($"{arr[i]},");
+            }
+
+            return rangeString.ToString().TrimEnd(',');
+        }
+
+
+        [Obsolete("This method is obsolete. Use GetRangeString(IEnumerable<string>) instead. To be removed.", true)]
         public static string RangeString(List<string> pointNumberList)
         {
             string left = "";

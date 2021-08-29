@@ -15,6 +15,8 @@ namespace _3DS_CivilSurveySuite.Model
 
         void Update(CivilPoint civilPoint);
 
+        void UpdateSelected(IEnumerable<CivilPoint> civilPoints, string propertyName, string value);
+
         IEnumerable<CivilPoint> GetPoints();
 
     }

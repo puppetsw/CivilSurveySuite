@@ -35,7 +35,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static string GroupRange(Transaction tr, string groupName)
         {
             var pointNumberList = new List<string>();
-            CogoPointCollection cogoPoints = CivilApplication.ActiveDocument.CogoPoints;
 
             var pointGroup = GetPointGroupByName(tr, groupName);
 
@@ -48,7 +47,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             while (index < pointNumbers.Length)
             {
                 uint num = pointNumbers[index];
-                ObjectId pointByPointNumber = cogoPoints.GetPointByPointNumber(num);
+                ObjectId pointByPointNumber = C3DApp.ActiveDocument.CogoPoints.GetPointByPointNumber(num);
                 CogoPoint cogoPoint = pointByPointNumber.GetObject(OpenMode.ForRead) as CogoPoint;
 
                 if (cogoPoint.PointNumber > 0U)
@@ -57,7 +56,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 index++;
             }
 
-            return StringHelpers.RangeString(pointNumberList);
+            return StringHelpers.GetRangeString(pointNumberList);
         }
     }
 }

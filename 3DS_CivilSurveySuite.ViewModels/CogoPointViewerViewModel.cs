@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -44,9 +45,10 @@ namespace _3DS_CivilSurveySuite.ViewModels
             }
         }
 
+        public bool MultipleSelected => SelectedItems != null && SelectedItems.Count > 0;
+
         //TODO: Add option to export filtered list of points?
         //TODO: Add more complex filtering options for easting, northing, height?
-        //TODO: Select all points and change description format, raw description or pointname etc.
         //TODO: Add ability to load user-defined-properties.
 
         public RelayCommand ZoomToCommand => new RelayCommand(ZoomToPoint, () => true);
@@ -56,6 +58,10 @@ namespace _3DS_CivilSurveySuite.ViewModels
         public RelayCommand SelectCommand => new RelayCommand(Select, () => true);
 
         public RelayCommand<object> SelectionChangedCommand => new RelayCommand<object>(SelectionChanged, _ => true);
+
+        public RelayCommand CopyRawDescriptionCommand => new RelayCommand(CopyRawDescription, () => MultipleSelected);
+
+        public RelayCommand CopyDescriptionFormatCommand => new RelayCommand(CopyDescriptionFormat, () => MultipleSelected);
 
         public CogoPointViewerViewModel(ICogoPointViewerService cogoPointViewerService)
         {
@@ -76,8 +82,33 @@ namespace _3DS_CivilSurveySuite.ViewModels
 
         private void SelectionChanged(object items)
         {
-            var itemList = (items as ObservableCollection<CivilPoint>).ToList();
-            SelectedItems = new ObservableCollection<CivilPoint>(itemList);
+            if (items == null)
+                return;
+
+            IList itemsList = (IList)items;
+
+            if (itemsList.Count > 1)
+            {
+                var collection = itemsList.Cast<CivilPoint>();
+                SelectedItems = new ObservableCollection<CivilPoint>(collection);
+                NotifyPropertyChanged(nameof(MultipleSelected));
+            }
+        }
+
+        private void CopyRawDescription()
+        {
+            if (SelectedItems == null) 
+                return;
+
+            _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.RawDescription), SelectedItems[0].RawDescription);
+        }
+
+        private void CopyDescriptionFormat()
+        {
+            if (SelectedItems == null) 
+                return;
+
+            _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.DescriptionFormat), SelectedItems[0].DescriptionFormat);
         }
 
         private void Select()
@@ -91,7 +122,6 @@ namespace _3DS_CivilSurveySuite.ViewModels
             if (SelectedItem != null)
                 _cogoPointViewerService.Update(SelectedItem);
         }
-
 
         private void ZoomToPoint()
         {
