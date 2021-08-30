@@ -43,6 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AngleCalculatorViewModel.cs" />
     <Compile Include="ConnectLineworkViewModel.cs" />
+    <Compile Include="SurfaceSelectViewModel.cs" />
     <Compile Include="TraverseAngleViewModel.cs" />
     <Compile Include="TraverseViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />

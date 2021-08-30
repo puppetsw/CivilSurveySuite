@@ -77,6 +77,9 @@
     <Compile Include="Views\ConnectLineworkView.xaml.cs">
       <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SurfaceSelectView.xaml.cs">
+      <DependentUpon>SurfaceSelectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TraverseAngleView.xaml.cs">
       <DependentUpon>TraverseAngleView.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
     <Page Include="Views\ConnectLineworkView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SurfaceSelectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TraverseAngleView.xaml">
       <Generator>MSBuild:Compile</Generator>

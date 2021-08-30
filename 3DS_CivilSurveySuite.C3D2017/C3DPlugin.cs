@@ -7,6 +7,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
     {
         public void Initialize()
         {
+            C3DServiceLocator.Register();
             C3DPalettes.HookupEvents();
         }
 

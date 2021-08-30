@@ -13,6 +13,9 @@ Add Curves to traverse?
 
 Insert picture(s) tool
 
+IMessageBoxService
+ISurfaceSelectService
+
 
 
 //========================= NOTES ==========================

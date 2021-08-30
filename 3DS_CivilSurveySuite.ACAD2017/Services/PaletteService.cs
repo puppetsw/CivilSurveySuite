@@ -31,6 +31,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         /// <param name="hideMethod">The action to run when the palette is hidden/closed.</param>
         public void GeneratePalette(FrameworkElement view, ViewModelBase viewModel, string viewName, Action hideMethod = null)
         {
+            //TODO: Maybe need to move datacontext to views and let simpleinjector handle it.
             view.DataContext = viewModel;
 
             if (PaletteSet == null)

@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
@@ -147,5 +148,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             C3DPalettes.ShowCogoPointViewer();
         }
+
+
+
+
+
+        [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
+        public static void TestCommand()
+        {
+            //var surfaceSelectService = new SurfaceSelectService();
+            var surfaceSelectService = C3DServiceLocator.Container.GetInstance<ISurfaceSelectService>();
+
+            if (surfaceSelectService.ShowDialog())
+            {
+                AcadApp.WriteMessage(surfaceSelectService.SurfaceName);
+            }
+
+        }
+
+
+
     }
 }

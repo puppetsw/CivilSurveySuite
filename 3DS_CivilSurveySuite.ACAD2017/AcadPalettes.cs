@@ -23,16 +23,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         static AcadPalettes()
         {
-            s_viewerService = ServiceLocator.Container.GetInstance<IViewerService>();
-            s_paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
+            s_viewerService = AcadServiceLocator.Container.GetInstance<IViewerService>();
+            s_paletteService = AcadServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
         public static void ShowAngleCalculatorPalette()
         {
-            var view = new AngleCalculatorView();
-            var vm = new AngleCalculatorViewModel();
-            view.DataContext = vm;
-            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+            var view = new AngleCalculatorView
+            {
+                DataContext = new AngleCalculatorViewModel()
+            };
+            // ReSharper disable once AccessToStaticMemberViaDerivedType
+            Application.ShowModelessWindow(view);
         }
 
         public static void ShowTraversePalette()

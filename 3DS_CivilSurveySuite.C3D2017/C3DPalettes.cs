@@ -5,6 +5,7 @@
 
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.ViewModels;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -22,19 +23,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         static C3DPalettes()
         {
-            s_paletteService = ServiceLocator.Container.GetInstance<IPaletteService>();
+            //FIXED: ServiceLocator was trying to access AcadServiceLocator, maybe need to change name?
+            s_paletteService = AcadServiceLocator.Container.GetInstance<IPaletteService>();
         }
 
         public static void ShowConnectLinePalette()
         {
             var view = new ConnectLineworkView();
-            var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", new ConnectLineworkService());
+            var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", C3DServiceLocator.Container.GetInstance<IConnectLineworkService>());
             s_paletteService.GeneratePalette(view, vm, "Linework");
         }
         public static void ShowCogoPointViewer()
         {
             var view = new CogoPointViewer();
-            var vm = new CogoPointViewerViewModel(new CogoPointViewerService());
+            var vm = new CogoPointViewerViewModel(C3DServiceLocator.Container.GetInstance<ICogoPointViewerService>());
             view.DataContext = vm;
             Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
         }

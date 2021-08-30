@@ -42,6 +42,7 @@
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="ICogoPointViewerService.cs" />
     <Compile Include="IConnectLineworkService.cs" />
+    <Compile Include="ISurfaceSelectService.cs" />
     <Compile Include="ITraverseService.cs" />
     <Compile Include="IViewerService.cs" />
     <Compile Include="Point.cs" />

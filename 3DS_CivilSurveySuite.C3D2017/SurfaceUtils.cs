@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
@@ -45,7 +46,24 @@ namespace _3DS_CivilSurveySuite.C3D2017
             throw new NotImplementedException();
         }
 
+        public static IEnumerable<string> GetSurfaceNames()
+        {
+            var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
+            var surfaceNames = new List<string>();
 
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId surfaceId in surfaceIds)
+                {
+                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as Surface;
+                    surfaceNames.Add(surface.Name);
+                }
+
+                tr.Commit();
+            }
+
+            return surfaceNames;
+        }
 
         /// <summary>
         /// Adds the selected breakline(s) to a surface
