@@ -451,3 +451,108 @@ public static void OnLine()
       }
       SupExtEditor.ActEdt().DrawClear();
     }
+
+
+
+private void method_0()
+    {
+      FeatureMessage featureMessage = new FeatureMessage(nameof (RemoveBreaklineFromSurface));
+      featureMessage.Event = new EventInformation()
+      {
+        Code = "Feature.Tick"
+      };
+      featureMessage.Binary = Class29.smethod_0();
+      Access.Send((PreEmptive.SoS.Client.Messages.Message) featureMessage);
+      Editor editor = Application.DocumentManager.MdiActiveDocument.Editor;
+      Database database = Application.DocumentManager.MdiActiveDocument.Database;
+      CivilAppConnection civilAppConnection = new CivilAppConnection();
+      PromptSelectionOptions selectionOptions = new PromptSelectionOptions();
+      selectionOptions.MessageForAdding = "\nSelect breaklines: ";
+      SelectionFilter selectionFilter = new SelectionFilter(new TypedValue[1]
+      {
+        new TypedValue(0, (object) "*LINE")
+      });
+
+      // Get objects
+      for (PromptSelectionResult selection = editor.GetSelection(selectionOptions, selectionFilter); selection.Status == 5100; selection = editor.GetSelection(selectionOptions, selectionFilter))
+      {
+        using (Transaction transaction = HostApplicationServices.WorkingDatabase.TransactionManager.StartTransaction())
+        {
+            //For each object in selection
+            foreach (ObjectId objectId in selection.Value.GetObjectIds())
+          {
+              //Create new list
+            RemoveBreaklineFromSurface.list_0 = new List<string>();
+
+            // get list of surfaces breakline is attached to
+            List<BreaklineData> breaklineSurfaces = ((Curve) ((ObjectId) ref objectId).GetObject((OpenMode) 0)).GetBreaklineSurfaces();
+            if (breaklineSurfaces.Count != 0)
+            {
+              if (breaklineSurfaces.Count > 1)
+              {
+                foreach (BreaklineData breaklineData in breaklineSurfaces)
+                {
+                  TinSurface tinSurface = (TinSurface) ((ObjectId) ref breaklineData.TinSurfaceId).GetObject((OpenMode) 0);
+                  RemoveBreaklineFromSurface.list_0.Add(tinSurface.Name);
+                  ((DisposableWrapper) tinSurface).Dispose();
+                }
+                int num = (int) Application.ShowModalDialog((Form) new RemoveBreaklinesFromSurfaceForm());
+              }
+              // loop each breakline in surface
+              foreach (BreaklineData breaklineData in breaklineSurfaces)
+              {
+                  //get the surface as tin from the breakline data
+                TinSurface tinSurface = (TinSurface) ((ObjectId) ref breaklineData.TinSurfaceId).GetObject((OpenMode) 1);
+
+                //if surfaces is less than or equal 1 or list contains surface name
+                if (breaklineSurfaces.Count <= 1 || RemoveBreaklineFromSurface.list_0.Contains(tinSurface.Name))
+                {
+                    //get the breakline definitions for the surface
+                  SurfaceDefinitionBreaklines breaklinesDefinition = tinSurface.BreaklinesDefinition;
+                  if (breaklineData.BreaklineType == SurfaceBreaklineType.Wall)
+                  {
+                    editor.WriteMessage("\n...encountered a Wall type breakline group \"{0}\", not deleted", new object[1]
+                    {
+                      (object) breaklineData.Description
+                    });
+                  }
+                  else //else not a wall breakline
+                  {
+                    int index1 = -1;
+                    for (int index2 = 0; index2 < breaklinesDefinition.Count; ++index2)
+                    {
+                        //if description of breakline = the defitionbreakline
+                      if (breaklinesDefinition[index2].Description == breaklineData.Description)
+                      {
+                        index1 = index2;
+                        break;
+                      }
+                    }
+                    //if index is > -1
+                    if (index1 > -1)
+                      breaklinesDefinition.RemoveAt(index1); //remove the breakline
+
+                    SurfaceOperationAddBreakline operationAddBreakline = (SurfaceOperationAddBreakline) null;
+                    if (breaklineData.OtherIds.Count > 0)
+                    {
+                      switch (breaklineData.BreaklineType)
+                      {
+                        case SurfaceBreaklineType.Standard:
+                          operationAddBreakline = breaklinesDefinition.AddStandardBreaklines(breaklineData.OtherIds, breaklineData.MidOrdinate, breaklineData.MaxDist, breaklineData.WeedDist, breaklineData.WeedAngle);
+                          break;
+                        case SurfaceBreaklineType.NonDestructive:
+                          operationAddBreakline = breaklinesDefinition.AddNonDestructiveBreaklines(breaklineData.OtherIds, breaklineData.MidOrdinate);
+                          break;
+                      }
+                      operationAddBreakline.Description = breaklineData.Description;
+                    }
+                    tinSurface.Rebuild();
+                  }
+                }
+              }
+            }
+          }
+          transaction.Commit();
+        }
+      }
+    }

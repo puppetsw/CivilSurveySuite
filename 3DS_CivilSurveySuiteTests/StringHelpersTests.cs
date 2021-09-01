@@ -41,26 +41,6 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void SortList_Unsorted_ShouldBeSorted()
-        {
-            var list = new List<string> { "5", "3", "2", "1", "4" };
-            StringHelpers.SortNumericAlpha(ref list);
-
-            var expectedList = new List<string> { "1", "2", "3", "4", "5" };
-            CollectionAssert.AreEqual(expectedList, list);
-        }
-
-        [TestMethod]
-        public void SortList_ListCountEqualOne()
-        {
-            var list = new List<string> { "4" };
-            StringHelpers.SortNumericAlpha(ref list);
-
-            var expectedList = new List<string> { "4" };
-            CollectionAssert.AreEqual(expectedList, list);
-        }
-
-        [TestMethod]
         public void IsNumeric_ShouldBeTrue()
         {
             var testString = "1";
@@ -86,10 +66,25 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void RangeString_EmptyArray()
+        {
+            var expectedString = string.Empty;
+            var list = new List<string>();
+            var result = StringHelpers.GetRangeString(list);
+            Assert.AreEqual(expectedString, result);
+        }
+
+        [TestMethod]
+        public void RangeString_OneValue()
+        {
+            var expectedString = "1";
+            var list = new List<string> { "1" };
+            var result = StringHelpers.GetRangeString(list);
+            Assert.AreEqual(expectedString, result);
+        }
+
+        [TestMethod]
         public void RangeString_InvalidValueInList()
-            //TODO: Investigate and fix issue with invalid values.
-            //forgotten what this comment means
-            //OHHH Look at the exepected string, durrr. It doesn't have the missing values from the list
         {
             var expectedString = "1-4,10-12";
             var list = new[] { "1", "2", "3", "test","4", "10", "11", "12" };

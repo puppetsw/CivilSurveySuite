@@ -19,4 +19,10 @@
 
     <BitmapImage x:Key="AcceptToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/dialog-ok-apply.png"/>
 
+    <BitmapImage x:Key="SelectObjectIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/SelectObject.ico"/>
+
+    <BitmapImage x:Key="SurfaceIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/Surface.ico"/>
+
+    <BitmapImage x:Key="C3DAppIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"/>
+
 </ResourceDictionary>

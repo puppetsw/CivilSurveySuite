@@ -3,8 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.ViewModels
 {
@@ -15,24 +15,46 @@ namespace _3DS_CivilSurveySuite.ViewModels
     /// </summary>
     public class SurfaceSelectViewModel : ViewModelBase
     {
-        private ObservableCollection<string> _surfaceNames;
-        private string _selectedSurfaceName;
+        private readonly ISurfaceSelectService _surfaceSelectService;
+        private CivilSurface _selectedSurface;
+        private ObservableCollection<CivilSurface> _surfaces;
 
-        public ObservableCollection<string> SurfaceNames
+        public ObservableCollection<CivilSurface> Surfaces
         {
-            get => _surfaceNames;
-            set => SetProperty(ref _surfaceNames, value);
+            get => _surfaces;
+            set => SetProperty(ref _surfaces, value);
         }
 
-        public string SelectedSurfaceName
+        public CivilSurface SelectedSurface
         {
-            get => _selectedSurfaceName;
-            set => SetProperty(ref _selectedSurfaceName, value);
+            get => _selectedSurface;
+            set => SetProperty(ref _selectedSurface, value);
         }
 
-        public SurfaceSelectViewModel(IEnumerable<string> surfaceNames)
+        public RelayCommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
+
+        private void SelectSurface()
         {
-            SurfaceNames = new ObservableCollection<string>(surfaceNames);
+            var surface = _surfaceSelectService.SelectDrawingSurface();
+
+            if (surface == null)
+                return;
+            
+            if (Surfaces.Contains(surface))
+            {
+                var index = Surfaces.IndexOf(surface);
+                SelectedSurface = Surfaces[index];
+            }
+        }
+
+        public SurfaceSelectViewModel(ISurfaceSelectService surfaceSelectService)
+        {
+            _surfaceSelectService = surfaceSelectService;
+            Surfaces = new ObservableCollection<CivilSurface>(surfaceSelectService.GetSurfaces());
+            if (Surfaces.Count > 0) //Force select of first surface
+            {
+                SelectedSurface = Surfaces[0];
+            }
         }
     }
 }

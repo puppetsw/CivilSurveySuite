@@ -66,12 +66,14 @@
     <Compile Include="CogoPointUtils.cs" />
     <Compile Include="CogoPointViewerService.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="CommandSettings.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="LabelUtils.cs" />
     <Compile Include="C3DPalettes.cs" />
     <Compile Include="PointGroupUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="C3DServiceLocator.cs" />
+    <Compile Include="C3DServiceFactory.cs" />
+    <Compile Include="SurfaceExtensions.cs" />
     <Compile Include="SurfaceSelectService.cs" />
     <Compile Include="SurfaceUtils.cs" />
     <Compile Include="ConnectLineworkService.cs" />

@@ -10,6 +10,8 @@ using Autodesk.AutoCAD.Windows;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {
+    //Move to Model DLL?
+    //Don't think it can be, as need reference to PaletteSet.
     public interface IPaletteService
     {
         /// <summary>

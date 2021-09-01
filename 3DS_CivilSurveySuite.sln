@@ -39,6 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ribbon Sample", "Ribbon Sam
 		Solution Items\Ribbon2.png = Solution Items\Ribbon2.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Samples", "Other Samples", "{1C970487-72D0-4D4F-8297-29A52828B4D2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\Screenshot 2021-09-01 054202.png = ..\..\..\Desktop\Screenshot 2021-09-01 054202.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +89,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9688C86C-F839-4B17-9336-638E110A15CF} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
 		{EDF782BB-52CC-45CF-9E62-9E06DD820B9E} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
+		{1C970487-72D0-4D4F-8297-29A52828B4D2} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21AB6BAD-3251-4144-BB53-3E90D73A8B2D}

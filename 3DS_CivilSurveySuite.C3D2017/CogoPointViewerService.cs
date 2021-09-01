@@ -172,7 +172,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         private static CogoPoint GetCogoPoint(Transaction tr, CivilPoint civilPoint)
         {
-            Handle h = new Handle(long.Parse(civilPoint.ObjectIdHandle, NumberStyles.AllowHexSpecifier));   
+            Handle h = new Handle(long.Parse(civilPoint.ObjectIdHandle, NumberStyles.AllowHexSpecifier));
             ObjectId id = ObjectId.Null;   
             AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
 

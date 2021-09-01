@@ -9,9 +9,9 @@ using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public static class AcadServiceLocator
+    public static class AcadServiceFactory
     {
-        public static Container Container { get; } = new Container();
+        private static Container Container { get; } = new Container();
 
         /// <summary>
         /// Registers the service dependencies.
@@ -23,5 +23,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<IPaletteService, PaletteService>(Lifestyle.Singleton);
             Container.Verify();
         }
+
+        public static ITraverseService CreateTraverseService() => Container.GetInstance<ITraverseService>();
+
+        public static IViewerService CreateViewerService() => Container.GetInstance<IViewerService>();
+
+        public static IPaletteService CreatePaletteService() => Container.GetInstance<IPaletteService>();
     }
 }

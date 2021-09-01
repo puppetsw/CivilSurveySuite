@@ -39,6 +39,7 @@
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
     <Compile Include="CivilPoint.cs" />
+    <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="ICogoPointViewerService.cs" />
     <Compile Include="IConnectLineworkService.cs" />

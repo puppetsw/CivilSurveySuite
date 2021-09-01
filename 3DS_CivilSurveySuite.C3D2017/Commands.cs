@@ -3,9 +3,15 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows.Documents;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -150,20 +156,17 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-
-
-
-        [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
-        public static void TestCommand()
+        [CommandMethod("3DS", "3DSSurfaceAddBreaklines", CommandFlags.Modal)]
+        public static void SurfaceAddBreaklines()
         {
-            //var surfaceSelectService = new SurfaceSelectService();
-            var surfaceSelectService = C3DServiceLocator.Container.GetInstance<ISurfaceSelectService>();
+            SurfaceUtils.AddBreaklineToSurface();
+        }
 
-            if (surfaceSelectService.ShowDialog())
-            {
-                AcadApp.WriteMessage(surfaceSelectService.SurfaceName);
-            }
 
+        [CommandMethod("3DS", "3DSSurfaceRemoveBreaklines", CommandFlags.Modal)]
+        public static void SurfaceRemoveBreaklines()
+        {
+            SurfaceUtils.RemoveBreaklinesFromSurface();
         }
 
 

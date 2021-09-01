@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -163,11 +164,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return pdrDistance.Value;
         }
 
-
-
-        //TODO: Maybe better to change the return type of these methods to PromptStatus?
-
-
         /// <summary>
         /// Gets the distance from the user input.
         /// </summary>
@@ -260,6 +256,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
 
         //TODO: Replace with bool method.
+        [Obsolete("This method is obsolete. Use GetEntityOfType<T>(out ObjectId, String, String)", false)]
         public static PromptSelectionResult GetEntities<T>(string addMessage, string removeMessage = "") where T : Entity
         {
             RXClass entityType = RXObject.GetClass(typeof(T));
@@ -307,18 +304,38 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-        //HACK: is this really necessary?
-        public static bool GetSelectionOfType<T1, T2, T3, T4, T5>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "") where T1 : Entity where T2 : Entity where T3 : Entity where T4 : Entity where T5 : Entity
+        public static bool GetSelectionOfType<T1, T2>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
+            where T1 : Entity where T2 : Entity
         {
             RXClass entityType1 = RXObject.GetClass(typeof(T1));
             RXClass entityType2 = RXObject.GetClass(typeof(T2));
 
-            objectIds = new ObjectIdCollection();
+            var dxfNames = $"{entityType1.DxfName},{entityType2.DxfName}";
 
-            throw new NotImplementedException();
+            TypedValue[] typedValues =
+            {
+                new TypedValue((int)DxfCode.Start, dxfNames),
+            };
+
+            return GetSelection(out objectIds, typedValues, addMessage, removeMessage);
         }
 
+        public static bool GetSelectionOfType<T1, T2, T3>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
+            where T1 : Entity where T2 : Entity where T3 : Entity
+        {
+            RXClass entityType1 = RXObject.GetClass(typeof(T1));
+            RXClass entityType2 = RXObject.GetClass(typeof(T2));
+            RXClass entityType3 = RXObject.GetClass(typeof(T3));
 
+            var dxfNames = $"{entityType1.DxfName},{entityType2.DxfName},{entityType3.DxfName}";
+
+            TypedValue[] typedValues =
+            {
+                new TypedValue((int)DxfCode.Start, dxfNames),
+            };
+
+            return GetSelection(out objectIds, typedValues, addMessage, removeMessage);
+        }
 
         [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
         public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
@@ -335,8 +352,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
-        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the
-        /// <param name="allowedClasses">allowedClasses</param>
+        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
         /// </summary>
         /// <param name="objectId">The object identifier.</param>
         /// <param name="allowedClasses">The allowed classes.</param>
@@ -360,6 +376,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             objectId = entity.ObjectId;
             return true;
+        }
+
+        /// <summary>
+        /// Gets the an entity of type <see cref="T"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectId">The object identifier.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "")
+        {
+            return GetEntity(out objectId, new List<Type> { typeof(T) }, addMessage, removeMessage);
         }
 
         public static bool GetEntity(out ObjectId objectId, out Point3d pickedPoint, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
@@ -400,7 +429,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </remarks>
         public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage, string removeMessage = "")
         {
-            //TODO: Change List to ObjectIdCollection class
             objectIds = new ObjectIdCollection();
 
             var filter = new SelectionFilter(typedValues);

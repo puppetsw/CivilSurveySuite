@@ -3,12 +3,18 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Collections.Generic;
+
 namespace _3DS_CivilSurveySuite.Model
 {
     public interface ISurfaceSelectService
     {
         bool ShowDialog();
 
-        string SurfaceName { get; }
+        IEnumerable<CivilSurface> GetSurfaces();
+
+        CivilSurface SelectDrawingSurface();
+
+        CivilSurface Surface { get; }
     }
 }

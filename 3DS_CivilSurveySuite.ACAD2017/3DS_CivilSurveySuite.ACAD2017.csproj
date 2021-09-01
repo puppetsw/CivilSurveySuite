@@ -92,7 +92,7 @@
     <Compile Include="PointUtils.cs" />
     <Compile Include="PolylineUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AcadServiceLocator.cs" />
+    <Compile Include="AcadServiceFactory.cs" />
     <Compile Include="SystemVariables.cs" />
     <Compile Include="TextUtils.cs" />
     <Compile Include="TransactionExtensions.cs" />
