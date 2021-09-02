@@ -78,7 +78,6 @@ Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also inclu
 
 
 
-Label Mask on/off for labels
 
 
 

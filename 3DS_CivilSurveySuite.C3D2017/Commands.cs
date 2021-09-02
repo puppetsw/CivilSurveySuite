@@ -3,15 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Windows.Documents;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
-using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -140,22 +133,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             SurfaceUtils.GetSurfaceElevationAtPoint();
         }
 
-
-
-        // Palettes
-        [CommandMethod("3DS", "3DSShowConnectLinePalette", CommandFlags.Modal)]
-        public static void ShowConnectLinePalette()
-        {
-            C3DPalettes.ShowConnectLinePalette();
-        }
-
-        [CommandMethod("3DS", "3DSShowCogoPointViewer", CommandFlags.Modal)]
-        public static void ShowCogoPointViewer()
-        {
-            C3DPalettes.ShowCogoPointViewer();
-        }
-
-
         [CommandMethod("3DS", "3DSSurfaceAddBreaklines", CommandFlags.Modal)]
         public static void SurfaceAddBreaklines()
         {
@@ -174,6 +151,37 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             SurfaceUtils.SelectPointsAboveOrBelowSurface();
         }
+
+
+
+        // Palettes
+        [CommandMethod("3DS", "3DSShowConnectLinePalette", CommandFlags.Modal)]
+        public static void ShowConnectLinePalette()
+        {
+            C3DPalettes.ShowConnectLinePalette();
+        }
+
+        [CommandMethod("3DS", "3DSShowCogoPointViewer", CommandFlags.Modal)]
+        public static void ShowCogoPointViewer()
+        {
+            C3DPalettes.ShowCogoPointViewer();
+        }
+
+
+        // Labels
+        [CommandMethod("3DS", "3DSLabelMaskOff", CommandFlags.Modal)]
+        public static void LabelMaskOff()
+        {
+            CogoPointUtils.Label_Mask_Toggle(false);
+        }
+
+        [CommandMethod("3DS", "3DSLabelMaskOn", CommandFlags.Modal)]
+        public static void LabelMaskOn()
+        {
+            CogoPointUtils.Label_Mask_Toggle(true);
+        }
+
+
 
 
     }

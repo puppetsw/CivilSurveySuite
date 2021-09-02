@@ -267,14 +267,30 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
 
 
+        /// <summary>
+        /// Turns the label mask on or off.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        public static void Label_Mask_Toggle(bool value)
+        {
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to turn label mask(s) off: "))
+                return;
 
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId objectId in objectIds)
+                {
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
 
+                    if (cogoPoint == null)
+                        continue;
 
-
-
-
-
-
+                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                    labelStyle.LabelMask(tr, value);
+                }
+                tr.Commit();
+            }
+        }
 
 
         /// <summary>
