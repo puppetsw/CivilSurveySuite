@@ -8,9 +8,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
@@ -29,27 +30,28 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <exception cref="ArgumentException">surfaceName</exception>
         public static TinSurface GetSurfaceByName(Transaction tr, string surfaceName)
         {
-            if (tr == null) 
+            if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
 
             if (string.IsNullOrEmpty(surfaceName))
                 throw new ArgumentException(@"surfaceName was null or empty", nameof(surfaceName));
 
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
-            TinSurface surface = null;
 
             foreach (ObjectId surfaceId in surfaceIds)
             {
-                var s = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
+                var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
 
-                if (s.Name == surfaceName)
+                if (surface == null)
+                    continue;
+
+                if (surface.Name == surfaceName)
                 {
-                    surface = s;
-                    break;
+                    return surface;
                 }
             }
 
-            return surface;
+            return null;
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <exception cref="ArgumentNullException">tr</exception>
         public static TinSurface GetSurfaceByIndex(Transaction tr, int index)
         {
-            if (tr == null) 
+            if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
 
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
@@ -80,7 +82,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <exception cref="ArgumentNullException">objectId</exception>
         public static TinSurface GetSurfaceByObjectId(Transaction tr, ObjectId objectId)
         {
-            if (tr == null) 
+            if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
 
             if (objectId.IsNull)
@@ -90,12 +92,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-        /// <summary>
-        /// Gets the names of the surfaces in the active drawing.
-        /// </summary>
-        /// <param name="tr">The active transaction.</param>
-        /// <returns>IEnumerable&lt;System.String&gt;.</returns>
-        [Obsolete]
+        [Obsolete("This method is obsolete. Use CivilSurface objects.")]
         public static IEnumerable<string> GetSurfaceNames(Transaction tr)
         {
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
@@ -104,18 +101,17 @@ namespace _3DS_CivilSurveySuite.C3D2017
             foreach (ObjectId surfaceId in surfaceIds)
             {
                 var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as Surface;
+
+                if (surface == null)
+                    continue;
+
                 surfaceNames.Add(surface.Name);
             }
 
             return surfaceNames;
         }
 
-        /// <summary>
-        /// Gets the surfaces in the drawing as <see cref="CivilSurface"/> objects.
-        /// </summary>
-        /// <param name="tr">The transaction.</param>
-        /// <returns>IEnumerable&lt;CivilSurface&gt;.</returns>
-        [Obsolete("This methid is oboslete, use SurfaceExtensions.", true)]
+        [Obsolete("This method is obsolete, use SurfaceExtensions.", true)]
         public static IEnumerable<CivilSurface> GetCivilSurfaces(Transaction tr)
         {
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
@@ -131,7 +127,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 surfaces.Add(new CivilSurface
                 {
                     ObjectId = surface.ObjectId.Handle.ToString(),
-                    Name = surface.Name, 
+                    Name = surface.Name,
                     Description = surface.Description
                 });
             }
@@ -139,13 +135,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return surfaces;
         }
 
-        [Obsolete("This methid is oboslete, use SurfaceExtensions.", true)]
+        [Obsolete("This method is obsolete, use SurfaceExtensions.", true)]
         public static CivilSurface GetCivilSurface(Transaction tr, ObjectId objectId)
         {
             var surface = tr.GetObject(objectId, OpenMode.ForRead) as TinSurface;
             return new CivilSurface { ObjectId = surface.ObjectId.Handle.ToString(), Name = surface.Name, Description = surface.Description };
         }
-
 
 
         /// <summary>
@@ -249,7 +244,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     surface = GetSurfaceByIndex(tr, 0);
                 }
-                
+
                 if (surface == null)
                     return;
 
@@ -271,7 +266,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                     for (int j = 0; j < breaklineIds.Count; j++)
                     {
-                        var curbl = breaklineIds[j];
+                        //var curbl = breaklineIds[j];
                         foreach (ObjectId objectId in objectIds)
                         {
                             if (breaklineIds[j].Handle == objectId.Handle)
@@ -338,7 +333,24 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return result;
         }
 
+        private static TinSurface SelectSurface(Transaction tr)
+        {
+            TinSurface surface = null;
+            if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
+            {
+                var surfaceSelectService = C3DServiceFactory.GetSurfaceSelectService();
+                if (surfaceSelectService.ShowDialog())
+                {
+                    surface = GetSurfaceByName(tr, surfaceSelectService.Surface.Name);
+                }
+            }
+            else
+            {
+                surface = GetSurfaceByIndex(tr, 0);
+            }
 
+            return surface == null ? null : surface;
+        }
 
 
 
@@ -351,20 +363,80 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
         /// also include station/offset information, use the DL_Points tool to link the points to alignment(s).
         /// </summary>
-        static void PointElevationsFromSurface()
-        { }
+        public static void PointElevationsFromSurface()
+        {
+
+
+
+
+
+        }
+
+
+
 
         /// <summary>
-        /// The SelectPointsAboveOrBelowSurface command allows the user to create a selection of points lying either Above or Below a chosen Surface.
-        /// Usage
-        /// Type SelectPointsAboveOrBelowSurface at the command line.You will be presented with a form to choose which Surface to use, which method - Above or Below - 
-        /// to use, and to optionally limit the selection to points in one or more Point Groups.Make the desired selections, press OK, and the corresponding Points
-        /// will become selected.You can choose to have your selections saved for the next use of this command.
-        /// As command line alternatives, there are the 2 commands SelectPointsAboveSurface and SelectPointsBelowSurface which will operate on all points and just
-        /// present you with a small form with which to choose the Surface.
-        /// Note that you may not see the selection on screen as gripped objects, as the number of gripped objects is limited by the AutoCAD Sysvar GRIPOBJLIMIT.
+        /// Creates a selection set points above or below the selected surface.
         /// </summary>
-        static void SelectPointsAboveOrBelowSurface()
-        { }
+        public static void SelectPointsAboveOrBelowSurface()
+        {
+            using (var tr = AcadApp.StartTransaction())
+            {
+                TinSurface surface = SelectSurface(tr);
+
+                if (surface == null)
+                {
+                    tr.Commit();
+                    return;
+                }
+
+                var selectionObjectIds = new ObjectIdCollection();
+
+                // Prompt for above or below surface.
+                PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Select points above or below surface: ");
+                pko.Keywords.Add("Above");
+                pko.Keywords.Add("Below");
+                pko.AllowNone = true;
+
+                var pkr = AcadApp.Editor.GetKeywords(pko);
+
+                EditorUtils.GetDouble(out double tolerance, "\n3DS> Tolerance: ", true, 0.001);
+                
+                if (pkr.Status == PromptStatus.OK && !string.IsNullOrEmpty(pkr.StringResult))
+                {
+                    foreach (ObjectId cogoPointId in C3DApp.ActiveDocument.CogoPoints)
+                    {
+                        var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForRead) as CogoPoint;
+
+                        if (cogoPoint == null) continue;
+                        
+                        try
+                        {
+                            var elevationAtXy = surface.FindElevationAtXY(cogoPoint.Easting, cogoPoint.Northing);
+
+                            if (pkr.StringResult == "Above" 
+                                && cogoPoint.Elevation > elevationAtXy 
+                                && cogoPoint.Elevation - elevationAtXy > tolerance)
+                            {
+                                selectionObjectIds.Add(cogoPointId);
+                            }
+
+                            if (pkr.StringResult == "Below" 
+                                && cogoPoint.Elevation < elevationAtXy 
+                                && elevationAtXy - cogoPoint.Elevation > tolerance)
+                            {
+                                selectionObjectIds.Add(cogoPointId);
+                            }
+                        }
+                        catch (PointNotOnEntityException e)
+                        {
+                            AcadApp.Editor.WriteMessage($"\n3DS> {e.Message} X:{cogoPoint.Easting},Y:{cogoPoint.Northing}");
+                        }
+                    }
+                    AcadApp.Editor.SetImpliedSelection(selectionObjectIds.ToArray());
+                }
+                tr.Commit();
+            }
+        }
     }
 }

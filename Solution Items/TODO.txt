@@ -1,19 +1,25 @@
 
 
 CREATE METHOD TO DETECT HEIGHT ERRORS?
-CREATE METHOD TO ALIGN TEXT AT 45°
+
 
 ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
 ADD SAVE/LOAD feature to traverse window
+Add Curves to traverse?
+Selected objects to traverse window
 
-//Bearing Calculator
+
 XYZ point label (for autocad mainly)
 
-Add Curves to traverse?
 
 Insert picture(s) tool
 
 IMessageBoxService
+IPointGroupSelectService
+
+
+POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
+What does this even mean? search on any field?
 
 
 
@@ -36,9 +42,14 @@ difference between static and non-static (or 'instance') methods, get a hold of
 some basic C# learning materials, and try to become more familar with the basic
 concepts that underly the tools you're working with.
 
+As can be seen, it is not necessary to commit transactions for object reading access, 
+but for performance sake, we had better commit such transactions as well. In addition, 
+as can be seen again from the output, it took about twice long for the second command 
+to get the same work done. It is clear now that committing transactions is more efficient 
+than aborting them even for reading operations.
 
-POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
-What does this even mean? search on any field?
+Therefore, another good practice comes out, always committing transactions after they started.
+
 
 
 
@@ -46,9 +57,12 @@ Settings
 ----------------
 Properties.Settings.Default.MyConnection);
 
---adding/removing breakline to/from surface
+
 
 Linework tool to replace SmartDraft -- in progress
+
+
+
 
 point report /w alingments
 Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
@@ -65,7 +79,6 @@ Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also inclu
 
 
 Label Mask on/off for labels
-
 
 
 

@@ -169,6 +169,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             SurfaceUtils.RemoveBreaklinesFromSurface();
         }
 
+        [CommandMethod("3DS", "3DSSurfaceSelAboveBelow", CommandFlags.Modal)]
+        public static void SurfaceSelectAboveOrBelow()
+        {
+            SurfaceUtils.SelectPointsAboveOrBelowSurface();
+        }
 
 
     }
