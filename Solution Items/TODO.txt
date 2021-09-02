@@ -98,11 +98,3 @@ shots. At the command prompt for selecting the polylines you may enter T to brin
 
 
 
-The SelectPointsAboveOrBelowSurface command allows the user to create a selection of points lying either Above or Below a chosen Surface.
-Usage
-Type SelectPointsAboveOrBelowSurface at the command line. You will be presented with a form to choose which Surface to use, which method - Above or Below - 
-to use, and to optionally limit the selection to points in one or more Point Groups. Make the desired selections, press OK, and the corresponding Points 
-will become selected. You can choose to have your selections saved for the next use of this command.
-As command line alternatives, there are the 2 commands SelectPointsAboveSurface and SelectPointsBelowSurface which will operate on all points and just 
-present you with a small form with which to choose the Surface.
-Note that you may not see the selection on screen as gripped objects, as the number of gripped objects is limited by the AutoCAD Sysvar GRIPOBJLIMIT.

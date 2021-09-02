@@ -378,6 +378,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Creates a selection set points above or below the selected surface.
         /// </summary>
+        /// <remarks>
+        /// Note that you may not see the selection on screen as gripped objects, as the number of
+        /// gripped objects is limited by the AutoCAD system variable GRIPOBJLIMIT.
+        /// </remarks>
         public static void SelectPointsAboveOrBelowSurface()
         {
             using (var tr = AcadApp.StartTransaction())
