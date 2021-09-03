@@ -45,25 +45,25 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public UI.RelayCommand AddRowCommand => new UI.RelayCommand(AddRow, () => true);
+        public RelayCommand AddRowCommand => new RelayCommand(AddRow, () => true);
 
-        public UI.RelayCommand RemoveRowCommand => new UI.RelayCommand(RemoveRow, () => true);
+        public RelayCommand RemoveRowCommand => new RelayCommand(RemoveRow, () => true);
 
-        public UI.RelayCommand ClearCommand => new UI.RelayCommand(ClearTraverse, () => true);
+        public RelayCommand ClearCommand => new RelayCommand(ClearTraverse, () => true);
 
-        public UI.RelayCommand DrawCommand => new UI.RelayCommand(DrawTraverse, () => true);
+        public RelayCommand DrawCommand => new RelayCommand(DrawTraverse, () => true);
 
-        public UI.RelayCommand FeetToMetersCommand => new UI.RelayCommand(FeetToMeters, () => true);
+        public RelayCommand FeetToMetersCommand => new RelayCommand(FeetToMeters, () => true);
 
-        public UI.RelayCommand LinksToMetersCommand => new UI.RelayCommand(LinksToMeters, () => true);
+        public RelayCommand LinksToMetersCommand => new RelayCommand(LinksToMeters, () => true);
         
-        public UI.RelayCommand FlipBearingCommand => new UI.RelayCommand(FlipBearing, () => true);
+        public RelayCommand FlipBearingCommand => new RelayCommand(FlipBearing, () => true);
         
-        public UI.RelayCommand ShowHelpCommand => new UI.RelayCommand(ShowHelp, () => true);
+        public RelayCommand ShowHelpCommand => new RelayCommand(ShowHelp, () => true);
 
-        public UI.RelayCommand GridUpdatedCommand => new UI.RelayCommand(GridUpdated, () => true);
+        public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
 
-        public UI.RelayCommand ShowViewerCommand => new UI.RelayCommand(ShowViewer, () => true);
+        public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
         // ReSharper restore UnusedMember.Global
 
         public TraverseAngleViewModel(IViewerService viewerService, ITraverseService traverseService)

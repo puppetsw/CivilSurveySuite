@@ -76,9 +76,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public UI.RelayCommand AddCommand => new UI.RelayCommand(Add, () => true);
+        public RelayCommand AddCommand => new RelayCommand(Add, () => true);
 
-        public UI.RelayCommand SubtractCommand => new UI.RelayCommand(Subtract, () => true);
+        public RelayCommand SubtractCommand => new RelayCommand(Subtract, () => true);
 
         public AngleCalculatorViewModel()
         {

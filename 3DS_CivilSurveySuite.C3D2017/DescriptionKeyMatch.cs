@@ -49,7 +49,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="_3DS_CivilSurveySuite.Model.DescriptionKey"/>
+        /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="Model.DescriptionKey"/>
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>

@@ -51,17 +51,17 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         //TODO: Add more complex filtering options for easting, northing, height?
         //TODO: Add ability to load user-defined-properties.
 
-        public UI.RelayCommand ZoomToCommand => new UI.RelayCommand(ZoomToPoint, () => true);
+        public RelayCommand ZoomToCommand => new RelayCommand(ZoomToPoint, () => true);
 
-        public UI.RelayCommand UpdateCommand => new UI.RelayCommand(Update, () => true);
+        public RelayCommand UpdateCommand => new RelayCommand(Update, () => true);
 
-        public UI.RelayCommand SelectCommand => new UI.RelayCommand(Select, () => true);
+        public RelayCommand SelectCommand => new RelayCommand(Select, () => true);
 
-        public UI.RelayCommand<object> SelectionChangedCommand => new UI.RelayCommand<object>(SelectionChanged, _ => true);
+        public RelayCommand<object> SelectionChangedCommand => new RelayCommand<object>(SelectionChanged, _ => true);
 
-        public UI.RelayCommand CopyRawDescriptionCommand => new UI.RelayCommand(CopyRawDescription, () => MultipleSelected);
+        public RelayCommand CopyRawDescriptionCommand => new RelayCommand(CopyRawDescription, () => MultipleSelected);
 
-        public UI.RelayCommand CopyDescriptionFormatCommand => new UI.RelayCommand(CopyDescriptionFormat, () => MultipleSelected);
+        public RelayCommand CopyDescriptionFormatCommand => new RelayCommand(CopyDescriptionFormat, () => MultipleSelected);
 
         public CogoPointViewerViewModel(ICogoPointViewerService cogoPointViewerService)
         {

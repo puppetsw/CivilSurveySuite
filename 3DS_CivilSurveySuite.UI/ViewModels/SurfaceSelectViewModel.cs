@@ -31,7 +31,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set => SetProperty(ref _selectedSurface, value);
         }
 
-        public UI.RelayCommand SelectSurfaceCommand => new UI.RelayCommand(SelectSurface, () => true);
+        public RelayCommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
 
         private void SelectSurface()
         {
