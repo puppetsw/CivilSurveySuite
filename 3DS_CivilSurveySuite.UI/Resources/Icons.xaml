@@ -23,6 +23,8 @@
 
     <BitmapImage x:Key="SurfaceIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/Surface.ico"/>
 
+    <BitmapImage x:Key="PointGroupIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/PointGroup.ico"/>
+
     <BitmapImage x:Key="C3DAppIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"/>
 
 </ResourceDictionary>

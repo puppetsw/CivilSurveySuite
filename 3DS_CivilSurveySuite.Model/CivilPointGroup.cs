@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Model
 {
-    public class CivilSurface : INotifyPropertyChanged, IEquatable<CivilSurface>
+    public class CivilPointGroup : INotifyPropertyChanged, IEquatable<CivilPointGroup>
     {
         private string _name;
         private string _description;
@@ -53,7 +53,7 @@ namespace _3DS_CivilSurveySuite.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool Equals(CivilSurface other)
+        public bool Equals(CivilPointGroup other)
         {
             return _name == other._name 
                    && _description == other._description 
@@ -71,7 +71,7 @@ namespace _3DS_CivilSurveySuite.Model
             if (obj.GetType() != GetType()) 
                 return false;
 
-            return Equals((CivilSurface)obj);
+            return Equals((CivilPointGroup)obj);
         }
 
         public override int GetHashCode()

@@ -7,6 +7,7 @@ using System.Windows;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
+using Autodesk.Civil.DatabaseServices;
 using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -21,6 +22,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static void Register()
         {
             Container.Register<ISurfaceSelectService, SurfaceSelectService>(Lifestyle.Singleton);
+            Container.Register<IPointGroupSelectService, PointGroupSelectService>(Lifestyle.Singleton);
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointViewerService, CogoPointViewerService>();
 
@@ -32,6 +34,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             Container.Register<CogoPointViewer>();
             Container.Register<CogoPointViewerViewModel>();
+
+            Container.Register<PointGroupSelectView>();
+            Container.Register<PointGroupSelectViewModel>();
 
             Container.Verify();
         }
@@ -54,6 +59,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         public static ISurfaceSelectService SurfaceSelect() => Container.GetInstance<ISurfaceSelectService>();
+
+        public static IPointGroupSelectService PointGroupSelect() => Container.GetInstance<IPointGroupSelectService>();
 
         public static IConnectLineworkService ConnectLinework() => Container.GetInstance<IConnectLineworkService>();
 

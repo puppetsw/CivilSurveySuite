@@ -39,10 +39,12 @@
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
     <Compile Include="CivilPoint.cs" />
+    <Compile Include="CivilPointGroup.cs" />
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="ICogoPointViewerService.cs" />
     <Compile Include="IConnectLineworkService.cs" />
+    <Compile Include="IPointGroupSelectService.cs" />
     <Compile Include="ISurfaceSelectService.cs" />
     <Compile Include="ITraverseService.cs" />
     <Compile Include="IViewerService.cs" />

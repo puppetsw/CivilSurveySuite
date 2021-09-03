@@ -1,11 +1,11 @@
-﻿<Window x:Class="_3DS_CivilSurveySuite.UI.Views.SurfaceSelectView"
+﻿<Window x:Class="_3DS_CivilSurveySuite.UI.Views.PointGroupSelectView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
         mc:Ignorable="d"
-        Title="Select surface" Height="180" Width="280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="Select point group" Height="180" Width="280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
         >
     <Window.Resources>
@@ -29,7 +29,8 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox ItemsSource="{Binding Surfaces}" SelectedItem="{Binding SelectedSurface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsSynchronizedWithCurrentItem="True"
+        <ComboBox ItemsSource="{Binding PointGroups}" SelectedItem="{Binding SelectedPointGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  IsSynchronizedWithCurrentItem="True" Grid.ColumnSpan="2"
                   Height="22" Margin="0,0,4,0">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -40,27 +41,21 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image MaxWidth="16" MaxHeight="16" Source="{StaticResource SurfaceIcon}" />
+                        <Image MaxWidth="16" MaxHeight="16" Source="{StaticResource PointGroupIcon}" />
                         <TextBlock Margin="2, 0" Text="{Binding Name}"/>
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
         
-        <Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Command="{Binding SelectSurfaceCommand}">
+        <!--<Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Command="{Binding SelectSurfaceCommand}">
             <Image Source="{StaticResource SelectObjectIcon}"></Image>
-        </Button>
+        </Button>-->
 
         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="0,2">Description:</TextBlock>
 
         <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="1" Background="#FFF0F0F0">
-            <!--<Border.Background>
-                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                    <GradientStop Color="#FFE5E5E5" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>-->
-            <TextBlock Margin="4" Text="{Binding SelectedSurface.Description}" TextWrapping="Wrap"/>
+            <TextBlock Margin="4" Text="{Binding SelectedPointGroup.Description}" TextWrapping="Wrap"/>
         </Border>
 
         <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">

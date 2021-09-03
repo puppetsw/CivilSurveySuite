@@ -31,7 +31,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 SetProperty(ref _selectedSurface, value);
-                _surfaceSelectService.Surface = _selectedSurface;
+                _surfaceSelectService.Surface = value;
             }
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.Civil.ApplicationServices;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -18,8 +17,27 @@ namespace _3DS_CivilSurveySuite.C3D2017
         static void RemovePointFromPointGroupBy()
         { }
 
+
+        public static PointGroup GetPointGroupByObjectId(Transaction tr, ObjectId pointGroupObjectId)
+        {
+            if (tr == null)
+                throw new ArgumentNullException(nameof(tr));
+
+            if (pointGroupObjectId.IsNull)
+                throw new ArgumentNullException(nameof(pointGroupObjectId));
+
+            return tr.GetObject(pointGroupObjectId, OpenMode.ForRead) as PointGroup;
+        }
+
+
         public static PointGroup GetPointGroupByName(Transaction tr, string groupName)
         {
+            if (tr == null)
+                throw new ArgumentNullException(nameof(tr));
+
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentException(nameof(groupName));
+
             foreach (ObjectId objectId in C3DApp.ActiveDocument.PointGroups)
             {
                 var pointGroup = tr.GetObject(objectId, OpenMode.ForRead) as PointGroup;

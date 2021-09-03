@@ -73,6 +73,7 @@
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointViewerViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
+    <Compile Include="ViewModels\PointGroupSelectViewModel.cs" />
     <Compile Include="ViewModels\SurfaceSelectViewModel.cs" />
     <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
@@ -88,6 +89,9 @@
     </Compile>
     <Compile Include="Views\ConnectLineworkView.xaml.cs">
       <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PointGroupSelectView.xaml.cs">
+      <DependentUpon>PointGroupSelectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SurfaceSelectView.xaml.cs">
       <DependentUpon>SurfaceSelectView.xaml</DependentUpon>
@@ -220,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\PointGroupSelectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SurfaceSelectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,6 +248,8 @@
     <Resource Include="Resources\Icons\C3DApp.ico" />
     <Resource Include="Resources\Icons\Surface.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\PointGroup.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
