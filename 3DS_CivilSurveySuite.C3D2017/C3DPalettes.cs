@@ -5,8 +5,8 @@
 
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
-using _3DS_CivilSurveySuite.ViewModels;
 using Autodesk.AutoCAD.ApplicationServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017

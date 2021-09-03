@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using _3DS_CivilSurveySuite.ViewModels;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 using Autodesk.AutoCAD.Windows;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services

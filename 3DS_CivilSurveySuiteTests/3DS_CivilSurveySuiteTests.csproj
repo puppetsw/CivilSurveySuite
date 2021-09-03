@@ -95,9 +95,9 @@
       <Project>{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.ViewModels\3DS_CivilSurveySuite.ViewModels.csproj">
-      <Project>{9f732d27-dfed-4af1-9fc0-c1cd0c4ac3d6}</Project>
-      <Name>3DS_CivilSurveySuite.ViewModels</Name>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj">
+      <Project>{0431e86d-1a04-4f76-8afc-193f84fa7965}</Project>
+      <Name>3DS_CivilSurveySuite.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -64,10 +64,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="UserControls\TraverseViewer.xaml.cs">
       <DependentUpon>TraverseViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ZoomBorder.cs" />
+    <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
+    <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
+    <Compile Include="ViewModels\CogoPointViewerViewModel.cs" />
+    <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
+    <Compile Include="ViewModels\SurfaceSelectViewModel.cs" />
+    <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
+    <Compile Include="ViewModels\TraverseViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
     </Compile>
@@ -184,10 +193,6 @@
       <Project>{e6a561f5-2c4a-4cad-b150-c11a1e58b0f1}</Project>
       <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\3DS_CivilSurveySuite.ViewModels\3DS_CivilSurveySuite.ViewModels.csproj">
-      <Project>{9f732d27-dfed-4af1-9fc0-c1cd0c4ac3d6}</Project>
-      <Name>3DS_CivilSurveySuite.ViewModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\preview.png">
@@ -235,5 +240,6 @@
     <Resource Include="Resources\Icons\C3DApp.ico" />
     <Resource Include="Resources\Icons\Surface.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

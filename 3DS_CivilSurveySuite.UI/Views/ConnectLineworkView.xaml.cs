@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using _3DS_CivilSurveySuite.ViewModels;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.Win32;
 
 namespace _3DS_CivilSurveySuite.UI.Views
