@@ -37,10 +37,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
         public static void ShowCogoPointViewer()
         {
-            var cogoViewerService = C3DServiceFactory.GetCogoPointViewerService();
-            var view = new CogoPointViewer();
-            view.DataContext = new CogoPointViewerViewModel(cogoViewerService);
-            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+            //Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(C3DServiceFactory.GetCogoPointViewer());
+            C3DServiceFactory.ShowWindow<CogoPointViewer>();
+
+            //var cogoViewerService = C3DServiceFactory.GetCogoPointViewerService();
+            //var view = new CogoPointViewer();
+            //view.DataContext = new CogoPointViewerViewModel(cogoViewerService);
+            //Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
         }
 
         private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)

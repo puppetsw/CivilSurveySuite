@@ -182,6 +182,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        
+        [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
+        public static void Test()
+        {
+            CogoPointUtils.Move_CogoPoint_Label();
+        }
+
 
 
     }

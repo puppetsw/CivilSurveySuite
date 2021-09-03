@@ -16,11 +16,11 @@ using _3DS_CivilSurveySuite.ViewModels;
 namespace _3DS_CivilSurveySuite.UI.Views
 {
     /// <summary>
-    /// Interaction logic for CogoPointViewer.xaml
+    /// Interaction logic for CogoPointMoveLabelView.xaml
     /// </summary>
-    public partial class CogoPointViewer : Window
+    public partial class CogoPointMoveLabelView : Window
     {
-        public CogoPointViewer(CogoPointViewerViewModel viewModel)
+        public CogoPointMoveLabelView(CogoPointMoveLabelViewModel viewModel)
         {
             InitializeComponent();
 

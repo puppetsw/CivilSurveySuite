@@ -293,6 +293,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        public static void Move_CogoPoint_Label()
+        {
+            C3DServiceFactory.GetCogoPointMoveLabelView().ShowDialog();
+
+
+
+        }
+
+
         /// <summary>
         /// Add a point at a picked location with elevation calculated at designated slope.
         /// </summary>
