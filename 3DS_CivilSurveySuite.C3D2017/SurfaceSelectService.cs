@@ -6,9 +6,7 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 
@@ -16,21 +14,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public class SurfaceSelectService : ISurfaceSelectService
     {
-        public CivilSurface Surface { get; private set; }
+        public CivilSurface Surface { get; set; }
 
-        public bool ShowDialog()
+        public CivilSurface GetSurface()
         {
-            var vm = new SurfaceSelectViewModel(this);
-            var view = new SurfaceSelectView { DataContext = vm };
-
-            bool? dialogResult = Application.ShowModalWindow(view);
-
+            bool? dialogResult = C3DService.ShowDialog<SurfaceSelectView>();
             if (dialogResult != null && dialogResult.Value)
             {
-                Surface = vm.SelectedSurface;
-                return true;
+                return Surface;
             }
-            return false;
+            return null;
         }
 
         public IEnumerable<CivilSurface> GetSurfaces()
@@ -52,7 +45,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
-        public CivilSurface SelectDrawingSurface()
+        public CivilSurface SelectSurface()
         {
             if (!EditorUtils.GetEntityOfType<TinSurface>(out var objectId, "\n3DS> Select Surface: "))
                 return null;

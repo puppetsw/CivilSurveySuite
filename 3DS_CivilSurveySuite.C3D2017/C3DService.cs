@@ -11,7 +11,7 @@ using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.C3D2017
 {
-    public static class C3DServiceFactory
+    public static class C3DService
     {
         private static Container Container { get; } = new Container();
 
@@ -20,9 +20,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void Register()
         {
-            Container.Register<ISurfaceSelectService, SurfaceSelectService>();
+            Container.Register<ISurfaceSelectService, SurfaceSelectService>(Lifestyle.Singleton);
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointViewerService, CogoPointViewerService>();
+
+            Container.Register<SurfaceSelectView>();
+            Container.Register<SurfaceSelectViewModel>();
 
             Container.Register<CogoPointMoveLabelView>();
             Container.Register<CogoPointMoveLabelViewModel>();
@@ -50,14 +53,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return Container.GetInstance<TView>();
         }
 
-        public static ISurfaceSelectService GetSurfaceSelectService() => Container.GetInstance<ISurfaceSelectService>();
+        public static ISurfaceSelectService SurfaceSelect() => Container.GetInstance<ISurfaceSelectService>();
 
-        public static IConnectLineworkService GetConnectLineworkService() => Container.GetInstance<IConnectLineworkService>();
+        public static IConnectLineworkService ConnectLinework() => Container.GetInstance<IConnectLineworkService>();
 
-        public static ICogoPointViewerService GetCogoPointViewerService() => Container.GetInstance<ICogoPointViewerService>();
-
-        public static CogoPointMoveLabelView GetCogoPointMoveLabelView() => Container.GetInstance<CogoPointMoveLabelView>();
-
-        public static CogoPointViewer GetCogoPointViewer() => Container.GetInstance<CogoPointViewer>();
+        public static ICogoPointViewerService CogoPointViewer() => Container.GetInstance<ICogoPointViewerService>();
     }
 }

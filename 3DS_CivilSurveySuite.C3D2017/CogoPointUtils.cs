@@ -295,7 +295,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void Move_CogoPoint_Label()
         {
-            C3DServiceFactory.GetCogoPointMoveLabelView().ShowDialog();
 
 
 

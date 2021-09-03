@@ -9,12 +9,12 @@ namespace _3DS_CivilSurveySuite.Model
 {
     public interface ISurfaceSelectService
     {
-        bool ShowDialog();
+        CivilSurface GetSurface();
 
         IEnumerable<CivilSurface> GetSurfaces();
 
-        CivilSurface SelectDrawingSurface();
+        CivilSurface SelectSurface();
 
-        CivilSurface Surface { get; }
+        CivilSurface Surface { get; set; }
     }
 }

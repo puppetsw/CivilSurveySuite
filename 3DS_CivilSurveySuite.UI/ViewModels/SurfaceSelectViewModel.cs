@@ -23,19 +23,23 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         {
             get => _surfaces;
             set => SetProperty(ref _surfaces, value);
-        }
+        }   
 
         public CivilSurface SelectedSurface
         {
             get => _selectedSurface;
-            set => SetProperty(ref _selectedSurface, value);
+            set
+            {
+                SetProperty(ref _selectedSurface, value);
+                _surfaceSelectService.Surface = _selectedSurface;
+            }
         }
 
         public RelayCommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
 
         private void SelectSurface()
         {
-            var surface = _surfaceSelectService.SelectDrawingSurface();
+            var surface = _surfaceSelectService.SelectSurface();
 
             if (surface == null)
                 return;

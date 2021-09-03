@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
 {
@@ -7,9 +8,11 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// </summary>
     public partial class SurfaceSelectView : Window
     {
-        public SurfaceSelectView()
+        public SurfaceSelectView(SurfaceSelectViewModel viewModel)
         {
             InitializeComponent();
+
+            DataContext = viewModel;
         }
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)

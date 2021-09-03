@@ -181,17 +181,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             // Which surface?
             using (var tr = AcadApp.StartTransaction())
             {
-                TinSurface surface = null;
+                TinSurface surface;
                 var surfaces = C3DApp.ActiveDocument.GetSurfaceIds();
 
                 // Check if objects are in more than one surface?
                 if (surfaces.Count > 1)
                 {
-                    var surfaceSelectService = C3DServiceFactory.GetSurfaceSelectService();
-                    if (surfaceSelectService.ShowDialog())
-                    {
-                        surface = GetSurfaceByName(tr, surfaceSelectService.Surface.Name);
-                    }
+                    surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
                 }
                 else
                 {
@@ -234,11 +230,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
                 {
-                    var surfaceSelectService = C3DServiceFactory.GetSurfaceSelectService();
-                    if (surfaceSelectService.ShowDialog())
-                    {
-                        surface = GetSurfaceByName(tr, surfaceSelectService.Surface.Name);
-                    }
+                    surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
                 }
                 else
                 {
@@ -338,11 +330,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             TinSurface surface = null;
             if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
             {
-                var surfaceSelectService = C3DServiceFactory.GetSurfaceSelectService();
-                if (surfaceSelectService.ShowDialog())
-                {
-                    surface = GetSurfaceByName(tr, surfaceSelectService.Surface.Name);
-                }
+                surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
             }
             else
             {

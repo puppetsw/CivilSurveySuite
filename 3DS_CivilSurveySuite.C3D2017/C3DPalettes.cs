@@ -29,21 +29,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void ShowConnectLinePalette()
         {
-            var lineworkService = C3DServiceFactory.GetConnectLineworkService();
-
             var view = new ConnectLineworkView();
-            var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", lineworkService);
+            var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", C3DService.ConnectLinework());
             s_paletteService.GeneratePalette(view, vm, "Linework");
         }
         public static void ShowCogoPointViewer()
         {
-            //Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(C3DServiceFactory.GetCogoPointViewer());
-            C3DServiceFactory.ShowWindow<CogoPointViewer>();
-
-            //var cogoViewerService = C3DServiceFactory.GetCogoPointViewerService();
-            //var view = new CogoPointViewer();
-            //view.DataContext = new CogoPointViewerViewModel(cogoViewerService);
-            //Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+            C3DService.ShowWindow<CogoPointViewer>();
         }
 
         private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)
