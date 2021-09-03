@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         public void Initialize()
         {
-            AcadServiceFactory.Register();
+            AcadService.Register();
             AcadPalettes.HookupEvents();
         }
 

@@ -24,13 +24,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             //FIXED: ServiceLocator was trying to access AcadServiceLocator, maybe need to change name?
             //s_paletteService = AcadServiceFactory.Container.GetInstance<IPaletteService>();
-            s_paletteService = AcadServiceFactory.CreatePaletteService();
+            s_paletteService = AcadService.CreatePaletteService();
         }
 
         public static void ShowConnectLinePalette()
         {
             var view = new ConnectLineworkView();
-            var vm = new ConnectLineworkViewModel("Properties.Settings.Default.ConnectLineworkFileName", C3DService.ConnectLinework());
+            var vm = new ConnectLineworkViewModel(C3DService.ConnectLinework());
             s_paletteService.GeneratePalette(view, vm, "Linework");
         }
         public static void ShowCogoPointViewer()

@@ -9,7 +9,7 @@ using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public static class AcadServiceFactory
+    public static class AcadService
     {
         private static Container Container { get; } = new Container();
 

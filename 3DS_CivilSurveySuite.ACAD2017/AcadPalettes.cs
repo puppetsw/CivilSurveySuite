@@ -23,8 +23,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         static AcadPalettes()
         {
-            s_viewerService = AcadServiceFactory.CreateViewerService();
-            s_paletteService = AcadServiceFactory.CreatePaletteService();
+            s_viewerService = AcadService.CreateViewerService();
+            s_paletteService = AcadService.CreatePaletteService();
         }
 
         public static void ShowAngleCalculatorPalette()
@@ -36,14 +36,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void ShowTraversePalette()
         {
             var view = new TraverseView();
-            var vm = new TraverseViewModel(s_viewerService, AcadServiceFactory.CreateTraverseService());
+            var vm = new TraverseViewModel(s_viewerService, AcadService.CreateTraverseService());
             s_paletteService.GeneratePalette(view, vm, "Traverse");
         }
 
         public static void ShowTraverseAnglePalette()
         {
             var view = new TraverseAngleView();
-            var vm = new TraverseAngleViewModel(s_viewerService, AcadServiceFactory.CreateTraverseService());
+            var vm = new TraverseAngleViewModel(s_viewerService, AcadService.CreateTraverseService());
             s_paletteService.GeneratePalette(view, vm, "Angle Traverse");
         }
 

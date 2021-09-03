@@ -36,10 +36,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand ConnectCommand => new RelayCommand(ConnectLinework, () => true);
 
-        public ConnectLineworkViewModel(string settingsFileName, IConnectLineworkService connectLineworkService)
+        public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
             _connectLineworkService = connectLineworkService;
-            LoadSettings(settingsFileName);
+            //LoadSettings(_connectLineworkService);
         }
 
         private void AddRow()
