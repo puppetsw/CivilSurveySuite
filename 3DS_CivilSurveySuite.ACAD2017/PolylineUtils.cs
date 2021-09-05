@@ -8,11 +8,66 @@ using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class PolylineUtils
     {
+        /// <summary>
+        /// Creates a point at the midpoint between two selected polylines.
+        /// </summary>
+        /// <remarks>
+        /// This can be useful for using the BestFit Alignment tool in Civil 3D when the
+        /// surveyor only provided edge of pavement shots. At the command prompt for selecting
+        /// the polylines you may enter T to bring up the Settings dialog.
+        /// </remarks>
+        public static void MidPointBetweenPolylines()
+        {
+            using (var graphics = new TransientGraphics())
+            using (var tr = AcadApp.StartTransaction())
+            {
+                if (!EditorUtils.GetEntityOfType<Curve>(out ObjectId firstObjectId, "\n3DS> Select first Polyline: "))
+                {
+                    tr.Commit();
+                    return;
+                }
+
+                var curve1 = (Curve)tr.GetObject(firstObjectId, OpenMode.ForRead);
+                //graphics.DrawLine(curve1.StartPoint, curve1.EndPoint, TransientDrawingMode.Highlight, false);
+
+                if (!EditorUtils.GetEntityOfType<Curve>(out ObjectId secondObjectId, "\n3DS> Select second Polyline: "))
+                {
+                    tr.Commit();
+                    return;
+                }
+
+                var curve2 = (Curve)tr.GetObject(secondObjectId, OpenMode.ForRead);
+                //graphics.DrawLine(curve2.StartPoint, curve2.EndPoint, TransientDrawingMode.Highlight, false);
+
+                do
+                {
+                    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick a point: "))
+                        break;
+
+                    var p1 = curve1.GetClosestPointTo(pickedPoint, true);
+                    var p2 = curve2.GetClosestPointTo(pickedPoint, true);
+
+                    graphics.DrawLine(p1, p2);
+
+                    var calcMidPoint = PointHelpers.GetMidpointBetweenPoints(p1.ToPoint(), p2.ToPoint()).ToPoint3d();
+
+                    graphics.DrawDot(calcMidPoint, Settings.GraphicsSize);
+
+                    PointUtils.CreatePoint(tr, calcMidPoint);
+
+                } while (true);
+
+                tr.Commit();
+            }
+        }
+
+
         public static Polyline Square(Point2d basePoint, double squareSize, int lineWidth = 0)
         {
             var pointTopLeft = new Point2d(basePoint.X - squareSize, basePoint.Y + squareSize);

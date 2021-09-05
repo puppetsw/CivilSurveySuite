@@ -388,7 +388,20 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "")
         {
-            return GetEntity(out objectId, new List<Type> { typeof(T) }, addMessage, removeMessage);
+            var peo = new PromptEntityOptions(addMessage);
+            peo.SetRejectMessage(removeMessage);
+
+            objectId = ObjectId.Null;
+
+            peo.AddAllowedClass(typeof(T), false);
+
+            PromptEntityResult entity = AcadApp.Editor.GetEntity(peo);
+
+            if (entity.Status != PromptStatus.OK)
+                return false;
+
+            objectId = entity.ObjectId;
+            return true;
         }
 
         public static bool GetEntity(out ObjectId objectId, out Point3d pickedPoint, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
@@ -506,12 +519,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
         public static bool GetPoint(out Point3d basePoint, string message)
         {
-            Utils.SetFocusToDwgView();
-            var ppo = new PromptPointOptions(message);
+            //Utils.SetFocusToDwgView(); //UNDONE: Not sure why this was needed?
+            var ppo = new PromptPointOptions(message)
+            {
+                AllowNone = true
+            };
+
             var ppr = AcadApp.Editor.GetPoint(ppo);
             basePoint = Point3d.Origin;
 
-            if (ppr.Status != PromptStatus.OK)
+            if (ppr.Status != PromptStatus.OK || ppr.StringResult == string.Empty)
                 return false;
 
             basePoint = ppr.Value;

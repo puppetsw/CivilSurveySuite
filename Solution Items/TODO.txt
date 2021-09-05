@@ -1,29 +1,3 @@
-
-
-CREATE METHOD TO DETECT HEIGHT ERRORS?
-
-
-ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
-ADD SAVE/LOAD feature to traverse window
-Add Curves to traverse?
-Selected objects to traverse window
-
-
-XYZ point label (for autocad mainly)
-
-
-Insert picture(s) tool
-
-IMessageBoxService
-IPointGroupSelectService
-
-
-POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
-What does this even mean? search on any field?
-
-
-
-
 //========================= NOTES ==========================
 When you apply the CommandMethod attribute to a non-static method, AutoCAD's
 managed runtime will create multiple instances of your class, one for each
@@ -51,37 +25,39 @@ than aborting them even for reading operations.
 Therefore, another good practice comes out, always committing transactions after they started.
 
 
+//========================= TODO ==========================
+
+CREATE METHOD TO DETECT HEIGHT ERRORS?
+
+ADD LINE BREAK TO COGO POINT DESCRIPTION (WITH SPACES)
+ADD SAVE/LOAD feature to traverse window
+Add Curves to traverse?
+Selected objects to traverse window
+
+XYZ point label (for autocad mainly)
+
+Insert picture(s) tool
+
+IMessageBoxService
+IPointGroupSelectService
+
+POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
+What does this even mean? search on any field?
 
 
 Settings
 ----------------
 Properties.Settings.Default.MyConnection);
 
-
-
 Linework tool to replace SmartDraft -- in progress
-
-
-
 
 point report /w alingments
 Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 
-
-
 ---Create point at extension distance on grade between 2 points.
 
 ---Quickly add/remove points by description match, elevation range, inside linear object or window, number range, etc.
-
-
-
-
-
-
-
-
-
 
 
 The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
@@ -90,10 +66,5 @@ select the 2 surfaces to use, and the 2 UserDefinedProperties (these must be pre
 Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to 
 the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
 also include station/offset information, use the DL_Points tool to link the points to alignment(s).
-
-The SPSetMidPointsBetweenPolys command will allow the user to select two polylines then pick random locations on screen where they would like to get 
-the midpoint between the 2 polylines. This can be useful for using the BestFit Alignment tool in Civil 3D when the surveyor only provided edge of pavement 
-shots. At the command prompt for selecting the polylines you may enter T to bring up the Settings dialog.
-
 
 

@@ -80,6 +80,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             LineUtils.Draw_Leg_Line();
         }
 
+        [CommandMethod("3DS", "_3DSMidPointsBetweenPolys", CommandFlags.Modal)]
+        public static void MidPointsBetweenPolys()
+        {
+            PolylineUtils.MidPointBetweenPolylines();
+        }
+
+
 
         // Utils
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]

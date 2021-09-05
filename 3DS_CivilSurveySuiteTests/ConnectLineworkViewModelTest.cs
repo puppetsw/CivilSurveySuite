@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuiteTests
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
 
-            var vm = new ConnectLineworkViewModel(path, null);
+            var vm = new ConnectLineworkViewModel(null);
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace _3DS_CivilSurveySuiteTests
             var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
 
-            var vm = new ConnectLineworkViewModel(path, null);
+            var vm = new ConnectLineworkViewModel(null);
             vm.Save(path);
         }
 
@@ -32,7 +32,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestCategory("Commands")]
         public void AddRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel("", null);
+            var vm = new ConnectLineworkViewModel(null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -44,7 +44,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestCategory("Commands")]
         public void RemoveRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel("", null);
+            var vm = new ConnectLineworkViewModel(null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -63,7 +63,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void ConnectCommand_Execute()
         {
             Mock<IConnectLineworkService> mockService = new Mock<IConnectLineworkService>();
-            var vm = new ConnectLineworkViewModel(string.Empty, mockService.Object);
+            var vm = new ConnectLineworkViewModel(mockService.Object);
 
             vm.ConnectCommand.CanExecute(true);
             vm.ConnectCommand.Execute(true);
