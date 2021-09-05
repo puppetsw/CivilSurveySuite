@@ -8,6 +8,7 @@ using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.GraphicsInterface;
 using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -34,7 +35,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 }
 
                 var curve1 = (Curve)tr.GetObject(firstObjectId, OpenMode.ForRead);
-                //graphics.DrawLine(curve1.StartPoint, curve1.EndPoint, TransientDrawingMode.Highlight, false);
+                graphics.DrawLine(curve1, TransientDrawingMode.Highlight);
 
                 if (!EditorUtils.GetEntityOfType<Curve>(out ObjectId secondObjectId, "\n3DS> Select second Polyline: "))
                 {
@@ -43,7 +44,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 }
 
                 var curve2 = (Curve)tr.GetObject(secondObjectId, OpenMode.ForRead);
-                //graphics.DrawLine(curve2.StartPoint, curve2.EndPoint, TransientDrawingMode.Highlight, false);
+                graphics.DrawLine(curve2, TransientDrawingMode.Highlight);
 
                 do
                 {
@@ -59,7 +60,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                     graphics.DrawDot(calcMidPoint, Settings.GraphicsSize);
 
-                    PointUtils.CreatePoint(tr, calcMidPoint);
+                    PointUtils.CreatePoint(tr, calcMidPoint); //TODO: Make a parameter so can pass CogoPoints to this method.
 
                 } while (true);
 

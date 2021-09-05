@@ -115,6 +115,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             DrawAdd(line, mode);
         }
 
+        public void DrawLine(Curve curve, TransientDrawingMode mode = TransientDrawingMode.Main, bool useDashedLine = false)
+        {
+            if (useDashedLine)
+                SetLineType(curve);
+
+            DrawAdd(curve, mode);
+        }
+
         public void DrawSquare(Point3d position, double squareSize)
         {
             throw new NotImplementedException(); //TODO: Write method
