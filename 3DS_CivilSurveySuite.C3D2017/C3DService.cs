@@ -7,7 +7,6 @@ using System.Windows;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.Civil.DatabaseServices;
 using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -64,6 +63,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static IConnectLineworkService ConnectLinework() => Container.GetInstance<IConnectLineworkService>();
 
-        public static ICogoPointViewerService CogoPointViewer() => Container.GetInstance<ICogoPointViewerService>();
+        //public static ICogoPointViewerService CogoPointViewer() => Container.GetInstance<ICogoPointViewerService>();
     }
 }

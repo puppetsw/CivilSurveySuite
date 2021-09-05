@@ -83,7 +83,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSMidPointsBetweenPolys", CommandFlags.Modal)]
         public static void MidPointsBetweenPolys()
         {
-            PolylineUtils.MidPointBetweenPolylines();
+            PolylineUtils.MidPointBetweenPolylines(PointUtils.CreatePoint);
         }
 
 

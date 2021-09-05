@@ -16,14 +16,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     public static class PolylineUtils
     {
         /// <summary>
-        /// Creates a point at the midpoint between two selected polylines.
+        /// Creates a point at the midpoint between two selected <see cref="Polyline"/> entities. 
         /// </summary>
-        /// <remarks>
-        /// This can be useful for using the BestFit Alignment tool in Civil 3D when the
+        /// <param name="createAction">The create point action.</param>
+        /// <remarks>This can be useful for using the BestFit Alignment tool in Civil 3D when the
         /// surveyor only provided edge of pavement shots. At the command prompt for selecting
-        /// the polylines you may enter T to bring up the Settings dialog.
-        /// </remarks>
-        public static void MidPointBetweenPolylines()
+        /// the polylines you may enter T to bring up the Settings dialog.</remarks>
+        public static void MidPointBetweenPolylines(Action<Transaction, Point3d> createAction)
         {
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
@@ -60,7 +59,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                     graphics.DrawDot(calcMidPoint, Settings.GraphicsSize);
 
-                    PointUtils.CreatePoint(tr, calcMidPoint); //TODO: Make a parameter so can pass CogoPoints to this method.
+                    //PointUtils.CreatePoint(tr, calcMidPoint); //TODO: Make a parameter so can pass CogoPoints to this method.
+                    createAction(tr, calcMidPoint);
 
                 } while (true);
 
