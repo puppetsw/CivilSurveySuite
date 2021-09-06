@@ -9,6 +9,8 @@ namespace _3DS_CivilSurveySuite.Model
 {
     public interface IConnectLineworkService
     {
+        string DescriptionKeyFile { get; set; }
+
         void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
     }
 }

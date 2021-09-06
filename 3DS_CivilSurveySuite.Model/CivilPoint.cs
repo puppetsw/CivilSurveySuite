@@ -137,16 +137,7 @@ namespace _3DS_CivilSurveySuite.Model
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) 
-                return false;
-
-            if (ReferenceEquals(this, obj)) 
-                return true;
-
-            if (obj.GetType() != this.GetType()) 
-                return false;
-
-            return Equals((CivilPoint)obj);
+            return obj is CivilPoint item && Equals(item);
         }
 
         public override int GetHashCode()

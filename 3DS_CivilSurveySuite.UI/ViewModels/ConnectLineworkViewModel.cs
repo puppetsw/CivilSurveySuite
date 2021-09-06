@@ -39,7 +39,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
             _connectLineworkService = connectLineworkService;
-            //LoadSettings(_connectLineworkService);
+            LoadSettings(_connectLineworkService.DescriptionKeyFile);
         }
 
         private void AddRow()

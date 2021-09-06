@@ -66,6 +66,10 @@
     <Compile Include="AngleTests.cs" />
     <Compile Include="BearingConverterTests.cs" />
     <Compile Include="BearingTests.cs" />
+    <Compile Include="CivilPointGroupTests.cs" />
+    <Compile Include="CivilPointTests.cs" />
+    <Compile Include="CivilSurfaceTests.cs" />
+    <Compile Include="DescriptionKeyTests.cs" />
     <Compile Include="SurfaceSelectViewModelTests.cs" />
     <Compile Include="ClosureTests.cs" />
     <Compile Include="CogoPointViewerViewModelTests.cs" />

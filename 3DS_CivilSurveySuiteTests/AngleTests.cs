@@ -210,10 +210,10 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void Angle_EqualsTest_ShouldThrowException()
+        public void Angle_EqualsTest_ShouldBeFalse()
         {
             var angle = new Angle(0);
-            Assert.ThrowsException<ArgumentNullException>(() => angle.Equals(null));
+            Assert.IsFalse(angle.Equals(null));
         }
 
         [TestMethod]

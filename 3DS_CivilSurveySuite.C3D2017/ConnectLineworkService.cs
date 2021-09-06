@@ -14,7 +14,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public class ConnectLineworkService : IConnectLineworkService
     {
-        public string SettingsFilePath { get; set; } = "Properties.Settings.Default.ConnectLineworkFileName";
+        //public string SettingsFilePath { get; set; } = "Properties.Settings.Default.ConnectLineworkFileName";
+
+        public string DescriptionKeyFile { get; set; }
 
         public void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {

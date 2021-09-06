@@ -286,7 +286,7 @@ namespace _3DS_CivilSurveySuite.Model
         {
             if (other == null)
             {
-                throw new ArgumentNullException(nameof(other));
+                return false;
             }
 
             return (this.Degrees == other.Degrees)

@@ -9,30 +9,40 @@ namespace _3DS_CivilSurveySuiteTests
     [TestClass]
     public class ConnectLineworkViewModelTest
     {
+        private const string _testFileName = "TestFiles\\3DS_DescriptionKeys.xml";
+
+        private string _testPath;
+
+        private Mock<IConnectLineworkService> _mock;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            _testPath = Path.Combine(directory, _testFileName);
+
+            _mock = new Mock<IConnectLineworkService>();
+            _mock.SetupAllProperties();
+            _mock.Object.DescriptionKeyFile = _testPath;
+        }
+
         [TestMethod]
         public void LoadSettings_From_File()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
-
-            var vm = new ConnectLineworkViewModel(null);
+            var vm = new ConnectLineworkViewModel(_mock.Object);
         }
 
         [TestMethod]
         public void SaveSettings_To_File()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var path = Path.Combine(directory, "TestFiles\\3DS_DescriptionKeys.xml");
-
-            var vm = new ConnectLineworkViewModel(null);
-            vm.Save(path);
+            var vm = new ConnectLineworkViewModel(_mock.Object);
+            vm.Save(_testPath);
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void AddRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel(null);
+            var vm = new ConnectLineworkViewModel(_mock.Object);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -41,10 +51,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void RemoveRowCommand_Execute()
         {
-            var vm = new ConnectLineworkViewModel(null);
+            var vm = new ConnectLineworkViewModel(_mock.Object);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -62,8 +71,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void ConnectCommand_Execute()
         {
-            Mock<IConnectLineworkService> mockService = new Mock<IConnectLineworkService>();
-            var vm = new ConnectLineworkViewModel(mockService.Object);
+            var vm = new ConnectLineworkViewModel(_mock.Object);
 
             vm.ConnectCommand.CanExecute(true);
             vm.ConnectCommand.Execute(true);
