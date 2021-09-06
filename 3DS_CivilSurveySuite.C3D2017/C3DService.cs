@@ -22,6 +22,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             Container.Register<ISurfaceSelectService, SurfaceSelectService>(Lifestyle.Singleton);
             Container.Register<IPointGroupSelectService, PointGroupSelectService>(Lifestyle.Singleton);
+            Container.Register<ICogoPointMoveLabelService, CogoPointMoveLabelService>(Lifestyle.Singleton);
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointViewerService, CogoPointViewerService>();
 
@@ -56,6 +57,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             return Container.GetInstance<TView>();
         }
+
+        public static ICogoPointMoveLabelService CogoPointMove() => Container.GetInstance<ICogoPointMoveLabelService>();
 
         public static ISurfaceSelectService SurfaceSelect() => Container.GetInstance<ISurfaceSelectService>();
 

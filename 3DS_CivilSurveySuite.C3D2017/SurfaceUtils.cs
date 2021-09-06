@@ -213,7 +213,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
 
             AcadApp.Editor.Regen();
-            AcadApp.Editor.UpdateScreen(); // Probably not needed.
         }
     
         /// <summary>
@@ -327,7 +326,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         private static TinSurface SelectSurface(Transaction tr)
         {
-            TinSurface surface = null;
+            TinSurface surface;
             if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
             {
                 surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);

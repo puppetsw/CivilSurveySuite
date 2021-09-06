@@ -42,6 +42,7 @@
     <Compile Include="CivilPointGroup.cs" />
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
+    <Compile Include="ICogoPointMoveLabelService.cs" />
     <Compile Include="ICogoPointViewerService.cs" />
     <Compile Include="IConnectLineworkService.cs" />
     <Compile Include="IPointGroupSelectService.cs" />

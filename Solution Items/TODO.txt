@@ -39,11 +39,11 @@ XYZ point label (for autocad mainly)
 Insert picture(s) tool
 
 IMessageBoxService
-IPointGroupSelectService
 
 POWERFUL SEARCH COGOPOINT VIEWER as SERVICE
 What does this even mean? search on any field?
 
+RESET MULTIPLE COGOPOINT LABELS
 
 Settings
 ----------------

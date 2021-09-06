@@ -26,5 +26,11 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
             DataContext = viewModel;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            Close();
+        }
     }
 }

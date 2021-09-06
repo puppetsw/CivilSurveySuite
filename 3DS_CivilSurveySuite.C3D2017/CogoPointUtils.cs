@@ -3,9 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -27,6 +29,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 return;
 
             var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForWrite) as CogoPoint;
+
+            if (cogoPoint == null)
+                throw new NullReferenceException(nameof(cogoPoint));
+
             cogoPoint.RawDescription = rawDescription;
             cogoPoint.DowngradeOpen();
         }
@@ -159,6 +165,54 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         }
 
+        public static void Label_Reset_All()
+        {
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var pointIds, "\n3DS> Select CogoPoints labels to reset: "))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId objectId in pointIds)
+                {
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForWrite) as CogoPoint;
+
+                    if (cogoPoint == null)
+                        continue;
+
+                    //cogoPoint.ResetLabel();
+                    cogoPoint.ResetLabelLocation();
+                    cogoPoint.ResetLabelRotation();
+                    cogoPoint.DowngradeOpen();
+                }
+                tr.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Turns the label mask on or off.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        public static void Label_Mask_Toggle(bool value)
+        {
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to turn label mask(s) off: "))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId objectId in objectIds)
+                {
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+
+                    if (cogoPoint == null)
+                        continue;
+
+                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                    labelStyle.LabelMask(tr, value);
+                }
+                tr.Commit();
+            }
+        }
+
         public static void Marker_Rotate_Match()
         {
 
@@ -202,9 +256,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             string completeMessage = "Changed " + counter + " TRE points, and created " + counter + " TRNK points";
             AcadApp.Editor.WriteMessage(completeMessage);
         }
-
-
-
 
 
         public static void Stack_CogoPoint_Labels()
@@ -266,15 +317,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-
-        /// <summary>
-        /// Turns the label mask on or off.
-        /// </summary>
-        /// <param name="value">if set to <c>true</c> [value].</param>
-        public static void Label_Mask_Toggle(bool value)
+        public static void Move_CogoPoint_Label()
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to turn label mask(s) off: "))
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
                 return;
+
+            //surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
+
+            Vector vector = C3DService.CogoPointMove().GetMoveDifference();
+            
+            //if (!EditorUtils.GetDouble(out double deltaX, "\n3DS> Amount to move on X axis: "))
+            //    return;
+
+            //if (!EditorUtils.GetDouble(out double deltaY, "\n3DS> Amount to move on Y axis: "))
+            //    return;
 
             using (var tr = AcadApp.StartTransaction())
             {
@@ -285,19 +341,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (cogoPoint == null)
                         continue;
 
-                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
-                    labelStyle.LabelMask(tr, value);
+                    var currentLocation = cogoPoint.LabelLocation;
+
+                    cogoPoint.UpgradeOpen();
+                    cogoPoint.LabelLocation = new Point3d(currentLocation.X + vector.X, currentLocation.Y + vector.Y, 0);
+                    cogoPoint.DowngradeOpen();
                 }
                 tr.Commit();
             }
-        }
-
-
-        public static void Move_CogoPoint_Label()
-        {
-
-
-
+            AcadApp.Editor.Regen();
         }
 
 

@@ -60,6 +60,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal)]
+        public static void CptResetLabels()
+        {
+            CogoPointUtils.Label_Reset_All();
+        }
+
+        [CommandMethod("3DS", "_3DSCptLabelsMove", CommandFlags.Modal)]
+        public static void CptMoveLabels()
+        {
+            CogoPointUtils.Move_CogoPoint_Label();
+        }
+
 
 
         [CommandMethod("3DS", "_3DSCptTrunkAtTrees", CommandFlags.Modal)]

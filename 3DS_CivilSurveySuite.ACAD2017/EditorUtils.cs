@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -385,15 +384,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="objectId">The object identifier.</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
+        /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "")
+        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
         {
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage(removeMessage);
 
             objectId = ObjectId.Null;
 
-            peo.AddAllowedClass(typeof(T), false);
+            peo.AddAllowedClass(typeof(T), exactMatch);
 
             PromptEntityResult entity = AcadApp.Editor.GetEntity(peo);
 
