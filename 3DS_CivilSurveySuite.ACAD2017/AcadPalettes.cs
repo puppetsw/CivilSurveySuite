@@ -4,11 +4,8 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017.Services;
-using _3DS_CivilSurveySuite.UI.Services;
-using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.ApplicationServices;
-using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
@@ -19,33 +16,21 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     public static class AcadPalettes
     {
         private static bool s_paletteVisible;
-        private static readonly IViewerService s_viewerService;
         private static readonly PaletteService s_paletteService;
 
         static AcadPalettes()
         {
-            s_viewerService = AcadService.CreateViewerService();
             s_paletteService = AcadService.CreatePaletteService();
-        }
-
-        public static void ShowAngleCalculatorPalette()
-        {
-            var view = new AngleCalculatorView { DataContext = new AngleCalculatorViewModel() };
-            Application.ShowModelessWindow(view);
         }
 
         public static void ShowTraversePalette()
         {
-            var view = new TraverseView();
-            var vm = new TraverseViewModel(s_viewerService, AcadService.CreateTraverseService());
-            s_paletteService.GeneratePalette(view, vm, "Traverse");
+            s_paletteService.GeneratePalette(AcadService.CreateUserControl<TraverseView>(), "Traverse");
         }
 
         public static void ShowTraverseAnglePalette()
         {
-            var view = new TraverseAngleView();
-            var vm = new TraverseAngleViewModel(s_viewerService, AcadService.CreateTraverseService());
-            s_paletteService.GeneratePalette(view, vm, "Angle Traverse");
+            s_paletteService.GeneratePalette(AcadService.CreateUserControl<TraverseAngleView>(), "Angle Traverse");
         }
 
         private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)

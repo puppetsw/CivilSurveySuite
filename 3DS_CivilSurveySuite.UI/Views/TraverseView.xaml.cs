@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Xaml.Behaviors;
+using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
 {
@@ -9,9 +9,11 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// </summary>
     public partial class TraverseView : UserControl
     {
-        public TraverseView()
+        public TraverseView(TraverseViewModel viewModel)
         {
             InitializeComponent();
+
+            DataContext = viewModel;
         }
 
         private void dgTraverse_PreviewKeyDown(object sender, KeyEventArgs e)

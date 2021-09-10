@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
@@ -195,7 +196,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public static void ShowAngleCalculator()
         {
-            AcadPalettes.ShowAngleCalculatorPalette();
+            AcadService.ShowWindow<AngleCalculatorView>();
         }
 
         [CommandMethod("3DS", "_3DSShowTraversePalette", CommandFlags.Modal)]
