@@ -66,6 +66,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Services\ICogoPointMoveLabelService.cs" />
+    <Compile Include="Services\ICogoPointViewerService.cs" />
+    <Compile Include="Services\IConnectLineworkService.cs" />
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IPointGroupSelectService.cs" />
+    <Compile Include="Services\ISurfaceSelectService.cs" />
+    <Compile Include="Services\ITraverseService.cs" />
+    <Compile Include="Services\IViewerService.cs" />
     <Compile Include="UserControls\TraverseViewer.xaml.cs">
       <DependentUpon>TraverseViewer.xaml</DependentUpon>
     </Compile>

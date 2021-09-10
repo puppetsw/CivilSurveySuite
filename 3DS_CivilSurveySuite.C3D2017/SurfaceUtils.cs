@@ -187,7 +187,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 // Check if objects are in more than one surface?
                 if (surfaces.Count > 1)
                 {
-                    surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
+                    surface = C3DService.SelectSurface();
                 }
                 else
                 {
@@ -229,7 +229,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
                 {
-                    surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
+                    surface = C3DService.SelectSurface();
                 }
                 else
                 {
@@ -329,7 +329,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             TinSurface surface;
             if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
             {
-                surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
+                surface = C3DService.SelectSurface();
             }
             else
             {

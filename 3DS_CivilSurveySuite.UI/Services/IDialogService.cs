@@ -3,14 +3,17 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.Collections.Generic;
-
-namespace _3DS_CivilSurveySuite.Model
+namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface ITraverseService
+    /// <summary>
+    /// Interface IDialogService
+    /// </summary>
+    public interface IDialogService<T>
     {
-        void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList);
+        bool? DialogResult { get; set; }
 
-        void DrawTraverse(IReadOnlyList<TraverseObject> traverseList);
+        T ResultObject { get; set; }
+
+        bool? ShowDialog();
     }
 }

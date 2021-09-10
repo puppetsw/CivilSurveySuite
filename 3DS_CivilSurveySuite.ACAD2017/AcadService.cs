@@ -5,6 +5,7 @@
 
 using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Services;
 using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.ACAD2017

@@ -4,15 +4,14 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 
-namespace _3DS_CivilSurveySuite.Model
+namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface IPointGroupSelectService
+    public interface IConnectLineworkService
     {
-        CivilPointGroup PointGroup { get; set; }
+        string DescriptionKeyFile { get; set; }
 
-        CivilPointGroup GetPointGroup();
-
-        IEnumerable<CivilPointGroup> GetPointGroups();
+        void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
     }
 }

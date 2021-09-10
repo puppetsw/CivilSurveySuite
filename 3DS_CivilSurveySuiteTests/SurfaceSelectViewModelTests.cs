@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

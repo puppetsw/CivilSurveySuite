@@ -6,26 +6,14 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.Views;
+using _3DS_CivilSurveySuite.UI.Services;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017
+namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class SurfaceSelectService : ISurfaceSelectService
     {
-        public CivilSurface Surface { get; set; }
-
-        public CivilSurface GetSurface()
-        {
-            bool? dialogResult = C3DService.ShowDialog<SurfaceSelectView>();
-            if (dialogResult != null && dialogResult.Value)
-            {
-                return Surface;
-            }
-            return null;
-        }
-
         public IEnumerable<CivilSurface> GetSurfaces()
         {
             var list = new List<CivilSurface>();

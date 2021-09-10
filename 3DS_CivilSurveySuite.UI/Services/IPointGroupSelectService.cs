@@ -4,17 +4,12 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 
-namespace _3DS_CivilSurveySuite.Model
+namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface ISurfaceSelectService
+    public interface IPointGroupSelectService
     {
-        CivilSurface GetSurface();
-
-        IEnumerable<CivilSurface> GetSurfaces();
-
-        CivilSurface SelectSurface();
-
-        CivilSurface Surface { get; set; }
+        IEnumerable<CivilPointGroup> GetPointGroups();
     }
 }

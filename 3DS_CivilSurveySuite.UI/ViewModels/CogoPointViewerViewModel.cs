@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Services;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {

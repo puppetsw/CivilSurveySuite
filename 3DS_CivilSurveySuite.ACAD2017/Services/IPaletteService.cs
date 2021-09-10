@@ -23,6 +23,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         /// <param name="hideMethod">The action to run when the palette is hidden/closed.</param>
         void GeneratePalette(FrameworkElement view, ViewModelBase viewModel, string viewName, Action hideMethod = null);
 
-        PaletteSet PaletteSet { get; }
+        PaletteSet PaletteSet { get; } //TODO: Could abstract the PaletteSet
     }
 }

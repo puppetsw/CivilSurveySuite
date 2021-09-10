@@ -4,13 +4,14 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 
-namespace _3DS_CivilSurveySuite.Model
+namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface IConnectLineworkService
+    public interface ISurfaceSelectService
     {
-        string DescriptionKeyFile { get; set; }
+        IEnumerable<CivilSurface> GetSurfaces();
 
-        void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
+        CivilSurface SelectSurface();
     }
 }

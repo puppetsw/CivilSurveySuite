@@ -4,8 +4,9 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 
-namespace _3DS_CivilSurveySuite.Model
+namespace _3DS_CivilSurveySuite.UI.Services
 {
     /// <summary>
     /// Interface IViewerService

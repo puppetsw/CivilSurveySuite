@@ -198,9 +198,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
         public static void Test()
         {
-            AcadApp.Editor.WriteMessage($"Point Group Name: {C3DService.PointGroupSelect().GetPointGroup().Name}");
-            
-            
+            //AcadApp.Editor.WriteMessage($"Point Group Name: {C3DService.PointGroupSelect().GetPointGroup().Name}");
+
+            //C3DService.SelectSurface();
+            var pg = C3DService.SelectPointGroup();
+
+
         }
 
 

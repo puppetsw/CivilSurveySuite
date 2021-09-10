@@ -5,12 +5,12 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Services;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
     public class PointGroupSelectViewModel : ViewModelBase
     {
-        private readonly IPointGroupSelectService _pointGroupSelectService;
         private ObservableCollection<CivilPointGroup> _pointGroups;
         private CivilPointGroup _selectedPointGroup;
 
@@ -20,32 +20,20 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set => SetProperty(ref _pointGroups, value);
         }
 
-
         public CivilPointGroup SelectedPointGroup
         {
             get => _selectedPointGroup;
-            set
-            {
-                SetProperty(ref _selectedPointGroup, value);
-                _pointGroupSelectService.PointGroup = value;
-            }
+            set => SetProperty(ref _selectedPointGroup, value);
         }
-
 
         public PointGroupSelectViewModel(IPointGroupSelectService pointGroupSelectService)
         {
-            _pointGroupSelectService = pointGroupSelectService;
-            PointGroups = new ObservableCollection<CivilPointGroup>(_pointGroupSelectService.GetPointGroups());
+            PointGroups = new ObservableCollection<CivilPointGroup>(pointGroupSelectService.GetPointGroups());
 
             if (PointGroups.Count > 0)
             {
                 SelectedPointGroup = PointGroups[0];
             }
         }
-
-
-
-
-
     }
 }

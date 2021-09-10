@@ -5,6 +5,7 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Services;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -28,11 +29,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public CivilSurface SelectedSurface
         {
             get => _selectedSurface;
-            set
-            {
-                SetProperty(ref _selectedSurface, value);
-                _surfaceSelectService.Surface = value;
-            }
+            set => SetProperty(ref _selectedSurface, value);
         }
 
         public RelayCommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
