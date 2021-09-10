@@ -23,6 +23,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void Register()
         {
+            Container.Register<IProcessService, ProcessService>();
             Container.Register<ITraverseService, TraverseService>();
             Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
 

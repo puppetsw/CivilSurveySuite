@@ -13,14 +13,14 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SurfaceNames_OnConstruct()
         {
-            var _mock = new Mock<ISurfaceSelectService>();
-            _mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
+            var mock = new Mock<ISurfaceSelectService>();
+            mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface(),
                 new CivilSurface(),
             });
 
-            var vm = new SurfaceSelectViewModel(_mock.Object);
+            var vm = new SurfaceSelectViewModel(mock.Object);
             var expectedCount = 2;
             Assert.AreEqual(expectedCount, vm.Surfaces.Count);
         }
@@ -28,14 +28,14 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Set_SelectedSurfaceName_Property()
         {
-            var _mock = new Mock<ISurfaceSelectService>();
-            _mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
+            var mock = new Mock<ISurfaceSelectService>();
+            mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
                 new CivilSurface(),
             });
 
-            var vm = new SurfaceSelectViewModel(_mock.Object);
+            var vm = new SurfaceSelectViewModel(mock.Object);
             vm.SelectedSurface = vm.Surfaces[0];
 
             var expectedName = "EG";
@@ -43,8 +43,60 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedName, vm.SelectedSurface.Name);
         }
 
+        [TestMethod]
+        public void SelectSurfaceCommand_Execute()
+        {
+            var selectableSurface = new CivilSurface { Name = "EG" };
 
+            var mock = new Mock<ISurfaceSelectService>();
+            mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
+            {
+                new CivilSurface { Name = "Test" },
+                selectableSurface
+            });
 
+            mock.Setup(m => m.SelectSurface()).Returns(() => selectableSurface);
+
+            var vm = new SurfaceSelectViewModel(mock.Object);
+            vm.SelectSurfaceCommand.CanExecute(true);
+            vm.SelectSurfaceCommand.Execute(null);
+            
+            Assert.AreEqual(selectableSurface, vm.SelectedSurface);
+        }
+
+        [TestMethod]
+        public void SelectSurfaceCommand_Execute_SurfaceExists()
+        {
+            var mock = new Mock<ISurfaceSelectService>();
+            mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
+            {
+                new CivilSurface { Name = "EG"},
+                new CivilSurface(),
+            });
+            mock.Setup(m => m.SelectSurface()).Returns(() => new CivilSurface { Name = "EG" });
+
+            var vm = new SurfaceSelectViewModel(mock.Object);
+
+            vm.SelectSurfaceCommand.CanExecute(true);
+            vm.SelectSurfaceCommand.Execute(null);
+        }
+
+        [TestMethod]
+        public void SelectSurfaceCommand_Execute_SelectionCancelled()
+        {
+            var mock = new Mock<ISurfaceSelectService>();
+            mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
+            {
+                new CivilSurface { Name = "EG"},
+                new CivilSurface(),
+            });
+            mock.Setup(m => m.SelectSurface()).Returns(() => null);
+
+            var vm = new SurfaceSelectViewModel(mock.Object);
+
+            vm.SelectSurfaceCommand.CanExecute(true);
+            vm.SelectSurfaceCommand.Execute(null);
+        }
 
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
@@ -13,9 +12,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private string _closeBearing;
         private string _closeDistance;
-        private bool _commandRunning;
         private readonly IViewerService _viewerService;
         private readonly ITraverseService _traverseService;
+        private readonly IProcessService _processService;
 
         // ReSharper disable UnusedMember.Global
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
@@ -67,10 +66,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
         // ReSharper restore UnusedMember.Global
 
-        public TraverseAngleViewModel(IViewerService viewerService, ITraverseService traverseService)
+        public TraverseAngleViewModel(IViewerService viewerService, ITraverseService traverseService, IProcessService processService)
         {
             _viewerService = viewerService;
             _traverseService = traverseService;
+            _processService = processService;
         }
 
         private void GridUpdated()
@@ -122,16 +122,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DrawTraverse()
         {
-            // If user clicks DrawTraverse again we want to stop the command from
-            // running again if it is already running.
-            if (!_commandRunning)
-                _commandRunning = true;
-            else
-                return;
-
             _traverseService.DrawTraverse(TraverseAngles);
-
-            _commandRunning = false;
         }
 
         private void FeetToMeters()
@@ -171,9 +162,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             CloseTraverse();
         }
 
-        private void ShowHelp() //TODO: Service? for testing?
+        private void ShowHelp()
         {
-            _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
+            _processService.Start(@"Resources\3DSCivilSurveySuite.chm");
         }
 
         private void ShowViewer()

@@ -78,6 +78,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TransientGraphicsUtils.cs" />
     <Compile Include="TraverseUtils.cs" />

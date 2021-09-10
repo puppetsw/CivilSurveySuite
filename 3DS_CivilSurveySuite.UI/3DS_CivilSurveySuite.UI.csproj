@@ -71,6 +71,7 @@
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IPointGroupSelectService.cs" />
+    <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISurfaceSelectService.cs" />
     <Compile Include="Services\ITraverseService.cs" />
     <Compile Include="Services\IViewerService.cs" />

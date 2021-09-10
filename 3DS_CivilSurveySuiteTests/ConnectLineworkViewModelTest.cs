@@ -28,6 +28,15 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
+        public void LoadSettings_FileDoesNotExist()
+        {
+            var cls = new Mock<IConnectLineworkService>();
+            var vm = new ConnectLineworkViewModel(cls.Object);
+            Assert.AreEqual(0, vm.DescriptionKeys.Count);
+        }
+
+
+        [TestMethod]
         public void LoadSettings_From_File()
         {
             var vm = new ConnectLineworkViewModel(_mock.Object);

@@ -20,8 +20,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
     /// </summary>
     public class TraverseService : ITraverseService
     {
+        private bool _commandRunning;
+
         public void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList)
         {
+            if (!_commandRunning)
+                _commandRunning = true;
+            else
+                return;
+
             var point = EditorUtils.GetBasePoint2d();
 
             if (point == null)
@@ -82,12 +89,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             }
             finally
             {
+                _commandRunning = false;
                 tg.ClearGraphics();
             }
         }
 
         public void DrawTraverse(IReadOnlyList<TraverseObject> traverseList)
         { 
+            if (!_commandRunning)
+                _commandRunning = true;
+            else
+                return;
+
             var point = EditorUtils.GetBasePoint2d();
 
             if (point == null)
@@ -147,6 +160,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             }
             finally
             {
+                _commandRunning = false;
                 tg.ClearGraphics();
             }
         }

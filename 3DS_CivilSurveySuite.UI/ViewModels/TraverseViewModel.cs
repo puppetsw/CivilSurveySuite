@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -14,9 +13,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private string _closeBearing;
         private string _closeDistance;
-        private bool _commandRunning;
         private readonly IViewerService _viewerService;
         private readonly ITraverseService _traverseService;
+        private readonly IProcessService _processService;
 
         public ObservableCollection<TraverseObject> TraverseItems { get; set; }
 
@@ -53,11 +52,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
         public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
 
-        public TraverseViewModel(IViewerService viewerService, ITraverseService traverseService)
+        public TraverseViewModel(IViewerService viewerService, ITraverseService traverseService, IProcessService processService)
         {
             TraverseItems = new ObservableCollection<TraverseObject>();
             _viewerService = viewerService;
             _traverseService = traverseService;
+            _processService = processService;
         }
 
         private void ShowViewer()
@@ -110,14 +110,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DrawTraverse()
         {
-            if (!_commandRunning)
-                _commandRunning = true;
-            else
-                return; //exit if command running
-
             _traverseService.DrawTraverse(TraverseItems);
-
-            _commandRunning = false;
         }
 
         private void FeetToMeters()
@@ -161,7 +154,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void ShowHelp()
         {
-            _ = Process.Start(@"Resources\3DSCivilSurveySuite.chm");
+            _processService.Start(@"Resources\3DSCivilSurveySuite.chm");
         }
 
         /// <summary>
