@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
         mc:Ignorable="d"
-        Title="Move CogoPoint Labels" Height="140" Width="250" ResizeMode="CanResizeWithGrip" MinHeight="140" MaxHeight="140" MinWidth="250" >
-    <Grid Margin="5">
+        Title="Move CogoPoint Labels" Height="120" MinHeight="120" MaxHeight="120" Width="230" MinWidth="230" ResizeMode="CanResizeWithGrip" >
+    <Grid Margin="3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -16,17 +16,17 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
+        <StackPanel Grid.Column="0" Grid.Row="0" Margin="3">
             <TextBlock Text="X Offset: "/>
-            <TextBox Height="20" Margin="0, 0, 5, 0" HorizontalContentAlignment="Center" Text="{Binding DeltaX}" />
+            <TextBox Height="20" HorizontalContentAlignment="Center" Text="{Binding DeltaX}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="0">
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="3">
             <TextBlock Text="Y Offset: "/>
             <TextBox Height="20" HorizontalContentAlignment="Center" Text="{Binding DeltaY}" />
         </StackPanel>
 
         <Button Grid.Column="0" Grid.Row="1" Height="23" Width="100" Content="Select Points" Command="{Binding MoveCommand}" Click="Move_Button_Click"/>
-        <Button Grid.Column="1" Grid.Row="1" Height="23" Width="100" Content="Cancel" Click="Cancel_Button_Click" />
+        <Button Grid.Column="1" Grid.Row="1" Height="23" Width="100" Content="Close" Click="Cancel_Button_Click" />
     </Grid>
 </Window>

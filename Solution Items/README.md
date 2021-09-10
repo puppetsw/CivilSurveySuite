@@ -14,9 +14,9 @@
 * Settings (Properties.Settings.Default.MyConnection)
 * Linework tool to replace SmartDraft -- in progress
 * point report /w alingments
-* Fix up CogoPointLabelMoveView
 * Rename ShowCogoPointViewer command
 * Typing a palette command when visible hides it.
+* Improve angle calculator
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 

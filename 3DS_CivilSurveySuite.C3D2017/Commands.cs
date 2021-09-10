@@ -174,8 +174,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DPalettes.ShowConnectLinePalette();
         }
 
-        [CommandMethod("3DS", "3DSShowCogoPointViewer", CommandFlags.Modal)]
-        public static void ShowCogoPointViewer()
+        [CommandMethod("3DS", "3DSShowCogoPointEditor", CommandFlags.Modal)]
+        public static void ShowCogoPointEditor()
         {
             C3DService.ShowWindow<CogoPointEditorView>();
         }
