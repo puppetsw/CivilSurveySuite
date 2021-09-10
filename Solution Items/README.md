@@ -17,6 +17,7 @@
 * Rename ShowCogoPointViewer command
 * Typing a palette command when visible hides it.
 * Improve angle calculator
+* Think about making it so palettes open up individually. might solve a lot of issues with events.
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 

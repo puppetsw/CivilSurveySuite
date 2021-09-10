@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             Container.Register<IProcessService, ProcessService>();
             Container.Register<ITraverseService, TraverseService>();
-            Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
+            Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton); //TODO: Remove and replace with transient graphics
 
             Container.Register<AngleCalculatorView>();
             Container.Register<AngleCalculatorViewModel>();

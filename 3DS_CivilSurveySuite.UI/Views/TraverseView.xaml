@@ -21,6 +21,13 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ClosePaletteCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>

@@ -51,6 +51,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public RelayCommand ShowHelpCommand => new RelayCommand(ShowHelp, () => true);
         public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
         public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
+        public RelayCommand ClosePaletteCommand => new RelayCommand(ClosePalette, () => true);
+
+        private void ClosePalette()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public TraverseViewModel(IViewerService viewerService, ITraverseService traverseService, IProcessService processService)
         {
