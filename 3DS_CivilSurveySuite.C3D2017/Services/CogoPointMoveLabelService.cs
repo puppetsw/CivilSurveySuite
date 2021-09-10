@@ -1,24 +1,12 @@
-﻿using System;
-using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.Services;
-using _3DS_CivilSurveySuite.UI.Views;
+﻿using _3DS_CivilSurveySuite.UI.Services;
 
-namespace _3DS_CivilSurveySuite.C3D2017
+namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class CogoPointMoveLabelService : ICogoPointMoveLabelService
     {
-        public Vector MoveDifference { get; set; }
-
-        public Vector GetMoveDifference()
+        public void MoveLabels(double x, double y)
         {
-            bool? dialogResult = C3DService.ShowDialog<CogoPointMoveLabelView>();
-
-            if (dialogResult != null && dialogResult.Value)
-            {
-                return MoveDifference;
-            }
-
-            return null;
+            CogoPointUtils.Move_CogoPoint_Label(x, y);
         }
     }
 }

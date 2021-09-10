@@ -11,12 +11,12 @@ namespace _3DS_CivilSurveySuiteTests
     [TestClass]
     public class CogoPointViewerViewModelTests
     {
-        private Mock<ICogoPointViewerService> _mock;
+        private Mock<ICogoPointEditorService> _mock;
 
         [TestInitialize]
         public void Setup()
         {
-            _mock = new Mock<ICogoPointViewerService>();
+            _mock = new Mock<ICogoPointEditorService>();
             _mock.Setup(m => m.GetPoints()).Returns(() => new List<CivilPoint>
             {
                 new CivilPoint { RawDescription = "Scott" },
@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SelectedCommand_Execute()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectedItem = new CivilPoint();
 
@@ -40,7 +40,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CopyDescriptionFormatCommand_SelectedItems()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectionChangedCommand.CanExecute(true);
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CopyDescriptionFormatCommand_NoSelectedItems()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.CopyDescriptionFormatCommand.CanExecute(true);
             vm.CopyDescriptionFormatCommand.Execute(null);
@@ -60,7 +60,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CopyRawDescriptionCommand_SelectedItems()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectionChangedCommand.CanExecute(true);
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
@@ -71,7 +71,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CopyRawDescriptionCommand_NoSelectedItems()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.CopyRawDescriptionCommand.CanExecute(true);
             vm.CopyRawDescriptionCommand.Execute(null);
@@ -80,7 +80,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void UpdateCommand_Execute()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectedItem = new CivilPoint();
 
@@ -91,7 +91,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void ZoomToCommand_Execute()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectedItem = new CivilPoint();
 
@@ -102,7 +102,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SelectionChangedCommand_Execute()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectionChangedCommand.CanExecute(true);
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SelectionChangedCommand_Execute_NoItems()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
 
             vm.SelectionChangedCommand.CanExecute(true);
             vm.SelectionChangedCommand.Execute(null);
@@ -122,7 +122,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Filter_Property_Changed()
         {
-            var vm = new CogoPointViewerViewModel(_mock.Object);
+            var vm = new CogoPointEditorViewModel(_mock.Object);
             Assert.AreEqual(3, vm.CogoPoints.Count);
 
             vm.FilterText = "Scott";

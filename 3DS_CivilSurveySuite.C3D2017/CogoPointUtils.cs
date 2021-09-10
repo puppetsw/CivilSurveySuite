@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
-using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -317,20 +316,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-        public static void Move_CogoPoint_Label()
+        public static void Move_CogoPoint_Label(double deltaX, double deltaY)
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
                 return;
-
-            //surface = GetSurfaceByName(tr, C3DService.SurfaceSelect().GetSurface().Name);
-
-            Vector vector = C3DService.CogoPointMove().GetMoveDifference();
-            
-            //if (!EditorUtils.GetDouble(out double deltaX, "\n3DS> Amount to move on X axis: "))
-            //    return;
-
-            //if (!EditorUtils.GetDouble(out double deltaY, "\n3DS> Amount to move on Y axis: "))
-            //    return;
 
             using (var tr = AcadApp.StartTransaction())
             {
@@ -344,7 +333,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     var currentLocation = cogoPoint.LabelLocation;
 
                     cogoPoint.UpgradeOpen();
-                    cogoPoint.LabelLocation = new Point3d(currentLocation.X + vector.X, currentLocation.Y + vector.Y, 0);
+                    cogoPoint.LabelLocation = new Point3d(currentLocation.X + deltaX, currentLocation.Y + deltaY, 0);
                     cogoPoint.DowngradeOpen();
                 }
                 tr.Commit();

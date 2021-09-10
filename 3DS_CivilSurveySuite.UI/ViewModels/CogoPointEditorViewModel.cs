@@ -17,9 +17,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for CogoPointViewer.
     /// </summary>
-    public class CogoPointViewerViewModel : ViewModelBase
+    public class CogoPointEditorViewModel : ViewModelBase
     {
-        private readonly ICogoPointViewerService _cogoPointViewerService;
+        private readonly ICogoPointEditorService _cogoPointViewerService;
         private CivilPoint _selectedCivilPoint;
         private string _filterText;
 
@@ -64,7 +64,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand CopyDescriptionFormatCommand => new RelayCommand(CopyDescriptionFormat, () => MultipleSelected);
 
-        public CogoPointViewerViewModel(ICogoPointViewerService cogoPointViewerService)
+        public CogoPointEditorViewModel(ICogoPointEditorService cogoPointViewerService)
         {
             _cogoPointViewerService = cogoPointViewerService;
             CogoPoints = new ObservableCollection<CivilPoint>(_cogoPointViewerService.GetPoints());

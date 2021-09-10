@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
@@ -69,7 +70,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSCptLabelsMove", CommandFlags.Modal)]
         public static void CptMoveLabels()
         {
-            CogoPointUtils.Move_CogoPoint_Label();
+            C3DService.ShowDialog<CogoPointMoveLabelView>();
         }
 
 
@@ -176,7 +177,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSShowCogoPointViewer", CommandFlags.Modal)]
         public static void ShowCogoPointViewer()
         {
-            C3DPalettes.ShowCogoPointViewer();
+            C3DService.ShowWindow<CogoPointEditorView>();
         }
 
 

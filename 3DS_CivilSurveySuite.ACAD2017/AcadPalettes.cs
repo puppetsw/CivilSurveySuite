@@ -4,11 +4,11 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017.Services;
-using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.ApplicationServices;
+using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private static bool s_paletteVisible;
         private static readonly IViewerService s_viewerService;
-        private static readonly IPaletteService s_paletteService;
+        private static readonly PaletteService s_paletteService;
 
         static AcadPalettes()
         {

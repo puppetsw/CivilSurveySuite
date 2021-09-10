@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using _3DS_CivilSurveySuite.ACAD2017;
@@ -13,9 +12,9 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017
+namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    public class CogoPointViewerService : ICogoPointViewerService
+    public class CogoPointEditorService : ICogoPointEditorService
     {
         public void Select(CivilPoint civilPoint)
         {
@@ -148,7 +147,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 tr.Commit();
             }
         }
-
 
         private static void UpdateCivilPoint(ref CivilPoint civilPoint, ref CogoPoint cogoPoint)
         {

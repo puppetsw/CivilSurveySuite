@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Windows;
+using System.Windows.Controls;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.C3D2017.Services;
 using _3DS_CivilSurveySuite.Model;
@@ -29,19 +30,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<IPointGroupSelectService, PointGroupSelectService>();
             Container.Register<ICogoPointMoveLabelService, CogoPointMoveLabelService>();
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
-            Container.Register<ICogoPointViewerService, CogoPointViewerService>();
+            Container.Register<ICogoPointEditorService, CogoPointEditorService>();
 
             Container.Register<SurfaceSelectView>();
             Container.Register<SurfaceSelectViewModel>();
 
+            Container.Register<PointGroupSelectView>();
+            Container.Register<PointGroupSelectViewModel>();
+
             Container.Register<CogoPointMoveLabelView>();
             Container.Register<CogoPointMoveLabelViewModel>();
 
-            Container.Register<CogoPointViewer>();
-            Container.Register<CogoPointViewerViewModel>();
+            Container.Register<ConnectLineworkView>();
+            Container.Register<ConnectLineworkViewModel>();
 
-            Container.Register<PointGroupSelectView>();
-            Container.Register<PointGroupSelectViewModel>();
+            Container.Register<CogoPointEditorView>();
+            Container.Register<CogoPointEditorViewModel>();
 
             Container.Verify();
         }
@@ -63,8 +67,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return Container.GetInstance<TView>();
         }
 
-
-
+        public static TView CreateUserControl<TView>() where TView : UserControl
+        {
+            return Container.GetInstance<TView>();
+        }
 
         /// <summary>
         /// Selects the surface.
@@ -122,12 +128,5 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return pointGroup;
         }
 
-
-
-        public static ICogoPointMoveLabelService CogoPointMove() => Container.GetInstance<ICogoPointMoveLabelService>();
-
-        public static IConnectLineworkService ConnectLinework() => Container.GetInstance<IConnectLineworkService>();
-
-        //public static ICogoPointViewerService CogoPointViewer() => Container.GetInstance<ICogoPointViewerService>();
     }
 }

@@ -10,9 +10,11 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// </summary>
     public partial class ConnectLineworkView : UserControl
     {
-        public ConnectLineworkView()
+        public ConnectLineworkView(ConnectLineworkViewModel viewModel)
         {
             InitializeComponent();
+
+            DataContext = viewModel;
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)

@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017
+namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class ConnectLineworkService : IConnectLineworkService
     {

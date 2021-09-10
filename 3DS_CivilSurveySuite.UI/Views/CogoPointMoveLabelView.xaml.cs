@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using _3DS_CivilSurveySuite.UI.Extensions;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
@@ -24,12 +13,20 @@ namespace _3DS_CivilSurveySuite.UI.Views
         {
             InitializeComponent();
 
+            SourceInitialized += (x, y) => this.HideMinimizeAndMaximizeButtons();
+
             DataContext = viewModel;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Move_Button_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            Close();
+        }
+
+        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
             Close();
         }
     }

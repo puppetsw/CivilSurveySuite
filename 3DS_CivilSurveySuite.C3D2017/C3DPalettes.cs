@@ -5,7 +5,6 @@
 
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
-using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.ApplicationServices;
 
@@ -18,7 +17,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
     public static class C3DPalettes
     {
         private static bool s_paletteVisible;
-        private static readonly IPaletteService s_paletteService;
+        private static readonly PaletteService s_paletteService;
 
         static C3DPalettes()
         {
@@ -29,13 +28,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void ShowConnectLinePalette()
         {
-            var view = new ConnectLineworkView();
-            var vm = new ConnectLineworkViewModel(C3DService.ConnectLinework());
-            s_paletteService.GeneratePalette(view, vm, "Linework");
-        }
-        public static void ShowCogoPointViewer()
-        {
-            C3DService.ShowWindow<CogoPointViewer>();
+            s_paletteService.GeneratePalette(C3DService.CreateUserControl<ConnectLineworkView>(), "Linework");
         }
 
         private static void DocumentManager_DocumentActivated(object sender, DocumentCollectionEventArgs e)

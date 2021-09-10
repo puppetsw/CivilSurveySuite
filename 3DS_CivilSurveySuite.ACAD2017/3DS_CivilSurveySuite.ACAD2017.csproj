@@ -81,7 +81,6 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TransientGraphicsUtils.cs" />
     <Compile Include="TraverseUtils.cs" />
-    <Compile Include="Services\IPaletteService.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />
     <Compile Include="LineUtils.cs" />

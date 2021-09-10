@@ -11,7 +11,7 @@ using Autodesk.AutoCAD.Windows;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {
-    public class PaletteService : IPaletteService, IDisposable
+    public class PaletteService : IDisposable
     {
         private readonly List<Type> _palettes = new List<Type>();
 
@@ -20,6 +20,28 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         ~PaletteService()
         {
             ReleaseUnmanagedResources();
+        }
+
+        private void CreatePaletteSet()
+        {
+            PaletteSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
+            PaletteSet.Style = PaletteSetStyles.ShowCloseButton |
+                               PaletteSetStyles.ShowPropertiesMenu |
+                               PaletteSetStyles.ShowAutoHideButton;
+            PaletteSet.EnableTransparency(true);
+            PaletteSet.KeepFocus = false;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            if (PaletteSet != null)
+                PaletteSet.Dispose();
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -68,27 +90,39 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             // ReSharper restore PossibleNullReferenceException
         }
 
-        private void CreatePaletteSet()
+        public void GeneratePalette(FrameworkElement view, string viewName, Action hideMethod = null)
         {
-            PaletteSet = new PaletteSet("3DS Civil Survey Suite", new Guid("C55243DF-EEBB-4FA6-8651-645E018F86DE"));
-            PaletteSet.Style = PaletteSetStyles.ShowCloseButton |
-                                             PaletteSetStyles.ShowPropertiesMenu |
-                                             PaletteSetStyles.ShowAutoHideButton;
-            PaletteSet.EnableTransparency(true);
-            PaletteSet.KeepFocus = false;
-        }
+            if (PaletteSet == null)
+            {
+                CreatePaletteSet();
+            }
 
-        
-        private void ReleaseUnmanagedResources()
-        {
-            if (PaletteSet != null)
-                PaletteSet.Dispose();
-        }
+            // ReSharper disable PossibleNullReferenceException
+            if (!_palettes.Contains(view.GetType()))
+            {
+                PaletteSet.AddVisual(viewName, view);
+                _palettes.Add(view.GetType());
+                PaletteSet.Activate(_palettes.IndexOf(view.GetType()));
 
-        public void Dispose()
-        {
-            ReleaseUnmanagedResources();
-            GC.SuppressFinalize(this);
+                if (hideMethod != null)
+                {
+                    PaletteSet.StateChanged += (s, e) =>
+                    {
+                        if (e.NewState == StateEventIndex.Hide)
+                        {
+                            hideMethod.Invoke();
+                        }
+                    };
+                    //BUG: When closing AutoCAD this event tries to run. But Editor is null.
+                    //view.IsVisibleChanged += (s, e) => AutoCADApplicationManager.Editor.WriteMessage("IsVisibleChanged");
+                }
+            }
+
+            if (!PaletteSet.Visible)
+            {
+                PaletteSet.Visible = true;
+            }
+            // ReSharper restore PossibleNullReferenceException
         }
     }
 }

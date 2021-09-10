@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.ACAD2017.Services;
-using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 using SimpleInjector;
 
@@ -21,7 +20,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             Container.Register<ITraverseService, TraverseService>();
             Container.Register<IViewerService, ViewerService>(Lifestyle.Singleton);
-            Container.Register<IPaletteService, PaletteService>(Lifestyle.Singleton);
+            Container.Register<PaletteService>(Lifestyle.Singleton);
             Container.Verify();
         }
 
@@ -29,6 +28,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static IViewerService CreateViewerService() => Container.GetInstance<IViewerService>();
 
-        public static IPaletteService CreatePaletteService() => Container.GetInstance<IPaletteService>();
+        public static PaletteService CreatePaletteService() => Container.GetInstance<PaletteService>();
     }
 }

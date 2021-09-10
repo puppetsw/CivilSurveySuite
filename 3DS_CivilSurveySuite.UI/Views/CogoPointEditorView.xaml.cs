@@ -18,9 +18,9 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// <summary>
     /// Interaction logic for CogoPointViewer.xaml
     /// </summary>
-    public partial class CogoPointViewer : Window
+    public partial class CogoPointEditorView : Window
     {
-        public CogoPointViewer(CogoPointViewerViewModel viewModel)
+        public CogoPointEditorView(CogoPointEditorViewModel viewModel)
         {
             InitializeComponent();
 

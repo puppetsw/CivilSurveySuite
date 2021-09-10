@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ribbon Sample", "Ribbon Sam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Samples", "Other Samples", "{1C970487-72D0-4D4F-8297-29A52828B4D2}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\Desktop\Screenshot 2021-09-01 054202.png = ..\..\..\Desktop\Screenshot 2021-09-01 054202.png
+		Solution Items\Screenshot 2021-09-10 110359.png = Solution Items\Screenshot 2021-09-10 110359.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}"

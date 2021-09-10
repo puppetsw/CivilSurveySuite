@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
         mc:Ignorable="d"
-        Title="Select point group" Height="180" Width="280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="Select Point Group" Height="180" Width="280" WindowStartupLocation="CenterScreen" MinHeight="180" MaxHeight="180" MinWidth="280" ResizeMode="CanResizeWithGrip"
         Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
         >
     <Window.Resources>

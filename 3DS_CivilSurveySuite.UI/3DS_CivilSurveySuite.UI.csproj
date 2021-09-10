@@ -67,7 +67,7 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\ICogoPointMoveLabelService.cs" />
-    <Compile Include="Services\ICogoPointViewerService.cs" />
+    <Compile Include="Services\ICogoPointEditorService.cs" />
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IPointGroupSelectService.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="UserControls\ZoomBorder.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
-    <Compile Include="ViewModels\CogoPointViewerViewModel.cs" />
+    <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="ViewModels\PointGroupSelectViewModel.cs" />
     <Compile Include="ViewModels\SurfaceSelectViewModel.cs" />
@@ -93,8 +93,8 @@
     <Compile Include="Views\CogoPointMoveLabelView.xaml.cs">
       <DependentUpon>CogoPointMoveLabelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CogoPointViewer.xaml.cs">
-      <DependentUpon>CogoPointViewer.xaml</DependentUpon>
+    <Compile Include="Views\CogoPointEditorView.xaml.cs">
+      <DependentUpon>CogoPointEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConnectLineworkView.xaml.cs">
       <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
@@ -225,7 +225,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CogoPointViewer.xaml">
+    <Page Include="Views\CogoPointEditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using _3DS_CivilSurveySuite.Model;
+using _3DS_CivilSurveySuite.UI.Extensions;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
@@ -13,6 +14,8 @@ namespace _3DS_CivilSurveySuite.UI.Views
         public PointGroupSelectView(PointGroupSelectViewModel viewModel)
         {
             InitializeComponent();
+
+            SourceInitialized += (x, y) => this.HideMinimizeAndMaximizeButtons();
 
             DataContext = viewModel;
         }

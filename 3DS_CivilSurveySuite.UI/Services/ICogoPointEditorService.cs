@@ -8,7 +8,7 @@ using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface ICogoPointViewerService
+    public interface ICogoPointEditorService
     {
         void ZoomTo(CivilPoint civilPoint);
 
