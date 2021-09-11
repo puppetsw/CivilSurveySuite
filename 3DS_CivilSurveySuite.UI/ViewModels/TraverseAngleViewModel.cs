@@ -122,7 +122,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DrawTraverse()
         {
-            _traverseService.DrawTraverse(TraverseAngles);
+            _traverseService.DrawLines(TraverseAngles);
         }
 
         private void FeetToMeters()

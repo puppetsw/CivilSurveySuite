@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="_3DS_CivilSurveySuite.UI.Views.TraverseView"
+﻿<Window x:Class="_3DS_CivilSurveySuite.UI.Views.TraverseView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,8 +7,8 @@
             xmlns:converter="clr-namespace:_3DS_CivilSurveySuite.UI.Converters"
             xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.UI.Behaviors"
             mc:Ignorable="d"
-            d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
+            d:DesignHeight="450" d:DesignWidth="800" Title="Traverse Tool" ResizeMode="CanResizeWithGrip">
+    <Window.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
             <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
@@ -20,11 +20,11 @@
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </UserControl.Resources>
+    </Window.Resources>
 
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Unloaded">
-            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.ClosePaletteCommand}" />
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CloseWindowCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -55,14 +55,14 @@
                     <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
                 </Button>
                 <Separator IsTabStop="False" />
-                <!--<Button Command="{Binding SetBasePointCommand}">
+                <Button Command="{Binding SetBasePointCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/>
                     </StackPanel>
-                </Button>-->
+                </Button>
                 <!--<Button Command="{Binding RefreshTraverseCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource RefreshToolTipContent}"/>
@@ -118,7 +118,7 @@
                         <TextBlock Text=" Flip Bearing" />
                     </StackPanel>
                 </Button>
-                <Button Command="{Binding ShowViewerCommand}">
+                <!--<Button Command="{Binding ShowViewerCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource PreviewToolTipContent}"/>
                     </Button.ToolTip>
@@ -126,7 +126,7 @@
                         <Image Source="{StaticResource PreviewToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Viewer" />
                     </StackPanel>
-                </Button>
+                </Button>-->
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding ShowHelpCommand}">
                     <Button.ToolTip>
@@ -152,7 +152,7 @@
                   >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SourceUpdated">
-                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.GridUpdatedCommand}" />
+                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.GridUpdatedCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <DataGrid.Columns>
@@ -214,4 +214,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
-</UserControl>
+</Window>

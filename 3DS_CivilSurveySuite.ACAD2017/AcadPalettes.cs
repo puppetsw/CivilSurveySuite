@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static void ShowTraversePalette()
         {
-            s_paletteService.GeneratePalette(AcadService.CreateUserControl<TraverseView>(), "Traverse");
+            //s_paletteService.GeneratePalette(AcadService.CreateUserControl<TraverseView>(), "Traverse");
         }
 
         public static void ShowTraverseAnglePalette()

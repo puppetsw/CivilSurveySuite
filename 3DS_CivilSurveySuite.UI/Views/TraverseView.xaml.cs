@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
@@ -7,7 +8,7 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// <summary>
     /// Interaction logic for TraverseView.xaml
     /// </summary>
-    public partial class TraverseView : UserControl
+    public partial class TraverseView : Window
     {
         public TraverseView(TraverseViewModel viewModel)
         {
@@ -35,9 +36,9 @@ namespace _3DS_CivilSurveySuite.UI.Views
             //    }
             //}
 
-            var dg = sender as DataGrid;
+            //var dg = sender as DataGrid;
 
-            var currentCell = dg.CurrentCell;
+            //var currentCell = dg.CurrentCell;
 
             // alter this condition for whatever valid keys you want - avoid arrows/tab, etc.
             //if (dg != null && !dg.IsReadOnly && e.Key == Key.Enter)

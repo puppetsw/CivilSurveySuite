@@ -1,4 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
+using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -13,11 +18,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private string _closeBearing;
         private string _closeDistance;
-        private readonly IViewerService _viewerService;
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
 
-        public ObservableCollection<TraverseObject> TraverseItems { get; set; }
+        public ObservableCollection<TraverseObject> TraverseItems { get; set; } = new ObservableCollection<TraverseObject>();
 
         public TraverseObject SelectedTraverseItem { get; set; }
 
@@ -42,39 +46,52 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         }
 
         public RelayCommand AddRowCommand => new RelayCommand(AddRow, () => true);
+
         public RelayCommand RemoveRowCommand => new RelayCommand(RemoveRow, () => true);
+
         public RelayCommand ClearCommand => new RelayCommand(ClearTraverse, () => true);
+
         public RelayCommand DrawCommand => new RelayCommand(DrawTraverse, () => true);
+
         public RelayCommand FeetToMetersCommand => new RelayCommand(FeetToMeters, () => true);
+
         public RelayCommand LinksToMetersCommand => new RelayCommand(LinksToMeters, () => true);
+
         public RelayCommand FlipBearingCommand => new RelayCommand(FlipBearing, () => true);
+
         public RelayCommand ShowHelpCommand => new RelayCommand(ShowHelp, () => true);
+
+        public RelayCommand SetBasePointCommand => new RelayCommand(SetBasePoint, () => true);
+
         public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
-        public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
-        public RelayCommand ClosePaletteCommand => new RelayCommand(ClosePalette, () => true);
 
-        private void ClosePalette()
-        {
-            throw new System.NotImplementedException();
-        }
+        public RelayCommand CloseWindowCommand => new RelayCommand(CloseWindow, () => true);
 
-        public TraverseViewModel(IViewerService viewerService, ITraverseService traverseService, IProcessService processService)
+        public TraverseViewModel(ITraverseService traverseService, IProcessService processService)
         {
-            TraverseItems = new ObservableCollection<TraverseObject>();
-            _viewerService = viewerService;
             _traverseService = traverseService;
             _processService = processService;
         }
 
-        private void ShowViewer()
+        private void SetBasePoint()
         {
-            _viewerService?.ShowWindow();
+            _traverseService?.SetBasePoint();
+
+            if (TraverseItems.Count > 0)
+            {
+                _traverseService?.DrawTransientLines(TraverseItems);
+            }
+        }
+
+        private void CloseWindow()
+        {
+            _traverseService?.ClearGraphics();
         }
 
         private void GridUpdated()
         {
             CloseTraverse();
-            _viewerService.AddGraphics(PointHelpers.TraverseObjectsToCoordinates(TraverseItems, new Point(0, 0)));
+            _traverseService?.DrawTransientLines(TraverseItems);
         }
 
         private void AddRow()
@@ -116,7 +133,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DrawTraverse()
         {
-            _traverseService.DrawTraverse(TraverseItems);
+            _traverseService.DrawLines(TraverseItems);
         }
 
         private void FeetToMeters()
@@ -160,12 +177,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void ShowHelp()
         {
-            _processService.Start(@"Resources\3DSCivilSurveySuite.chm");
+            _processService?.Start(@"Resources\3DSCivilSurveySuite.chm");
         }
 
-        /// <summary>
-        /// Updates the index property based on collection position
-        /// </summary>
         private void UpdateIndex()
         {
             int i = 0;

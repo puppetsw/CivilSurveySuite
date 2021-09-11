@@ -8,163 +8,87 @@ using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
-using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
+using Autodesk.AutoCAD.Internal;
 using Point = _3DS_CivilSurveySuite.Model.Point;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {
     /// <summary>
-    /// Traverse utility with command line input
+    /// Traverse service implementation.
     /// </summary>
-    public class TraverseService : ITraverseService
+    public class TraverseService : ITraverseService, IDisposable
     {
-        private bool _commandRunning;
+        private readonly TransientGraphics _graphics;
 
-        public void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList)
+        private Point _basePoint;
+        
+        public TraverseService()
         {
-            if (!_commandRunning)
-                _commandRunning = true;
-            else
+            _graphics = new TransientGraphics();
+        }
+
+        public void DrawLines(IEnumerable<TraverseAngleObject> traverse)
+        {
+            _graphics?.ClearGraphics();
+
+            if (!_basePoint.IsValid())
                 return;
 
-            var point = EditorUtils.GetBasePoint2d();
-
-            if (point == null)
-                return;
-
-            var basePoint = point.Value.ToPoint();
-
-            AcadApp.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
-
-            //get coordinates based on traverse data
-
-            var pko = new PromptKeywordOptions("\n3DS> Accept and draw traverse?") { AppendKeywordsToMessage = true };
-            pko.Keywords.Add(Keywords.Accept);
-            pko.Keywords.Add(Keywords.Cancel);
-            pko.Keywords.Add(Keywords.Redraw);
-
-            var tg = new TransientGraphics();
-
-            try
+            using (var tr = AcadApp.StartLockedTransaction())
             {
-                // Lock ACAD document and start transaction as we are running from Palette.
-                using (Transaction tr = AcadApp.StartLockedTransaction())
-                {
-                    var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
-
-                    // Draw Transient Graphics of Traverse.
-                    DrawTraverseGraphics(tg, coordinates);
-                    var cancelled = false;
-                    PromptResult prResult;
-                    do
-                    {
-                        prResult = AcadApp.Editor.GetKeywords(pko);
-                        if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
-                        {
-                            switch (prResult.StringResult)
-                            {
-                                case Keywords.Redraw: //if redraw update the coordinates clear transients and redraw
-                                    coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, basePoint);
-                                    DrawTraverseGraphics(tg, coordinates);
-                                    break;
-                                case Keywords.Accept:
-                                    LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
-                                    cancelled = true;
-                                    break;
-                                case Keywords.Cancel:
-                                    cancelled = true;
-                                    break;
-                            }
-                        }
-                    } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
-
-                    tr.Commit();
-                }
-            }
-            catch (Exception e)
-            {
-                AcadApp.Editor.WriteMessage(e.Message);
-            }
-            finally
-            {
-                _commandRunning = false;
-                tg.ClearGraphics();
+                var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(traverse, _basePoint);
+                LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
+                tr.Commit();
+                AcadApp.Editor.Regen();
             }
         }
 
-        public void DrawTraverse(IReadOnlyList<TraverseObject> traverseList)
+        public void DrawLines(IEnumerable<TraverseObject> traverse)
         { 
-            if (!_commandRunning)
-                _commandRunning = true;
-            else
+            _graphics?.ClearGraphics();
+
+            if (!_basePoint.IsValid())
                 return;
 
-            var point = EditorUtils.GetBasePoint2d();
-
-            if (point == null)
-                return;
-
-            AcadApp.Editor.WriteMessage($"\n3DS> Base point set: X:{point.Value.X} Y:{point.Value.Y}");
-
-            var basePoint = point.Value.ToPoint();
-
-            var pko = new PromptKeywordOptions("\n3DS> Accept traverse and draw linework? ") { AppendKeywordsToMessage = true };
-            pko.Keywords.Add(Keywords.Accept);
-            pko.Keywords.Add(Keywords.Cancel);
-            pko.Keywords.Add(Keywords.Redraw);
-
-            var tg = new TransientGraphics();
-
-            try
+            using (var tr = AcadApp.StartLockedTransaction())
             {
-                //lock acad document and start transaction
-                using (Transaction tr = AcadApp.StartLockedTransaction())
-                {
-                    var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
-
-                    //draw first transient traverse
-                    DrawTraverseGraphics(tg, coordinates);
-
-                    var cancelled = false;
-                    PromptResult prResult;
-                    do
-                    {
-                        prResult = AcadApp.Editor.GetKeywords(pko);
-                        if (prResult.Status == PromptStatus.Keyword || prResult.Status == PromptStatus.OK)
-                        {
-                            switch (prResult.StringResult)
-                            {
-                                case "Redraw": //if redraw update the coordinates clear transients and redraw
-                                    coordinates = PointHelpers.TraverseObjectsToCoordinates(traverseList, basePoint);
-                                    DrawTraverseGraphics(tg, coordinates);
-                                    break;
-                                case "Accept":
-                                    LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
-                                    cancelled = true;
-                                    break;
-                                case "Cancel":
-                                    cancelled = true;
-                                    break;
-                            }
-                        }
-                    } while (prResult.Status != PromptStatus.Cancel && prResult.Status != PromptStatus.Error && !cancelled);
-
-                    tr.Commit();
-                }
-            }
-            catch (Exception e)
-            {
-                AcadApp.Editor.WriteMessage(e.Message);
-            }
-            finally
-            {
-                _commandRunning = false;
-                tg.ClearGraphics();
+                var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
+                LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
+                tr.Commit();
+                AcadApp.Editor.Regen();
             }
         }
 
+        public void DrawTransientLines(IEnumerable<TraverseObject> traverse)
+        {
+            if (_graphics == null)
+                return;
+
+            _graphics.ClearGraphics();
+            var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
+            DrawTraverseGraphics(_graphics, coordinates);
+            AcadApp.Editor.UpdateScreen();
+        }
+
+        public void SetBasePoint()
+        {
+            Utils.SetFocusToDwgView();
+
+            if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))
+                return;
+
+            AcadApp.Editor.WriteMessage($"\n3DS> Base point: X:{Math.Round(_basePoint.X, 4)}, Y:{Math.Round(_basePoint.Y, 4)}");
+
+            _basePoint = basePoint.ToPoint();
+        }
+        
+        public void ClearGraphics()
+        {
+            _graphics?.ClearGraphics();
+        }
+        
         private static void DrawTraverseGraphics(TransientGraphics graphics, IReadOnlyList<Point> coordinates)
         {
             // Clear existing graphics
@@ -186,6 +110,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 graphics.DrawBox(startPoint, 4);
                 graphics.DrawX(startPoint, 4);
             }
+        }
+
+        public void Dispose()
+        {
+            _graphics?.Dispose();
         }
     }
 }

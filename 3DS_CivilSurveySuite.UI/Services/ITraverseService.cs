@@ -8,10 +8,19 @@ using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.UI.Services
 {
+    /// <summary>
+    /// Interface ITraverseService
+    /// </summary>
     public interface ITraverseService
     {
-        void DrawTraverse(IReadOnlyList<TraverseAngleObject> angleList);
+        void DrawLines(IEnumerable<TraverseAngleObject> traverseAngle);
 
-        void DrawTraverse(IReadOnlyList<TraverseObject> traverseList);
+        void DrawLines(IEnumerable<TraverseObject> traverse);
+
+        void DrawTransientLines(IEnumerable<TraverseObject> traverse);
+
+        void SetBasePoint();
+
+        void ClearGraphics();
     }
 }

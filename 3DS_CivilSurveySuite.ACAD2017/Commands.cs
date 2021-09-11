@@ -202,7 +202,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSShowTraversePalette", CommandFlags.Modal)]
         public static void ShowTraversePalette()
         {
-            AcadPalettes.ShowTraversePalette();
+            //AcadPalettes.ShowTraversePalette();
+            AcadService.ShowWindow<TraverseView>();
         }
 
         [CommandMethod("3DS", "_3DSShowTraverseAnglePalette", CommandFlags.Modal)]
