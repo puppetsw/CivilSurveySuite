@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System.Windows;
-using System.Windows.Controls;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
@@ -35,8 +34,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<TraverseView>();
             Container.Register<TraverseViewModel>();
 
-            Container.Register<PaletteService>(Lifestyle.Singleton);
-
             Container.Verify();
         }
 
@@ -57,11 +54,5 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return Container.GetInstance<TView>();
         }
 
-        public static TView CreateUserControl<TView>() where TView : UserControl
-        {
-            return Container.GetInstance<TView>();
-        }
-
-        public static PaletteService CreatePaletteService() => Container.GetInstance<PaletteService>();
     }
 }

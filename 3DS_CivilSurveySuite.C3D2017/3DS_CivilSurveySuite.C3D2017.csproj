@@ -71,7 +71,6 @@
     <Compile Include="CommandSettings.cs" />
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="LabelUtils.cs" />
-    <Compile Include="C3DPalettes.cs" />
     <Compile Include="PointGroupExtensions.cs" />
     <Compile Include="Services\PointGroupSelectService.cs" />
     <Compile Include="PointGroupUtils.cs" />

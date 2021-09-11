@@ -74,10 +74,6 @@
     <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISurfaceSelectService.cs" />
     <Compile Include="Services\ITraverseService.cs" />
-    <Compile Include="UserControls\TraverseViewer.xaml.cs">
-      <DependentUpon>TraverseViewer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ZoomBorder.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
@@ -213,10 +209,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControls\TraverseViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\AngleCalculatorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -260,6 +252,8 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\PointGroup.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UserControls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

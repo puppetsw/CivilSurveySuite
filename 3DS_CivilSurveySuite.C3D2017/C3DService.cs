@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System.Windows;
-using System.Windows.Controls;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.C3D2017.Services;
 using _3DS_CivilSurveySuite.Model;
@@ -63,11 +62,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         private static Window CreateWindow<TView>() where TView : Window
-        {
-            return Container.GetInstance<TView>();
-        }
-
-        public static TView CreateUserControl<TView>() where TView : UserControl
         {
             return Container.GetInstance<TView>();
         }

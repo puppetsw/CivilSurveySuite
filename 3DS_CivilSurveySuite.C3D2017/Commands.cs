@@ -168,10 +168,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
 
         // Palettes
-        [CommandMethod("3DS", "3DSShowConnectLinePalette", CommandFlags.Modal)]
-        public static void ShowConnectLinePalette()
+        [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
+        public static void ShowConnectLinework()
         {
-            C3DPalettes.ShowConnectLinePalette();
+            C3DService.ShowWindow<ConnectLineworkView>();
         }
 
         [CommandMethod("3DS", "3DSShowCogoPointEditor", CommandFlags.Modal)]

@@ -86,8 +86,6 @@
     <Compile Include="LayerUtils.cs" />
     <Compile Include="LineUtils.cs" />
     <Compile Include="LockedTransaction.cs" />
-    <Compile Include="AcadPalettes.cs" />
-    <Compile Include="Services\PaletteService.cs" />
     <Compile Include="AcadPlugin.cs" />
     <Compile Include="PointExtensions.cs" />
     <Compile Include="PointUtils.cs" />

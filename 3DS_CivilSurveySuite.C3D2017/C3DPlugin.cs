@@ -8,12 +8,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public void Initialize()
         {
             C3DService.Register();
-            C3DPalettes.HookupEvents();
         }
 
         public void Terminate()
         {
-            C3DPalettes.UnhookEvents();
         }
     }
 }
