@@ -72,6 +72,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             AcadApp.Editor.UpdateScreen();
         }
 
+        public void DrawTransientLines(IEnumerable<TraverseAngleObject> traverse)
+        {
+            if (_graphics == null)
+                return;
+
+            _graphics.ClearGraphics();
+            var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(traverse, _basePoint);
+            DrawTraverseGraphics(_graphics, coordinates);
+            AcadApp.Editor.UpdateScreen();
+        }
+
         public void SetBasePoint()
         {
             Utils.SetFocusToDwgView();

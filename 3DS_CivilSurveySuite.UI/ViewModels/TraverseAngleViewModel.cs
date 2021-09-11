@@ -12,17 +12,18 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private string _closeBearing;
         private string _closeDistance;
-        private readonly IViewerService _viewerService;
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
 
-        // ReSharper disable UnusedMember.Global
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
 
         public TraverseAngleObject SelectedTraverseAngle { get; set; }
 
+        //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
+        //Probably need to look into ComboBox events and use behaviors to fire the update.
         public IEnumerable<AngleReferenceDirection> ReferenceDirectionValues => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
 
+        //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
         public IEnumerable<AngleRotationDirection> RotationDirectionValues => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
 
         public string CloseDistance
@@ -63,20 +64,35 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
 
-        public RelayCommand ShowViewerCommand => new RelayCommand(ShowViewer, () => true);
-        // ReSharper restore UnusedMember.Global
+        public RelayCommand SetBasePointCommand => new RelayCommand(SetBasePoint, () => true);
 
-        public TraverseAngleViewModel(IViewerService viewerService, ITraverseService traverseService, IProcessService processService)
+        public RelayCommand CloseWindowCommand => new RelayCommand(CloseWindow, () => true);
+
+        public TraverseAngleViewModel(ITraverseService traverseService, IProcessService processService)
         {
-            _viewerService = viewerService;
             _traverseService = traverseService;
             _processService = processService;
+        }
+
+        private void SetBasePoint()
+        {
+            _traverseService?.SetBasePoint();
+
+            if (TraverseAngles.Count > 0)
+            {
+                _traverseService?.DrawTransientLines(TraverseAngles);
+            }
+        }
+
+        private void CloseWindow()
+        {
+            _traverseService?.ClearGraphics();
         }
 
         private void GridUpdated()
         {
             CloseTraverse();
-            _viewerService.AddGraphics(PointHelpers.TraverseAngleObjectsToCoordinates(TraverseAngles, new Point(0, 0)));
+            _traverseService?.DrawTransientLines(TraverseAngles);
         }
 
         private void CloseTraverse()
@@ -122,7 +138,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DrawTraverse()
         {
-            _traverseService.DrawLines(TraverseAngles);
+            _traverseService?.DrawLines(TraverseAngles);
         }
 
         private void FeetToMeters()
@@ -162,19 +178,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             CloseTraverse();
         }
 
-        private void ShowHelp()
+        private void ShowHelp() //TODO: Move help file string to resource or something.
         {
-            _processService.Start(@"Resources\3DSCivilSurveySuite.chm");
+            _processService?.Start(@"Resources\3DSCivilSurveySuite.chm");
         }
 
-        private void ShowViewer()
-        {
-            _viewerService?.ShowWindow();
-        }
-
-        /// <summary>
-        /// Updates the index property based on collection position
-        /// </summary>
         private void UpdateIndex()
         {
             for (var i = 0; i < TraverseAngles.Count; i++)

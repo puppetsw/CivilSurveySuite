@@ -99,7 +99,6 @@
     <Compile Include="TransactionExtensions.cs" />
     <Compile Include="TransientGraphics.cs" />
     <Compile Include="Services\TraverseService.cs" />
-    <Compile Include="Services\ViewerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj">

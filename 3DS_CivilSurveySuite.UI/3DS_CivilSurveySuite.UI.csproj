@@ -74,7 +74,6 @@
     <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISurfaceSelectService.cs" />
     <Compile Include="Services\ITraverseService.cs" />
-    <Compile Include="Services\IViewerService.cs" />
     <Compile Include="UserControls\TraverseViewer.xaml.cs">
       <DependentUpon>TraverseViewer.xaml</DependentUpon>
     </Compile>

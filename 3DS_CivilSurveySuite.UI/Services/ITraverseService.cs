@@ -13,11 +13,13 @@ namespace _3DS_CivilSurveySuite.UI.Services
     /// </summary>
     public interface ITraverseService
     {
-        void DrawLines(IEnumerable<TraverseAngleObject> traverseAngle);
-
         void DrawLines(IEnumerable<TraverseObject> traverse);
 
+        void DrawLines(IEnumerable<TraverseAngleObject> traverseAngle);
+
         void DrawTransientLines(IEnumerable<TraverseObject> traverse);
+
+        void DrawTransientLines(IEnumerable<TraverseAngleObject> traverse);
 
         void SetBasePoint();
 

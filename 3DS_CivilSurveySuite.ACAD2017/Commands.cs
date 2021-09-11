@@ -199,17 +199,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadService.ShowWindow<AngleCalculatorView>();
         }
 
-        [CommandMethod("3DS", "_3DSShowTraversePalette", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSShowTraverseWindow", CommandFlags.Modal)]
         public static void ShowTraversePalette()
         {
-            //AcadPalettes.ShowTraversePalette();
             AcadService.ShowWindow<TraverseView>();
         }
 
-        [CommandMethod("3DS", "_3DSShowTraverseAnglePalette", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
         public static void ShowTraverseAngle()
         {
-            AcadPalettes.ShowTraverseAnglePalette();
+            AcadService.ShowWindow<TraverseAngleView>();
         }
 
 
