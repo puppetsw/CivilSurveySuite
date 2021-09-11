@@ -37,10 +37,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Verify();
         }
 
-        public static void ShowWindow<TView>() where TView : Window
+        public static Window ShowWindow<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
             Application.ShowModelessWindow(view);
+            return view;
         }
 
         public static bool? ShowDialog<TView>() where TView : Window

@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Windows;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
 
@@ -188,11 +189,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
 
-    
 
 
+        private Window _traverseView;
 
-        // Palettes
+
+        // Palettes/Windows
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public static void ShowAngleCalculator()
         {
@@ -200,12 +202,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         [CommandMethod("3DS", "_3DSShowTraverseWindow", CommandFlags.Modal)]
-        public static void ShowTraversePalette()
+        public void ShowTraversePalette()
         {
-            AcadService.ShowWindow<TraverseView>();
+            if (_traverseView == null) //TODO: Implement a Window Manager to handle document switching events.
+                _traverseView = AcadService.ShowWindow<TraverseView>();
         }
 
-        [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
+            [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
         public static void ShowTraverseAngle()
         {
             AcadService.ShowWindow<TraverseAngleView>();
