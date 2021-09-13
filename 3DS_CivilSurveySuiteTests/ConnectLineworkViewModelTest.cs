@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
 
-            Assert.IsTrue(vm.DescriptionKeys.Count == 1);
+            Assert.IsTrue(vm.DescriptionKeys.Count > 1);
         }
 
         [TestMethod]
@@ -68,14 +68,14 @@ namespace _3DS_CivilSurveySuiteTests
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
 
-            Assert.IsTrue(vm.DescriptionKeys.Count == 1);
+            Assert.IsTrue(vm.DescriptionKeys.Count == 36);
 
             vm.SelectedKey = vm.DescriptionKeys[0];
 
             vm.RemoveRowCommand.CanExecute(true);
             vm.RemoveRowCommand.Execute(null);
 
-            Assert.IsTrue(vm.DescriptionKeys.Count == 0);
+            Assert.IsTrue(vm.DescriptionKeys.Count == 35);
         }
 
         [TestMethod]

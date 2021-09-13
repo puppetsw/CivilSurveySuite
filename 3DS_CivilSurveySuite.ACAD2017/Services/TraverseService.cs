@@ -29,36 +29,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             _graphics = new TransientGraphics();
         }
 
-        public void DrawLines(IEnumerable<TraverseAngleObject> traverse)
-        {
-            _graphics?.ClearGraphics();
-
-            if (!_basePoint.IsValid())
-                return;
-
-            using (var tr = AcadApp.StartLockedTransaction())
-            {
-                var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(traverse, _basePoint);
-                LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
-                tr.Commit();
-                AcadApp.Editor.Regen();
-            }
-        }
-
         public void DrawLines(IEnumerable<TraverseObject> traverse)
-        { 
-            _graphics?.ClearGraphics();
-
+        {
             if (!_basePoint.IsValid())
-                return;
-
-            using (var tr = AcadApp.StartLockedTransaction())
             {
-                var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
-                LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
-                tr.Commit();
-                AcadApp.Editor.Regen();
+                AcadApp.Editor.WriteMessage("\n3DS> No base point set. ");
+                return;
             }
+
+            var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
+            DrawTraverseLines(coordinates);
         }
 
         public void DrawTransientLines(IEnumerable<TraverseObject> traverse)
@@ -66,21 +46,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             if (_graphics == null)
                 return;
 
-            _graphics.ClearGraphics();
             var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
             DrawTraverseGraphics(_graphics, coordinates);
-            AcadApp.Editor.UpdateScreen();
-        }
-
-        public void DrawTransientLines(IEnumerable<TraverseAngleObject> traverse)
-        {
-            if (_graphics == null)
-                return;
-
-            _graphics.ClearGraphics();
-            var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(traverse, _basePoint);
-            DrawTraverseGraphics(_graphics, coordinates);
-            AcadApp.Editor.UpdateScreen();
         }
 
         public void SetBasePoint()
@@ -91,6 +58,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 return;
 
             AcadApp.Editor.WriteMessage($"\n3DS> Base point: X:{Math.Round(_basePoint.X, 4)}, Y:{Math.Round(_basePoint.Y, 4)}");
+            AcadApp.Editor.WriteMessage("\n");
 
             _basePoint = basePoint.ToPoint();
         }
@@ -99,7 +67,49 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         {
             _graphics?.ClearGraphics();
         }
-        
+
+        public void ZoomTo(IEnumerable<TraverseObject> traverse)
+        {
+            var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
+
+            var minMax = PointHelpers.GetMinMaxPoint(coordinates);
+            var cenPoint = PointHelpers.GetMidpointBetweenPoints(minMax.MinPoint, minMax.MaxPoint);
+            //BUG: Fix bug with zooming scale.
+            EditorUtils.Zoom(minMax.MinPoint.ToPoint3d(), minMax.MaxPoint.ToPoint3d(), cenPoint.ToPoint3d(), 0.9);
+        }
+
+        public AngleDistance SelectLine()
+        {
+            Utils.SetFocusToDwgView();
+
+            AngleDistance angDist = default;
+
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                var line = LineUtils.GetLineOrPolylineSegment(tr);
+
+                if (line != null)
+                {
+                    angDist.Angle = AngleHelpers.GetAngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+                    angDist.Distance = line.Length;
+                }
+                tr.Commit();
+            }
+            return angDist;
+        }
+
+        private void DrawTraverseLines(IEnumerable<Point> coordinates)
+        {
+            _graphics?.ClearGraphics();
+
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                LineUtils.DrawLines(tr, coordinates.ToListOfPoint3d());
+                tr.Commit();
+                AcadApp.Editor.Regen();
+            }
+        }
+
         private static void DrawTraverseGraphics(TransientGraphics graphics, IReadOnlyList<Point> coordinates)
         {
             // Clear existing graphics
@@ -121,10 +131,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 graphics.DrawBox(startPoint, 4);
                 graphics.DrawX(startPoint, 4);
             }
+            AcadApp.Editor.UpdateScreen();
         }
 
         public void Dispose()
         {
+            _graphics?.ClearGraphics();
             _graphics?.Dispose();
         }
     }

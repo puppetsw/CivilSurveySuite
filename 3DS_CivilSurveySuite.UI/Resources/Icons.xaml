@@ -27,4 +27,6 @@
 
     <BitmapImage x:Key="C3DAppIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"/>
 
+    <BitmapImage x:Key="ZoomExtents" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/ZoomExtents.ico"/>
+
 </ResourceDictionary>

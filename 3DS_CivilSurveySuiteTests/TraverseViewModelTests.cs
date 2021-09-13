@@ -376,6 +376,33 @@ namespace _3DS_CivilSurveySuiteTests
             vm.SetBasePointCommand.Execute(null);
         }
 
+        [TestMethod]
+        public void SelectLineCommand_Execute()
+        {
+            var travServ = new Mock<ITraverseService>();
+            var procServ = new Mock<IProcessService>();
+
+            travServ.Setup(m => m.SelectLine()).Returns(new AngleDistance { Angle = new Angle(), Distance = 30 });
+            
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+
+            vm.SelectLineCommand.CanExecute(true);
+            vm.SelectLineCommand.Execute(null);
+
+            Assert.AreEqual(1, vm.TraverseItems.Count);
+        }
+
+        [TestMethod]
+        public void ZoomExtentsCommand_Execute()
+        {
+            var travServ = new Mock<ITraverseService>();
+            var procServ = new Mock<IProcessService>();
+
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+
+            vm.ZoomExtentsCommand.CanExecute(true);
+            vm.ZoomExtentsCommand.Execute(null);
+        }
 
 
 

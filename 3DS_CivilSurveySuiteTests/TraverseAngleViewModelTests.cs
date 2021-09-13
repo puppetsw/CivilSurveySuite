@@ -56,7 +56,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void RotationDirectionValues_Get()
         {
             var vm = new TraverseAngleViewModel(null, null);
-            var values = vm.RotationDirectionValues;
+            var values = TraverseAngleViewModel.RotationDirectionValues;
             var expectedNumberOfValues = 2;
 
             Assert.AreEqual(expectedNumberOfValues, values.Count());
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void ReferenceDirectionValues_Get()
         {
             var vm = new TraverseAngleViewModel(null, null);
-            var values = vm.ReferenceDirectionValues;
+            var values = TraverseAngleViewModel.ReferenceDirectionValues;
             var expectedNumberOfValues = 2;
 
             Assert.AreEqual(expectedNumberOfValues, values.Count());

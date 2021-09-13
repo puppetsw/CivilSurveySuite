@@ -23,7 +23,7 @@
     </Window.Resources>
 
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closed">
+        <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.CloseWindowCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -79,6 +79,24 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource DrawTraverseToolbarIcon}" Width="16" Height="16"/>
                         <TextBlock Text=" Draw Traverse" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding SelectLineCommand}">
+                    <!--<Button.ToolTip>
+                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
+                    </Button.ToolTip>-->
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource SelectObjectIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Select Object" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding ZoomExtentsCommand}">
+                    <!--<Button.ToolTip>
+                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
+                    </Button.ToolTip>-->
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ZoomExtents}" Width="16" Height="16"/>
+                        <TextBlock Text=" Zoom Extents" />
                     </StackPanel>
                 </Button>
                 <!--<Button Command="{Binding ClosureCommand}">

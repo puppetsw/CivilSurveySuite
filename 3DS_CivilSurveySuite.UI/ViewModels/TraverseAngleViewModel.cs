@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,10 +26,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
         //Probably need to look into ComboBox events and use behaviors to fire the update.
-        public IEnumerable<AngleReferenceDirection> ReferenceDirectionValues => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
+        public static IEnumerable<AngleReferenceDirection> ReferenceDirectionValues => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
 
         //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
-        public IEnumerable<AngleRotationDirection> RotationDirectionValues => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
+        public static IEnumerable<AngleRotationDirection> RotationDirectionValues => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
 
         public string CloseDistance
         {
@@ -102,7 +107,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 return;
             }
 
-            var coordinates = PointHelpers.TraverseAngleObjectsToCoordinates(TraverseAngles, new Point(0, 0));
+            var coordinates = PointHelpers.TraverseObjectsToCoordinates(TraverseAngles, new Point(0, 0));
 
             double distance = PointHelpers.GetDistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
             Angle angle = AngleHelpers.GetAngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);

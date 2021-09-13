@@ -80,7 +80,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 30, Bearing = 90 }
             };
 
-            var newPointList = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
+            var newPointList = PointHelpers.TraverseObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -102,7 +102,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 111.23, Bearing = 98.40, RotationDirection = AngleRotationDirection.Positive }
             };
 
-            var newPointList = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
+            var newPointList = PointHelpers.TraverseObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -138,7 +138,7 @@ namespace _3DS_CivilSurveySuiteTests
                 //new TraverseAngleItem { Distance = 105.66, InternalAngle = 168.58 }
             };
 
-            var newPointList = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
+            var newPointList = PointHelpers.TraverseObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {
@@ -170,7 +170,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 8.94, Bearing = 78.17, },
             };
 
-            var newPointList = PointHelpers.TraverseAngleObjectsToCoordinates(angleList, new Point(0, 0));
+            var newPointList = PointHelpers.TraverseObjectsToCoordinates(angleList, new Point(0, 0));
 
             var expectedList = new List<Point>
             {

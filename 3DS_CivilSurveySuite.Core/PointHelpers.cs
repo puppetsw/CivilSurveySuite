@@ -23,7 +23,26 @@ namespace _3DS_CivilSurveySuite.Core
         {
             return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, useRounding, decimalPlaces);
         }
-        
+
+        /// <summary>
+        /// Gets the minimum and maximum <see cref="Point"/>.
+        /// </summary>
+        /// <param name="points"><see cref="IReadOnlyList{T}"/> of <see cref="Point"/></param>
+        /// <returns>MinMaxPoint.</returns>
+        public static MinMaxPoint GetMinMaxPoint(IReadOnlyList<Point> points)
+        {
+            Point minPoint = points[0];
+            Point maxPoint = points[0];
+
+            foreach (Point point in points)
+            {
+                minPoint = new Point(Math.Min(minPoint.X, point.X), Math.Min(minPoint.Y, point.Y));
+                maxPoint = new Point(Math.Max(maxPoint.X, point.X), Math.Max(maxPoint.Y, point.Y));
+            }
+
+            return new MinMaxPoint { MinPoint = minPoint, MaxPoint = maxPoint };
+        }
+
         /// <summary>
         /// Gets the mid-point between two <see cref="Point"/>s.
         /// </summary>
@@ -72,7 +91,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="angleList">A enumerable list containing the <see cref="TraverseAngleObject"/>'s.</param>
         /// <param name="basePoint">The base point.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="Point"/>.</returns>
-        public static List<Point> TraverseAngleObjectsToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point basePoint)
+        public static List<Point> TraverseObjectsToCoordinates(IEnumerable<TraverseAngleObject> angleList, Point basePoint)
         {
             var newPointList = new List<Point> { basePoint };
             var lastBearing = new Angle();

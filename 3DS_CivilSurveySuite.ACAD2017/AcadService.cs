@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Windows;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -37,6 +38,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Verify();
         }
 
+        [Obsolete("This method is obsolete. Use ShowDialog<TView>() instead.", false)]
         public static Window ShowWindow<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
@@ -50,7 +52,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return Application.ShowModalWindow(view);
         }
 
-        private static Window CreateWindow<TView>() where TView : Window
+        private static TView CreateWindow<TView>() where TView : Window
         {
             return Container.GetInstance<TView>();
         }

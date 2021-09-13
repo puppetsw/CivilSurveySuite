@@ -171,13 +171,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
         public static void ShowConnectLinework()
         {
-            C3DService.ShowWindow<ConnectLineworkView>();
+            C3DService.ShowDialog<ConnectLineworkView>();
         }
 
         [CommandMethod("3DS", "3DSShowCogoPointEditor", CommandFlags.Modal)]
         public static void ShowCogoPointEditor()
         {
-            C3DService.ShowWindow<CogoPointEditorView>();
+            C3DService.ShowDialog<CogoPointEditorView>();
         }
 
 

@@ -36,12 +36,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Angle.cs" />
+    <Compile Include="AngleDistance.cs" />
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
     <Compile Include="CivilPoint.cs" />
     <Compile Include="CivilPointGroup.cs" />
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
+    <Compile Include="MinMaxPoint.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraverseAngleObject.cs" />

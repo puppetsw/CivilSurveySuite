@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
@@ -42,6 +41,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         private readonly DBObjectCollection _graphics;
 
         private const string DashedLineType = "DASHED";
+
 
         public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
 
@@ -313,7 +313,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (_graphics == null) 
                 return;
 
-            if (_graphics.Count < 0)
+            if (_graphics?.Count < 0)
                 return;
 
             var tm = TransientManager.CurrentTransientManager;
@@ -324,6 +324,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 tm.EraseTransient(graphic, intCol);
                 graphic.Dispose();
             }
+            AcadApp.Editor.UpdateScreen();
         }
 
         public void Dispose()

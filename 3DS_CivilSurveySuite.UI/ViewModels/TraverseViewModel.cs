@@ -8,7 +8,6 @@ using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 
-//TODO: Add a button to select the bearing from an existing line, pline segment.
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
     /// <summary>
@@ -21,7 +20,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
 
-        public ObservableCollection<TraverseObject> TraverseItems { get; set; } = new ObservableCollection<TraverseObject>();
+        public ObservableCollection<TraverseObject> TraverseItems { get; } = new ObservableCollection<TraverseObject>();
 
         public TraverseObject SelectedTraverseItem { get; set; }
 
@@ -67,10 +66,25 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand CloseWindowCommand => new RelayCommand(CloseWindow, () => true);
 
+        public RelayCommand SelectLineCommand => new RelayCommand(SelectLine, () => true);
+
+        public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
+
         public TraverseViewModel(ITraverseService traverseService, IProcessService processService)
         {
             _traverseService = traverseService;
             _processService = processService;
+        }
+
+        private void Zoom()
+        {
+            _traverseService?.ZoomTo(TraverseItems);
+        }
+
+        private void SelectLine()
+        {
+            var angDist = _traverseService.SelectLine();
+            TraverseItems.Add(new TraverseObject(angDist.Angle.ToDouble(), angDist.Distance));
         }
 
         private void SetBasePoint()

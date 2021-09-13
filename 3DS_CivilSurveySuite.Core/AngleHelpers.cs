@@ -104,9 +104,21 @@ namespace _3DS_CivilSurveySuite.Core
         /// <returns>A <see cref="Angle"/> representing the converted decimal degrees values.</returns>
         public static Angle DecimalDegreesToAngle(double decimalDegrees)
         {
-            var degrees = Math.Floor(decimalDegrees);
-            var minutes = Math.Floor((decimalDegrees - degrees) * 60);
-            var seconds = Math.Round(((decimalDegrees - degrees) * 60 - minutes) * 60, 0);
+            double degrees = Math.Floor(decimalDegrees);
+            double minutes = Math.Floor((decimalDegrees - degrees) * 60);
+            double seconds = Math.Round(((decimalDegrees - degrees) * 60 - minutes) * 60, 0);
+
+            if (seconds == 60)
+            {
+                minutes++;
+                seconds = 0;
+            }
+
+            if (minutes == 60)
+            {
+                degrees++;
+                minutes = 0;
+            }
 
             return new Angle { Degrees = (int) degrees, Minutes = (int) minutes, Seconds = (int) seconds };
         }

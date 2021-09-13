@@ -13,6 +13,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void Initialize()
         {
             AcadService.Register();
+            
+            //AcadApp.DocumentManager.DocumentToBeDeactivated += DocumentManager_ChangedEvent;
+            //AcadApp.DocumentManager.DocumentToBeDestroyed += DocumentManager_ChangedEvent;
+            //AcadApp.DocumentManager.DocumentActivationChanged += DocumentManagerOnDocumentActivationChanged;
         }
 
         public void Terminate()

@@ -15,14 +15,15 @@ namespace _3DS_CivilSurveySuite.UI.Services
     {
         void DrawLines(IEnumerable<TraverseObject> traverse);
 
-        void DrawLines(IEnumerable<TraverseAngleObject> traverseAngle);
-
         void DrawTransientLines(IEnumerable<TraverseObject> traverse);
-
-        void DrawTransientLines(IEnumerable<TraverseAngleObject> traverse);
 
         void SetBasePoint();
 
         void ClearGraphics();
+
+        void ZoomTo(IEnumerable<TraverseObject> traverse);
+
+        AngleDistance SelectLine();
+
     }
 }

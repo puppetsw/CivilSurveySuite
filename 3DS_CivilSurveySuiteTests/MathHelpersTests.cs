@@ -215,7 +215,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var basePoint = new Point(0, 0);
 
-            var results = PointHelpers.TraverseAngleObjectsToCoordinates(traverseAngleObject, basePoint);
+            var results = PointHelpers.TraverseObjectsToCoordinates(traverseAngleObject, basePoint);
 
             var expected = new List<Point>
             {
@@ -534,5 +534,26 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expectedDelta, result);
         }
+
+
+        [TestMethod]
+        public void Find_Min_And_Max_Coordinates()
+        {
+            var list = new List<Point>
+            {
+                new Point(0, 0),
+                new Point(10, 10),
+                new Point(0, 10),
+                new Point(-10, 0)
+            };
+
+            var result = PointHelpers.GetMinMaxPoint(list);
+
+            Assert.AreEqual(new Point(-10, 0), result.MinPoint);
+            Assert.AreEqual(new Point(10, 10), result.MaxPoint);
+        }
+
+
+
     }
 }

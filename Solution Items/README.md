@@ -10,14 +10,14 @@
 * XYZ point label (for autocad mainly)
 * Insert picture(s) tool
 * IMessageBoxService
-* Abstract PaletteSet
+* ~~Abstract PaletteSet~~
 * Settings (Properties.Settings.Default.MyConnection)
 * Linework tool to replace SmartDraft -- in progress
 * point report /w alingments
-* Rename ShowCogoPointViewer command
+* ~~Rename ShowCogoPointViewer command~~
 * Typing a palette command when visible hides it.
-* Improve angle calculator
-* Think about making it so palettes open up individually. might solve a lot of issues with events.
+* *Improve angle calculator*
+* ~~Think about making it so palettes open up individually. might solve a lot of issues with events.~~
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 

@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.Model
         public Angle Angle
         {
             get => _angle;
-            private set
+            protected set
             {
                 _angle = value;
                 NotifyPropertyChanged();
@@ -79,7 +79,7 @@ namespace _3DS_CivilSurveySuite.Model
             Distance = distance;
         }
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
