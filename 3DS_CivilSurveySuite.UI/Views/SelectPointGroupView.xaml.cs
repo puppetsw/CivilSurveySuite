@@ -9,9 +9,9 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// <summary>
     /// Interaction logic for PointGroupSelectView.xaml
     /// </summary>
-    public partial class PointGroupSelectView : Window, IDialogService<CivilPointGroup>
+    public partial class SelectPointGroupView : Window, IDialogService<CivilPointGroup>
     {
-        public PointGroupSelectView(PointGroupSelectViewModel viewModel)
+        public SelectPointGroupView(SelectPointGroupViewModel viewModel)
         {
             InitializeComponent();
 

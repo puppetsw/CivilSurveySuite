@@ -72,6 +72,7 @@
     <Compile Include="CogoPointMoveLabelViewModelTests.cs" />
     <Compile Include="DescriptionKeyTests.cs" />
     <Compile Include="PointGroupSelectViewModelTests.cs" />
+    <Compile Include="SelectAlignmentViewModelTests.cs" />
     <Compile Include="SurfaceSelectViewModelTests.cs" />
     <Compile Include="ClosureTests.cs" />
     <Compile Include="CogoPointViewerViewModelTests.cs" />

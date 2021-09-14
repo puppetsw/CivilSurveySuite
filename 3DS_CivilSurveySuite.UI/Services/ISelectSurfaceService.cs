@@ -8,8 +8,10 @@ using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.UI.Services
 {
-    public interface IPointGroupSelectService
+    public interface ISelectSurfaceService
     {
-        IEnumerable<CivilPointGroup> GetPointGroups();
+        IEnumerable<CivilSurface> GetSurfaces();
+
+        CivilSurface SelectSurface();
     }
 }

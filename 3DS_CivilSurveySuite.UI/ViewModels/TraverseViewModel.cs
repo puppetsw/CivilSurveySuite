@@ -19,6 +19,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private string _closeDistance;
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
+        private readonly IMessageBoxService _messageBoxService;
 
         public ObservableCollection<TraverseObject> TraverseItems { get; } = new ObservableCollection<TraverseObject>();
 
@@ -70,14 +71,16 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
 
-        public TraverseViewModel(ITraverseService traverseService, IProcessService processService)
+        public TraverseViewModel(ITraverseService traverseService, IProcessService processService, IMessageBoxService messageBoxService)
         {
             _traverseService = traverseService;
             _processService = processService;
+            _messageBoxService = messageBoxService;
         }
 
         private void Zoom()
         {
+            _messageBoxService.ShowAlert("This command is under development.");
             _traverseService?.ZoomTo(TraverseItems);
         }
 

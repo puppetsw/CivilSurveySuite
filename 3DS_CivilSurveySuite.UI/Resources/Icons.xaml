@@ -29,4 +29,6 @@
 
     <BitmapImage x:Key="ZoomExtents" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/ZoomExtents.ico"/>
 
+    <BitmapImage x:Key="Alignment" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/Alignment.ico"/>
+
 </ResourceDictionary>

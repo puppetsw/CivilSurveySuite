@@ -39,6 +39,7 @@
     <Compile Include="AngleDistance.cs" />
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
+    <Compile Include="CivilAlignment.cs" />
     <Compile Include="CivilPoint.cs" />
     <Compile Include="CivilPointGroup.cs" />
     <Compile Include="CivilSurface.cs" />

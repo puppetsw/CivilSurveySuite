@@ -8,7 +8,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
     /// <summary>
     /// DescriptionKeyMatch class
     /// </summary>
-    public class DescriptionKeyMatch
+    public class DescriptionKeyMatch //TODO: Abstract this class.
     {
         public DescriptionKey DescriptionKey { get; private set; }
         public Dictionary<string, List<CogoPoint>> JoinablePoints { get; set; }

@@ -9,7 +9,7 @@ using _3DS_CivilSurveySuite.UI.Services;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
-    public class PointGroupSelectViewModel : ViewModelBase
+    public class SelectPointGroupViewModel : ViewModelBase
     {
         private ObservableCollection<CivilPointGroup> _pointGroups;
         private CivilPointGroup _selectedPointGroup;
@@ -26,7 +26,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set => SetProperty(ref _selectedPointGroup, value);
         }
 
-        public PointGroupSelectViewModel(IPointGroupSelectService pointGroupSelectService)
+        public SelectPointGroupViewModel(ISelectPointGroupService pointGroupSelectService)
         {
             PointGroups = new ObservableCollection<CivilPointGroup>(pointGroupSelectService.GetPointGroups());
 

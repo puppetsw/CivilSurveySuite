@@ -13,14 +13,14 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SurfaceNames_OnConstruct()
         {
-            var mock = new Mock<ISurfaceSelectService>();
+            var mock = new Mock<ISelectSurfaceService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface(),
                 new CivilSurface(),
             });
 
-            var vm = new SurfaceSelectViewModel(mock.Object);
+            var vm = new SelectSurfaceViewModel(mock.Object);
             var expectedCount = 2;
             Assert.AreEqual(expectedCount, vm.Surfaces.Count);
         }
@@ -28,14 +28,14 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Set_SelectedSurfaceName_Property()
         {
-            var mock = new Mock<ISurfaceSelectService>();
+            var mock = new Mock<ISelectSurfaceService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
                 new CivilSurface(),
             });
 
-            var vm = new SurfaceSelectViewModel(mock.Object);
+            var vm = new SelectSurfaceViewModel(mock.Object);
             vm.SelectedSurface = vm.Surfaces[0];
 
             var expectedName = "EG";
@@ -48,7 +48,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var selectableSurface = new CivilSurface { Name = "EG" };
 
-            var mock = new Mock<ISurfaceSelectService>();
+            var mock = new Mock<ISelectSurfaceService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "Test" },
@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             mock.Setup(m => m.SelectSurface()).Returns(() => selectableSurface);
 
-            var vm = new SurfaceSelectViewModel(mock.Object);
+            var vm = new SelectSurfaceViewModel(mock.Object);
             vm.SelectSurfaceCommand.CanExecute(true);
             vm.SelectSurfaceCommand.Execute(null);
             
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SelectSurfaceCommand_Execute_SurfaceExists()
         {
-            var mock = new Mock<ISurfaceSelectService>();
+            var mock = new Mock<ISelectSurfaceService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
@@ -75,7 +75,7 @@ namespace _3DS_CivilSurveySuiteTests
             });
             mock.Setup(m => m.SelectSurface()).Returns(() => new CivilSurface { Name = "EG" });
 
-            var vm = new SurfaceSelectViewModel(mock.Object);
+            var vm = new SelectSurfaceViewModel(mock.Object);
 
             vm.SelectSurfaceCommand.CanExecute(true);
             vm.SelectSurfaceCommand.Execute(null);
@@ -84,7 +84,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void SelectSurfaceCommand_Execute_SelectionCancelled()
         {
-            var mock = new Mock<ISurfaceSelectService>();
+            var mock = new Mock<ISelectSurfaceService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
@@ -92,7 +92,7 @@ namespace _3DS_CivilSurveySuiteTests
             });
             mock.Setup(m => m.SelectSurface()).Returns(() => null);
 
-            var vm = new SurfaceSelectViewModel(mock.Object);
+            var vm = new SelectSurfaceViewModel(mock.Object);
 
             vm.SelectSurfaceCommand.CanExecute(true);
             vm.SelectSurfaceCommand.Execute(null);

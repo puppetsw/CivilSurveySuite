@@ -9,9 +9,9 @@ namespace _3DS_CivilSurveySuite.UI.Views
     /// <summary>
     /// Interaction logic for SurfaceSelectView.xaml
     /// </summary>
-    public partial class SurfaceSelectView : Window, IDialogService<CivilSurface>
+    public partial class SelectSurfaceView : Window, IDialogService<CivilSurface>
     {
-        public SurfaceSelectView(SurfaceSelectViewModel viewModel)
+        public SelectSurfaceView(SelectSurfaceViewModel viewModel)
         {
             InitializeComponent();
 

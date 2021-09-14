@@ -6,16 +6,16 @@
 * Copy raw description or full description to text entity
 * Add load/save to traverse palette
 * Add Curves to traverse?
-* Selected objects to traverse window
+* ~~Selected objects to traverse window~~ Half done
 * XYZ point label (for autocad mainly)
 * Insert picture(s) tool
-* IMessageBoxService
+* ~~IMessageBoxService~~
 * ~~Abstract PaletteSet~~
 * Settings (Properties.Settings.Default.MyConnection)
 * Linework tool to replace SmartDraft -- in progress
 * point report /w alingments
 * ~~Rename ShowCogoPointViewer command~~
-* Typing a palette command when visible hides it.
+* ~~Typing a palette command when visible hides it.~~
 * *Improve angle calculator*
 * ~~Think about making it so palettes open up individually. might solve a lot of issues with events.~~
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
@@ -58,3 +58,6 @@ to get the same work done. It is clear now that committing transactions is more 
 than aborting them even for reading operations.
 
 > Therefore, another good practice comes out, always committing transactions after they started.
+
+> For an instance command method, the method's enclosing type is instantiated separately for each open document. This means that each document gets a private copy of the command's instance data. Thus there is no danger of overwriting document-specific data when the user switches documents. If an instance method needs to share data globally, it can do so by declaring static or Shared member variables.
+For a static command method, the managed wrapper runtime module does not need to instantiate the enclosing type. A single copy of the method's data is used, regardless of the document context. Static commands normally do not use per-document data and do not require special consideration for MDI mode.

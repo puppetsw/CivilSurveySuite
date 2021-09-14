@@ -275,7 +275,6 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedVector, point.ToVector());
         }
 
-
         [TestMethod]
         [TestCategory("Math")]
         public void LineSegmentsDoNotIntersect()
@@ -534,8 +533,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expectedDelta, result);
         }
-
-
+        
         [TestMethod]
         public void Find_Min_And_Max_Coordinates()
         {
@@ -552,8 +550,5 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(new Point(-10, 0), result.MinPoint);
             Assert.AreEqual(new Point(10, 10), result.MaxPoint);
         }
-
-
-
     }
 }

@@ -12,7 +12,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    public class SurfaceSelectService : ISurfaceSelectService
+    public class SelectSurfaceService : ISelectSurfaceService
     {
         public IEnumerable<CivilSurface> GetSurfaces()
         {

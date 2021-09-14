@@ -279,9 +279,8 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(new Angle(299, 9, 22), angle);
         }
 
-
         [TestMethod]
-        public void Angle_To_Double_StrangeValue()
+        public void Angle_To_Double_Seconds_Should_Round_Correctly()
         {
             var dec = 75.266569848416466;
 
@@ -289,5 +288,16 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(new Angle(75.16), actual);
         }
+
+        [TestMethod]
+        public void Angle_To_Double_Seconds_And_Minute_Value_Should_Round_Up_Correctly()
+        {
+            var dec = 75.9999;
+
+            var actual = AngleHelpers.DecimalDegreesToAngle(dec);
+
+            Assert.AreEqual(new Angle(76), actual);
+        }
+
     }
 }

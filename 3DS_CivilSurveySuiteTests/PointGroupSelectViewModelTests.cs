@@ -15,10 +15,10 @@ namespace _3DS_CivilSurveySuiteTests
             var pointGroup1 = new CivilPointGroup();
             var pointGroup2 = new CivilPointGroup();
 
-            var pointGroupSelectService = new Mock<IPointGroupSelectService>();
+            var pointGroupSelectService = new Mock<ISelectPointGroupService>();
             pointGroupSelectService.Setup(m => m.GetPointGroups()).Returns(() => new []{ pointGroup1, pointGroup2 });
 
-            var vm = new PointGroupSelectViewModel(pointGroupSelectService.Object);
+            var vm = new SelectPointGroupViewModel(pointGroupSelectService.Object);
 
 
             Assert.AreEqual(2, vm.PointGroups.Count);

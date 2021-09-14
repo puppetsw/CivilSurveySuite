@@ -12,7 +12,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    public class PointGroupSelectService : IPointGroupSelectService
+    public class SelectPointGroupService : ISelectPointGroupService
     {
         public IEnumerable<CivilPointGroup> GetPointGroups()
         {

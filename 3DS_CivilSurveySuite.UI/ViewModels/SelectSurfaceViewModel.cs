@@ -14,9 +14,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <br/>
     /// Implements <see cref="ViewModelBase" />.
     /// </summary>
-    public class SurfaceSelectViewModel : ViewModelBase
+    public class SelectSurfaceViewModel : ViewModelBase
     {
-        private readonly ISurfaceSelectService _surfaceSelectService;
+        private readonly ISelectSurfaceService _surfaceSelectService;
         private CivilSurface _selectedSurface;
         private ObservableCollection<CivilSurface> _surfaces;
 
@@ -48,7 +48,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public SurfaceSelectViewModel(ISurfaceSelectService surfaceSelectService)
+        public SelectSurfaceViewModel(ISelectSurfaceService surfaceSelectService)
         {
             _surfaceSelectService = surfaceSelectService;
             Surfaces = new ObservableCollection<CivilSurface>(surfaceSelectService.GetSurfaces());

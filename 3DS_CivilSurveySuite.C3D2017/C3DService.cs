@@ -26,17 +26,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void Register()
         {
-            Container.Register<ISurfaceSelectService, SurfaceSelectService>();
-            Container.Register<IPointGroupSelectService, PointGroupSelectService>();
+            Container.Register<ISelectSurfaceService, SelectSurfaceService>();
+            Container.Register<ISelectPointGroupService, SelectPointGroupService>();
+            Container.Register<ISelectAlignmentService, SelectAlignmentService>();
+
             Container.Register<ICogoPointMoveLabelService, CogoPointMoveLabelService>();
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointEditorService, CogoPointEditorService>();
 
-            Container.Register<SurfaceSelectView>();
-            Container.Register<SurfaceSelectViewModel>();
+            Container.Register<SelectSurfaceView>();
+            Container.Register<SelectSurfaceViewModel>();
 
-            Container.Register<PointGroupSelectView>();
-            Container.Register<PointGroupSelectViewModel>();
+            Container.Register<SelectPointGroupView>();
+            Container.Register<SelectPointGroupViewModel>();
+
+            Container.Register<SelectAlignmentView>();
+            Container.Register<SelectAlignmentViewModel>();
 
             Container.Register<CogoPointMoveLabelView>();
             Container.Register<CogoPointMoveLabelViewModel>();
@@ -74,7 +79,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <returns>TinSurface.</returns>
         public static TinSurface SelectSurface()
         {
-            var window = CreateWindow<SurfaceSelectView>();
+            var window = CreateWindow<SelectSurfaceView>();
             var dialog = window as IDialogService<CivilSurface>;
             var showDialog = Application.ShowModalWindow(window);
 
@@ -102,7 +107,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <returns>PointGroup.</returns>
         public static PointGroup SelectPointGroup()
         {
-            var window = CreateWindow<PointGroupSelectView>();
+            var window = CreateWindow<SelectPointGroupView>();
             var dialog = window as IDialogService<CivilPointGroup>;
             var showDialog = Application.ShowModalWindow(window);
 
@@ -124,5 +129,33 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return pointGroup;
         }
 
+
+        /// <summary>
+        /// Selects the alignment.
+        /// </summary>
+        /// <returns>Alignment.</returns>
+        public static Alignment SelectAlignment()
+        {
+            var window = CreateWindow<SelectAlignmentView>();
+            var dialog = window as IDialogService<CivilAlignment>;
+            var showDialog = Application.ShowModalWindow(window);
+
+            if (showDialog != true) 
+                return null;
+
+            if (dialog == null) 
+                return null;
+
+            var civilAlignment = dialog.ResultObject;
+            Alignment alignment;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                alignment = AlignmentUtils.GetAlignmentByName(tr, civilAlignment.Name);
+                tr.Commit();
+            }
+
+            return alignment;
+        }
     }
 }

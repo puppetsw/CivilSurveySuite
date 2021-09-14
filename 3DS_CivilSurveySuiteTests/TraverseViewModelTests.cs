@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var result = false;
             var expectedString = "100.1000";
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseBearing))
@@ -34,7 +34,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var result = false;
             var expectedString = "100.1000";
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseDistance))
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void AddRowCommand_Execute()
         {
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -62,7 +62,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void AddRowCommand_Execute_MultipleAdd_IndexShouldIncrease()
         {
-            var vm = new TraverseViewModel( null, null);
+            var vm = new TraverseViewModel( null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -78,7 +78,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void RemoveRowCommand_Execute()
         {
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -96,7 +96,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void RemoveRowCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -114,7 +114,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void ClearTraverseCommand_Execute()
         {
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -133,7 +133,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             vm.TraverseItems.Add(new TraverseObject(0, 30));
             vm.TraverseItems.Add(new TraverseObject(90, 10));
@@ -150,7 +150,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void GridUpdatedCommand_Execute_Traverse_Count_Less_Than_Two()
         {
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.TraverseItems.Add(new TraverseObject(0, 30));
 
@@ -168,7 +168,7 @@ namespace _3DS_CivilSurveySuiteTests
             var feetAndInchesValue = 100.10;
             var expectedValue = 30.734;
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -190,7 +190,7 @@ namespace _3DS_CivilSurveySuiteTests
             var feetAndInchesValue = 100.10;
             var expectedValue = 100.10;
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -210,7 +210,7 @@ namespace _3DS_CivilSurveySuiteTests
             var linkValue = 100;
             var expectedValue = 20.1168;
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -232,7 +232,7 @@ namespace _3DS_CivilSurveySuiteTests
             var linkValue = 100;
             var expectedValue = 100;
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -252,7 +252,7 @@ namespace _3DS_CivilSurveySuiteTests
             var bearing = 90;
             var expectedValue = new Angle(270);
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -275,7 +275,7 @@ namespace _3DS_CivilSurveySuiteTests
             var bearing = 270;
             var expectedValue = new Angle(90);
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -298,7 +298,7 @@ namespace _3DS_CivilSurveySuiteTests
             var bearing = 90;
             var expectedValue = new Angle(90);
 
-            var vm = new TraverseViewModel(null, null);
+            var vm = new TraverseViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -319,7 +319,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void DrawCommand_Execute()
         {
             Mock<ITraverseService> traverseService = new Mock<ITraverseService>();
-            var vm = new TraverseViewModel(traverseService.Object, null);
+            var vm = new TraverseViewModel(traverseService.Object, null, null);
 
             vm.DrawCommand.CanExecute(true);
             vm.DrawCommand.Execute(null);
@@ -332,7 +332,7 @@ namespace _3DS_CivilSurveySuiteTests
             var traverseService = new Mock<ITraverseService>();
             var processService = new Mock<IProcessService>();
 
-            var vm = new TraverseViewModel(traverseService.Object, processService.Object);
+            var vm = new TraverseViewModel(traverseService.Object, processService.Object, null);
             vm.ShowHelpCommand.CanExecute(true);
             vm.ShowHelpCommand.Execute(null);
         }
@@ -343,7 +343,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             vm.CloseWindowCommand.CanExecute(true);
             vm.CloseWindowCommand.Execute(null);
@@ -355,7 +355,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             vm.SetBasePointCommand.CanExecute(true);
             vm.SetBasePointCommand.Execute(null);
@@ -367,7 +367,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             vm.TraverseItems.Add(new TraverseObject());
             vm.TraverseItems.Add(new TraverseObject());
@@ -384,7 +384,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             travServ.Setup(m => m.SelectLine()).Returns(new AngleDistance { Angle = new Angle(), Distance = 30 });
             
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             vm.SelectLineCommand.CanExecute(true);
             vm.SelectLineCommand.Execute(null);
@@ -397,8 +397,9 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
+            var mesServ = new Mock<IMessageBoxService>();
 
-            var vm = new TraverseViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseViewModel(travServ.Object, procServ.Object, mesServ.Object);
 
             vm.ZoomExtentsCommand.CanExecute(true);
             vm.ZoomExtentsCommand.Execute(null);
