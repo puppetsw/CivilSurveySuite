@@ -3,7 +3,10 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Globalization;
+using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -30,13 +33,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         //    return surfaces.Select(surface => surface.ToSurface(tr)).ToList();
         //}
 
-        //public static TinSurface ToSurface(this CivilSurface surface, Transaction tr)
-        //{
-        //    Handle h = new Handle(long.Parse(surface.ObjectId, NumberStyles.AllowHexSpecifier));
-        //    ObjectId id = ObjectId.Null;
-        //    AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
+        public static TinSurface ToSurface(this CivilSurface surface, Transaction tr)
+        {
+            Handle h = new Handle(long.Parse(surface.ObjectId, NumberStyles.AllowHexSpecifier));
+            ObjectId id = ObjectId.Null;
+            AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
 
-        //    return tr.GetObject(id, OpenMode.ForRead) as TinSurface;
-        //}
+            return tr.GetObject(id, OpenMode.ForRead) as TinSurface;
+        }
     }
 }

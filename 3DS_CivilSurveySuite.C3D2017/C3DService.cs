@@ -13,6 +13,7 @@ using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.Civil.DatabaseServices;
 using SimpleInjector;
+using SimpleInjector.Diagnostics;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -33,6 +34,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<ICogoPointMoveLabelService, CogoPointMoveLabelService>();
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointEditorService, CogoPointEditorService>();
+            Container.Register<ICogoPointSurfaceReportService, CogoPointSurfaceReportService>();
 
             Container.Register<SelectSurfaceView>();
             Container.Register<SelectSurfaceViewModel>();
@@ -52,7 +54,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<CogoPointEditorView>();
             Container.Register<CogoPointEditorViewModel>();
 
-            Container.Verify();
+            Container.Register<CogoPointSurfaceReportView>();
+            Container.Register<CogoPointSurfaceReportViewModel>();
+
+            Container.Verify(VerificationOption.VerifyAndDiagnose);
+            //var debug = Analyzer.Analyze(Container);
         }
 
         [Obsolete("This method is obsolete. Use ShowDialog<TView>() instead.", false)]

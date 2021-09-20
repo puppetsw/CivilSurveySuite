@@ -1,4 +1,7 @@
-﻿using _3DS_CivilSurveySuite.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -15,5 +18,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 Description = pointGroup.Description
             };
         }
+
+
+        public static IEnumerable<CivilPointGroup> ToListOfCivilPointGroups(this IEnumerable<PointGroup> pointGroups)
+        {
+            return pointGroups.Select(pointGroup => pointGroup.ToCivilPointGroup()).ToList();
+        }
+
+
+        public static PointGroup ToPointGroup(this CivilPointGroup civilPointGroup, Transaction tr)
+        {
+            return PointGroupUtils.GetPointGroupByName(tr, civilPointGroup.Name);
+        }
+
     }
 }

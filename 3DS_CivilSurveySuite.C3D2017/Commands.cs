@@ -3,9 +3,16 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Runtime.InteropServices;
+using System.Windows.Media.Media3D;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Views;
+using Autodesk.AutoCAD.ApplicationServices.Core;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.EditorInput;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -202,9 +209,32 @@ namespace _3DS_CivilSurveySuite.C3D2017
             //AcadApp.Editor.WriteMessage($"Point Group Name: {C3DService.PointGroupSelect().GetPointGroup().Name}");
 
             //C3DService.SelectSurface();
-            var pg = C3DService.SelectAlignment();
+            //var pg = C3DService.SelectAlignment();
+            C3DService.ShowDialog<CogoPointSurfaceReportView>();
 
 
+            //using (var graphics = new TransientGraphics())
+            //using (var tr = AcadApp.StartTransaction())
+            //{
+            //    var surface = C3DService.SelectSurface();
+
+            //    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick point: "))
+            //        return;
+
+            //    graphics.DrawPlus(pickedPoint, Settings.GraphicsSize);
+
+                
+            //    SurfaceUtils.FindPointNearSurface(surface, pickedPoint, out Point3d calculatedPoint, out _);
+                
+            //    graphics.DrawDot(calculatedPoint, Settings.GraphicsSize);
+
+            //    AcadApp.Editor.WriteMessage($"\n3DS> Elevation: {calculatedPoint.Z}");
+
+            //    if (!EditorUtils.GetString(out string input, "\n3DS> Paused: "))
+            //        return;
+
+            //    tr.Commit();
+            //}
         }
 
 

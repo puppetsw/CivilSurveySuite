@@ -6,13 +6,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Windows.Controls;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
+using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
+using Autodesk.Civil.DatabaseServices.Styles;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
 
@@ -340,6 +343,83 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
+        /// <summary>
+        /// Calculates a point near the surface edge and finds it's elevation.
+        /// </summary>
+        /// <param name="surface">The surface.</param>
+        /// <param name="point">The picked point.</param>
+        /// <param name="calculatedPoint">The calculated point.</param>
+        /// <param name="edge"></param>
+        public static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
+        {
+            try // Check if point is in surface.
+            {
+                edge = null;
+                var elevation = surface.FindElevationAtXY(point.X, point.Y);
+                calculatedPoint = new Point3d(point.X, point.Y, elevation);
+                return;
+            }
+            catch { } //Suppress error
+
+            double closestDistance = double.MaxValue;
+            LineSegment2d closestEdge = null;
+
+            foreach (TinSurfaceTriangle triangle in surface.Triangles)
+            {
+                var line1 = new LineSegment2d(triangle.Edge1.Vertex1.Location.ToPoint2d(), triangle.Edge1.Vertex2.Location.ToPoint2d());
+                var line2 = new LineSegment2d(triangle.Edge2.Vertex1.Location.ToPoint2d(), triangle.Edge2.Vertex2.Location.ToPoint2d());
+                var line3 = new LineSegment2d(triangle.Edge3.Vertex1.Location.ToPoint2d(), triangle.Edge3.Vertex2.Location.ToPoint2d());
+
+                var d1 = line1.GetDistanceTo(point.ToPoint2d());
+                var d2 = line2.GetDistanceTo(point.ToPoint2d());
+                var d3 = line3.GetDistanceTo(point.ToPoint2d());
+
+                double distance = d1;
+                if (d2 < distance)
+                {
+                    distance = d2;
+                }
+
+                if (d3 < distance)
+                {
+                    distance = d3;
+                }
+
+                if (distance < closestDistance)
+                {
+                    if (distance == d1)
+                        closestEdge = line1;
+
+                    if (distance == d2)
+                        closestEdge = line2;
+
+                    if (distance == d3)
+                        closestEdge = line3;
+
+                    closestDistance = distance;
+                    TinSurfaceTriangle closestTriangle = triangle;
+                }
+            }
+
+            var p = closestEdge.GetClosestPointTo(point.ToPoint2d()).Point.ToPoint3d();
+            var el = surface.FindElevationAtXY(p.X, p.Y);
+            calculatedPoint = new Point3d(p.X, p.Y, el);
+            edge = closestEdge;
+        }
+
+
+        /// <summary>
+        /// Finds the elevation of a point near or on a <see cref="TinSurface"/>.
+        /// </summary>
+        /// <param name="surface">The surface to find the elevation on.</param>
+        /// <param name="x">X value of point.</param>
+        /// <param name="y">Y value of point.</param>
+        /// <returns>System.Double.</returns>
+        public static double FindElevationNearSurface(TinSurface surface, double x, double y)
+        {
+            FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
+            return calculatedPoint.Z;
+        }
 
 
         /// <summary>
@@ -429,5 +509,43 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 tr.Commit();
             }
         }
+
+
+        public static IEnumerable<CivilSurface> GetCivilSurfaces()
+        {
+            var list = new List<CivilSurface>();
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
+
+                foreach (ObjectId surfaceId in surfaceIds)
+                {
+                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
+                    list.Add(surface.ToCivilSurface());
+                }
+
+                tr.Commit();
+            }
+
+            return list;
+        }
+
+        public static CivilSurface SelectCivilSurface()
+        {
+            if (!EditorUtils.GetEntityOfType<TinSurface>(out var objectId, "\n3DS> Select Surface: "))
+                return null;
+
+            CivilSurface surface;
+
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                surface = SurfaceUtils.GetSurfaceByObjectId(tr, objectId).ToCivilSurface();
+                tr.Commit();
+            }
+
+            return surface;
+        }
+
+
     }
 }

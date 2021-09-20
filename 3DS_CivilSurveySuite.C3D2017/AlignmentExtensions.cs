@@ -3,6 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Collections.Generic;
+using System.Linq;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.Civil.DatabaseServices;
 
@@ -18,6 +20,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 Name = surface.Name,
                 Description = surface.Description
             };
+        }
+
+        public static IEnumerable<CivilAlignment> ToListOfCivilAlignments(this IEnumerable<Alignment> alignments)
+        {
+            return alignments.Select(alignment => alignment.ToCivilAlignment()).ToList();
         }
     }
 }

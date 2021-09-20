@@ -13,7 +13,6 @@
     <BitmapImage x:Key="HelpToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/help.png"/>
     <BitmapImage x:Key="PreviewToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/preview.png"/>
 
-
     <BitmapImage x:Key="OpenDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/document-open.png"/>
     <BitmapImage x:Key="SaveDocumentToolbarIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/document-export.png"/>
 
@@ -29,6 +28,6 @@
 
     <BitmapImage x:Key="ZoomExtents" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/ZoomExtents.ico"/>
 
-    <BitmapImage x:Key="Alignment" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/Alignment.ico"/>
+    <BitmapImage x:Key="AlignmentIcon" UriSource="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons/Alignment.ico"/>
 
 </ResourceDictionary>

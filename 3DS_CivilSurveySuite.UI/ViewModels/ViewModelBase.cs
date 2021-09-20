@@ -10,14 +10,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        #region Constructor
-
         protected ViewModelBase()
         { }
-
-        #endregion // Constructor
-
-        #region INotifyPropertyChanged
 
         /// <summary>
         /// Raised when a property on this object has a new value.
@@ -33,10 +27,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             VerifyPropertyName(propertyName);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        #endregion
-
-        #region Debugging Aides
 
         /// <summary>
         /// Warns the developer if this object does not have
@@ -68,10 +58,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         /// </summary>
         protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
 
-        #endregion // Debugging Aides
-
-        #region Methods
-
         /// <summary>
         /// Checks if a property already matches a desired value.  Sets the property and
         /// notifies listeners only when necessary.
@@ -92,7 +78,5 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             NotifyPropertyChanged(propertyName);
             return true;
         }
-
-        #endregion
     }
 }

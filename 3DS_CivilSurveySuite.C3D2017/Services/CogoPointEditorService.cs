@@ -99,7 +99,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 Elevation = cogoPoint.Elevation,
                                 RawDescription = cogoPoint.RawDescription,
                                 DescriptionFormat = cogoPoint.DescriptionFormat,
-                                ObjectIdHandle = objectId.Handle.ToString(),
+                                ObjectId = objectId.Handle.ToString(),
                                 PointName = cogoPoint.PointName
                             };
 
@@ -171,7 +171,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         private static CogoPoint GetCogoPoint(Transaction tr, CivilPoint civilPoint)
         {
-            Handle h = new Handle(long.Parse(civilPoint.ObjectIdHandle, NumberStyles.AllowHexSpecifier));
+            Handle h = new Handle(long.Parse(civilPoint.ObjectId, NumberStyles.AllowHexSpecifier));
             ObjectId id = ObjectId.Null;   
             AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
 

@@ -40,13 +40,15 @@
     <Compile Include="AngleRotationDirection.cs" />
     <Compile Include="AngleReferenceDirection.cs" />
     <Compile Include="CivilAlignment.cs" />
+    <Compile Include="CivilObject.cs" />
     <Compile Include="CivilPoint.cs" />
     <Compile Include="CivilPointGroup.cs" />
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
-    <Compile Include="MinMaxPoint.cs" />
+    <Compile Include="Bounds.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StationOffset.cs" />
     <Compile Include="TraverseAngleObject.cs" />
     <Compile Include="TraverseObject.cs" />
     <Compile Include="Vector.cs" />

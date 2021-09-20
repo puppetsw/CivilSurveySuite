@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// </summary>
         /// <param name="points"><see cref="IReadOnlyList{T}"/> of <see cref="Point"/></param>
         /// <returns>MinMaxPoint.</returns>
-        public static MinMaxPoint GetMinMaxPoint(IReadOnlyList<Point> points)
+        public static Bounds GetMinMaxPoint(IReadOnlyList<Point> points)
         {
             Point minPoint = points[0];
             Point maxPoint = points[0];
@@ -40,7 +40,7 @@ namespace _3DS_CivilSurveySuite.Core
                 maxPoint = new Point(Math.Max(maxPoint.X, point.X), Math.Max(maxPoint.Y, point.Y));
             }
 
-            return new MinMaxPoint { MinPoint = minPoint, MaxPoint = maxPoint };
+            return new Bounds { MinPoint = minPoint, MaxPoint = maxPoint };
         }
 
         /// <summary>

@@ -66,6 +66,7 @@
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
     <Compile Include="C3DPlugin.cs" />
+    <Compile Include="CogoPointExtensions.cs" />
     <Compile Include="Services\CogoPointMoveLabelService.cs" />
     <Compile Include="CogoPointUtils.cs" />
     <Compile Include="Services\CogoPointEditorService.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="LabelUtils.cs" />
     <Compile Include="PointGroupExtensions.cs" />
+    <Compile Include="Services\CogoPointSurfaceReportService.cs" />
     <Compile Include="Services\SelectAlignmentService.cs" />
     <Compile Include="Services\SelectPointGroupService.cs" />
     <Compile Include="PointGroupUtils.cs" />

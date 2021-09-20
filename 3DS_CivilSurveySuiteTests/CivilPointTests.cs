@@ -69,9 +69,9 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_ObjectIdHandle_StoresCorrectly()
         {
             var civilPoint = new CivilPoint();
-            civilPoint.ObjectIdHandle = "Test";
+            civilPoint.ObjectId = "Test";
             
-            Assert.AreEqual("Test", civilPoint.ObjectIdHandle);
+            Assert.AreEqual("Test", civilPoint.ObjectId);
         }
 
         [TestMethod]
@@ -86,8 +86,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CivilPoint_Equality()
         {
-            var civilPoint1 = new CivilPoint();
-            var civilPoint2 = new CivilPoint();
+            var civilPoint1 = new CivilPoint() { ObjectId = "Test" } ;
+            var civilPoint2 = new CivilPoint() { ObjectId = "Test" } ;
            
 
             Assert.IsTrue(civilPoint1.Equals(civilPoint2) && civilPoint2.Equals(civilPoint1));

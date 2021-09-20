@@ -1,6 +1,6 @@
 ﻿namespace _3DS_CivilSurveySuite.Model
 {
-    public struct MinMaxPoint
+    public struct Bounds
     {
         public Point MinPoint;
         public Point MaxPoint;

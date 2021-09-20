@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -34,6 +35,68 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             cogoPoint.RawDescription = rawDescription;
             cogoPoint.DowngradeOpen();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CogoPoint"/> objects associated with the <see cref="PointGroup"/>.
+        /// </summary>
+        /// <param name="pointGroup">The point group.</param>
+        /// <returns>IEnumerable&lt;CogoPoint&gt;.</returns>
+        public static IEnumerable<CogoPoint> GetCogoPointsInPointGroup(PointGroup pointGroup)
+        {
+            var list = new List<CogoPoint>();
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (uint pointNumber in pointGroup.GetPointNumbers())
+                {
+                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    list.Add(cogoPoint);
+                }
+                tr.Commit();
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CogoPoint"/> objects associated with the <see cref="PointGroup"/>.
+        /// </summary>
+        /// <param name="pointGroupName">Name of the point group.</param>
+        /// <returns>IEnumerable&lt;CogoPoint&gt;.</returns>
+        public static IEnumerable<CogoPoint> GetCogoPointsInPointGroup(string pointGroupName)
+        {
+            var list = new List<CogoPoint>();
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var pointGroup = PointGroupUtils.GetPointGroupByName(tr, pointGroupName);
+                foreach (uint pointNumber in pointGroup.GetPointNumbers())
+                {
+                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    list.Add(cogoPoint);
+                }
+                tr.Commit();
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Gets a list of <see cref="CivilPoint"/> objects associated with the <see cref="PointGroup"/>
+        /// </summary>
+        /// <param name="pointGroupName">Name of the point group.</param>
+        /// <returns>IEnumerable&lt;CivilPoint&gt;.</returns>
+        public static IEnumerable<CivilPoint> GetCivilPointsInPointGroup(string pointGroupName)
+        {
+            var list = new List<CivilPoint>();
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var pointGroup = PointGroupUtils.GetPointGroupByName(tr, pointGroupName);
+                foreach (uint pointNumber in pointGroup.GetPointNumbers())
+                {
+                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    list.Add(cogoPoint.ToCivilPoint());
+                }
+                tr.Commit();
+            }
+            return list;
         }
 
         /// <summary>
@@ -214,7 +277,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void Marker_Rotate_Match()
         {
-
         }
 
         public static void Create_Trunks_At_Trees()

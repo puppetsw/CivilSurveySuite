@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
+using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 
@@ -18,6 +20,28 @@ namespace _3DS_CivilSurveySuite.C3D2017
         { }
 
 
+        public static CivilPointGroup SelectCivilPointGroup()
+        {
+            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var objectId, "\n3DS> Select CogoPoint to obtain Point Group: "))
+                return null;
+
+            CivilPointGroup pointGroup;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+                var pgId = cogoPoint.PrimaryPointGroupId;
+
+                var pg = GetPointGroupByObjectId(tr, pgId);
+                pointGroup = pg.ToCivilPointGroup();
+
+                tr.Commit();
+            }
+
+            return pointGroup;
+        }
+
+
         public static PointGroup GetPointGroupByObjectId(Transaction tr, ObjectId pointGroupObjectId)
         {
             if (tr == null)
@@ -28,7 +52,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return tr.GetObject(pointGroupObjectId, OpenMode.ForRead) as PointGroup;
         }
-
 
         public static PointGroup GetPointGroupByName(Transaction tr, string groupName)
         {
@@ -46,7 +69,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     return pointGroup;
                 }
             }
-
+            
             return null;
         }
 
@@ -76,5 +99,40 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return StringHelpers.GetRangeString(pointNumberList);
         }
+
+
+
+        public static IEnumerable<PointGroup> GetPointGroups()
+        {
+            var list = new List<PointGroup>();
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                foreach (ObjectId pointGroupId in C3DApp.ActiveDocument.PointGroups)
+                {
+                    var pointGroup = tr.GetObject(pointGroupId, OpenMode.ForRead) as PointGroup;
+                    list.Add(pointGroup);
+                }
+
+                tr.Commit();
+            }
+            return list;
+        }
+
+        public static IEnumerable<CivilPointGroup> GetCivilPointGroups()
+        {
+            var list = new List<CivilPointGroup>();
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId pointGroupId in C3DApp.ActiveDocument.PointGroups)
+                {
+                    var pointGroup = tr.GetObject(pointGroupId, OpenMode.ForRead) as PointGroup;
+                    list.Add(pointGroup.ToCivilPointGroup());
+                }
+                tr.Commit();
+            }
+            return list;
+        }
+
+
     }
 }

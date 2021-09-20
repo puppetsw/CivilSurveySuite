@@ -83,7 +83,7 @@ namespace _3DS_CivilSurveySuite.Model
             }
         }
 
-        public string ObjectIdHandle
+        public string ObjectId
         {
             get => _objectIdHandle;
             set
