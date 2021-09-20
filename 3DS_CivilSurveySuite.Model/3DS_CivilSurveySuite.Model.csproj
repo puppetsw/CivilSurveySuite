@@ -46,6 +46,7 @@
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="Bounds.cs" />
+    <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StationOffset.cs" />

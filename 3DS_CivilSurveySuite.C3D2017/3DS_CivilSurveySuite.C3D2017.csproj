@@ -72,7 +72,6 @@
     <Compile Include="Services\CogoPointEditorService.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="CommandSettings.cs" />
-    <Compile Include="DescriptionKeyMatch.cs" />
     <Compile Include="LabelUtils.cs" />
     <Compile Include="PointGroupExtensions.cs" />
     <Compile Include="Services\CogoPointSurfaceReportService.cs" />

@@ -57,7 +57,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 desMapping.Add(description, deskeyMatch);
                             }
 
-                            deskeyMatch.AddCogoPoint(cogoPoint, lineNumber);
+                            deskeyMatch.AddCogoPoint(cogoPoint.ToCivilPoint(), lineNumber);
                         }
                     }
                 }
@@ -73,9 +73,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     foreach (var joinablePoints in deskeyMatch.JoinablePoints)
                     {
                         Point3dCollection points = new Point3dCollection();
-                        foreach (CogoPoint point in joinablePoints.Value)
+                        foreach (CivilPoint point in joinablePoints.Value)
                         {
-                            points.Add(point.Location);
+                            points.Add(new Point3d(point.Easting, point.Northing, point.Elevation));
                         }
 
                         string layerName = deskeyMatch.DescriptionKey.Layer;

@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using _3DS_CivilSurveySuite.Model;
-using Autodesk.Civil.DatabaseServices;
 
-namespace _3DS_CivilSurveySuite.C3D2017
+namespace _3DS_CivilSurveySuite.Model
 {
     /// <summary>
     /// DescriptionKeyMatch class
     /// </summary>
-    public class DescriptionKeyMatch //TODO: Abstract this class.
+    public class DescriptionKeyMatch
     {
         public DescriptionKey DescriptionKey { get; private set; }
-        public Dictionary<string, List<CogoPoint>> JoinablePoints { get; set; }
+        public Dictionary<string, List<CivilPoint>> JoinablePoints { get; set; }
 
         public DescriptionKeyMatch(DescriptionKey descriptionKey)
         {
             DescriptionKey = descriptionKey;
-            JoinablePoints = new Dictionary<string, List<CogoPoint>>();
+            JoinablePoints = new Dictionary<string, List<CivilPoint>>();
         }
 
         private static string BuildPattern(DescriptionKey descriptionKey)
@@ -65,18 +63,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="cogoPoint"></param>
         /// <param name="lineNumber"></param>
-        public void AddCogoPoint(CogoPoint cogoPoint, string lineNumber)
+        public void AddCogoPoint(CivilPoint cogoPoint, string lineNumber)
         {
             /* check if the DescriptionKeyMatch joinablepoints contains the current linenumber and point
                if it does, add the current point to that dictiionary using the key
                else, create a new list of points and add it using the key.
              */
             if (JoinablePoints.ContainsKey(lineNumber))
+            {
                 JoinablePoints[lineNumber].Add(cogoPoint);
+            }
             else
             {
-                List<CogoPoint> cogoPoints = new List<CogoPoint>();
-                cogoPoints.Add(cogoPoint);
+                var cogoPoints = new List<CivilPoint> { cogoPoint };
                 JoinablePoints.Add(lineNumber, cogoPoints);
             }
         }
