@@ -3,6 +3,7 @@
 * Error detection method.
 * Add line break to text.
 * Overwrite Text Command.
+* Input service.
 * Copy raw description or full description to text entity
 * Add load/save to traverse palette
 * Add Curves to traverse?
@@ -13,11 +14,35 @@
 * Linework tool to replace SmartDraft -- in progress
 * *Improve angle calculator*
 * point report /w alingments
+
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
 
+* station format
+* edit multiple
+* hide non-adjacent
+* zoom to point
+* option to add cut/fill between surfaces
+* Sorting order to report screen
+* decimal places on report screen
+* export to csv
 * Create point at extension distance on grade between 2 points.
 * Quickly add/remove points by description match, elevation range, inside linear object or window, number range, etc.
+
+```
+   <StackPanel>
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=ViewState}" Value="{x:Static local:ViewState.State1}">
+                        <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+```
 
 > The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
 After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare, 

@@ -273,9 +273,7 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\PointGroup.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UserControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Icons\ZoomExtents.ico" />
   </ItemGroup>

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
@@ -369,12 +370,26 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 AcadApp.Editor.Regen();
                 tr.Commit();
             }
+        }
 
+        public static CivilPoint ToCivilPoint(this CogoPoint cogoPoint)
+        {
+            return new CivilPoint
+            {
+                PointNumber = cogoPoint.PointNumber,
+                Easting = cogoPoint.Easting,
+                Northing = cogoPoint.Northing,
+                Elevation = cogoPoint.Elevation,
+                RawDescription = cogoPoint.RawDescription,
+                DescriptionFormat = cogoPoint.DescriptionFormat,
+                ObjectId = cogoPoint.ObjectId.Handle.ToString(),
+                PointName = cogoPoint.PointName
+            };
+        }
 
-           
-
-
-
+        public static IEnumerable<CivilPoint> ToListOfCivilPoints(this IEnumerable<CogoPoint> cogoPoints)
+        {
+            return cogoPoints.Select(cogoPoint => cogoPoint.ToCivilPoint()).ToList();
         }
 
 

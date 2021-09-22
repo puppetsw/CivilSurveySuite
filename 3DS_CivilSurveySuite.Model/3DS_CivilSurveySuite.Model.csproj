@@ -43,6 +43,8 @@
     <Compile Include="CivilObject.cs" />
     <Compile Include="CivilPoint.cs" />
     <Compile Include="CivilPointGroup.cs" />
+    <Compile Include="CivilProfile.cs" />
+    <Compile Include="CivilSite.cs" />
     <Compile Include="CivilSurface.cs" />
     <Compile Include="DescriptionKey.cs" />
     <Compile Include="Bounds.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="TraverseAngleObject.cs" />
     <Compile Include="TraverseObject.cs" />
     <Compile Include="Vector.cs" />
+    <Compile Include="ViewState.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

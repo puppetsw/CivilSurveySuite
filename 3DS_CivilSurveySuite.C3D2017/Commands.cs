@@ -3,9 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Media3D;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -202,7 +204,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-        
+        [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
+        public static void Test1()
+        {
+            var sites = SiteUtils.GetCivilSites();
+
+            foreach (CivilSite civilSite in sites)
+            {
+                AcadApp.Editor.WriteMessage(civilSite.Name);
+            }
+        }
+
+
+
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
         public static void Test()
         {

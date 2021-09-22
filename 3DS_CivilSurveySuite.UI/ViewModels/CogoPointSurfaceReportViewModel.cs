@@ -6,7 +6,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 
@@ -111,6 +110,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public CogoPointSurfaceReportViewModel(ICogoPointSurfaceReportService cogoPointSurfaceReportService)
         {
             _cogoPointSurfaceReportService = cogoPointSurfaceReportService;
+
             Alignments = new ObservableCollection<CivilAlignment>(_cogoPointSurfaceReportService.GetAlignments());
             PointGroups = new ObservableCollection<CivilPointGroup>(_cogoPointSurfaceReportService.GetPointGroups());
             Surfaces = new ObservableCollection<CivilSurface>(_cogoPointSurfaceReportService.GetSurfaces());

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -67,6 +68,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return tr.GetObject(objectId, OpenMode.ForRead) as Alignment;
         }
 
+        public static CivilAlignment ToCivilAlignment(this Alignment surface)
+        {
+            return new CivilAlignment
+            {
+                ObjectId = surface.ObjectId.Handle.ToString(),
+                Name = surface.Name,
+                Description = surface.Description
+            };
+        }
+
+        public static IEnumerable<CivilAlignment> ToListOfCivilAlignments(this IEnumerable<Alignment> alignments)
+        {
+            return alignments.Select(alignment => alignment.ToCivilAlignment()).ToList();
+        }
 
         public static StationOffset GetStatoinOffset(Alignment alignment, double x, double y)
         {

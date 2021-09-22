@@ -108,7 +108,7 @@
 
         <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ReportDataView}" AutoGenerateColumns="True"
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}" VerticalGridLinesBrush="{StaticResource RedGridLine}"
-                  Background="{StaticResource YellowBackground}" AlternatingRowBackground="LightGray"
+                  Background="{StaticResource YellowBackground}" SelectionMode="Extended"
                   EnableRowVirtualization="True"
                   EnableColumnVirtualization="True"
                   />
