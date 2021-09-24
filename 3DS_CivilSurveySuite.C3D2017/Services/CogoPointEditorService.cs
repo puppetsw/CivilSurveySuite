@@ -105,7 +105,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                         list.Add(civilPoint);
                     }
-                    catch (CivilException e)
+                    catch (CivilException)
                     {
                         //BUG: Exception thrown: 'Autodesk.Civil.CivilException' in AeccDbMgd.dll
                         //Autodesk has made it so property throw an exception if the string is empty

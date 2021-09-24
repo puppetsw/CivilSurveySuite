@@ -21,7 +21,6 @@ namespace _3DS_CivilSurveySuiteTests
         public void SetProperty_Is_Failed()
         {
             var value = "Test";
-            var expected = "Test";
             var vm = new TestViewModelBase();
             Assert.ThrowsException<Exception>(() => vm.InvalidTestProperty = value);
         }

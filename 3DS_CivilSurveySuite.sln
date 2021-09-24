@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.UI", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A1D9E70-1267-4BFE-BE90-391E88DACEAE}"
 	ProjectSection(SolutionItems) = preProject
+		Commands.md = Commands.md
 		Solution Items\README.md = Solution Items\README.md
 		Solution Items\ScratchPad.cs = Solution Items\ScratchPad.cs
 	EndProjectSection
@@ -40,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Samples", "Other Samples", "{1C970487-72D0-4D4F-8297-29A52828B4D2}"
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\Screenshot 2021-09-10 110359.png = Solution Items\Screenshot 2021-09-10 110359.png
+		Solution Items\stringertopo.png = Solution Items\stringertopo.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}"

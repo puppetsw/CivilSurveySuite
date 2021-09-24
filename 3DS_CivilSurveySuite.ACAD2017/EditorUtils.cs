@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -235,8 +237,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="message">The message.</param>
         /// <param name="useDefaultValue">if set to <c>true</c> [use default value].</param>
         /// <param name="defaultValue">The default value.</param>
+        /// <param name="allowZero"></param>
         /// <returns><c>true</c> if a double was successfully entered, <c>false</c> otherwise.</returns>
-        public static bool GetDouble(out double value, string message, bool useDefaultValue = false, double defaultValue = 0)
+        public static bool GetDouble(out double value, string message, bool useDefaultValue = false, double defaultValue = 0, bool allowZero = true)
         {
             value = double.MinValue;
 
@@ -244,6 +247,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             if (useDefaultValue)
                 pdo.DefaultValue = defaultValue;
+
+            pdo.AllowZero = allowZero;
 
             var pdr = AcadApp.Editor.GetDouble(pdo);
 
@@ -302,6 +307,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             objectIds = new ObjectIdCollection(result.Value.GetObjectIds());
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets a selection of type T with option for keywords.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectIds">The object ids.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <param name="keyword"></param>
+        /// <param name="keywords"></param>
+        /// <param name="defaultKeyword"></param>
+        /// <returns><c>true</c> if successfully got a selection, <c>false</c> otherwise.</returns>
+        public static bool GetSelectionOfType<T>(out ObjectIdCollection objectIds, string addMessage, string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
+        {
+            RXClass entityType = RXObject.GetClass(typeof(T));
+            TypedValue[] typedValues = { new TypedValue((int)DxfCode.Start, entityType.DxfName) };
+            return GetSelection(out objectIds, typedValues, addMessage, removeMessage, out keyword, keywords, defaultKeyword);
         }
 
         public static bool GetSelectionOfType<T1, T2>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
@@ -464,6 +487,94 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets a selection set. Selection set uses <param name="typedValues">TypedValues[]</param>
+        /// to determine the selection filter.
+        /// </summary>
+        /// <param name="objectIds">The objectids of the selected entities.</param>
+        /// <param name="typedValues">The typed values to filter by.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <param name="keyword">The keyword.</param>
+        /// <param name="keywords">The keywords.</param>
+        /// <param name="defaultKeyword"></param>
+        /// <returns><c>true</c> if selection set was successful, <c>false</c> otherwise.</returns>
+        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage, string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
+        {
+            if (typedValues == null)
+            {
+                throw new ArgumentNullException(nameof(typedValues));
+            }
+
+            keyword = string.Empty;
+            objectIds = new ObjectIdCollection();
+            var filter = new SelectionFilter(typedValues);
+            var pso = new PromptSelectionOptions
+            {
+                MessageForAdding = addMessage,
+                MessageForRemoval = removeMessage
+            };
+
+            if (keywords != null)
+            {
+                pso.KeywordInput += OnKeywordInput;
+
+                foreach (string word in keywords)
+                {
+                    if (!string.IsNullOrEmpty(word))
+                    {
+                        pso.Keywords.Add(word);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(defaultKeyword) && keywords.Contains(defaultKeyword))
+                {
+                    pso.Keywords.Default = defaultKeyword;
+                }
+
+                //Build messages
+                string kws = pso.Keywords.GetDisplayString(false);
+                pso.MessageForAdding = addMessage + kws;
+                pso.MessageForRemoval = removeMessage + kws;
+            }
+
+            try
+            {
+                var psr = AcadApp.Editor.GetSelection(pso, filter);
+                if (psr.Status != PromptStatus.OK)
+                {
+                    return false;
+                }
+
+                foreach (SelectedObject selectedObject in psr.Value)
+                {
+                    objectIds.Add(selectedObject.ObjectId);
+                }
+            }
+            catch (Autodesk.AutoCAD.Runtime.Exception e)
+            {
+                //Keyword pressed?
+                if (e.ErrorStatus == ErrorStatus.OK)
+                {
+                    keyword = e.Message;
+                    //AcadApp.Editor.WriteMessage($"Keyword: {e.Message}");
+                    pso.KeywordInput -= OnKeywordInput; //unhook event handler.
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:KeywordInput" /> event.
+        /// </summary>
+        /// <param name="o">The sender object.</param>
+        /// <param name="e">The <see cref="SelectionTextInputEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="Autodesk.AutoCAD.Runtime.Exception"></exception>
+        private static void OnKeywordInput(object o, SelectionTextInputEventArgs e)
+        {
+            throw new Autodesk.AutoCAD.Runtime.Exception(ErrorStatus.OK, e.Input);
         }
 
         /// <summary>

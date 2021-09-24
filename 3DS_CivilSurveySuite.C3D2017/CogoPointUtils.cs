@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         //TODO: add more parameters for setting elevation etc.
         public static void CreatePoint(Transaction tr, Point3d position)
         {
-            CogoPointCollection cogoPoints = C3DApp.ActiveDocument.CogoPoints;
+            var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
             var cogoPointId = cogoPoints.Add(position, true);
 
             if (!EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: "))
@@ -284,6 +284,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             //TODO: Use settings to determine codes for TRNK and TRE
             //TODO: Add option to set style for tree and trunk?
+            //TODO: Change this to a service with window.
+            //TODO: Cal it ReplaceTreeSymbols
             var counter = 0;
 
             using (Transaction tr = AcadApp.StartTransaction())
@@ -322,8 +324,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void Stack_CogoPoint_Labels()
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: "))
+            //TODO: add dialog for settings?
+
+            //if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: "))
+            //    return;
+
+            // Put in loop?
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: ", out string keyword, new []{"Settings"}))
                 return;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                // show settings
+                return;
+            }
 
             using (var tr = AcadApp.StartTransaction())
             {
@@ -342,6 +356,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     ObjectId objectId = objectIds[i];
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+
+                    if (cogoPoint == null) // if cogoPoint is null continue. It should never be null though.
+                        continue;
+
                     var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
                     var labelHeight = LabelUtils.CalculateLabelHeight(labelStyle);
                     double textAngle = LabelUtils.GetLabelStyleComponentAngle(labelStyle);
@@ -416,21 +434,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 tr.Commit();
             }
             AcadApp.Editor.Regen();
-        }
-
-
-        /// <summary>
-        /// Add a point at a picked location with elevation calculated at designated slope.
-        /// </summary>
-        private static void CreatePointAtLocationWithSlope()
-        {
-        }
-
-        /// <summary>
-        /// Create point at extension distance on grade between 2 points.
-        /// </summary>
-        private static void CreatePointAtExtensionBetweenPoints()
-        {
         }
 
 

@@ -72,6 +72,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Intersection_Of_Four_Points(PointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSPtSlope", CommandFlags.Modal)]
+        public static void PtSlope()
+        {
+            PointUtils.Create_At_Slope_At_Point(PointUtils.CreatePoint);
+        }
+
+        [CommandMethod("3DS", "_3DSPtLine", CommandFlags.Modal)]
+        public static void PtLine()
+        {
+            PointUtils.Create_At_Distance_Between_Points(PointUtils.CreatePoint);
+        }
+
+
 
 
         // Lines
@@ -113,6 +126,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void PtAtLabelIns()
         {
             PointUtils.Create_At_Label_Location(PointUtils.CreatePoint);
+        }
+
+        [CommandMethod("3DS", "_3DSPtLabelInsText", CommandFlags.Modal)]
+        public static void PtAtLabelInsText()
+        {
+            PointUtils.Create_At_Label_Location(PointUtils.CreatePoint, true);
         }
 
 

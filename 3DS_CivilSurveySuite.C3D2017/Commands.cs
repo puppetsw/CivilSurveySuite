@@ -3,18 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
-using System.Runtime.InteropServices;
-using System.Windows.Media.Media3D;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
-using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -63,11 +56,24 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Intersection_Of_Four_Points(CogoPointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSCptSlope", CommandFlags.Modal)]
+        public static void PtSlope()
+        {
+            PointUtils.Create_At_Slope_At_Point(CogoPointUtils.CreatePoint);
+        }
+
+
 
         [CommandMethod("3DS", "_3DSCptLabelIns", CommandFlags.Modal)]
         public static void CptAtLabelIns()
         {
             PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint);
+        }
+
+        [CommandMethod("3DS", "_3DSCptLabelInsText", CommandFlags.Modal)]
+        public static void CptAtLabelInsText()
+        {
+            PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint, true);
         }
 
         [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal)]
@@ -215,6 +221,26 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+
+        [CommandMethod("3DS", "3DSTest2", CommandFlags.Modal)]
+        public static void Test12314123()
+        {
+            var typedValues = new TypedValue[] { };
+
+            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" }, "Scott");
+
+            AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
+        }
+
+        [CommandMethod("3DS", "3DSTest3", CommandFlags.Modal)]
+        public static void Test12314123455123()
+        {
+            var typedValues = new[] { new TypedValue((int)DxfCode.Start, "LINE,CIRCLE") };
+
+            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" });
+
+            AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
+        }
 
 
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]

@@ -129,6 +129,37 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Create a point at a picked location with elevation calculated at designated slope.
+        /// </summary>
+        public static void Create_At_Slope_At_Point(Action<Transaction, Point3d> createAction)
+        {
+            using (var graphics = new TransientGraphics())
+            using (var tr = AcadApp.StartTransaction())
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Base point: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> New point location: "))
+                    return;
+
+                graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetDouble(out double slope, "\n3DS> Percent slope: ", allowZero: false))
+                    return;
+
+                double distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                double elevation = firstPoint.Z + distance * (slope / 100.0);
+                var newPoint = new Point3d(secondPoint.X, secondPoint.Y, elevation);
+
+                createAction(tr, newPoint);
+
+                tr.Commit();
+            }
+        }
+
+        /// <summary>
         /// Places a point at the intersection of two bearings defined by four points.
         /// </summary>
         public static void Create_At_Intersection_Of_Four_Points(Action<Transaction, Point3d> createAction)
@@ -571,10 +602,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void Create_At_Label_Location(Action<Transaction, Point3d> createAction, bool useTextAsElevation = false)
         {
             //TODO: Better method for building TypedValues ?
-            var typedValue = new TypedValue[1];
-            typedValue.SetValue(new TypedValue((int)DxfCode.Start, "TEXT,MTEXT"), 0);
+            //var typedValue = new TypedValue[1];
+            //typedValue.SetValue(new TypedValue((int)DxfCode.Start, "TEXT,MTEXT"), 0);
 
-            if (!EditorUtils.GetSelection(out var selectedTextIds, typedValue, "\n3DS> Select text entities: "))
+            if (!EditorUtils.GetSelectionOfType<MText, DBText>(out var selectedTextIds, "\n3DS> Select text entities: "))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -587,21 +618,38 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (objectId.IsType<DBText>())
                     {
                         var text = textEnt as DBText;
-                        // ReSharper disable PossibleNullReferenceException
-                        point = new Point3d(text.Position.X, text.Position.Y, text.Position.Z);
+
+                        if (text == null)
+                            throw new ArgumentNullException(nameof(text));
 
                         if (useTextAsElevation)
                         {
-                            //TODO: add way to use text contents as elevation.
-
+                            //add way to use text contents as elevation.
+                            var elevText = StringHelpers.ExtractDoubleFromString(text.TextString);
+                            point = new Point3d(text.Position.X, text.Position.Y, elevText);
+                        }
+                        else
+                        {
+                            point = new Point3d(text.Position.X, text.Position.Y, text.Position.Z);
                         }
                     }
 
                     if (objectId.IsType<MText>())
                     {
                         var text = textEnt as MText;
-                        point = new Point3d(text.Location.X, text.Location.Y, text.Location.Z);
-                        // ReSharper restore PossibleNullReferenceException
+
+                        if (text == null)
+                            throw new ArgumentNullException(nameof(text));
+
+                        if (useTextAsElevation)
+                        {
+                            var elevText = StringHelpers.ExtractDoubleFromString(text.Contents);
+                            point = new Point3d(text.Location.X, text.Location.Y, elevText);
+                        }
+                        else
+                        {
+                            point = new Point3d(text.Location.X, text.Location.Y, text.Location.Z);
+                        }
 
                     }
                     createAction(tr, point);
@@ -609,7 +657,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 tr.Commit();
             }
         }
-
 
         /// <summary>
         /// Creates points at an offset between points.
@@ -679,6 +726,57 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         }
 
+        /// <summary>
+        /// Creates at distance between points.
+        /// </summary>
+        /// <remarks>
+        /// After picking the two points to define the line, the point numbers, slope, horizontal,
+        /// and vertical distances are displayed. The points created do not have to lie between the
+        /// chosen points. You can enter a negative distance to create a point back from the first
+        /// point or a distance greater than the distance between the points to create a point beyond
+        /// the second point.
+        /// </remarks>
+        public static void Create_At_Distance_Between_Points(Action<Transaction, Point3d> createAction)
+        {
+            using (var graphics = new TransientGraphics())
+            using (var tr = AcadApp.StartTransaction())
+            {
+                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> First point: "))
+                    return;
+
+                graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
+
+                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Second point: "))
+                    return;
+
+                var deltaZ = secondPoint.Z - firstPoint.Z;
+                var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var distBetween = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+                var midPoint = PointHelpers.GetMidpointBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+
+                graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
+                graphics.DrawLine(firstPoint, secondPoint);
+                graphics.DrawArrow(midPoint.ToPoint3d(), angle, Settings.GraphicsSize);
+
+                AcadApp.Editor.WriteMessage($"\n3DS> Total distance: {Math.Round(distBetween, 3)}");
+
+                do
+                {
+                    if (!EditorUtils.GetDouble(out double distance, "\n3DS> Enter distance: ", allowZero: false))
+                        break;
+
+                    var point = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
+                    var elevation = firstPoint.Z + deltaZ * (distance / distBetween);
+
+                    var newPoint = new Point3d(point.X, point.Y, elevation);
+                    graphics.DrawPlus(newPoint, Settings.GraphicsSize);
+                    createAction(tr, newPoint);
+
+                } while (true);
+
+                tr.Commit();
+            }
+        }
 
         /// <summary>
         /// Add multiple points (with interpolated elevation) between two points.
