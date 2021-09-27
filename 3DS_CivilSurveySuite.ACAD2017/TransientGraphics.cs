@@ -42,8 +42,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private const string DashedLineType = "DASHED";
 
-
-        public Color Color { get; set; } = Color.FromColorIndex(ColorMethod.ByPen, 2);
+        public Color Color { get; } = Color.FromColorIndex(ColorMethod.ByPen, Settings.TransientColorIndex);
 
         public TransientGraphics()
         {

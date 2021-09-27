@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="_3DS_CivilSurveySuite.C3D2017.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Tree_Replace_Base_Symbol" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Tree</Value>
+    </Setting>
+    <Setting Name="Tree_Replace_Trunk_Symbol" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Trunk</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
