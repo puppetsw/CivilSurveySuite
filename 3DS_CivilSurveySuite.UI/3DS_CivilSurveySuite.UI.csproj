@@ -99,6 +99,9 @@
     <Compile Include="Views\CogoPointEditorView.xaml.cs">
       <DependentUpon>CogoPointEditorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CogoPointReplaceDuplicateView.xaml.cs">
+      <DependentUpon>CogoPointReplaceDuplicateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CogoPointSurfaceReportView.xaml.cs">
       <DependentUpon>CogoPointSurfaceReportView.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CogoPointEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CogoPointReplaceDuplicateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

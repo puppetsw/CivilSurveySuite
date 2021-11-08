@@ -228,6 +228,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         }
 
+        public static void Marker_Rotate_Match()
+        {
+
+        }
+
         public static void Label_Reset_All()
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var pointIds, "\n3DS> Select CogoPoints labels to reset: "))
@@ -274,10 +279,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 }
                 tr.Commit();
             }
-        }
-
-        public static void Marker_Rotate_Match()
-        {
         }
 
         public static void Create_Trunks_At_Trees()

@@ -87,6 +87,7 @@
     <Compile Include="C3DService.cs" />
     <Compile Include="SiteUtils.cs" />
     <Compile Include="Services\SelectSurfaceService.cs" />
+    <Compile Include="StyleUtils.cs" />
     <Compile Include="SurfaceUtils.cs" />
     <Compile Include="Services\ConnectLineworkService.cs" />
   </ItemGroup>

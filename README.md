@@ -13,7 +13,8 @@
 * Settings (Properties.Settings.Default.MyConnection)
 * Linework tool to replace SmartDraft -- in progress
 * *Improve angle calculator*
-* point report /w alingments
+* point report /w alignments
+* Toolbar & Menu
 
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!

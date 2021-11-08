@@ -14,12 +14,31 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class SiteUtils
     {
-
-        public static Site GetSite(string siteName)
+        /// <summary>
+        /// Gets the site by the site name.
+        /// </summary>
+        /// <param name="tr">Transaction.</param>
+        /// <param name="siteName">The site name.</param>
+        /// <returns>The <see cref="Site"/> if found, otherwise null.</returns>
+        /// <exception cref="ArgumentException">Thrown if siteName is null or empty</exception>
+        public static Site GetSite(Transaction tr, string siteName)
         {
-            throw new NotImplementedException();
-        }
+            if (string.IsNullOrEmpty(siteName))
+                throw new ArgumentException(nameof(siteName));
+            
+            foreach (ObjectId siteId in C3DApp.ActiveDocument.GetSiteIds())
+            {
+                var site = tr.GetObject(siteId, OpenMode.ForRead) as Site;
 
+                if (site == null) 
+                    continue;
+                
+                if (site.Name == siteName)
+                    return site;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Gets the site.
