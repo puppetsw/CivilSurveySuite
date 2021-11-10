@@ -79,6 +79,7 @@
     <Compile Include="Commands.cs" />
     <Compile Include="CommandSettings.cs" />
     <Compile Include="LabelUtils.cs" />
+    <Compile Include="Services\CogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\CogoPointSurfaceReportService.cs" />
     <Compile Include="Services\SelectAlignmentService.cs" />
     <Compile Include="Services\SelectPointGroupService.cs" />

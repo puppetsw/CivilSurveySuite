@@ -1,12 +1,21 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="_3DS_CivilSurveySuite.C3D2017.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="Tree_Replace_Base_Symbol" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Tree</Value>
+      <Value Profile="(Default)">Tree [no trunk]</Value>
     </Setting>
     <Setting Name="Tree_Replace_Trunk_Symbol" Type="System.String" Scope="User">
       <Value Profile="(Default)">Trunk</Value>
+    </Setting>
+    <Setting Name="Tree_Code" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Tree_Trunk_Parameter" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Tree_Spread_Parameter" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

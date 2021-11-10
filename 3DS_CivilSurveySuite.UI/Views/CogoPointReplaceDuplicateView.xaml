@@ -7,16 +7,74 @@
         mc:Ignorable="d"
         Title="CogoPointReplaceDuplicateView" Height="450" Width="800">
     <Grid ShowGridLines="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+        <!-- <Grid.ColumnDefinitions> -->
+        <!--     ~1~ <ColumnDefinition Width="200" /> @1@ -->
+        <!--     <ColumnDefinition /> -->
+        <!-- </Grid.ColumnDefinitions> -->
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
 
+         <!--
+         Code dia  height spread
+         TRE  0.3  5      6
+
+         We want to set the symbol for the TRE code
+         and one for the trunk code
+         -->
+
+         <StackPanel>
+            <Grid ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+             <Label Grid.Row="0" Grid.Column="0" Content="Tree Symbol"/>
+             <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Symbols}"
+                       SelectedItem="{Binding SelectedTreeSymbol}" />
+
+             <Label Grid.Row="1" Grid.Column="0" Content="Trunk Symbol"/>
+             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Symbols}"
+                       SelectedItem="{Binding SelectedTrunkSymbol}" />
+
+            </Grid>
+         </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Code" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TreeCode}" />
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Trunk Parameter" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrunkParameter}" />
+
+                <Label Grid.Row="2" Grid.Column="0" Content="Spread Parameter" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SpreadParameter}" />
+
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Content="OK" Width="150" Height="25" Click="BtnOk_Click" Command="{Binding OkCommand}" />
+            <Button Content="Cancel" Width="150" Height="25" Click="BtnCancel_Click" />
+        </StackPanel>
 
     </Grid>
 </Window>

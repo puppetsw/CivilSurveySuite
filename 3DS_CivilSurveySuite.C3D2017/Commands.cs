@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
@@ -237,7 +238,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             var typedValues = new[] { new TypedValue((int)DxfCode.Start, "LINE,CIRCLE") };
 
-            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" });
+            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage,
+                new string[] { "tEst", "Scott" });
 
             AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
         }
@@ -250,7 +252,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             //C3DService.SelectSurface();
             //var pg = C3DService.SelectAlignment();
-            C3DService.ShowDialog<CogoPointSurfaceReportView>();
+            //C3DService.ShowDialog<CogoPointSurfaceReportView>();
+            C3DService.ShowDialog<CogoPointReplaceDuplicateView>();
 
 
             //using (var graphics = new TransientGraphics())
@@ -263,9 +266,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             //    graphics.DrawPlus(pickedPoint, Settings.GraphicsSize);
 
-                
+
             //    SurfaceUtils.FindPointNearSurface(surface, pickedPoint, out Point3d calculatedPoint, out _);
-                
+
             //    graphics.DrawDot(calculatedPoint, Settings.GraphicsSize);
 
             //    AcadApp.Editor.WriteMessage($"\n3DS> Elevation: {calculatedPoint.Z}");

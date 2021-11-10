@@ -13,7 +13,7 @@ using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.Civil.DatabaseServices;
 using SimpleInjector;
-using SimpleInjector.Diagnostics;
+//using SimpleInjector.Diagnostics;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -35,6 +35,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<IConnectLineworkService, ConnectLineworkService>();
             Container.Register<ICogoPointEditorService, CogoPointEditorService>();
             Container.Register<ICogoPointSurfaceReportService, CogoPointSurfaceReportService>();
+            Container.Register<ICogoPointReplaceDuplicateService, CogoPointReplaceDuplicateService>();
 
             Container.Register<SelectSurfaceView>();
             Container.Register<SelectSurfaceViewModel>();
@@ -56,6 +57,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             Container.Register<CogoPointSurfaceReportView>();
             Container.Register<CogoPointSurfaceReportViewModel>();
+
+            Container.Register<CogoPointReplaceDuplicateView>();
+            Container.Register<CogoPointReplaceDuplicateViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
             //var debug = Analyzer.Analyze(Container);
@@ -89,10 +93,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             var dialog = window as IDialogService<CivilSurface>;
             var showDialog = Application.ShowModalWindow(window);
 
-            if (showDialog != true) 
+            if (showDialog != true)
                 return null;
 
-            if (dialog == null) 
+            if (dialog == null)
                 return null;
 
             var civilSurface = dialog.ResultObject;
@@ -117,10 +121,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             var dialog = window as IDialogService<CivilPointGroup>;
             var showDialog = Application.ShowModalWindow(window);
 
-            if (showDialog != true) 
+            if (showDialog != true)
                 return null;
 
-            if (dialog == null) 
+            if (dialog == null)
                 return null;
 
             var civilPointGroup = dialog.ResultObject;
@@ -146,10 +150,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             var dialog = window as IDialogService<CivilAlignment>;
             var showDialog = Application.ShowModalWindow(window);
 
-            if (showDialog != true) 
+            if (showDialog != true)
                 return null;
 
-            if (dialog == null) 
+            if (dialog == null)
                 return null;
 
             var civilAlignment = dialog.ResultObject;

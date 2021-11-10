@@ -69,6 +69,7 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\ICogoPointMoveLabelService.cs" />
     <Compile Include="Services\ICogoPointEditorService.cs" />
+    <Compile Include="Services\ICogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
+    <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
     <Compile Include="ViewModels\CogoPointSurfaceReportViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="Services\ICogoPointSurfaceReportService.cs" />
