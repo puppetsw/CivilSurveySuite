@@ -49,7 +49,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("TRE")]
         public string Tree_Code {
             get {
                 return ((string)(this["Tree_Code"]));
@@ -80,6 +80,30 @@ namespace _3DS_CivilSurveySuite.C3D2017.Properties {
             }
             set {
                 this["Tree_Spread_Parameter"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TRE")]
+        public string Tree_New_Tree_Code {
+            get {
+                return ((string)(this["Tree_New_Tree_Code"]));
+            }
+            set {
+                this["Tree_New_Tree_Code"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TRNK")]
+        public string Tree_New_Trunk_Code {
+            get {
+                return ((string)(this["Tree_New_Trunk_Code"]));
+            }
+            set {
+                this["Tree_New_Trunk_Code"] = value;
             }
         }
     }

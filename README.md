@@ -15,7 +15,6 @@
 * *Improve angle calculator*
 * point report /w alignments
 * Toolbar & Menu
-* Replace tree point view and viewmodel.- in progress. Temporary UI in place.
 
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!

@@ -3,26 +3,49 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
 
 namespace _3DS_CivilSurveySuite.UI.Services
 {
     public interface ICogoPointReplaceDuplicateService
     {
-        IEnumerable<string> GetCogoPointSymbols();
+        string FindCode { get; set; }
 
-        string TreeReplaceSymbol { get; set; }
+        int FoundCount{ get; set; }
 
-        string TrunkReplaceSymbol { get; set; }
+        string ReplaceCode { get; set; }
 
-        string TreeCode { get; set; }
+        string DuplicateCode { get; set; }
 
-        int TrunkParameter { get; set; }
+        bool ShouldApplyDescriptionKey { get; set; }
 
-        int SpreadParameter { get; set; }
+        bool ShouldOverwriteStyle { get; set; }
+
+        bool ShouldReplaceCode { get; set; }
+
+        bool ShouldDuplicateCode { get; set; }
+
+        bool ShouldDuplicateApplyDescriptionKey { get; set; }
+
+        bool ShouldDuplicateOverwriteStyle { get; set; }
+
+        string ReplaceSymbol { get; set; }
+
+        string DuplicateSymbol { get; set; }
 
         void Save();
 
-        void ReplaceAndDuplicateSymbols();
+        void ReplaceDuplicate();
+
+        [Obsolete("This method is obsolete. Use ReplaceDuplicate()")]
+        void ReplaceDuplicate(string findCode, string replaceCode, string duplicateCode, bool shouldReplaceCode,
+            bool shouldApplyDescriptionKey, bool shouldOverwriteStyle, bool shouldDuplicateCode,
+            bool shouldDuplicateApplyDescriptionKey, bool shouldDuplicateOverwriteStyle,
+            string replaceSymbol, string duplicateSymbol);
+
+        void Find();
+
+        IEnumerable<string> GetCogoPointSymbols();
     }
 }

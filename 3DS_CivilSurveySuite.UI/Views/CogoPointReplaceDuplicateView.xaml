@@ -3,77 +3,73 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="CogoPointReplaceDuplicateView" Height="450" Width="800">
-    <Grid ShowGridLines="True">
-        <!-- <Grid.ColumnDefinitions> -->
-        <!--     ~1~ <ColumnDefinition Width="200" /> @1@ -->
-        <!--     <ColumnDefinition /> -->
-        <!-- </Grid.ColumnDefinitions> -->
+        Title="Replace &amp; Duplicate" Height="430" Width="500" >
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid  ShowGridLines="False" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
-         <!--
-         Code dia  height spread
-         TRE  0.3  5      6
+        <Label Grid.Row="0" Grid.Column="0">Find code:</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Height="25" Text="{Binding FindCode}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="LostFocus">
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                    Path=DataContext.FindCodeCommand}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </TextBox>
 
-         We want to set the symbol for the TRE code
-         and one for the trunk code
-         -->
+        <Label Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Right" Content="{Binding FoundCountString}"/>
 
-         <StackPanel>
-            <Grid ShowGridLines="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ShouldReplaceCode}">Replace Code</CheckBox>
+        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding ShouldReplaceCode}">
+            <StackPanel Margin="5">
+                <TextBox Height="25" Margin="0,5" Text="{Binding ReplaceCode}" />
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldApplyDescriptionKey}">Apply Description Key</CheckBox>
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldOverwriteStyle}">Overwrite Point Style</CheckBox>
+                <ComboBox Height="25" Margin="0,5"
+                          IsEnabled="{Binding ShouldOverwriteStyle}"
+                          ItemsSource="{Binding Symbols}"
+                          SelectedItem="{Binding ReplaceSymbol}"
+                          />
+            </StackPanel>
+        </GroupBox>
 
-             <Label Grid.Row="0" Grid.Column="0" Content="Tree Symbol"/>
-             <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Symbols}"
-                       SelectedItem="{Binding SelectedTreeSymbol}" />
+        <CheckBox Grid.Row="4" Grid.Column="0" Margin="0,5,0,0" IsChecked="{Binding ShouldDuplicateCode}">Duplicate Code</CheckBox>
+        <GroupBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding ShouldDuplicateCode}">
+            <StackPanel Margin="5">
+                <TextBox Height="25" Margin="0,5" Text="{Binding DuplicateCode}" />
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldDuplicateApplyDescriptionKey}">Apply Description Key</CheckBox>
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldDuplicateOverwriteStyle}">Overwrite Point Style</CheckBox>
+                <ComboBox Height="25" Margin="0,5"
+                          IsEnabled="{Binding ShouldDuplicateOverwriteStyle}"
+                          ItemsSource="{Binding Symbols}"
+                          SelectedItem="{Binding DuplicateSymbol}"
+                          />
+            </StackPanel>
+        </GroupBox>
 
-             <Label Grid.Row="1" Grid.Column="0" Content="Trunk Symbol"/>
-             <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Symbols}"
-                       SelectedItem="{Binding SelectedTrunkSymbol}" />
-
-            </Grid>
-         </StackPanel>
-
-        <StackPanel Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <Label Grid.Row="0" Grid.Column="0" Content="Code" />
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding TreeCode}" />
-
-                <Label Grid.Row="1" Grid.Column="0" Content="Trunk Parameter" />
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding TrunkParameter}" />
-
-                <Label Grid.Row="2" Grid.Column="0" Content="Spread Parameter" />
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SpreadParameter}" />
-
-            </Grid>
-        </StackPanel>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="OK" Width="150" Height="25" Click="BtnOk_Click" Command="{Binding OkCommand}" />
-            <Button Content="Cancel" Width="150" Height="25" Click="BtnCancel_Click" />
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="100" Height="25" Margin="5"
+                    Click="BtnOk_Click" Command="{Binding FindReplaceCommand}" />
+            <Button Content="Cancel" Width="100" Height="25" Margin="5"
+                    Click="BtnCancel_Click" />
         </StackPanel>
 
     </Grid>

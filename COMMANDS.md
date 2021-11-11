@@ -99,6 +99,7 @@
 | 3DSCptLabelsMove | Shows dialog to move multiple labels by specified amount. |
 | 3DSShowConnectLineworkWindow | Shows the dialog window to draw linework between CogoPoints. |
 | 3DSShowCogoPointEditor | Shows the CogoPoint editor dialog. |
+| 3DSShowCogoPointFindReplace | Shows the CogoPoint find/replace dialog. |
 
 ## Labels
 | Command | Description |

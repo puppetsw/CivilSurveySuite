@@ -9,13 +9,19 @@
       <Value Profile="(Default)">Trunk</Value>
     </Setting>
     <Setting Name="Tree_Code" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">TRE</Value>
     </Setting>
     <Setting Name="Tree_Trunk_Parameter" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Tree_Spread_Parameter" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Tree_New_Tree_Code" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TRE</Value>
+    </Setting>
+    <Setting Name="Tree_New_Trunk_Code" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TRNK</Value>
     </Setting>
   </Settings>
 </SettingsFile>

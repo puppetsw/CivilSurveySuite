@@ -18,12 +18,120 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     public class CogoPointReplaceDuplicateViewModel : ViewModelBase
     {
         private readonly ICogoPointReplaceDuplicateService _cogoPointReplaceDuplicateService;
+        private string _findCode;
+        private string _replaceCode;
+        private string _duplicateCode;
+        private int _foundCount;
+        private bool _shouldApplyDescriptionKey;
+        private bool _shouldOverwriteStyle;
+        private bool _shouldReplaceCode;
+        private bool _shouldDuplicateApplyDescriptionKey;
+        private bool _shouldDuplicateOverwriteStyle;
         private ObservableCollection<string> _symbols;
-        private string _selectedSymbol;
-        private string _selectedTrunkSymbol;
-        private string _treeCode;
-        private int _trunkParameter;
-        private int _spreadParameter;
+        private string _replaceSymbol;
+        private string _duplicateSymbol;
+        private bool _shouldDuplicateCode;
+        private string _foundCountString;
+
+        public string FindCode
+        {
+            get => _findCode;
+            set
+            {
+                _findCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int FoundCount
+        {
+            get => _foundCount;
+            set
+            {
+                _foundCount = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string ReplaceCode
+        {
+            get => _replaceCode;
+            set
+            {
+                _replaceCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldApplyDescriptionKey
+        {
+            get => _shouldApplyDescriptionKey;
+            set
+            {
+                _shouldApplyDescriptionKey = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldOverwriteStyle
+        {
+            get => _shouldOverwriteStyle;
+            set
+            {
+                _shouldOverwriteStyle = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldReplaceCode
+        {
+            get => _shouldReplaceCode;
+            set
+            {
+                _shouldReplaceCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldDuplicateCode
+        {
+            get => _shouldDuplicateCode;
+            set
+            {
+                _shouldDuplicateCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string DuplicateCode
+        {
+            get => _duplicateCode;
+            set
+            {
+                _duplicateCode = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldDuplicateApplyDescriptionKey
+        {
+            get => _shouldDuplicateApplyDescriptionKey;
+            set
+            {
+                _shouldDuplicateApplyDescriptionKey = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ShouldDuplicateOverwriteStyle
+        {
+            get => _shouldDuplicateOverwriteStyle;
+            set
+            {
+                _shouldDuplicateOverwriteStyle = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public ObservableCollection<string> Symbols
         {
@@ -35,91 +143,75 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public string SelectedTreeSymbol
+        public string ReplaceSymbol
         {
-            get => _selectedSymbol;
+            get => _replaceSymbol;
             set
             {
-                _selectedSymbol = value;
+                _replaceSymbol = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public string SelectedTrunkSymbol
+        public string DuplicateSymbol
         {
-            get => _selectedTrunkSymbol;
+            get => _duplicateSymbol;
             set
             {
-                _selectedTrunkSymbol = value;
+                _duplicateSymbol = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public string TreeCode
+        public string FoundCountString
         {
-            get => _treeCode;
+            get => _foundCountString;
             set
             {
-                _treeCode = value;
+                _foundCountString = value;
                 NotifyPropertyChanged();
             }
         }
 
-        public int TrunkParameter
+        public RelayCommand FindReplaceCommand => new RelayCommand(FindReplace, () => true);
+
+        public RelayCommand FindCodeCommand => new RelayCommand(FindCount, () => true);
+
+        private void FindCount()
         {
-            get => _trunkParameter;
-            set
-            {
-                _trunkParameter = value;
-                NotifyPropertyChanged();
-            }
+            _cogoPointReplaceDuplicateService.FindCode = FindCode;
+            _cogoPointReplaceDuplicateService.Find();
+            FoundCount = _cogoPointReplaceDuplicateService.FoundCount;
+            FoundCountString = $"{FoundCount} CogoPoints Found";
         }
-
-        public int SpreadParameter
-        {
-            get => _spreadParameter;
-            set
-            {
-                _spreadParameter = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
-        public RelayCommand OkCommand => new RelayCommand(Ok, () => true);
-
 
         public CogoPointReplaceDuplicateViewModel(ICogoPointReplaceDuplicateService cogoPointReplaceDuplicateService)
         {
             _cogoPointReplaceDuplicateService = cogoPointReplaceDuplicateService;
             Symbols = new ObservableCollection<string>(_cogoPointReplaceDuplicateService.GetCogoPointSymbols());
 
-            TreeCode = _cogoPointReplaceDuplicateService.TreeCode;
-            TrunkParameter = _cogoPointReplaceDuplicateService.TrunkParameter;
-            SpreadParameter = _cogoPointReplaceDuplicateService.SpreadParameter;
-
-
             if (Symbols.Count > 0)
             {
-                string tree = _cogoPointReplaceDuplicateService.TreeReplaceSymbol;
-                string trunk = _cogoPointReplaceDuplicateService.TrunkReplaceSymbol;
-
-                SelectedTreeSymbol = Symbols.Contains(tree) ? tree : Symbols[0];
-                SelectedTrunkSymbol = Symbols.Contains(trunk) ? trunk : Symbols[0];
+                ReplaceSymbol = Symbols[0];
+                DuplicateSymbol = Symbols[0];
             }
         }
 
-        private void Ok()
+        private void FindReplace()
         {
-            _cogoPointReplaceDuplicateService.TreeCode = TreeCode;
-            _cogoPointReplaceDuplicateService.TrunkParameter = TrunkParameter;
-            _cogoPointReplaceDuplicateService.SpreadParameter = SpreadParameter;
-            _cogoPointReplaceDuplicateService.TreeReplaceSymbol = SelectedTreeSymbol;
-            _cogoPointReplaceDuplicateService.TrunkReplaceSymbol = SelectedTrunkSymbol;
+            _cogoPointReplaceDuplicateService.FindCode = FindCode;
+            _cogoPointReplaceDuplicateService.ReplaceCode = ReplaceCode;
+            _cogoPointReplaceDuplicateService.DuplicateCode = DuplicateCode;
+            _cogoPointReplaceDuplicateService.ShouldDuplicateCode = ShouldDuplicateCode;
+            _cogoPointReplaceDuplicateService.ShouldOverwriteStyle = ShouldOverwriteStyle;
+            _cogoPointReplaceDuplicateService.ShouldReplaceCode = ShouldReplaceCode;
+            _cogoPointReplaceDuplicateService.ShouldApplyDescriptionKey = ShouldApplyDescriptionKey;
+            _cogoPointReplaceDuplicateService.ShouldDuplicateOverwriteStyle = ShouldDuplicateOverwriteStyle;
+            _cogoPointReplaceDuplicateService.ShouldDuplicateApplyDescriptionKey = ShouldDuplicateApplyDescriptionKey;
+            _cogoPointReplaceDuplicateService.ReplaceSymbol = ReplaceSymbol;
+            _cogoPointReplaceDuplicateService.DuplicateSymbol = DuplicateSymbol;
             _cogoPointReplaceDuplicateService.Save();
-
-
-            _cogoPointReplaceDuplicateService.ReplaceAndDuplicateSymbols();
+            _cogoPointReplaceDuplicateService.ReplaceDuplicate();
         }
     }
 }

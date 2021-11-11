@@ -196,6 +196,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DService.ShowDialog<CogoPointEditorView>();
         }
 
+        [CommandMethod("3DS", "3DSShowCogoPointFindReplace", CommandFlags.Modal)]
+        public static void ShowCogoFindReplace()
+        {
+            C3DService.ShowDialog<CogoPointReplaceDuplicateView>();
+        }
+
+
 
         // Labels
         [CommandMethod("3DS", "3DSLabelMaskOff", CommandFlags.Modal)]
