@@ -109,7 +109,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             if (pso.Status != PromptStatus.OK)
                 return;
-            
+
             using (Transaction tr = AcadApp.StartTransaction())
             {
                 foreach (ObjectId objectId in pso.Value.GetObjectIds())
@@ -132,7 +132,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             if (pso.Status != PromptStatus.OK)
                 return;
-            
+
             using (Transaction tr = AcadApp.StartTransaction())
             {
                 foreach (ObjectId objectId in pso.Value.GetObjectIds())
@@ -157,7 +157,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             if (perLines.Status != PromptStatus.OK)
                 return;
-            
+
             string lineType = perLines.ObjectId.ObjectClass.DxfName;
             using (Transaction tr = AcadApp.StartTransaction())
             {
@@ -193,7 +193,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                         {
                             // if it isn't an ordinary angle, we flip it.
                             // because we don't really care if the radians are in clockwise or not
-                            // we can just flip the angle without it being in the correct system. 
+                            // we can just flip the angle without it being in the correct system.
                             angle = AngleHelpers.RadiansToAngle(line.Angle).Flip().ToRadians();
                         }
 
@@ -295,12 +295,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     var cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
 
-                    if (cogoPoint is null) 
+                    if (cogoPoint is null)
                         continue;
 
-                    if (!cogoPoint.RawDescription.Contains("TRE ")) 
+                    if (!cogoPoint.RawDescription.Contains("TRE "))
                         continue;
-                    
+
                     ObjectId trunkPointId = C3DApp.ActiveDocument.CogoPoints.Add(cogoPoint.Location, true);
                     CogoPoint trunkPoint = trunkPointId.GetObject(OpenMode.ForWrite) as CogoPoint;
 
@@ -320,6 +320,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             string completeMessage = "Changed " + counter + " TRE points, and created " + counter + " TRNK points";
             AcadApp.Editor.WriteMessage(completeMessage);
+        }
+
+
+        public static void AddLineBreakToDescription(CogoPoint cogoPoint)
+        {
+
         }
 
 
@@ -353,7 +359,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 // Point3d newLocation = label.AnchorInfo.Location + offset;
                 // label.LabelLocation = newLocation;
-                for (var i = objectIds.Count; i-- > 0;) 
+                for (var i = objectIds.Count; i-- > 0;)
                 {
                     ObjectId objectId = objectIds[i];
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
@@ -466,7 +472,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// The UsedPt command displays a list of used point numbers in the command window.
         /// Usage
-        /// Type UsedPt at the command line.The available point numbers in the drawing are displayed in the 
+        /// Type UsedPt at the command line.The available point numbers in the drawing are displayed in the
         /// command window, as in the following example:
         /// </summary>
         public static void UsedPoints()

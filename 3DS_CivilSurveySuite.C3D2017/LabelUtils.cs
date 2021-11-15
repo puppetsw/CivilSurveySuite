@@ -32,7 +32,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return 0;
         }
 
-
         //BUG: What if there is more than 1 labelstyle component?
         public static double CalculateLabelHeight(LabelStyle style)
         {
@@ -106,6 +105,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+
+        public static void GetLabelWidth(LabelStyle labelStyle)
+        {
+
+        }
 
 
 
