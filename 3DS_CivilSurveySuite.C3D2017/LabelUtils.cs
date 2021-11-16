@@ -105,14 +105,38 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-
-        public static void GetLabelWidth(LabelStyle labelStyle)
+        /// <summary>
+        /// Checks each component in the label style and returns the maximum width of the text.
+        /// </summary>
+        /// <param name="tr">The active transaction.</param>
+        /// <param name="labelStyle">The label style.</param>
+        /// <returns>A double value containing the maximum width of the label style.</returns>
+        public static double GetLabelWidth(Transaction tr, LabelStyle labelStyle)
         {
+            var maxWidth = 0.0;
+            foreach (ObjectId componentId in labelStyle.GetComponents(LabelStyleComponentType.Text))
+            {
+                var component = tr.GetObject(componentId, OpenMode.ForRead) as LabelStyleComponent;
 
+                if (component == null)
+                    continue;
+
+                if (component.GetType() == typeof(LabelStyleTextComponent))
+                {
+                    var textComponent = component as LabelStyleTextComponent;
+
+                    if (textComponent == null)
+                        continue;
+
+                    if (textComponent.Text.MaxWidth.Value > maxWidth)
+                        maxWidth = textComponent.Text.MaxWidth.Value;
+                }
+            }
+
+            if (labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value > maxWidth)
+                maxWidth = labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value;
+
+            return maxWidth;
         }
-
-
-
-
     }
 }
