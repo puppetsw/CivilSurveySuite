@@ -110,8 +110,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="tr">The active transaction.</param>
         /// <param name="labelStyle">The label style.</param>
-        /// <returns>A double value containing the maximum width of the label style.</returns>
-        public static double GetLabelWidth(Transaction tr, LabelStyle labelStyle)
+        /// <returns>A int value containing the maximum width of the label style.</returns>
+        public static int GetLabelWidth(Transaction tr, LabelStyle labelStyle)
         {
             var maxWidth = 0.0;
             foreach (ObjectId componentId in labelStyle.GetComponents(LabelStyleComponentType.Text))
@@ -128,15 +128,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (textComponent == null)
                         continue;
 
-                    if (textComponent.Text.MaxWidth.Value > maxWidth)
-                        maxWidth = textComponent.Text.MaxWidth.Value;
+                    var value = Math.Round(textComponent.Text.MaxWidth.Value * 1000, 3);
+
+                    if (value > maxWidth)
+                        maxWidth = value;
                 }
             }
 
-            if (labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value > maxWidth)
-                maxWidth = labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value;
+            // Ignore for dragged state?
+            // if (labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value > maxWidth)
+            //     maxWidth = labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value;
 
-            return maxWidth;
+            return Convert.ToInt32(maxWidth);
         }
     }
 }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
@@ -322,12 +323,61 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.WriteMessage(completeMessage);
         }
 
-
-        public static void AddLineBreakToDescription(CogoPoint cogoPoint)
+        public static void AddLineBreakToDescription(string lineBreakText = "{}")
         {
+            // Where in the text do you want the linebreak?
+            // Convert a text symbol to the new line? i.e. {NL}. NL for new line.
+            // Check if the text has the lineBreakText key.
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoint: ", "\n3DS> Remove CogoPoints: "))
+                return;
 
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId objectId in objectIds)
+                {
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForWrite) as CogoPoint;
+
+                    if (cogoPoint == null)
+                        throw new InvalidOperationException("Got unexpected objectId for CogoPoint.");
+
+                    // Get the width of the label style used by the CogoPoint.
+                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+
+                    if (labelStyle == null)
+                        throw new InvalidOperationException("Got unexpected objectId for CogoPoint's LabelStyle.");
+
+                    // loop each text component in the label style and calculate the maximum width.
+                    int maxWidth = LabelUtils.GetLabelWidth(tr, labelStyle);
+                    maxWidth += 5; // Seems like the labels have a bit extra 'space' on the width.
+                                   // This might be related to the current scale and the text size?
+
+                    // Check how many lineBreakText keys are in the description format.
+                    // I didn't want to use Regex, but seems I can't escape it.
+                    var occurrences = Regex.Matches(cogoPoint.DescriptionFormat, lineBreakText).Count;
+
+                    for (int i = 0; i < occurrences; i++)
+                    {
+                        // calculate how many spaces to add for the occurrence.
+                        // get position of lineBreakText in the description format.
+
+                        int lineBreakTextPosition = cogoPoint.DescriptionFormat.IndexOf(lineBreakText, StringComparison.Ordinal);
+
+                        int amountOfPadToAdd = maxWidth - lineBreakTextPosition;
+
+                        if (amountOfPadToAdd < 0)
+                            amountOfPadToAdd += maxWidth * i;
+
+                        var padString = ""; // Is there a better way to do this?
+                        padString = padString.PadLeft(amountOfPadToAdd + 5 * i);
+
+                        string text = cogoPoint.DescriptionFormat.ReplaceFirst(lineBreakText, "");
+                        text = text.Insert(lineBreakTextPosition, padString);
+                        cogoPoint.DescriptionFormat = text;
+                    }
+                }
+                tr.Commit();
+            }
         }
-
 
         public static void Stack_CogoPoint_Labels()
         {
@@ -417,7 +467,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return cogoPoints.Select(cogoPoint => cogoPoint.ToCivilPoint()).ToList();
         }
 
-
         public static void Move_CogoPoint_Label(double deltaX, double deltaY)
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
@@ -442,7 +491,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
             AcadApp.Editor.Regen();
         }
-
 
         /// <summary>
         /// Inverses two <see cref="CogoPoint"/> entities by their point number.

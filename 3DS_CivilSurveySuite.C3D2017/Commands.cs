@@ -217,6 +217,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.Label_Mask_Toggle(true);
         }
 
+        [CommandMethod("3DS", "3DSLabelLineBreak", CommandFlags.Modal)]
+        public static void LabelLineBreak()
+        {
+            CogoPointUtils.AddLineBreakToDescription();
+        }
+
 
         [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
         public static void Test1()
