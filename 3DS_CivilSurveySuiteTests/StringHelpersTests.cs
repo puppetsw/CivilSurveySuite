@@ -128,9 +128,23 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expectedString, result);
         }
 
+        [TestMethod]
+        public void Replace_First_Occurrence()
+        {
+            string sourceString = "This is {} a test {} string";
+            string expectedString = "This is  a test {} string";
 
+            var result = sourceString.ReplaceFirst("{}", "");
+            Assert.AreEqual(expectedString, result);
+        }
 
+        [TestMethod]
+        public void Replace_First_Occurrence_Not_Found()
+        {
+            string sourceString = "This is {} a test {} string";
 
-
+            var result = sourceString.ReplaceFirst("#", "");
+            Assert.AreEqual(sourceString, result);
+        }
     }
 }

@@ -31,6 +31,16 @@ namespace _3DS_CivilSurveySuite.Core
             return mx.Success ? Convert.ToDouble(mx.Groups[1].Value) : 0;
         }
 
+        public static string ReplaceFirst(this string text, string search, string replace)
+        {
+            int pos = text.IndexOf(search);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
+
         public static string RemoveWhitespace(string targetString)
         {
             return string.Concat(targetString.Where(c => !char.IsWhiteSpace(c)));
@@ -47,10 +57,10 @@ namespace _3DS_CivilSurveySuite.Core
             int[] arr = Array.ConvertAll(cleanedString, int.Parse);
 
             // Return if array is null or contains less than 2 items
-            if (!arr.Any()) 
+            if (!arr.Any())
                 return string.Empty;
 
-            if (arr.Length == 1) 
+            if (arr.Length == 1)
                 return arr[0].ToString();
 
             Array.Sort(arr);
