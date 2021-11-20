@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" d:DataContext="{d:DesignData}" Height="250" Width="300"
+             mc:Ignorable="d" d:DataContext="{d:DesignData}" Height="250" Width="260"
              Title="Bearing Calculator">
     <Window.InputBindings>
         <!-- NumPad Keys -->
@@ -101,6 +101,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -108,31 +109,34 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding Path=Display, Mode=TwoWay}" Background="White" Margin="20,10,20,2" Grid.ColumnSpan="5" FontSize="24" TextAlignment="Right"></TextBlock>
-            <TextBlock Text="{Binding Path=FullExpression, Mode=TwoWay}" Background="DarkGray" TextAlignment="Center" Grid.Column="0" Grid.Row="0" Margin="20,10,20,10" Grid.ColumnSpan="3" FontSize="18"></TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Path=FullExpression, Mode=TwoWay}" Background="DarkGray" TextAlignment="Center" FontSize="14"/>
 
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="7" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="1">7</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="8" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="1">8</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="9" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="1">9</Button>
+            <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="0">
+                <TextBlock Text="{Binding Path=Display, Mode=TwoWay}" Background="White" FontSize="24" TextAlignment="Right"/>
+            </Border>
 
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="4" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="2" >4</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="5" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="2" >5</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="6" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="2" >6</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="7" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="2">7</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="8" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="2">8</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="9" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="2">9</Button>
 
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="1" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="3" >1</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="2" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="3" >2</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="3" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="3" >3</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="4" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="3" >4</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="5" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="3" >5</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="6" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="3" >6</Button>
 
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="0" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="4" >0</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="." Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="4" >.</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="1" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="4" >1</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="2" Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="4" >2</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="3" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="4" >3</Button>
 
-            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="-" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="2" >-</Button>
-            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="+" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="3" >+</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="0" Style="{StaticResource DigitBtn}" Grid.Column="0" Grid.Row="5" >0</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="." Style="{StaticResource DigitBtn}" Grid.Column="1" Grid.Row="5" >.</Button>
 
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="C" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="1" ToolTip="Clear All">C</Button>
-            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="Del" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="4" ToolTip="Delete">Del</Button>
+            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="-" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="3" >-</Button>
+            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="+" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="4" >+</Button>
 
-            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="=" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="4" Margin="0,0,0,0">=</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="C" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="2" ToolTip="Clear All">C</Button>
+            <Button Command="{Binding DigitButtonPressCommand}" CommandParameter="Del" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="2" Grid.Row="5" ToolTip="Delete">Del</Button>
+
+            <Button Command="{Binding OperationButtonPressCommand}" CommandParameter="=" Background="Darkgray" Style="{StaticResource DigitBtn}" Grid.Column="3" Grid.Row="5" Margin="0,0,0,0">=</Button>
 
         </Grid>
 
