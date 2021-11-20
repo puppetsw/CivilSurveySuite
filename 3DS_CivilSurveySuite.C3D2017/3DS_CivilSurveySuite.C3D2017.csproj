@@ -68,11 +68,6 @@
     <Compile Include="C3DApp.cs" />
     <Compile Include="C3DPlugin.cs" />
     <Compile Include="ProfileUtils.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Services\CogoPointMoveLabelService.cs" />
     <Compile Include="CogoPointUtils.cs" />
     <Compile Include="Services\CogoPointEditorService.cs" />
@@ -109,13 +104,6 @@
       <Project>{0431e86d-1a04-4f76-8afc-193f84fa7965}</Project>
       <Name>3DS_CivilSurveySuite.UI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -57,7 +57,6 @@
 # Civil 3D Commands
 
 ## Points
-
 | Command | Description |
 | --- | ----------- |
 | 3DSCptProd | Creates a point at the production of a line, given a distance.
@@ -93,7 +92,6 @@
 | 3DSSurfaceSelAboveBelow | Selected points that are above or below a surface. |
 
 ## Dialogs
-
 | Command | Description |
 | --- | ----------- |
 | 3DSCptLabelsMove | Shows dialog to move multiple labels by specified amount. |
@@ -106,3 +104,4 @@
 | --- | ----------- |
 | 3DSLabelMaskOff | Turns the label mask off for a selected label on a CogoPoint. |
 | 3DSLabelMaskOn | Turns the label mask on for a selected label on a CogoPoint. |
+| 3DSLabelLineBreak | Converts {} into a line break inside a CogoPoint description format. |

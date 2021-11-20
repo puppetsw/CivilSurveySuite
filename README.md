@@ -1,7 +1,6 @@
 # TODO
 
 * Error detection method.
-* Add line break to text.
 * Overwrite Text Command.
 * Input service.
 * Copy raw description or full description to text entity
@@ -12,7 +11,6 @@
 * Insert picture(s) tool
 * Settings (Properties.Settings.Default.MyConnection)
 * Linework tool to replace SmartDraft -- in progress
-* *Improve angle calculator*
 * point report /w alignments
 * Toolbar & Menu
 

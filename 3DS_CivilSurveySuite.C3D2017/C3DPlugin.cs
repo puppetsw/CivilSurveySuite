@@ -12,7 +12,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public void Terminate()
         {
-            Properties.Settings.Default.Save();
         }
     }
 }
