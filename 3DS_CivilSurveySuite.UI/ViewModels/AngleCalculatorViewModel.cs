@@ -3,6 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
+using System.Globalization;
 using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
@@ -12,95 +14,132 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// </summary>
     public class AngleCalculatorViewModel : ViewModelBase
     {
-        private Angle _firstAngle;
-        private Angle _secondAngle;
-        private string _result;
-        private double _firstBearing;
-        private double _secondBearing;
+        private string _display;
+        private string _fullExpression;
 
-        public Angle FirstAngle
+        private string _lastOperation;
+        private string _lastValue = "0";
+
+        private bool _clearDisplay;
+        private bool _clearAll;
+
+        public string Display
         {
-            get => _firstAngle;
-            set => SetProperty(ref _firstAngle, value);
+            get => _display;
+            set => SetProperty(ref _display, value);
         }
 
-        public Angle SecondAngle
+        public string FullExpression
         {
-            get => _secondAngle;
-            set => SetProperty(ref _secondAngle, value);
+            get => _fullExpression;
+            set => SetProperty(ref _fullExpression, value);
         }
 
-        public string Result
-        {
-            get => _result;
-            private set => SetProperty(ref _result, value);
-        }
+        public RelayCommand<string> DigitButtonPressCommand => new RelayCommand<string>(DigitButtonPress);
 
-        public double FirstBearing
-        {
-            get => _firstBearing;
-            set
-            {
-                if (Angle.IsValid(value, false)) // Don't limit degrees.
-                {
-                    _firstBearing = value;
-                    FirstAngle = new Angle(value);
-                }
-                else
-                {
-                    _firstBearing = 0;
-                    FirstAngle = new Angle();
-                }
-
-                NotifyPropertyChanged();
-            }
-        }
-
-        public double SecondBearing
-        {
-            get => _secondBearing;
-            set
-            {
-                if (Angle.IsValid(value, false)) // Don't limit degrees.
-                {
-                    _secondBearing = value;
-                    SecondAngle = new Angle(value);
-                }
-                else
-                {
-                    _secondBearing = 0;
-                    SecondAngle = new Angle();
-                }
-
-                NotifyPropertyChanged();
-            }
-        }
-
-        public RelayCommand AddCommand => new RelayCommand(Add, () => true);
-
-        public RelayCommand SubtractCommand => new RelayCommand(Subtract, () => true);
+        public RelayCommand<string> OperationButtonPressCommand => new RelayCommand<string>(OperationButtonPress);
 
         public AngleCalculatorViewModel()
         {
-            FirstAngle = new Angle();
-            SecondAngle = new Angle();
-            Result = "";
+            Display = "0";
         }
 
-        private void Add()
+        private void DigitButtonPress(string button)
         {
-            if (FirstAngle == null || SecondAngle == null)
-                return;
+            if (_clearAll)
+            {
+                FullExpression = "";
+                Display = "";
+                _lastOperation = "";
+                _lastValue = "0";
+                _clearAll = false;
+            }
 
-            Result = Angle.Add(FirstAngle, SecondAngle).ToString();
+            switch (button)
+            {
+                case "C":
+                    Display = "0";
+                    break;
+                case "Del":
+                    if (Display.Length > 0)
+                        Display = Display.Remove(Display.Length - 1, 1);
+
+                    if (Display.Length == 0)
+                        Display = "0";
+                    break;
+                case ".":
+                    if (Display == "0" || _clearDisplay)
+                    {
+                        Display = "0.";
+                        _clearDisplay = false;
+                    }
+
+                    if (!Display.Contains("."))
+                        Display += ".";
+                    break;
+                default:
+                    if (Display == "0" || _clearDisplay)
+                    {
+                        Display = button;
+                        _clearDisplay = false;
+                    }
+                    else
+                        Display += button;
+                    break;
+            }
         }
 
-        private void Subtract()
+        //TODO: This is terrible. Please fix.
+        private void OperationButtonPress(string operation)
         {
-            if (FirstAngle == null || SecondAngle == null)
-                return;
+            var currentDisplay = new Angle(double.Parse(Display));
 
-            Result = Angle.Subtract(FirstAngle, SecondAngle).ToString();
+            switch (operation)
+            {
+                case "+":
+                    FullExpression += Display + " " + operation;
+                    var valAdd = new Angle(double.Parse(_lastValue));
+                    var angleAdd = Angle.Add(currentDisplay, valAdd);
+                    Display = angleAdd.ToDouble().ToString(CultureInfo.InvariantCulture);
+                    _clearDisplay = true;
+                    break;
+                case "-":
+                    FullExpression += Display + " " + operation;
+                    var valSub = new Angle(double.Parse(_lastValue));
+                    var angleSub = Angle.Subtract(currentDisplay, valSub);
+                    Display = angleSub.ToDouble().ToString(CultureInfo.InvariantCulture);
+
+                    _clearDisplay = true;
+                    break;
+                case "=":
+                    switch (_lastOperation)
+                    {
+                        case "+":
+                            FullExpression += Display + " " + operation;
+                            var valAdd1 = new Angle(double.Parse(_lastValue));
+                            var angleAdd1 = Angle.Add(currentDisplay, valAdd1);
+                            Display = angleAdd1.ToDouble().ToString(CultureInfo.InvariantCulture);
+                            _lastOperation = "=";
+                            _clearAll = true;
+                            _clearDisplay = true;
+                            break;
+                        case "-":
+                            FullExpression += Display + " " + operation;
+                            var valSub1 = new Angle(double.Parse(_lastValue));
+                            var angleSub1 = Angle.Subtract(valSub1, currentDisplay);
+                            Display = angleSub1.ToDouble().ToString(CultureInfo.InvariantCulture);
+                            _lastOperation = "=";
+                            _clearAll = true;
+                            _clearDisplay = true;
+                            break;
+                    }
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid operation.");
+            }
+
+            _lastValue = Display;
+            _lastOperation = operation;
         }
     }
 }
