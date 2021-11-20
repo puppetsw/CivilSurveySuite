@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private string _fullExpression;
 
         private string _lastOperation;
-        private string _lastValue = "0";
+        private string _lastValue;
 
         private bool _clearDisplay;
         private bool _clearAll;
@@ -42,6 +42,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public AngleCalculatorViewModel()
         {
             Display = "0";
+            _lastValue = "0";
         }
 
         private void DigitButtonPress(string button)
@@ -89,57 +90,57 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        //TODO: This is terrible. Please fix.
         private void OperationButtonPress(string operation)
         {
-            var currentDisplay = new Angle(double.Parse(Display));
-
             switch (operation)
             {
                 case "+":
-                    FullExpression += Display + " " + operation;
-                    var valAdd = new Angle(double.Parse(_lastValue));
-                    var angleAdd = Angle.Add(currentDisplay, valAdd);
-                    Display = angleAdd.ToDouble().ToString(CultureInfo.InvariantCulture);
-                    _clearDisplay = true;
-                    break;
                 case "-":
-                    FullExpression += Display + " " + operation;
-                    var valSub = new Angle(double.Parse(_lastValue));
-                    var angleSub = Angle.Subtract(currentDisplay, valSub);
-                    Display = angleSub.ToDouble().ToString(CultureInfo.InvariantCulture);
-
-                    _clearDisplay = true;
-                    break;
                 case "=":
-                    switch (_lastOperation)
-                    {
-                        case "+":
-                            FullExpression += Display + " " + operation;
-                            var valAdd1 = new Angle(double.Parse(_lastValue));
-                            var angleAdd1 = Angle.Add(currentDisplay, valAdd1);
-                            Display = angleAdd1.ToDouble().ToString(CultureInfo.InvariantCulture);
-                            _lastOperation = "=";
-                            _clearAll = true;
-                            _clearDisplay = true;
-                            break;
-                        case "-":
-                            FullExpression += Display + " " + operation;
-                            var valSub1 = new Angle(double.Parse(_lastValue));
-                            var angleSub1 = Angle.Subtract(valSub1, currentDisplay);
-                            Display = angleSub1.ToDouble().ToString(CultureInfo.InvariantCulture);
-                            _lastOperation = "=";
-                            _clearAll = true;
-                            _clearDisplay = true;
-                            break;
-                    }
+                    Calculate(operation);
                     break;
-                default:
-                    throw new InvalidOperationException("Invalid operation.");
             }
 
             _lastValue = Display;
             _lastOperation = operation;
+        }
+
+        private void Calculate(string operation)
+        {
+            if (_lastOperation == "=")
+                return;
+
+            FullExpression += Display + " " + operation;
+
+            var currentDisplay = new Angle(double.Parse(Display));
+            var lastValue = new Angle(double.Parse(_lastValue));
+
+            Angle angle = null;
+
+            switch (operation)
+            {
+                case "+":
+                    angle = Angle.Add(currentDisplay, lastValue);
+                    break;
+                case "-":
+                    if (_lastValue != "0")
+                        angle = Angle.Subtract(lastValue, currentDisplay);
+                    break;
+                case "=":
+                    if (_lastOperation == "+")
+                        angle = Angle.Add(currentDisplay, lastValue);
+                    else if (_lastOperation == "-")
+                        angle = Angle.Subtract(lastValue, currentDisplay);
+
+                    _clearAll = true;
+                    break;
+            }
+            _clearDisplay = true;
+
+            if (angle == null)
+                return;
+
+            Display = angle.ToDouble().ToString(CultureInfo.InvariantCulture);
         }
     }
 }

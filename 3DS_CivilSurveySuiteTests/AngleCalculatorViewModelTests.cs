@@ -1,5 +1,4 @@
-﻿using _3DS_CivilSurveySuite.Model;
-using _3DS_CivilSurveySuite.UI.ViewModels;
+﻿using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -8,105 +7,136 @@ namespace _3DS_CivilSurveySuiteTests
     public class AngleCalculatorViewModelTests
     {
         [TestMethod]
-        public void AddCommand_Execute()
+        public void Test_AngleCalculatorViewModel_Constructor()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstAngle = new Angle(90);
-            vm.SecondAngle = new Angle(90);
-
-            var expected = new Angle(180);
-
-            vm.AddCommand.CanExecute(true);
-            vm.AddCommand.Execute(null);
-
-            Assert.AreEqual(expected.ToString(), vm.Result);
+            Assert.IsNotNull(vm);
         }
 
         [TestMethod]
-        public void AddCommand_Execute_Null_Property()
+        public void DigitButtonPressCommand_Execute_NumberKey()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstAngle = null;
-            vm.SecondAngle = new Angle(90);
-
-            var expected = "";
-
-            vm.AddCommand.CanExecute(true);
-            vm.AddCommand.Execute(null);
-
-            Assert.AreEqual(expected.ToString(), vm.Result);
+            vm.DigitButtonPressCommand.Execute("1");
+            Assert.AreEqual("1", vm.Display);
+            vm.DigitButtonPressCommand.Execute("2");
+            Assert.AreEqual("12", vm.Display);
         }
 
         [TestMethod]
-        public void SubtractCommand_Execute()
+        public void DigitButtonPressCommand_Execute_DelKey()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstAngle = new Angle(180);
-            vm.SecondAngle = new Angle(90);
-
-            var expected = new Angle(90);
-
-            vm.SubtractCommand.CanExecute(true);
-            vm.SubtractCommand.Execute(null);
-
-            Assert.AreEqual(expected.ToString(), vm.Result);
+            vm.Display = "10";
+            vm.DigitButtonPressCommand.Execute("Del");
+            Assert.AreEqual("1", vm.Display);
         }
 
         [TestMethod]
-        public void SubtractCommand_Execute_Null_Property()
+        public void DigitButtonPressCommand_Execute_DelKey_Last_Number()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstAngle = null;
-            vm.SecondAngle = new Angle(90);
-
-            var expected = "";
-
-            vm.SubtractCommand.CanExecute(true);
-            vm.SubtractCommand.Execute(null);
-
-            Assert.AreEqual(expected.ToString(), vm.Result);
+            vm.Display = "1";
+            vm.DigitButtonPressCommand.Execute("Del");
+            Assert.AreEqual("0", vm.Display);
         }
 
         [TestMethod]
-        public void FirstBearing_Property_Set_Valid()
+        public void DigitButtonPressCommand_Execute_DecimalKey()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstBearing = 90;
-            var expected = new Angle(90);
-
-            Assert.AreEqual(90, vm.FirstBearing);
-            Assert.AreEqual(expected, vm.FirstAngle);
+            vm.Display = "10";
+            vm.DigitButtonPressCommand.Execute(".");
+            Assert.AreEqual("10.", vm.Display);
         }
 
         [TestMethod]
-        public void FirstBearing_Property_Set_Invalid()
+        public void DigitButtonPressCommand_Execute_DecimalKey_Zero()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.FirstBearing = 90.99999;
-            var expected = new Angle(0);
-
-            Assert.AreEqual(expected, vm.FirstAngle);
+            vm.Display = "0";
+            vm.DigitButtonPressCommand.Execute(".");
+            Assert.AreEqual("0.", vm.Display);
         }
 
         [TestMethod]
-        public void SecondBearing_Property_Set_Valid()
+        public void DigitButtonPressCommand_Execute_ClearKey()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.SecondBearing = 90;
-            var expected = new Angle(90);
-
-            Assert.AreEqual(90, vm.SecondBearing);
-            Assert.AreEqual(expected, vm.SecondAngle);
+            vm.Display = "10";
+            vm.DigitButtonPressCommand.Execute("C");
+            Assert.AreEqual("0", vm.Display);
         }
 
         [TestMethod]
-        public void SecondBearing_Property_Set_Invalid()
+        public void OperationButtonPressCommand_Execute_Addition()
         {
             var vm = new AngleCalculatorViewModel();
-            vm.SecondBearing = 90.999999;
-            var expected = new Angle(0);
+            vm.Display = "10";
+            vm.OperationButtonPressCommand.Execute("+");
+            vm.Display = "20";
+            vm.OperationButtonPressCommand.Execute("=");
+            Assert.AreEqual("30", vm.Display);
+        }
 
-            Assert.AreEqual(expected, vm.SecondAngle);
+        [TestMethod]
+        public void OperationButtonPressCommand_Execute_Subtraction()
+        {
+            var vm = new AngleCalculatorViewModel();
+            vm.DigitButtonPressCommand.Execute("2");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("-");
+            vm.DigitButtonPressCommand.Execute("1");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("=");
+            Assert.AreEqual("10", vm.Display);
+        }
+
+        [TestMethod]
+        public void OperationButtonPressCommand_Execute_Subtraction_2()
+        {
+            var vm = new AngleCalculatorViewModel();
+            vm.DigitButtonPressCommand.Execute("2");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("-");
+            vm.DigitButtonPressCommand.Execute("1");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("-");
+            Assert.AreEqual("10", vm.Display);
+        }
+
+        [TestMethod]
+        public void OperationButtonPressCommand_Execute_Addition_NewValue_After()
+        {
+            var vm = new AngleCalculatorViewModel();
+            vm.DigitButtonPressCommand.Execute("1");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("+");
+            vm.DigitButtonPressCommand.Execute("2");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("=");
+            Assert.AreEqual("30", vm.Display);
+            vm.DigitButtonPressCommand.Execute("1");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("+");
+            vm.DigitButtonPressCommand.Execute("2");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("=");
+            Assert.AreEqual("30", vm.Display);
+        }
+
+        [TestMethod]
+        public void OperationButtonPressCommand_Execute_Equals_Double_Press()
+        {
+            var vm = new AngleCalculatorViewModel();
+            vm.DigitButtonPressCommand.Execute("1");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("+");
+            vm.DigitButtonPressCommand.Execute("2");
+            vm.DigitButtonPressCommand.Execute("0");
+            vm.OperationButtonPressCommand.Execute("=");
+            vm.OperationButtonPressCommand.Execute("=");
+            Assert.AreEqual("30", vm.Display);
         }
 
     }
