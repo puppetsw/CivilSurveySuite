@@ -3,11 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
@@ -63,8 +60,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Slope_At_Point(CogoPointUtils.CreatePoint);
         }
 
-
-
         [CommandMethod("3DS", "_3DSCptLabelIns", CommandFlags.Modal)]
         public static void CptAtLabelIns()
         {
@@ -89,14 +84,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DService.ShowDialog<CogoPointMoveLabelView>();
         }
 
-
-
         [CommandMethod("3DS", "_3DSCptTrunkAtTrees", CommandFlags.Modal)]
         public static void CptTrunkAtTrees()
         {
             CogoPointUtils.Create_Trunks_At_Trees();
         }
-
 
         [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal)]
         public static void RawDesUpper()
@@ -104,13 +96,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.RawDescription_ToUpper();
         }
 
-
         [CommandMethod("3DS", "_3DSFullDesUpper", CommandFlags.Modal)]
         public static void FullDesUpper()
         {
             CogoPointUtils.FullDescription_ToUpper();
         }
-
 
         [CommandMethod("3DS", "_3DSCptMatchLblRot", CommandFlags.Modal)]
         public static void CptMatchLblRot()
@@ -118,13 +108,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.Label_Rotate_Match();
         }
 
-
         [CommandMethod("3DS", "_3DSZoomToCpt", CommandFlags.Modal)]
         public static void ZoomToPt()
         {
             CogoPointUtils.ZoomPoint();
         }
-
 
         [CommandMethod("3DS", "_3DSCptInverse", CommandFlags.Modal)]
         public static void InverseCogoPoint()
@@ -132,15 +120,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.Inverse_ByPointNumber();
         }
 
-
-
         [CommandMethod("3DS", "_3DSStackLabels", CommandFlags.Modal)]
         public static void StackLabels()
         {
             CogoPointUtils.Stack_CogoPoint_Labels();
         }
-
-
 
         [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()
@@ -182,7 +166,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-
         // Palettes
         [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
         public static void ShowConnectLinework()
@@ -201,7 +184,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             C3DService.ShowDialog<CogoPointReplaceDuplicateView>();
         }
-
 
 
         // Labels
@@ -224,38 +206,38 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
 
-        [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
-        public static void Test1()
-        {
-            var sites = SiteUtils.GetCivilSites();
-
-            foreach (CivilSite civilSite in sites)
-            {
-                AcadApp.Editor.WriteMessage(civilSite.Name);
-            }
-        }
-
-
-        [CommandMethod("3DS", "3DSTest2", CommandFlags.Modal)]
-        public static void Test12314123()
-        {
-            var typedValues = new TypedValue[] { };
-
-            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" }, "Scott");
-
-            AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
-        }
-
-        [CommandMethod("3DS", "3DSTest3", CommandFlags.Modal)]
-        public static void Test12314123455123()
-        {
-            var typedValues = new[] { new TypedValue((int)DxfCode.Start, "LINE,CIRCLE") };
-
-            EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage,
-                new string[] { "tEst", "Scott" });
-
-            AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
-        }
+        // [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
+        // public static void Test1()
+        // {
+        //     var sites = SiteUtils.GetCivilSites();
+        //
+        //     foreach (CivilSite civilSite in sites)
+        //     {
+        //         AcadApp.Editor.WriteMessage(civilSite.Name);
+        //     }
+        // }
+        //
+        //
+        // [CommandMethod("3DS", "3DSTest2", CommandFlags.Modal)]
+        // public static void Test12314123()
+        // {
+        //     var typedValues = new TypedValue[] { };
+        //
+        //     EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" }, "Scott");
+        //
+        //     AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
+        // }
+        //
+        // [CommandMethod("3DS", "3DSTest3", CommandFlags.Modal)]
+        // public static void Test12314123455123()
+        // {
+        //     var typedValues = new[] { new TypedValue((int)DxfCode.Start, "LINE,CIRCLE") };
+        //
+        //     EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage,
+        //         new string[] { "tEst", "Scott" });
+        //
+        //     AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
+        // }
 
 
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]

@@ -5,7 +5,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Dynamic;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Model
@@ -73,20 +72,20 @@ namespace _3DS_CivilSurveySuite.Model
 
         public bool Equals(CivilObject other)
         {
-            if (ReferenceEquals(null, other)) 
+            if (ReferenceEquals(null, other))
                 return false;
 
-            if (ReferenceEquals(this, other)) 
+            if (ReferenceEquals(this, other))
                 return true;
 
-            return _name == other._name 
-                   && _description == other._description 
+            return _name == other._name
+                   && _description == other._description
                    && _objectId == other._objectId;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is CivilObject item && Equals((CivilObject)(object)item);
+            return obj is CivilObject item && Equals(item);
         }
 
         public override int GetHashCode()

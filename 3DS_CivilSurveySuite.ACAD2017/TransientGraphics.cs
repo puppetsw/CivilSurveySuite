@@ -40,7 +40,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private readonly DBObjectCollection _graphics;
 
-        private const string DashedLineType = "DASHED";
+        private const string DASHED_LINE_TYPE = "DASHED";
 
         public Color Color { get; } = Color.FromColorIndex(ColorMethod.ByPen, Settings.TransientColorIndex);
 
@@ -71,8 +71,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private static void SetLineType(Entity entity)
         {
-            if (LineTypeUtils.LoadLineType(DashedLineType))
-                entity.Linetype = DashedLineType;
+            if (LineTypeUtils.LoadLineType(DASHED_LINE_TYPE))
+                entity.Linetype = DASHED_LINE_TYPE;
         }
 
         private void DrawAdd(DBObject entity, TransientDrawingMode mode = TransientDrawingMode.Main)
@@ -86,7 +86,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void DrawLines(IReadOnlyList<Point3d> coordinates, TransientDrawingMode mode = TransientDrawingMode.Main)
         {
             // Start a count for the next coordinate in the collection.
-            var nextCoord = 1; 
+            var nextCoord = 1;
             // Draw the coord lines
             foreach (Point3d point in coordinates)
             {
@@ -154,7 +154,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             polyline.AddVertexAt(3, point4.ToPoint2d(), 0, 0, 0);
             DrawAdd(polyline);
 
-            if (!fill) 
+            if (!fill)
                 return;
 
             var solid = new Solid(point1, point2, point4, point3) { Color = Color };
@@ -181,7 +181,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             if (!fill)
                 return;
-            
+
             var solid = new Solid(topPoint.ToPoint3d(), endPoint2.ToPoint3d(), endPoint1.ToPoint3d()) { Color = Color };
             DrawAdd(solid);
         }
@@ -189,26 +189,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void DrawX(Point3d position, int size)
         {
             double screenSize = ScreenSize(size);
-            
+
             var startPoint1 = new Point3d(position.X - screenSize * 0.5, position.Y - screenSize * 0.5, 0);
             var endPoint1 = new Point3d(position.X + screenSize * 0.5, position.Y + screenSize * 0.5, 0);
 
             var line1 = new Line
             {
-                StartPoint = startPoint1, 
-                EndPoint = endPoint1, 
+                StartPoint = startPoint1,
+                EndPoint = endPoint1,
                 Color = Color
             };
 
             DrawAdd(line1);
-            
+
             var startPoint2 = new Point3d(position.X + screenSize * 0.5, position.Y - screenSize * 0.5, 0);
             var endPoint2 = new Point3d(position.X - screenSize * 0.5, position.Y + screenSize * 0.5, 0);
 
             var line2 = new Line
             {
-                StartPoint = startPoint2, 
-                EndPoint = endPoint2, 
+                StartPoint = startPoint2,
+                EndPoint = endPoint2,
                 Color = Color
             };
 
@@ -236,26 +236,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void DrawPlus(Point3d position, int size)
         {
             double screenSize = ScreenSize(size);
-            
+
             var startPoint1 = new Point3d(position.X - screenSize * 0.5, position.Y, 0);
             var endPoint1 = new Point3d(position.X + screenSize * 0.5, position.Y, 0);
 
             var line1 = new Line
             {
-                StartPoint = startPoint1, 
-                EndPoint = endPoint1, 
+                StartPoint = startPoint1,
+                EndPoint = endPoint1,
                 Color = Color
             };
 
             DrawAdd(line1);
-            
+
             var startPoint2 = new Point3d(position.X, position.Y - screenSize * 0.5, 0);
             var endPoint2 = new Point3d(position.X, position.Y + screenSize * 0.5, 0);
 
             var line2 = new Line
             {
-                StartPoint = startPoint2, 
-                EndPoint = endPoint2, 
+                StartPoint = startPoint2,
+                EndPoint = endPoint2,
                 Color = Color
             };
 
@@ -293,8 +293,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var mText = new MText();
             mText.SetDatabaseDefaults();
 
-            mText.Rotation = planReadability ? 
-                    angle.GetOrdinaryAngle().ToCounterClockwise().ToRadians() : 
+            mText.Rotation = planReadability ?
+                    angle.GetOrdinaryAngle().ToCounterClockwise().ToRadians() :
                     angle.ToCounterClockwise().ToRadians();
 
             Point insPoint = PointHelpers.AngleAndDistanceToPoint(angle.GetOrdinaryAngle() - 90, TextOffset(offsetAmount), position.ToPoint());
@@ -309,7 +309,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void ClearGraphics()
         {
-            if (_graphics == null) 
+            if (_graphics == null)
                 return;
 
             if (_graphics?.Count < 0)

@@ -3,8 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.ComponentModel;
-
 namespace _3DS_CivilSurveySuite.Model
 {
     public class CivilAlignment : CivilObject

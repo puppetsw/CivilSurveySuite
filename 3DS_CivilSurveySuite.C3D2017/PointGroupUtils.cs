@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using _3DS_CivilSurveySuite.ACAD2017;
@@ -31,6 +36,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             using (var tr = AcadApp.StartTransaction())
             {
                 var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+
+                if (cogoPoint == null)
+                    throw new InvalidOperationException("cogoPoint was null.");
+
                 var pgId = cogoPoint.PrimaryPointGroupId;
 
                 var pg = GetPointGroupByObjectId(tr, pgId);
@@ -41,7 +50,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return pointGroup;
         }
-
 
         public static PointGroup GetPointGroupByObjectId(Transaction tr, ObjectId pointGroupObjectId)
         {
@@ -70,7 +78,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     return pointGroup;
                 }
             }
-            
+
             return null;
         }
 
@@ -92,6 +100,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 ObjectId pointByPointNumber = C3DApp.ActiveDocument.CogoPoints.GetPointByPointNumber(num);
                 CogoPoint cogoPoint = pointByPointNumber.GetObject(OpenMode.ForRead) as CogoPoint;
 
+                if (cogoPoint == null)
+                    throw new InvalidOperationException("cogoPoint was null.");
+
                 if (cogoPoint.PointNumber > 0U)
                     pointNumberList.Add(cogoPoint.PointNumber.ToString());
 
@@ -100,8 +111,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return StringHelpers.GetRangeString(pointNumberList);
         }
-
-
 
         public static IEnumerable<PointGroup> GetPointGroups()
         {
@@ -134,7 +143,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
-        
         public static CivilPointGroup ToCivilPointGroup(this PointGroup pointGroup)
         {
             return new CivilPointGroup
@@ -145,18 +153,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
             };
         }
 
-
         public static IEnumerable<CivilPointGroup> ToListOfCivilPointGroups(this IEnumerable<PointGroup> pointGroups)
         {
             return pointGroups.Select(pointGroup => pointGroup.ToCivilPointGroup()).ToList();
         }
 
-
         public static PointGroup ToPointGroup(this CivilPointGroup civilPointGroup, Transaction tr)
         {
             return PointGroupUtils.GetPointGroupByName(tr, civilPointGroup.Name);
         }
-
-
     }
 }

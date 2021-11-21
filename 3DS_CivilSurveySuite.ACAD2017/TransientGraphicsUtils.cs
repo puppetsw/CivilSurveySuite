@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Globalization;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -38,7 +39,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
             //draw last
             graphics.DrawTick(secondPoint, angle);
-            graphics.DrawText(secondPoint, distance.ToString(), textSize, angle, planReadability: false);
+            graphics.DrawText(secondPoint, distance.ToString(CultureInfo.InvariantCulture), textSize, angle, planReadability: false);
         }
 
         public static void DrawChainage(this TransientGraphics graphics, Line line) => DrawChainage(graphics, line.StartPoint, line.EndPoint);

@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.Model
         }
 
         /// <summary>
-        /// Gets the line number from the <paramref name="cogoPoint"/>'s <see cref="CogoPoint.RawDescription"/>
+        /// Gets the line number from the CogoPoint's RawDescription
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuite.Model
         }
 
         /// <summary>
-        /// Gets the description from the <paramref name="cogoPoint"/>'s <see cref="CogoPoint.RawDescription"/>
+        /// Gets the description from the CogoPoint's RawDescription
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
@@ -47,7 +47,7 @@ namespace _3DS_CivilSurveySuite.Model
         }
 
         /// <summary>
-        /// Returns true if the <see cref="CogoPoint.RawDescription"/> is a match to the <see cref="Model.DescriptionKey"/>
+        /// Returns true if the CogoPoint's RawDescription is a match to the <see cref="Model.DescriptionKey"/>
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>

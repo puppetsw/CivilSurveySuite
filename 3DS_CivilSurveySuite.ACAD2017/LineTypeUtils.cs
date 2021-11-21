@@ -10,7 +10,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class LineTypeUtils
     {
-        private const string AcadLineTypeFileName = "acad.lin";
+        private const string ACAD_LINE_TYPE_FILE_NAME = "acad.lin";
 
         /// <summary>
         /// If the current <see cref="Database"/> does not contain the <param>lineTypeName</param>
@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     LinetypeTable tbl = (LinetypeTable)tr.GetObject(AcadApp.ActiveDatabase.LinetypeTableId, OpenMode.ForRead);
                     if (!tbl.Has(lineTypeName))
                     {
-                        AcadApp.ActiveDatabase.LoadLineTypeFile(lineTypeName, AcadLineTypeFileName);
+                        AcadApp.ActiveDatabase.LoadLineTypeFile(lineTypeName, ACAD_LINE_TYPE_FILE_NAME);
                     }
                     tr.Commit();
                 }

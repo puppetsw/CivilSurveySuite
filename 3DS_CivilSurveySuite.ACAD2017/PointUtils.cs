@@ -440,7 +440,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Creates a point at the intersection of a bearing from one point and distance from a second.
         /// </summary>
         public static void Create_At_Intersection_Of_Angle_And_Distance(Action<Transaction, Point3d> createAction)
-        { 
+        {
             var graphics = new TransientGraphics();
             try
             {
@@ -721,7 +721,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 graphics.Dispose();
             }
 
- 
+
 
 
         }
@@ -793,7 +793,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
                     return;
-                
+
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
                 graphics.DrawLine(firstPoint, secondPoint);
 
@@ -825,11 +825,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                         var newPoint = PointHelpers.AngleAndDistanceToPoint(angleBetweenPoints, distance, firstPoint.ToPoint());
                         var point3d = new Point3d(newPoint.X, newPoint.Y, firstPoint.Z + elevationDifference * (distance / distanceBetweenPoints));
-                    
+
                         graphics.DrawDot(newPoint.ToPoint3d(), Settings.GraphicsSize);
-                        
+
                         createAction(tr, point3d);
-                        
+
                     } while (!cancelled);
                     tr.Commit();
                 }
@@ -850,7 +850,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
         {
-            
+
         }
 
         public static void Inverse(Point3d firstPoint, Point3d secondPoint)
@@ -868,7 +868,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
 
         /// <summary>
-        /// Inverses between points (pick), echoes coordinates, 
+        /// Inverses between points (pick), echoes coordinates,
         /// azimuths, bearings, horz/vert distance and slope.
         /// </summary>
         public static void Inverse_Pick()
@@ -984,7 +984,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     var angle = AngleHelpers.GetAngleBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
 
                     var midPt = PointHelpers.GetMidpointBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
-                    
+
                     graphics.DrawText(midPt.ToPoint3d(), $"bearing: {angle} \\P dist: {distance}", 1, angle);
 
                     AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle}");

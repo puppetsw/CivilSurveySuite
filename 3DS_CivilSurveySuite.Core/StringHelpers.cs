@@ -33,7 +33,7 @@ namespace _3DS_CivilSurveySuite.Core
 
         public static string ReplaceFirst(this string text, string search, string replace)
         {
-            int pos = text.IndexOf(search);
+            int pos = text.IndexOf(search, StringComparison.Ordinal);
             if (pos < 0)
             {
                 return text;

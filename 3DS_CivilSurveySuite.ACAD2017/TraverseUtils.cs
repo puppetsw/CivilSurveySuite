@@ -7,14 +7,13 @@ using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class TraverseUtils
     {
-        private const int GraphicsSize = 6;
+        private const int GRAPHICS_SIZE = 6;
 
         public static void Traverse()
         {
@@ -24,7 +23,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))
                     return;
 
-                graphics.DrawPlus(basePoint, GraphicsSize);
+                graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
 
                 if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Bearing: ", basePoint))
                     return;
@@ -43,8 +42,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
                 graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
-                graphics.DrawPlus(newPoint.ToPoint3d(), GraphicsSize);
-                graphics.DrawArrow(PointHelpers.GetMidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GraphicsSize);
+                graphics.DrawPlus(newPoint.ToPoint3d(), GRAPHICS_SIZE);
+                graphics.DrawArrow(PointHelpers.GetMidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(), angle, GRAPHICS_SIZE);
 
                 PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 

@@ -15,10 +15,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             _docLock = docLock;
         }
 
-        protected override void Dispose(bool A_1)
+        protected override void Dispose(bool a1)
         {
-            base.Dispose(A_1);
-            if (A_1)
+            base.Dispose(a1);
+            if (a1)
             {
                 _docLock.Dispose();
             }

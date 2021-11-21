@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Globalization;
 using _3DS_CivilSurveySuite.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 
@@ -11,6 +12,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class TextUtils
     {
+        /// <summary>
+        /// Creates a selection set with just TEXT and MTEXT entities.
+        /// </summary>
+        /// <param name="objectIds"><see cref="ObjectIdCollection"/> containing the selected entities.</param>
+        /// <param name="message">The selection message.</param>
+        /// <returns>True if the selection was successful, otherwise false.</returns>
         private static bool SelectText(out ObjectIdCollection objectIds, string message)
         {
             var typedValue = new TypedValue[1];
@@ -25,7 +32,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-        private static bool UpdateText<T>(T textEntity, string updateText) where T : Entity
+        private static void UpdateText<T>(T textEntity, string updateText) where T : Entity
         {
             if (textEntity.ObjectId.IsType<DBText>())
             {
@@ -35,7 +42,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     textObj.IsWriteEnabled)
                 {
                     textObj.TextString = updateText;
-                    return true;
                 }
             }
 
@@ -47,11 +53,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     textObj.IsWriteEnabled)
                 {
                     textObj.Contents = updateText;
-                    return true;
                 }
             }
-            
-            return false;
         }
 
         private static string GetText<T>(T textEntity) where T : Entity
@@ -90,15 +93,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForWrite) as Entity;
-                    var text = GetText(textEnt);
-                    var cleanedString = StringHelpers.RemoveAlphaCharacters(text);
 
-                    if (!string.IsNullOrEmpty(cleanedString))
-                    {
-                        textEnt.UpgradeOpen();
-                        var canUpdate = UpdateText(textEnt, cleanedString);
-                        textEnt.DowngradeOpen();
-                    }
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt);
+                    string cleanedString = StringHelpers.RemoveAlphaCharacters(text);
+
+                    if (string.IsNullOrEmpty(cleanedString))
+                        continue;
+
+                    textEnt.UpgradeOpen();
+                    UpdateText(textEnt, cleanedString);
+                    textEnt.DowngradeOpen();
                 }
                 tr.Commit();
             }
@@ -121,9 +128,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForWrite) as Entity;
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
                     textEnt.UpgradeOpen();
-                    var text = prefixText + GetText(textEnt);
-                    var canUpdate = UpdateText(textEnt, text);
+                    string text = prefixText + GetText(textEnt);
+                    UpdateText(textEnt, text);
                     textEnt.DowngradeOpen();
                 }
                 tr.Commit();
@@ -146,9 +157,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForWrite) as Entity;
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
                     textEnt.UpgradeOpen();
-                    var text = GetText(textEnt) + suffixText;
-                    var canUpdate = UpdateText(textEnt, text);
+                    string text = GetText(textEnt) + suffixText;
+                    UpdateText(textEnt, text);
                     textEnt.DowngradeOpen();
                 }
                 tr.Commit();
@@ -170,10 +185,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForWrite) as Entity;
-                    var text = GetText(textEnt).ToUpper();
 
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt).ToUpper();
                     textEnt.UpgradeOpen();
-                    var canUpdate = UpdateText(textEnt, text);
+                    UpdateText(textEnt, text);
                     textEnt.DowngradeOpen();
                 }
                 tr.Commit();
@@ -193,16 +211,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForWrite) as Entity;
-                    var text = GetText(textEnt).ToLower();
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt).ToLower();
 
                     textEnt.UpgradeOpen();
-                    var canUpdate = UpdateText(textEnt, text);
+                    UpdateText(textEnt, text);
                     textEnt.DowngradeOpen();
                 }
                 tr.Commit();
             }
-
-
         }
 
         /// <summary>
@@ -218,10 +238,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    var text = GetText(textEnt).ToSentence();
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt).ToSentence();
 
                     textEnt.UpgradeOpen();
-                    var canUpdate = UpdateText(textEnt, text);
+                    UpdateText(textEnt, text);
                     textEnt.DowngradeOpen();
                 }
                 tr.Commit();
@@ -245,20 +269,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    var text = GetText(textEnt);
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt);
 
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        var mathValue = Convert.ToDouble(text) + addValue;
-                        var canUpdate = UpdateText(textEnt, mathValue.ToString()); //BUG: Possible culture issue.
+                        double mathValue = Convert.ToDouble(text) + addValue;
+                        UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
                     else
                     {
                         var entExtent = textEnt.GeometricExtents;
-                        var midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
-                        var midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
+                        double midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
+                        double midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
 
                         // ignoring text at...
                         AcadApp.WriteMessage($"Ignoring text at X:{midpointX} Y:{midpointY}. Not a number.");
@@ -284,20 +312,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    var text = GetText(textEnt);
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt);
 
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        var mathValue = Convert.ToDouble(text) - subtractValue;
-                        var canUpdate = UpdateText(textEnt, mathValue.ToString()); //BUG: Possible culture issue.
+                        double mathValue = Convert.ToDouble(text) - subtractValue;
+                        UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
                     else
                     {
                         var entExtent = textEnt.GeometricExtents;
-                        var midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
-                        var midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
+                        double midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
+                        double midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
 
                         // ignoring text at...
                         AcadApp.WriteMessage($"Ignoring text at X:{midpointX} Y:{midpointY}. Not a number.");
@@ -323,20 +355,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    var text = GetText(textEnt);
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt);
 
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        var mathValue = Convert.ToDouble(text) * multiplyValue;
-                        var canUpdate = UpdateText(textEnt, mathValue.ToString()); //BUG: Possible culture issue.
+                        double mathValue = Convert.ToDouble(text) * multiplyValue;
+                        UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
                     else
                     {
                         var entExtent = textEnt.GeometricExtents;
-                        var midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
-                        var midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
+                        double midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
+                        double midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
 
                         // ignoring text at...
                         AcadApp.WriteMessage($"Ignoring text at X:{midpointX} Y:{midpointY}. Not a number.");
@@ -362,20 +398,24 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in objectIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    var text = GetText(textEnt);
+
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnd was null.");
+
+                    string text = GetText(textEnt);
 
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        var mathValue = Convert.ToDouble(text) / divideValue;
-                        var canUpdate = UpdateText(textEnt, mathValue.ToString()); //BUG: Possible culture issue.
+                        double mathValue = Convert.ToDouble(text) / divideValue;
+                        UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
                     else
                     {
                         var entExtent = textEnt.GeometricExtents;
-                        var midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
-                        var midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
+                        double midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
+                        double midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
 
                         // ignoring text at...
                         AcadApp.WriteMessage($"Ignoring text at X:{midpointX} Y:{midpointY}. Not a number.");

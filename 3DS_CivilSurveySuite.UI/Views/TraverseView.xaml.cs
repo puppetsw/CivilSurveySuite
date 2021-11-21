@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
@@ -24,7 +23,7 @@ namespace _3DS_CivilSurveySuite.UI.Views
             //{
             //    uiElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             //    e.Handled = true;
-            //} 
+            //}
             //else
             //{
             //    int keyValue = (int)e.Key;
@@ -54,4 +53,3 @@ namespace _3DS_CivilSurveySuite.UI.Views
         }
     }
 }
-

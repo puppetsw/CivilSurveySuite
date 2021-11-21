@@ -7,16 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Windows.Controls;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
-using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
-using Autodesk.Civil.DatabaseServices.Styles;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
 
@@ -218,7 +215,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             AcadApp.Editor.Regen();
         }
-    
+
         /// <summary>
         /// Removes the selected breakline(s) from the selected surface.
         /// </summary>
@@ -275,7 +272,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                         // Remove current definition from surface
                         surface.BreaklinesDefinition.RemoveAt(i);
-                        
+
                         // Recreate the breakline set in the surface
                         var newBreaklineSet = breaklineDefs.AddStandardBreaklines(breaklineIds, midOrd, maxDist, weedDist, weedAngle);
                         newBreaklineSet.Description = description; //set description to old one.
@@ -314,8 +311,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 args[0] = j;
                 object breakline = breaklines.GetType().InvokeMember("Item", BindingFlags.InvokeMethod, null, breaklines, args);
                 string desc = (string)breakline.GetType().InvokeMember("Description", BindingFlags.GetProperty, null, breakline, null);
-                
-                if (desc != name) 
+
+                if (desc != name)
                     continue;
 
                 object[] entities = (object[])breakline.GetType().InvokeMember("BreaklineEntities", BindingFlags.GetProperty, null, breakline, null);
@@ -425,10 +422,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         /// <summary>
         /// The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
-        /// After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare, 
+        /// After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare,
         /// select the 2 surfaces to use, and the 2 UserDefinedProperties(these must be pre-defined as elevation types).
-        /// Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to 
-        /// the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
+        /// Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to
+        /// the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to
         /// also include station/offset information, use the DL_Points tool to link the points to alignment(s).
         /// </summary>
         public static void PointElevationsFromSurface()
@@ -473,7 +470,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var pkr = AcadApp.Editor.GetKeywords(pko);
 
                 EditorUtils.GetDouble(out double tolerance, "\n3DS> Tolerance: ", true, 0.001);
-                
+
                 if (pkr.Status == PromptStatus.OK && !string.IsNullOrEmpty(pkr.StringResult))
                 {
                     foreach (ObjectId cogoPointId in C3DApp.ActiveDocument.CogoPoints)
@@ -481,20 +478,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
                         var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForRead) as CogoPoint;
 
                         if (cogoPoint == null) continue;
-                        
+
                         try
                         {
                             var elevationAtXy = surface.FindElevationAtXY(cogoPoint.Easting, cogoPoint.Northing);
 
-                            if (pkr.StringResult == "Above" 
-                                && cogoPoint.Elevation > elevationAtXy 
+                            if (pkr.StringResult == "Above"
+                                && cogoPoint.Elevation > elevationAtXy
                                 && cogoPoint.Elevation - elevationAtXy > tolerance)
                             {
                                 selectionObjectIds.Add(cogoPointId);
                             }
 
-                            if (pkr.StringResult == "Below" 
-                                && cogoPoint.Elevation < elevationAtXy 
+                            if (pkr.StringResult == "Below"
+                                && cogoPoint.Elevation < elevationAtXy
                                 && elevationAtXy - cogoPoint.Elevation > tolerance)
                             {
                                 selectionObjectIds.Add(cogoPointId);

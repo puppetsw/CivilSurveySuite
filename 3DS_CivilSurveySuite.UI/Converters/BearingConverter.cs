@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.UI.Converters
             charArray = Array.FindAll(charArray, (c => char.IsDigit(c) || c == '-' || c == '+' || c == '.'));
             var str = new string(charArray); //convert character array back to string
 
-            string[] numbersArray = str.Split(new string[] { "+", "-" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] numbersArray = str.Split(new[] { "+", "-" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (input.Contains("+") && numbersArray.Length > 1)
                 return (new Angle(numbersArray[0]) + new Angle(numbersArray[1])).ToDouble();

@@ -6,7 +6,6 @@
 using System;
 using _3DS_CivilSurveySuite.ACAD2017;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -23,9 +22,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
             {
                 var component = componentId.GetObject(OpenMode.ForRead) as LabelStyleComponent;
 
+                if (component == null)
+                    throw new InvalidOperationException("component was null.");
+
                 if (component.GetType() == typeof(LabelStyleTextComponent))
                 {
                     var textComponent = component as LabelStyleTextComponent;
+
+                    if (textComponent == null)
+                        throw new InvalidOperationException("textComponent was null.");
+
                     return textComponent.Text.Angle.Value;
                 }
             }
@@ -42,9 +48,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
             {
                 var component = componentId.GetObject(OpenMode.ForRead) as LabelStyleComponent;
 
+                if (component == null)
+                    throw new InvalidOperationException("component was null.");
+
                 if (component.GetType() == typeof(LabelStyleTextComponent))
                 {
                     var textComponent = component as LabelStyleTextComponent;
+
+                    if (textComponent == null)
+                        throw new InvalidOperationException("textComponent was null.");
+
                     calculatedHeight += textComponent.Text.Height.Value;
                     var currentScale = 1000 / SystemVariables.CANNOSCALEVALUE;
                     calculatedHeight *= currentScale;
@@ -71,10 +84,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId textComponentId in labelStyle.GetComponents(LabelStyleComponentType.Text))
                 {
                     var textComponent = tr.GetObject(textComponentId, OpenMode.ForWrite) as LabelStyleTextComponent;
+
+                    if (textComponent == null)
+                        throw new InvalidOperationException("textComponent was null.");
+
                     textComponent.Border.BackgroundMask.Value = value;
                 }
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
             }
 
@@ -84,10 +101,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId referenceTextId in labelStyle.GetComponents(LabelStyleComponentType.ReferenceText))
                 {
                     var referenceText = tr.GetObject(referenceTextId, OpenMode.ForWrite) as LabelStyleReferenceTextComponent;
+
+                    if (referenceText == null)
+                        throw new InvalidOperationException("referenceText was null.");
+
                     referenceText.Border.BackgroundMask.Value = value;
                 }
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
             }
 
@@ -97,10 +118,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 foreach (ObjectId foreachTextId in labelStyle.GetComponents(LabelStyleComponentType.TextForEach))
                 {
                     var foreachText = tr.GetObject(foreachTextId, OpenMode.ForWrite) as LabelStyleTextForEachComponent;
+
+                    if (foreachText == null)
+                        throw new InvalidOperationException("foreachText was null.");
+
                     foreachText.Border.BackgroundMask.Value = value;
                 }
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
             }
         }
@@ -128,7 +153,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (textComponent == null)
                         continue;
 
-                    var value = Math.Round(textComponent.Text.MaxWidth.Value * 1000, 3);
+                    double value = Math.Round(textComponent.Text.MaxWidth.Value * 1000, 3);
 
                     if (value > maxWidth)
                         maxWidth = value;
