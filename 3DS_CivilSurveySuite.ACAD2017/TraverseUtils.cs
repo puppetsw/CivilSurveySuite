@@ -36,10 +36,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     return;
 
                 var pko = new PromptKeywordOptions("\n3DS> Continue? ") { AppendKeywordsToMessage = true };
-                pko.Keywords.Add(Keywords.Accept);
-                pko.Keywords.Add(Keywords.Cancel);
-                pko.Keywords.Add(Keywords.Change);
-                pko.Keywords.Add(Keywords.Flip);
+                pko.Keywords.Add(Keywords.ACCEPT);
+                pko.Keywords.Add(Keywords.CANCEL);
+                pko.Keywords.Add(Keywords.CHANGE);
+                pko.Keywords.Add(Keywords.FLIP);
 
                 Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
                 graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
@@ -50,18 +50,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 switch (prResult.StringResult)
                 {
-                    case Keywords.Accept:
+                    case Keywords.ACCEPT:
                         using (var tr = AcadApp.StartTransaction())
                         {
                             LineUtils.DrawLine(tr, basePoint, newPoint.ToPoint3d());
                             tr.Commit();
                         }
                         break;
-                    case Keywords.Cancel:
+                    case Keywords.CANCEL:
                         break;
-                    case Keywords.Change:
+                    case Keywords.CHANGE:
                         break;
-                    case Keywords.Flip:
+                    case Keywords.FLIP:
                         break;
                 }
             }

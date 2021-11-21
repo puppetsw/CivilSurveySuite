@@ -198,9 +198,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
 
                 var pko = new PromptKeywordOptions("\n3DS> Accept leg? ") { AppendKeywordsToMessage = true, AllowNone = true };
-                pko.Keywords.Add(Keywords.Accept);
-                pko.Keywords.Add(Keywords.Flip);
-                pko.Keywords.Default = Keywords.Accept;
+                pko.Keywords.Add(Keywords.ACCEPT);
+                pko.Keywords.Add(Keywords.FLIP);
+                pko.Keywords.Default = Keywords.ACCEPT;
                 
                 PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 
@@ -208,10 +208,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 {
                     switch (prResult.StringResult)
                     {
-                        case Keywords.Accept:
+                        case Keywords.ACCEPT:
                             DrawLine(tr, firstPoint, newPoint.ToPoint3d());
                             break;
-                        case Keywords.Flip:
+                        case Keywords.FLIP:
                             angle = angle.Flip();
                             newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
                             graphics.DrawLine(firstPoint, newPoint.ToPoint3d());

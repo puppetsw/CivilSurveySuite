@@ -65,7 +65,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             angle = null;
 
             var pdo = new PromptDoubleOptions(message);
-            pdo.Keywords.Add(Keywords.Pick);
+            pdo.Keywords.Add(Keywords.PICK);
             pdo.AppendKeywordsToMessage = true;
 
             var cancelled = false;
@@ -75,7 +75,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 switch (pdoResult.Status)
                 {
                     case PromptStatus.Keyword:
-                        if (pdoResult.StringResult == Keywords.Pick)
+                        if (pdoResult.StringResult == Keywords.PICK)
                         {
                             var pao = new PromptAngleOptions(pickMessage) { UseBasePoint = true, BasePoint = basePoint, UseAngleBase = false };
                             var innerCancelled = false;

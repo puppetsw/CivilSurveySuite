@@ -34,9 +34,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Editor.WriteMessage($"\n3DS> Distance: {dist}");
 
             var pko = new PromptKeywordOptions("\n3DS> Flip bearing? ") { AppendKeywordsToMessage = true };
-            pko.Keywords.Add(Keywords.Accept);
-            pko.Keywords.Add(Keywords.Cancel);
-            pko.Keywords.Add(Keywords.Flip);
+            pko.Keywords.Add(Keywords.ACCEPT);
+            pko.Keywords.Add(Keywords.CANCEL);
+            pko.Keywords.Add(Keywords.FLIP);
 
             Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
@@ -58,7 +58,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                     switch (prResult.StringResult)
                     {
-                        case Keywords.Accept:
+                        case Keywords.ACCEPT:
                             using (var tr = AcadApp.StartTransaction())
                             {
                                 createAction(tr, point.ToPoint3d());
@@ -67,10 +67,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                             cancelled = true;
                             break;
-                        case Keywords.Cancel:
+                        case Keywords.CANCEL:
                             cancelled = true;
                             break;
-                        case Keywords.Flip:
+                        case Keywords.FLIP:
                             angle = angle.Flip();
                             point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                             graphics.ClearGraphics();
@@ -388,9 +388,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     Point intersectionPoint = LineUtils.FindIntersectionPoint(firstOffsetLine, secondOffsetLine);
 
                     var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
-                    pko.Keywords.Add(Keywords.Accept);
-                    pko.Keywords.Add(Keywords.Cancel);
-                    pko.Keywords.Default = Keywords.Accept;
+                    pko.Keywords.Add(Keywords.ACCEPT);
+                    pko.Keywords.Add(Keywords.CANCEL);
+                    pko.Keywords.Default = Keywords.ACCEPT;
 
                     graphics.ClearGraphics();
                     graphics.DrawPlus(intersectionPoint.ToPoint3d(), Settings.GraphicsSize);
@@ -411,11 +411,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                             case PromptStatus.Keyword:
                                 switch (prResult.StringResult)
                                 {
-                                    case Keywords.Accept:
+                                    case Keywords.ACCEPT:
                                         createAction(tr, intersectionPoint.ToPoint3d());
                                         cancelled = true;
                                         break;
-                                    case Keywords.Cancel:
+                                    case Keywords.CANCEL:
                                         cancelled = true;
                                         break;
                                 }
@@ -540,10 +540,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         return;
 
                     var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
-                    pko.Keywords.Add(Keywords.Accept);
-                    pko.Keywords.Add(Keywords.Cancel);
-                    pko.Keywords.Add(Keywords.Flip);
-                    pko.Keywords.Default = Keywords.Accept;
+                    pko.Keywords.Add(Keywords.ACCEPT);
+                    pko.Keywords.Add(Keywords.CANCEL);
+                    pko.Keywords.Add(Keywords.FLIP);
+                    pko.Keywords.Default = Keywords.ACCEPT;
 
                     Point point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
 
@@ -564,15 +564,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                         switch (prResult.StringResult)
                         {
-                            case Keywords.None: // If user doesn't enter anything.
-                            case Keywords.Accept:
+                            case Keywords.NONE: // If user doesn't enter anything.
+                            case Keywords.ACCEPT:
                                 createAction(tr, point.ToPoint3d());
                                 cancelled = true;
                                 break;
-                            case Keywords.Cancel:
+                            case Keywords.CANCEL:
                                 cancelled = true;
                                 break;
-                            case Keywords.Flip:
+                            case Keywords.FLIP:
                                 angle = angle.Flip();
                                 point = PointHelpers.AngleAndDistanceToPoint(angle, dist, basePoint.ToPoint());
                                 graphics.ClearGraphics();

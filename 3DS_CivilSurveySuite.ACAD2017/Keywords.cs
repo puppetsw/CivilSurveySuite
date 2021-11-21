@@ -7,14 +7,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public static class Keywords
     {
-        public const string Accept = "Accept"; //TODO: Move to resource file?
-        public const string Cancel = "Cancel";
-        public const string Redraw = "REdraw";
-        public const string Rotate = "ROtate";
-        public const string Change = "CHange";
-        public const string End = "End";
-        public const string Flip = "Flip";
-        public const string None = "";
-        public const string Pick = "Pick";
+        public const string ACCEPT = "Accept"; //TODO: Move to resource file?
+        public const string CANCEL = "Cancel";
+        public const string REDRAW = "REdraw";
+        public const string ROTATE = "ROtate";
+        public const string CHANGE = "CHange";
+        public const string END = "End";
+        public const string FLIP = "Flip";
+        public const string NONE = "";
+        public const string PICK = "Pick";
     }
 }
