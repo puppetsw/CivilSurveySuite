@@ -12,12 +12,11 @@ namespace _3DS_CivilSurveySuiteTests
     public class TraverseAngleViewModelTests
     {
         [TestMethod]
-        [TestCategory("Properties")]
         public void CloseBearing_Property_Change()
         {
             var result = false;
             var expectedString = "100.1000";
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseBearing))
@@ -32,12 +31,11 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Properties")]
         public void CloseDistance_Property_Change()
         {
             var result = false;
             var expectedString = "100.1000";
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
             vm.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(vm.CloseDistance))
@@ -52,10 +50,8 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Properties")]
         public void RotationDirectionValues_Get()
         {
-            var vm = new TraverseAngleViewModel(null, null);
             var values = TraverseAngleViewModel.RotationDirectionValues;
             var expectedNumberOfValues = 2;
 
@@ -63,10 +59,8 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Properties")]
         public void ReferenceDirectionValues_Get()
         {
-            var vm = new TraverseAngleViewModel(null, null);
             var values = TraverseAngleViewModel.ReferenceDirectionValues;
             var expectedNumberOfValues = 2;
 
@@ -74,10 +68,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void AddRowCommand_Execute()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -87,10 +80,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void AddRowCommand_Execute_MultipleAdd_IndexShouldIncrease()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -104,10 +96,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void RemoveRowCommand_Execute()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -123,10 +114,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void RemoveRowCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -142,10 +132,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void ClearTraverseCommand_Execute()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -159,10 +148,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void GridUpdatedCommand_Execute()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.TraverseAngles.Add(new TraverseAngleObject(0, 30));
             vm.TraverseAngles.Add(new TraverseAngleObject(90, 10));
@@ -177,10 +165,9 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void GridUpdatedCommand_Execute_Traverse_Count_Less_Than_Two()
         {
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.TraverseAngles.Add(new TraverseAngleObject(0, 30));
 
@@ -193,13 +180,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void FeetToMetersCommand_Execute()
         {
             var feetAndInchesValue = 100.10;
             var expectedValue = 30.734;
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -216,13 +202,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void FeetToMetersCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
             var feetAndInchesValue = 100.10;
             var expectedValue = 100.10;
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -237,13 +222,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void LinksToMetersCommand_Execute()
         {
             var linkValue = 100;
             var expectedValue = 20.1168;
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -260,13 +244,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void LinksToMetersCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
             var linkValue = 100;
             var expectedValue = 100;
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -281,13 +264,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void FlipBearingCommand_Execute_Less_Than_180()
         {
             var bearing = 90;
             var expectedValue = new Angle(270);
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -297,7 +279,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseAngles[0].Bearing = bearing;
 
             vm.SelectedTraverseAngle = vm.TraverseAngles[0];
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -305,13 +287,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void FlipBearingCommand_Execute_Greater_Than_180()
         {
             var bearing = 270;
             var expectedValue = new Angle(90);
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -321,7 +302,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseAngles[0].Bearing = bearing;
 
             vm.SelectedTraverseAngle = vm.TraverseAngles[0];
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -329,13 +310,12 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void FlipBearingCommand_Execute_SelectedTraverseAngle_Is_Null()
         {
             var bearing = 90;
             var expectedValue = new Angle(90);
 
-            var vm = new TraverseAngleViewModel(null, null);
+            var vm = new TraverseAngleViewModel(null, null, null);
 
             vm.AddRowCommand.CanExecute(true);
             vm.AddRowCommand.Execute(null);
@@ -345,7 +325,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseAngles[0].Bearing = bearing;
 
             vm.SelectedTraverseAngle = null;
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -353,11 +333,10 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        [TestCategory("Commands")]
         public void DrawCommand_Execute()
         {
             Mock<ITraverseService> traverseService = new Mock<ITraverseService>();
-            var vm = new TraverseAngleViewModel(traverseService.Object, null);
+            var vm = new TraverseAngleViewModel(traverseService.Object, null, null);
 
             vm.DrawCommand.CanExecute(true);
             vm.DrawCommand.Execute(null);
@@ -369,19 +348,19 @@ namespace _3DS_CivilSurveySuiteTests
             var mockTrav = new Mock<ITraverseService>();
             var mockProc = new Mock<IProcessService>();
 
-            var vm = new TraverseAngleViewModel(mockTrav.Object, mockProc.Object);
+            var vm = new TraverseAngleViewModel(mockTrav.Object, mockProc.Object, null);
             vm.ShowHelpCommand.CanExecute(true);
             vm.ShowHelpCommand.Execute(true);
         }
 
-        
+
         [TestMethod]
         public void CloseWindowCommand_Execute()
         {
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
             vm.CloseWindowCommand.CanExecute(true);
             vm.CloseWindowCommand.Execute(null);
@@ -393,7 +372,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
             vm.SetBasePointCommand.CanExecute(true);
             vm.SetBasePointCommand.Execute(null);
@@ -405,7 +384,7 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object);
+            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
             vm.TraverseAngles.Add(new TraverseAngleObject());
             vm.TraverseAngles.Add(new TraverseAngleObject());
@@ -414,8 +393,33 @@ namespace _3DS_CivilSurveySuiteTests
             vm.SetBasePointCommand.Execute(null);
         }
 
+        [TestMethod]
+        public void SelectLineCommand_Execute()
+        {
+            var travServ = new Mock<ITraverseService>();
+            var procServ = new Mock<IProcessService>();
 
+            travServ.Setup(m => m.SelectLine()).Returns(new AngleDistance { Angle = new Angle(), Distance = 30 });
 
+            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
+            vm.SelectLineCommand.CanExecute(true);
+            vm.SelectLineCommand.Execute(null);
+
+            Assert.AreEqual(1, vm.TraverseAngles.Count);
+        }
+
+        [TestMethod]
+        public void ZoomExtentsCommand_Execute()
+        {
+            var travServ = new Mock<ITraverseService>();
+            var procServ = new Mock<IProcessService>();
+            var mesServ = new Mock<IMessageBoxService>();
+
+            var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, mesServ.Object);
+
+            vm.ZoomExtentsCommand.CanExecute(true);
+            vm.ZoomExtentsCommand.Execute(null);
+        }
     }
 }

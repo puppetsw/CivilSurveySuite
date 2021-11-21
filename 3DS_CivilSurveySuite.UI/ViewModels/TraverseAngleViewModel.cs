@@ -19,6 +19,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private string _closeDistance;
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
+        private readonly IMessageBoxService _messageBoxService;
 
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
 
@@ -62,9 +63,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public RelayCommand FeetToMetersCommand => new RelayCommand(FeetToMeters, () => true);
 
         public RelayCommand LinksToMetersCommand => new RelayCommand(LinksToMeters, () => true);
-        
+
         public RelayCommand FlipBearingCommand => new RelayCommand(FlipBearing, () => true);
-        
+
         public RelayCommand ShowHelpCommand => new RelayCommand(ShowHelp, () => true);
 
         public RelayCommand GridUpdatedCommand => new RelayCommand(GridUpdated, () => true);
@@ -73,10 +74,15 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand CloseWindowCommand => new RelayCommand(CloseWindow, () => true);
 
-        public TraverseAngleViewModel(ITraverseService traverseService, IProcessService processService)
+        public RelayCommand SelectLineCommand => new RelayCommand(SelectLine, () => true);
+
+        public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
+
+        public TraverseAngleViewModel(ITraverseService traverseService, IProcessService processService, IMessageBoxService messageBoxService)
         {
             _traverseService = traverseService;
             _processService = processService;
+            _messageBoxService = messageBoxService;
         }
 
         private void SetBasePoint()
@@ -87,6 +93,17 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             {
                 _traverseService?.DrawTransientLines(TraverseAngles);
             }
+        }
+
+        private void Zoom()
+        {
+            _traverseService?.ZoomTo(TraverseAngles);
+        }
+
+        private void SelectLine()
+        {
+            var angDist = _traverseService.SelectLine();
+            TraverseAngles.Add(new TraverseAngleObject(angDist.Angle.ToDouble(), angDist.Distance));
         }
 
         private void CloseWindow()
@@ -170,7 +187,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void FlipBearing()
         {
-            if (SelectedTraverseAngle == null) 
+            if (SelectedTraverseAngle == null)
                 return;
 
             Angle angle;

@@ -80,7 +80,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void Zoom()
         {
-            _messageBoxService.ShowAlert("This command is under development.");
             _traverseService?.ZoomTo(TraverseItems);
         }
 
@@ -177,7 +176,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void FlipBearing()
         {
-            if (SelectedTraverseItem == null) 
+            if (SelectedTraverseItem == null)
                 return;
 
             Angle angle;

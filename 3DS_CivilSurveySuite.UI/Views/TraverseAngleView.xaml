@@ -76,6 +76,24 @@
                         <TextBlock Text=" Draw Traverse" />
                     </StackPanel>
                 </Button>
+                <Button Command="{Binding SelectLineCommand}">
+                    <!--<Button.ToolTip>
+                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
+                    </Button.ToolTip>-->
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource SelectObjectIcon}" Width="16" Height="16"/>
+                        <TextBlock Text=" Select Object" />
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding ZoomExtentsCommand}">
+                    <!--<Button.ToolTip>
+                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
+                    </Button.ToolTip>-->
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource ZoomExtents}" Width="16" Height="16"/>
+                        <TextBlock Text=" Zoom Extents" />
+                    </StackPanel>
+                </Button>
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding FeetToMetersCommand}">
                     <Button.ToolTip>
@@ -136,7 +154,7 @@
                   SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="All" AutoGenerateColumns="False"
                   HorizontalGridLinesBrush="{StaticResource BlueGridLine}"
                   VerticalGridLinesBrush="{StaticResource RedGridLine}"
-                  Background="{StaticResource YellowBackground}" 
+                  Background="{StaticResource YellowBackground}"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
                   RowHeight="25" HorizontalContentAlignment="Center" PreviewKeyDown="dgTraverse_PreviewKeyDown">
             <b:Interaction.Triggers>
@@ -207,7 +225,7 @@
                 <DataGridTemplateColumn Header="Rotation Direction" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RotationDirectionValues}" 
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RotationDirectionValues}"
                                       SelectedItem="{Binding RotationDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -215,7 +233,7 @@
                 <DataGridTemplateColumn Header="Reference Bearing Direction" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReferenceDirectionValues}" 
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReferenceDirectionValues}"
                                       SelectedItem="{Binding ReferenceDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
