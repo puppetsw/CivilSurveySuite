@@ -23,7 +23,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         private readonly TransientGraphics _graphics;
 
         private Point _basePoint;
-        
+
         public TraverseService()
         {
             _graphics = new TransientGraphics();
@@ -62,7 +62,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 
             _basePoint = basePoint.ToPoint();
         }
-        
+
         public void ClearGraphics()
         {
             _graphics?.ClearGraphics();
@@ -71,11 +71,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         public void ZoomTo(IEnumerable<TraverseObject> traverse)
         {
             var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
-
             var minMax = PointHelpers.GetMinMaxPoint(coordinates);
-            var cenPoint = PointHelpers.GetMidpointBetweenPoints(minMax.MinPoint, minMax.MaxPoint);
-            //BUG: Fix bug with zooming scale.
-            EditorUtils.Zoom(minMax.MinPoint.ToPoint3d(), minMax.MaxPoint.ToPoint3d(), cenPoint.ToPoint3d(), 0.9);
+            EditorUtils.ZoomToWindow(minMax.MinPoint.ToPoint3d(), minMax.MaxPoint.ToPoint3d());
         }
 
         public AngleDistance SelectLine()
