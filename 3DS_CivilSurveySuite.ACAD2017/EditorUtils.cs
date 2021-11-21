@@ -255,8 +255,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-
-        //TODO: Replace with bool method.
         [Obsolete("This method is obsolete. Use GetEntityOfType<T>(out ObjectId, String, String)", false)]
         public static PromptSelectionResult GetEntities<T>(string addMessage, string removeMessage = "") where T : Entity
         {

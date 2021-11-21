@@ -109,28 +109,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     {
                         //BUG: Exception thrown: 'Autodesk.Civil.CivilException' in AeccDbMgd.dll
                         //Autodesk has made it so property throw an exception if the string is empty
-                        /*
-                         *    try
-                              {
-                                AeccDbCogoPoint* impObj = this.GetImpObj();
-                                AeccDbCogoPoint* aeccDbCogoPointPtr = (IntPtr) impObj == IntPtr.Zero ? (AeccDbCogoPoint*) 0L : (AeccDbCogoPoint*) ((IntPtr) impObj + 24L);
-                                AeccAtom aeccAtom2;
-                                AeccAtom* attributeAeccAtom = AttributeHelper.getAttributeAeccAtom(&aeccAtom2, 167776259U, (IAeccAttributeBin*) aeccDbCogoPointPtr);
-                                try
-                                {
-                                  __memcpy(ref aeccAtom1, (IntPtr) attributeAeccAtom, 4);
-                                }
-                                __fault
-                                {
-                                  \u003CModule\u003E.___CxxCallUnwindDtor((__FnPtr<void (void*)>) __methodptr(AeccAtom\u002E\u007Bdtor\u007D), (void*) &aeccAtom2);
-                                }
-                              }
-                              catch (CivilException ex)
-                              {
-                                return string.Empty;
-                              }
-                         *
-                         */
+                        //It's out of my hands.
                     }
                 }
 
@@ -172,7 +151,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         private static CogoPoint GetCogoPoint(Transaction tr, CivilPoint civilPoint)
         {
             Handle h = new Handle(long.Parse(civilPoint.ObjectId, NumberStyles.AllowHexSpecifier));
-            ObjectId id = ObjectId.Null;   
+            ObjectId id = ObjectId.Null;
             AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
 
             return tr.GetObject(id, OpenMode.ForRead) as CogoPoint;

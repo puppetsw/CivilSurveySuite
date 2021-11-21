@@ -282,12 +282,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+        [Obsolete("This method is obsolete. Use the ReplaceDuplicateService implementation.")]
         public static void Create_Trunks_At_Trees()
         {
-            //TODO: Use settings to determine codes for TRNK and TRE
-            //TODO: Add option to set style for tree and trunk?
-            //TODO: Change this to a service with window.
-            //TODO: Cal it ReplaceTreeSymbols
+            //Use settings to determine codes for TRNK and TRE
+            //Add option to set style for tree and trunk?
+            //Change this to a service with window.
+            //Call it ReplaceTreeSymbols
             var counter = 0;
 
             using (Transaction tr = AcadApp.StartTransaction())
