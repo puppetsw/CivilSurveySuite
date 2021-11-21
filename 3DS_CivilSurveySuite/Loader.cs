@@ -3,8 +3,12 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
+using System.Linq;
 using System.Reflection;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Exception = System.Exception;
 
 [assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader))]
 namespace _3DS_CivilSurveySuite
@@ -13,33 +17,61 @@ namespace _3DS_CivilSurveySuite
     {
         public void Initialize()
         {
-            //double num = AcadUtils.AutoCADVersion();
-            //if (num < 21.0 || 23.1 < num)
-            //{
-            //    Application.DocumentManager.CurrentDocument.Editor.WriteMessage("\n3DS> Warning: Cannot load 3DS_CivilSurveySuite.dll It was written for AutoCAD 2017 to 2020. ");
-            //    throw new Exception();
-            //}
+            // Load supporting DLLs.
+            string[] supportDlls = { "Microsoft.Xaml.Behaviors" };
 
-            //AcadUtils.Editor.WriteMessage("\n3DS> Initializing - 3DS_CivilSurveySuite.dll");
-
-            //TODO: Add checks for versions and file paths etc.
-
-            //DataGridExtensions
-
-            // load reference dlls.
-
-            Assembly.Load("Microsoft.Xaml.Behaviors");
+            foreach (string dll in supportDlls)
+            {
+                Assembly.Load(dll);
+                if (!IsAssemblyLoaded(dll))
+                    throw new Exception($"Unable to load {dll}");
+            }
 
             // Load plugin dlls
+            string registryProductRootKey = HostApplicationServices.Current.UserRegistryProductRootKey;
 
-            Assembly.Load("3DS_CivilSurveySuite.ACAD2017");
-            Assembly.Load("3DS_CivilSurveySuite.C3D2017");
+            // Check which version to load.
+            var versionYear = "";
+            if (registryProductRootKey.Contains("\\R19.0\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R19.1\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R20.0\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R20.1\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R21.0\\"))
+                versionYear = "2017";
+            else if (registryProductRootKey.Contains("\\R22.0\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R23.0\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R23.1\\"))
+                versionYear = "";
+            else if (registryProductRootKey.Contains("\\R24.0\\"))
+                versionYear = "";
+
+            Assembly.Load($"3DS_CivilSurveySuite.ACAD{versionYear}");
+
+            // Check if we are running Civil3D.
+            if (IsCivil3D())
+                Assembly.Load($"3DS_CivilSurveySuite.C3D{versionYear}");
         }
 
         public void Terminate()
         {
         }
 
-        
+        private static bool IsCivil3D()
+        {
+            return SystemObjects.DynamicLinker.GetLoadedModules().Contains("AecBase.dbx".ToLower());
+        }
+
+        private static bool IsAssemblyLoaded(string assemblyName)
+        {
+            var currentDomain = AppDomain.CurrentDomain;
+            var assemblies = currentDomain.GetAssemblies();
+            return assemblies.Any(assem => assem.GetName().Name == assemblyName);
+        }
     }
 }
