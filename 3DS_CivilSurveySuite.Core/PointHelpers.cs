@@ -29,12 +29,12 @@ namespace _3DS_CivilSurveySuite.Core
         /// </summary>
         /// <param name="points"><see cref="IReadOnlyList{T}"/> of <see cref="Point"/></param>
         /// <returns>MinMaxPoint.</returns>
-        public static Bounds GetMinMaxPoint(IReadOnlyList<Point> points)
+        public static Bounds GetBounds(IReadOnlyList<Point> points)
         {
-            Point minPoint = points[0];
-            Point maxPoint = points[0];
+            var minPoint = points[0];
+            var maxPoint = points[0];
 
-            foreach (Point point in points)
+            foreach (var point in points)
             {
                 minPoint = new Point(Math.Min(minPoint.X, point.X), Math.Min(minPoint.Y, point.Y));
                 maxPoint = new Point(Math.Max(maxPoint.X, point.X), Math.Max(maxPoint.Y, point.Y));
@@ -173,7 +173,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <remarks>
         /// Seems to be a rounding issue that I've yet to fix.
         /// Might be an issue with AutoCAD internal. Math confirms with
-        /// other online calculations. 
+        /// other online calculations.
         /// </remarks>
         public static bool AngleAngleIntersection(Point point1, Angle angle1, Point point2, Angle angle2, out Point intersectionPoint)
         {
@@ -196,10 +196,10 @@ namespace _3DS_CivilSurveySuite.Core
 
             // If the internal angle is greater than or equal to 180°
             // Just thought that if the minutes or seconds are greater
-            // It's still going to think it's okay. 
+            // It's still going to think it's okay.
             if (internalC.Degrees >= 180 && internalC.Minutes >= 0 && internalC.Seconds >= 0)
                 return false;
-            
+
             var radA = internalA.ToRadians();
             var radB = internalC.ToRadians();
 
@@ -321,18 +321,18 @@ namespace _3DS_CivilSurveySuite.Core
         {
             intersectionPoint = Point.Origin;
 
-            // Line AB represented as a1x + b1y = c1 
+            // Line AB represented as a1x + b1y = c1
             double a1 = b.Y - a.Y;
             double b1 = a.X - b.X;
             double c1 = a1 * a.X + b1 * a.Y;
-  
-            // Line CD represented as a2x + b2y = c2 
+
+            // Line CD represented as a2x + b2y = c2
             double a2 = d.Y - c.Y;
             double b2 = c.X - d.X;
             double c2 = a2 * c.X + b2 * c.Y;
-  
+
             double determinant = a1 * b2 - a2 * b1;
-  
+
             if (determinant == 0)
             {
                 intersectionPoint = Point.Origin;

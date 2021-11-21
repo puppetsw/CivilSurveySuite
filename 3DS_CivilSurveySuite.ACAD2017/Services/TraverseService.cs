@@ -71,14 +71,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         public void ZoomTo(IEnumerable<TraverseObject> traverse)
         {
             var coordinates = PointHelpers.TraverseObjectsToCoordinates(traverse, _basePoint);
-            var minMax = PointHelpers.GetMinMaxPoint(coordinates);
+            var minMax = PointHelpers.GetBounds(coordinates);
             EditorUtils.ZoomToWindow(minMax.MinPoint.ToPoint3d(), minMax.MaxPoint.ToPoint3d());
         }
 
         public AngleDistance SelectLine()
         {
             Utils.SetFocusToDwgView();
-
             AngleDistance angDist = default;
 
             using (var tr = AcadApp.StartLockedTransaction())
@@ -89,6 +88,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                 {
                     angDist.Angle = AngleHelpers.GetAngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
                     angDist.Distance = line.Length;
+
+                    // Check if basePoint is set?
+                    if (_basePoint.Equals(Point.Origin))
+                    {
+                        _basePoint = line.StartPoint.ToPoint();
+                    }
                 }
                 tr.Commit();
             }

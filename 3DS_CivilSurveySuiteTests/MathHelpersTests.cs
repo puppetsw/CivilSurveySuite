@@ -182,8 +182,8 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var traverseObjects = new List<TraverseObject>
             {
-                new TraverseObject(0, 30), 
-                new TraverseObject(90, 10), 
+                new TraverseObject(0, 30),
+                new TraverseObject(90, 10),
                 new TraverseObject(180, 30)
             };
 
@@ -299,7 +299,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new Vector(2, 0),
                 new Vector(1, 0),
                 new Vector(3, 0),
-                out intersection, 
+                out intersection,
                 considerCollinearOverlapAsIntersect: true);
 
             Assert.IsTrue(actual);
@@ -329,7 +329,7 @@ namespace _3DS_CivilSurveySuiteTests
                 new Vector(2, 0),
                 new Vector(1, 0),
                 new Vector(3, 0),
-                out intersection, 
+                out intersection,
                 considerCollinearOverlapAsIntersect: false);
 
             Assert.IsFalse(actual);
@@ -361,7 +361,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             //Assert.AreEqual(expectedDecimalDegrees, convertedRadians);
             Assert.AreEqual(true, checkEquals);
-            
+
 
             var finalAngle = AngleHelpers.DecimalDegreesToAngle(Math.Round(convertedRadians, 4));
 
@@ -418,7 +418,7 @@ namespace _3DS_CivilSurveySuiteTests
             var pickedPoint = new Point(0, 15);
 
             var side = MathHelpers.IsLeft(startPoint, endPoint, pickedPoint);
-            
+
 
             Assert.AreEqual(0, side);
         }
@@ -533,7 +533,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             Assert.AreEqual(expectedDelta, result);
         }
-        
+
         [TestMethod]
         public void Find_Min_And_Max_Coordinates()
         {
@@ -545,9 +545,24 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(-10, 0)
             };
 
-            var result = PointHelpers.GetMinMaxPoint(list);
+            var result = PointHelpers.GetBounds(list);
 
             Assert.AreEqual(new Point(-10, 0), result.MinPoint);
+            Assert.AreEqual(new Point(10, 10), result.MaxPoint);
+        }
+
+        [TestMethod]
+        public void Find_Min_And_Max_Coordinates_One_Coordinate()
+        {
+            var list = new List<Point>
+            {
+                new Point(0, 0),
+                new Point(10, 10)
+            };
+
+            var result = PointHelpers.GetBounds(list);
+
+            Assert.AreEqual(new Point(0, 0), result.MinPoint);
             Assert.AreEqual(new Point(10, 10), result.MaxPoint);
         }
     }

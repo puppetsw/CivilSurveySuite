@@ -1,22 +1,34 @@
 # TODO
 
+### General
 * Error detection method.
+* Toolbar & Menu
+* Settings
 * Overwrite Text Command.
-* Input service.
+* Text Input Service
 * Copy raw description or full description to text entity
+
+### Setout Tool
+* Create block with point and text entities.
+* Export to CSV or Excel.
+
+### Linework Connector
+* Linework tool to replace SmartDraft -- in progress
+
+### Insert Pictures From Folder
+* Insert picture(s) tool
+
+### Traverse Windows
+* When user selects a line in traverse window it should clear the current traverse?
+  * This should fix the issue with the basePoint not being set and zoom?
+* Add ability to select multiple lines.
 * Add load/save to traverse palette
 * Add Curves to traverse?
-* ~~Selected objects to traverse window~~ Half done
-* XYZ point label (for autocad mainly)
-* Insert picture(s) tool
-* Settings (Properties.Settings.Default.MyConnection)
-* Linework tool to replace SmartDraft -- in progress
-* point report /w alignments
-* Toolbar & Menu
 
+### Point Reports
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
-Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
-
+Save entire report as HTML or data table only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
+* point report /w alignments
 * station format
 * edit multiple
 * hide non-adjacent
@@ -27,6 +39,17 @@ Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also inclu
 * export to csv
 * Create point at extension distance on grade between 2 points.
 * Quickly add/remove points by description match, elevation range, inside linear object or window, number range, etc.
+
+### Compare Two Surfaces
+> The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
+After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare,
+select the 2 surfaces to use, and the 2 UserDefinedProperties (these must be pre-defined as elevation types).
+Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to
+the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to
+also include station/offset information, use the DL_Points tool to link the points to alignment(s).
+
+
+## Window Visibility States
 
 ```
    <StackPanel>
@@ -42,15 +65,6 @@ Save entire report as HTML or data tabel only to CSV, DBF, XML, etc.  Also inclu
         </StackPanel.Style>
     </StackPanel>
 ```
-
-> The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
-After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare, 
-select the 2 surfaces to use, and the 2 UserDefinedProperties (these must be pre-defined as elevation types).
-Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to 
-the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to 
-also include station/offset information, use the DL_Points tool to link the points to alignment(s).
-
-
 # Notes
 
 > When you apply the CommandMethod attribute to a non-static method, AutoCAD's
