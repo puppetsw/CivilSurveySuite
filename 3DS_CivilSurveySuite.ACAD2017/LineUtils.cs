@@ -49,7 +49,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             if (tr == null)
             {
-                throw new ArgumentNullException(nameof(tr), "Transaction was null.");
+                throw new ArgumentNullException(nameof(tr), @"Transaction was null.");
             }
 
             var blockTable = (BlockTable) tr.GetObject(AcadApp.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
@@ -201,7 +201,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 pko.Keywords.Add(Keywords.ACCEPT);
                 pko.Keywords.Add(Keywords.FLIP);
                 pko.Keywords.Default = Keywords.ACCEPT;
-                
+
                 PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 
                 using (var tr = AcadApp.StartTransaction())
