@@ -75,7 +75,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal)]
         public static void CptResetLabels()
         {
-            CogoPointUtils.Label_Reset_All();
+            CogoPointUtils.LabelResetSelection();
         }
 
         [CommandMethod("3DS", "_3DSCptLabelsMove", CommandFlags.Modal)]
@@ -93,19 +93,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal)]
         public static void RawDesUpper()
         {
-            CogoPointUtils.RawDescription_ToUpper();
+            CogoPointUtils.RawDescriptionToUpper();
         }
 
         [CommandMethod("3DS", "_3DSFullDesUpper", CommandFlags.Modal)]
         public static void FullDesUpper()
         {
-            CogoPointUtils.FullDescription_ToUpper();
+            CogoPointUtils.FullDescriptionToUpper();
         }
 
         [CommandMethod("3DS", "_3DSCptMatchLblRot", CommandFlags.Modal)]
         public static void CptMatchLblRot()
         {
-            CogoPointUtils.Label_Rotate_Match();
+            CogoPointUtils.LabelRotateMatch();
         }
 
         [CommandMethod("3DS", "_3DSZoomToCpt", CommandFlags.Modal)]
@@ -123,7 +123,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSStackLabels", CommandFlags.Modal)]
         public static void StackLabels()
         {
-            CogoPointUtils.Stack_CogoPoint_Labels();
+            CogoPointUtils.LabelStack();
         }
 
         [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
@@ -135,7 +135,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSCptSetNext", CommandFlags.Modal)]
         public static void CptSetNextPointNumber()
         {
-            CogoPointUtils.Set_Next_PointNumber();
+            CogoPointUtils.SetNextPointNumber();
         }
 
 
@@ -190,13 +190,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSLabelMaskOff", CommandFlags.Modal)]
         public static void LabelMaskOff()
         {
-            CogoPointUtils.Label_Mask_Toggle(false);
+            CogoPointUtils.LabelMaskToggle(false);
         }
 
         [CommandMethod("3DS", "3DSLabelMaskOn", CommandFlags.Modal)]
         public static void LabelMaskOn()
         {
-            CogoPointUtils.Label_Mask_Toggle(true);
+            CogoPointUtils.LabelMaskToggle(true);
         }
 
         [CommandMethod("3DS", "3DSLabelLineBreak", CommandFlags.Modal)]

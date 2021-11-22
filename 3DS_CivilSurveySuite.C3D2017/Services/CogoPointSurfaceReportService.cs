@@ -24,7 +24,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public CivilSurface SelectSurface() => SurfaceUtils.SelectCivilSurface();
 
-        public IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup civilPointGroup) => CogoPointUtils.GetCivilPointsInPointGroup(civilPointGroup.Name);
+        public IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup civilPointGroup) => CogoPointUtils.GetCivilPointsFromPointGroup(civilPointGroup.Name);
 
         public double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface, bool calculatePointNearSurfaceEdge)
         {

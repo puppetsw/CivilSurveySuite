@@ -44,14 +44,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="pointGroup">The point group.</param>
         /// <returns>IEnumerable&lt;CogoPoint&gt;.</returns>
-        public static IEnumerable<CogoPoint> GetCogoPointsInPointGroup(PointGroup pointGroup)
+        public static IEnumerable<CogoPoint> GetFromPointGroup(PointGroup pointGroup)
         {
             var list = new List<CogoPoint>();
             using (var tr = AcadApp.StartTransaction())
             {
                 foreach (uint pointNumber in pointGroup.GetPointNumbers())
                 {
-                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    var cogoPoint = GetByPointNumber(tr, (int)pointNumber);
                     list.Add(cogoPoint);
                 }
                 tr.Commit();
@@ -64,7 +64,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="pointGroupName">Name of the point group.</param>
         /// <returns>IEnumerable&lt;CogoPoint&gt;.</returns>
-        public static IEnumerable<CogoPoint> GetCogoPointsInPointGroup(string pointGroupName)
+        public static IEnumerable<CogoPoint> GetFromPointGroup(string pointGroupName)
         {
             var list = new List<CogoPoint>();
             using (var tr = AcadApp.StartTransaction())
@@ -72,7 +72,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var pointGroup = PointGroupUtils.GetPointGroupByName(tr, pointGroupName);
                 foreach (uint pointNumber in pointGroup.GetPointNumbers())
                 {
-                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    var cogoPoint = GetByPointNumber(tr, (int)pointNumber);
                     list.Add(cogoPoint);
                 }
                 tr.Commit();
@@ -85,7 +85,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="pointGroupName">Name of the point group.</param>
         /// <returns>IEnumerable&lt;CivilPoint&gt;.</returns>
-        public static IEnumerable<CivilPoint> GetCivilPointsInPointGroup(string pointGroupName)
+        public static IEnumerable<CivilPoint> GetCivilPointsFromPointGroup(string pointGroupName)
         {
             var list = new List<CivilPoint>();
             using (var tr = AcadApp.StartTransaction())
@@ -93,7 +93,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var pointGroup = PointGroupUtils.GetPointGroupByName(tr, pointGroupName);
                 foreach (uint pointNumber in pointGroup.GetPointNumbers())
                 {
-                    var cogoPoint = GetCogoPointByPointNumber(tr, (int)pointNumber);
+                    var cogoPoint = GetByPointNumber(tr, (int)pointNumber);
                     list.Add(cogoPoint.ToCivilPoint());
                 }
                 tr.Commit();
@@ -102,9 +102,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Changes a <see cref="CogoPoint"/>'s Draw Description to upper case.
+        /// Changes a <see cref="CogoPoint"/>'s Raw Description to upper case.
         /// </summary>
-        public static void RawDescription_ToUpper()
+        public static void RawDescriptionToUpper()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
 
@@ -127,7 +127,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Changes a <see cref="CogoPoint"/>'s Full Description to upper case.
         /// </summary>
-        public static void FullDescription_ToUpper()
+        public static void FullDescriptionToUpper()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
 
@@ -147,7 +147,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-        public static void Label_Rotate_Match()
+        /// <summary>
+        /// Matches selected <see cref="CogoPoint"/>.LabelRotation to the selected line, polyline or 3d polyline.
+        /// </summary>
+        public static void LabelRotateMatch()
         {
             var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
 
@@ -207,7 +210,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
                     var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
-                    double textAngle = LabelUtils.GetLabelStyleComponentAngle(style);
+                    double textAngle = LabelUtils.GetFirstComponentAngle(style);
 
                     AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
                     AcadApp.Editor.WriteMessage($"\n3DS> Rotating label to {angle} to match polyline segment");
@@ -223,18 +226,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-        public static void Label_Rotate_Match_All()
+        public static void LabelRotateMatchNear()
         {
-            // select a bunch of cogopoints and rotate them based on their position to the selected lines/polylines vertexs
-
+            // Select a bunch of CogoPoints and rotate them based on
+            // their position to the lines/polyline vertexes in their proximity.
         }
 
-        public static void Marker_Rotate_Match()
-        {
-
-        }
-
-        public static void Label_Reset_All()
+        public static void LabelResetSelection()
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var pointIds, "\n3DS> Select CogoPoints labels to reset: "))
                 return;
@@ -261,7 +259,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// Turns the label mask on or off.
         /// </summary>
         /// <param name="value">if set to <c>true</c> [value].</param>
-        public static void Label_Mask_Toggle(bool value)
+        public static void LabelMaskToggle(bool value)
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to turn label mask(s) off: "))
                 return;
@@ -280,6 +278,86 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 }
                 tr.Commit();
             }
+        }
+
+        /// <summary>
+        /// Positions multiple <see cref="CogoPoint"/> labels below the first selected <see cref="CogoPoint"/>.
+        /// Rotation is based on the first text component of the LabelStyle.
+        /// Spacing is based on 10% of the label text height.
+        ///
+        /// TODO: Change this so you select the CogoPoints individually. (Won't need reverse order then)
+        /// </summary>
+        public static void LabelStack()
+        {
+            // Put in loop?
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ",
+                "\n3DS> Remove CogoPoints: ", out string keyword,
+                new[] { Keywords.REVERSE, Keywords.ACCEPT }, Keywords.ACCEPT))
+                return;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                // show settings
+                return;
+            }
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                Point3d startLocation = default;
+                Angle angle = null;
+                double labelOffset = 0;
+                var dX = 0.0;
+                var dY = 0.0;
+
+                for (int i = objectIds.Count; i-- > 0;)
+                {
+                    var objectId = objectIds[i];
+                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+
+                    if (cogoPoint == null)
+                        throw new InvalidOperationException("cogoPoint was null.");
+
+                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                    double labelHeight = LabelUtils.GetHeight(labelStyle);
+                    //add option to use the cogoPoint rotation rather than the component rotation?
+                    //or ability to type the rotation in.
+                    //double textAngle = cogoPoint.LabelRotation;
+                    double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
+
+                    if (i == objectIds.Count - 1)
+                    {
+                        startLocation = cogoPoint.Location;
+                        dX = cogoPoint.Location.X - cogoPoint.LabelLocation.X;
+                        dY = cogoPoint.Location.Y - cogoPoint.LabelLocation.Y;
+                        angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
+                        continue;
+                    }
+
+                    // There seems to be a bug with setting the label location of a dragged label.
+                    // So we reset the label first, before we change it and use the deltaX and deltaY
+                    // to calculate the offset back to the point below the first text.
+                    cogoPoint.ResetLabelLocation();
+
+                    // Add 10% of the label height as spacing between labels.
+                    labelOffset += labelHeight + labelHeight / 10;
+
+                    cogoPoint.UpgradeOpen();
+
+                    // Calculate new label location.
+                    var newPoint = PointHelpers.AngleAndDistanceToPoint(angle + 90, labelOffset, startLocation.ToPoint()).ToPoint3d();
+                    cogoPoint.LabelLocation = new Point3d(newPoint.X - dX, newPoint.Y - dY, 0);
+
+                    cogoPoint.DowngradeOpen();
+                }
+
+                AcadApp.Editor.Regen();
+                tr.Commit();
+            }
+        }
+
+        public static void MarkerRotateMatch()
+        {
+
         }
 
         [Obsolete("This method is obsolete. Use the ReplaceDuplicateService implementation.")]
@@ -380,95 +458,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-        public static void Stack_CogoPoint_Labels()
-        {
-            //TODO: add dialog for settings?
-
-            //if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: "))
-            //    return;
-
-            // Put in loop?
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: ", out string keyword, new []{"Settings"}))
-                return;
-
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                // show settings
-                return;
-            }
-
-            using (var tr = AcadApp.StartTransaction())
-            {
-                Point3d startLocation = default;
-                double labelOffset = 0;
-
-                //for (int i = list.Length; i-- > 0;)
-
-                //for (var i = 0; i < objectIds.Count; i++)
-                //Do loop in reverse cause we mainly do a crossing selection.
-                //Maybe add option to flip order.
-
-                // Point3d newLocation = label.AnchorInfo.Location + offset;
-                // label.LabelLocation = newLocation;
-                for (var i = objectIds.Count; i-- > 0;)
-                {
-                    ObjectId objectId = objectIds[i];
-                    var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
-
-                    if (cogoPoint == null) // if cogoPoint is null continue. It should never be null though.
-                        continue;
-
-                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
-                    var labelHeight = LabelUtils.CalculateLabelHeight(labelStyle);
-                    double textAngle = LabelUtils.GetLabelStyleComponentAngle(labelStyle);
-                    AcadApp.WriteMessage($"Label height {labelHeight}");
-
-                    //TODO: This needs to be worked on further, not 100% working yet.
-                    //The whole method I mean. 28/8
-                    //Possilbe issue with using current location
-                    //Need to reset label first?
-                    cogoPoint.ResetLabelLocation();
-
-                    if (i == objectIds.Count - 1)
-                    {
-                        startLocation = cogoPoint.LabelLocation;
-                        continue;
-                    }
-
-                    labelOffset += labelHeight;
-                    var angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
-                    var newPoint = PointHelpers.AngleAndDistanceToPoint(angle + 90, labelOffset, startLocation.ToPoint());
-
-                    //cogoPoint.LabelLocation = new Point3d(startLocation.X, startLocation.Y - labelOffset, 0);
-                    cogoPoint.LabelLocation = newPoint.ToPoint3d();
-                }
-
-                AcadApp.Editor.Regen();
-                tr.Commit();
-            }
-        }
-
-        public static CivilPoint ToCivilPoint(this CogoPoint cogoPoint)
-        {
-            return new CivilPoint
-            {
-                PointNumber = cogoPoint.PointNumber,
-                Easting = cogoPoint.Easting,
-                Northing = cogoPoint.Northing,
-                Elevation = cogoPoint.Elevation,
-                RawDescription = cogoPoint.RawDescription,
-                DescriptionFormat = cogoPoint.DescriptionFormat,
-                ObjectId = cogoPoint.ObjectId.Handle.ToString(),
-                PointName = cogoPoint.PointName
-            };
-        }
-
-        public static IEnumerable<CivilPoint> ToListOfCivilPoints(this IEnumerable<CogoPoint> cogoPoints)
-        {
-            return cogoPoints.Select(cogoPoint => cogoPoint.ToCivilPoint()).ToList();
-        }
-
-        public static void Move_CogoPoint_Label(double deltaX, double deltaY)
+        public static void Move_CogoPoint_Labels(double deltaX, double deltaY)
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
                 return;
@@ -493,6 +483,26 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.Regen();
         }
 
+        public static CivilPoint ToCivilPoint(this CogoPoint cogoPoint)
+        {
+            return new CivilPoint
+            {
+                PointNumber = cogoPoint.PointNumber,
+                Easting = cogoPoint.Easting,
+                Northing = cogoPoint.Northing,
+                Elevation = cogoPoint.Elevation,
+                RawDescription = cogoPoint.RawDescription,
+                DescriptionFormat = cogoPoint.DescriptionFormat,
+                ObjectId = cogoPoint.ObjectId.Handle.ToString(),
+                PointName = cogoPoint.PointName
+            };
+        }
+
+        public static IEnumerable<CivilPoint> ToListOfCivilPoints(this IEnumerable<CogoPoint> cogoPoints)
+        {
+            return cogoPoints.Select(cogoPoint => cogoPoint.ToCivilPoint()).ToList();
+        }
+
         /// <summary>
         /// Inverses two <see cref="CogoPoint"/> entities by their point number.
         /// </summary>
@@ -506,8 +516,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             using (var tr = AcadApp.StartTransaction())
             {
-                var cogoPoint1 = GetCogoPointByPointNumber(tr, firstPointNumber);
-                var cogoPoint2 = GetCogoPointByPointNumber(tr, secondPointNumber);
+                var cogoPoint1 = GetByPointNumber(tr, firstPointNumber);
+                var cogoPoint2 = GetByPointNumber(tr, secondPointNumber);
 
                 if (cogoPoint1 != null && cogoPoint2 != null)
                 {
@@ -542,7 +552,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <returns>A <see cref="CogoPoint"/> matching the <param name="pointNumber">point number</param>
         /// otherwise null if no matching <see cref="CogoPoint"/> found.
         /// </returns>
-        public static CogoPoint GetCogoPointByPointNumber(Transaction tr, int pointNumber)
+        public static CogoPoint GetByPointNumber(Transaction tr, int pointNumber)
         {
             foreach (ObjectId objectId in C3DApp.ActiveDocument.CogoPoints)
             {
@@ -561,18 +571,23 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// Provides a quick prompt allowing you to set the default for the next point number
         /// created (the current default is shown).
         /// </summary>
-        public static void Set_Next_PointNumber()
+        public static void SetNextPointNumber()
         {
             using (var tr = AcadApp.StartTransaction())
             {
-                if (EditorUtils.GetInt(out int integer, "\n3DS> Set Number: ", true, Get_Next_PointNumber(tr)))
+                if (EditorUtils.GetInt(out int integer, "\n3DS> Set Number: ", true, GetNextPointNumber(tr)))
                     C3DApp.ActiveDocument.Settings.GetSettings<SettingsCmdCreatePoints>().PointIdentity.NextPointNumber.Value = (uint)integer;
 
                 tr.Commit();
             }
         }
 
-        private static int Get_Next_PointNumber(Transaction tr)
+        /// <summary>
+        /// Gets the next available point number in the active drawing.
+        /// </summary>
+        /// <param name="tr">The active <see cref="Transaction"/>.</param>
+        /// <returns>A int representing the next point number.</returns>
+        private static int GetNextPointNumber(Transaction tr)
         {
             var pointGroup = PointGroupUtils.GetPointGroupByName(tr, "_All Points");
 

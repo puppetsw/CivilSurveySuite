@@ -6,7 +6,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
     {
         public void MoveLabels(double x, double y)
         {
-            CogoPointUtils.Move_CogoPoint_Label(x, y);
+            CogoPointUtils.Move_CogoPoint_Labels(x, y);
         }
     }
 }

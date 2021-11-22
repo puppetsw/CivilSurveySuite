@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// Gets the angle of the first text component in the style.
         /// </summary>
         /// <returns>A double representing angle of the label.</returns>
-        public static double GetLabelStyleComponentAngle(LabelStyle style)
+        public static double GetFirstComponentAngle(LabelStyle style)
         {
             foreach (ObjectId componentId in style.GetComponents(LabelStyleComponentType.Text))
             {
@@ -38,10 +38,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return 0;
         }
 
-        //BUG: What if there is more than 1 labelstyle component?
-        public static double CalculateLabelHeight(LabelStyle style)
+        /// <summary>
+        /// Gets the overall total height of the <see cref="LabelStyle"/>
+        /// based on the height of each text component.
+        /// </summary>
+        /// <param name="style">The <see cref="LabelStyle"/>.</param>
+        /// <returns>A double value representing the total height of the <see cref="LabelStyle"/>.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static double GetHeight(LabelStyle style)
         {
-            // Calculate the height of the label based on the text height of each component.
             double calculatedHeight = 0;
 
             foreach (ObjectId componentId in style.GetComponents(LabelStyleComponentType.Text))
@@ -51,19 +56,18 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 if (component == null)
                     throw new InvalidOperationException("component was null.");
 
-                if (component.GetType() == typeof(LabelStyleTextComponent))
-                {
-                    var textComponent = component as LabelStyleTextComponent;
+                if (component.GetType() != typeof(LabelStyleTextComponent))
+                    continue;
 
-                    if (textComponent == null)
-                        throw new InvalidOperationException("textComponent was null.");
+                var textComponent = component as LabelStyleTextComponent;
 
-                    calculatedHeight += textComponent.Text.Height.Value;
-                    var currentScale = 1000 / SystemVariables.CANNOSCALEVALUE;
-                    calculatedHeight *= currentScale;
-                }
+                if (textComponent == null)
+                    throw new InvalidOperationException("textComponent was null.");
+
+                calculatedHeight += textComponent.Text.Height.Value;
+                double currentScale = 1000 / SystemVariables.CANNOSCALEVALUE;
+                calculatedHeight *= currentScale;
             }
-
             return calculatedHeight;
         }
 
