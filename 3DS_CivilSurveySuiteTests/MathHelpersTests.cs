@@ -314,9 +314,16 @@ namespace _3DS_CivilSurveySuiteTests
             var vector = new Vector(5, 5);
             var result = vector * 2;
 
-            var emptyVec = new Vector(); //meh
-
             Assert.AreEqual(new Vector(10, 10), result);
+        }
+
+        [TestMethod]
+        [TestCategory("Math")]
+        public void Vector_Empty_Constructor_()
+        {
+            var vector = new Vector();
+            Assert.AreEqual("X:NaN,Y:NaN", vector.ToString());
+            //Assert.AreEqual(new Vector(double.NaN, double.NaN), vector);
         }
 
         [TestMethod]

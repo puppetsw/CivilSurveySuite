@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.PointNumber = 1000;
-            
+
             Assert.AreEqual((uint)1000, civilPoint.PointNumber);
         }
 
@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.Easting = 1000;
-            
+
             Assert.AreEqual(1000, civilPoint.Easting);
         }
 
@@ -34,7 +34,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.Northing = 1000;
-            
+
             Assert.AreEqual(1000, civilPoint.Northing);
         }
 
@@ -43,7 +43,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.Elevation = 1000;
-            
+
             Assert.AreEqual(1000, civilPoint.Elevation);
         }
 
@@ -52,7 +52,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.RawDescription = "Test";
-            
+
             Assert.AreEqual("Test", civilPoint.RawDescription);
         }
 
@@ -61,7 +61,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.DescriptionFormat = "Test";
-            
+
             Assert.AreEqual("Test", civilPoint.DescriptionFormat);
         }
 
@@ -70,7 +70,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.ObjectId = "Test";
-            
+
             Assert.AreEqual("Test", civilPoint.ObjectId);
         }
 
@@ -79,7 +79,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint = new CivilPoint();
             civilPoint.PointName = "Test";
-            
+
             Assert.AreEqual("Test", civilPoint.PointName);
         }
 
@@ -88,7 +88,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var civilPoint1 = new CivilPoint() { ObjectId = "Test" } ;
             var civilPoint2 = new CivilPoint() { ObjectId = "Test" } ;
-           
+
 
             Assert.IsTrue(civilPoint1.Equals(civilPoint2) && civilPoint2.Equals(civilPoint1));
 
@@ -119,6 +119,7 @@ namespace _3DS_CivilSurveySuiteTests
             object testObject = new object();
 
             Assert.IsFalse(Equals(civilPoint1, testObject));
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             Assert.IsFalse(testObject == civilPoint1);
             Assert.IsFalse(civilPoint1.Equals(testObject));
         }

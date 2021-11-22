@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using _3DS_CivilSurveySuite.Model;
+﻿using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -24,7 +19,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var desKey = new DescriptionKey();
             desKey.Description = "TestId";
-            
+
             Assert.AreEqual("TestId", desKey.Description);
         }
 
@@ -33,7 +28,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var desKey = new DescriptionKey();
             desKey.Key = "TST";
-            
+
             Assert.AreEqual("TST", desKey.Key);
         }
 
@@ -42,7 +37,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var desKey = new DescriptionKey();
             desKey.Layer = "TestLayer";
-            
+
             Assert.AreEqual("TestLayer", desKey.Layer);
         }
 
@@ -51,7 +46,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var desKey = new DescriptionKey();
             desKey.Draw2D = true;
-            
+
             Assert.IsTrue(desKey.Draw2D);
 
             desKey.Draw2D = false;
@@ -64,7 +59,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var desKey = new DescriptionKey();
             desKey.Draw3D = true;
-            
+
             Assert.IsTrue(desKey.Draw3D);
 
             desKey.Draw3D = false;

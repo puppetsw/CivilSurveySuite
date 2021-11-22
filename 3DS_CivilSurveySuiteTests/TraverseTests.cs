@@ -2,12 +2,11 @@
 // Reproduction or transmission in whole or in part, any form or by any
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
-// 
+//
 // Filename: TraverseTests.cs
 // Date:     01/07/2021
 // Author:   scott
 
-using System;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

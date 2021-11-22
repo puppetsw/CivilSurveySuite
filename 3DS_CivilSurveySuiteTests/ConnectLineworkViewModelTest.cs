@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,7 +9,7 @@ namespace _3DS_CivilSurveySuiteTests
     [TestClass]
     public class ConnectLineworkViewModelTest
     {
-        private const string _testFileName = "TestFiles\\3DS_DescriptionKeys.xml";
+        private const string TEST_FILE_NAME = "TestFiles\\3DS_DescriptionKeys.xml";
 
         private string _testPath;
 
@@ -19,8 +18,10 @@ namespace _3DS_CivilSurveySuiteTests
         [TestInitialize]
         public void Setup()
         {
-            var directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            _testPath = Path.Combine(directory, _testFileName);
+            string directory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            if (directory != null)
+                _testPath = Path.Combine(directory, TEST_FILE_NAME);
 
             _mock = new Mock<IConnectLineworkService>();
             _mock.SetupAllProperties();
@@ -39,7 +40,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void LoadSettings_From_File()
         {
-            var vm = new ConnectLineworkViewModel(_mock.Object);
+            var _ = new ConnectLineworkViewModel(_mock.Object);
         }
 
         [TestMethod]

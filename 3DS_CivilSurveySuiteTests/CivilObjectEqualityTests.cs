@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
-{ 
+{
     [TestClass]
     public class CivilObjectEqualityTests
     {
@@ -25,7 +21,7 @@ namespace _3DS_CivilSurveySuiteTests
             list.Add(alignment);
 
             var result = list.Contains(alignment2);
-            
+
             Assert.IsTrue(result);
 
         }

@@ -50,5 +50,10 @@ namespace _3DS_CivilSurveySuite.Model
         {
             return Math.Abs(d) < double.Epsilon;
         }
+
+        public override string ToString()
+        {
+            return $"X:{X},Y:{Y}";
+        }
     }
 }

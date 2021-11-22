@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Permissions;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +17,7 @@ namespace _3DS_CivilSurveySuiteTests
             var angle2 = new Angle(225);
             var point2 = new Point(265, 153);
 
-            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
+            PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             var expectedIntersection = new Point(227, 115);
 
@@ -35,7 +34,7 @@ namespace _3DS_CivilSurveySuiteTests
             var angle2 = new Angle(315);
             var point2 = new Point(265, 153);
 
-            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
+            PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             var expectedIntersection = new Point(222, 196);
 
@@ -64,7 +63,7 @@ namespace _3DS_CivilSurveySuiteTests
             var point2 = new Point(0, 30);
             var angle2 = new Angle(180);
 
-            var inter = PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
+            PointHelpers.AngleAngleIntersection(point1, angle1, point2, angle2, out Point result);
 
             Assert.AreEqual(Point.Origin, result);
         }
@@ -97,15 +96,9 @@ namespace _3DS_CivilSurveySuiteTests
             var point2 = new Point(440, 150);
             var dist2 = 10;
 
-            var expectedPoint1 = new Point(400, 180);
-            var expectedPoint2 = new Point(400, 120);
-
-            var resultBool = PointHelpers.DistanceDistanceIntersection(point1, dist1, point2, dist2, out Point result1, out Point result2);
+            var resultBool = PointHelpers.DistanceDistanceIntersection(point1, dist1, point2, dist2, out _, out _);
 
             Assert.IsFalse(resultBool);
-
-            //Assert.AreEqual(expectedPoint1, result1);
-            //Assert.AreEqual(expectedPoint2, result2);
         }
 
         [TestMethod]
@@ -154,7 +147,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedPoint = new Point(0, 50);
 
-            var result = PointHelpers.PerpendicularIntersection(pointA, pointB, pointC, out Point intersectionPoint);
+            PointHelpers.PerpendicularIntersection(pointA, pointB, pointC, out Point intersectionPoint);
 
             Assert.AreEqual(expectedPoint, intersectionPoint);
 
@@ -171,7 +164,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var expectedIntersection = new Point(249.08015611, 180.66136945);
 
-            var result = PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out Point resultIntersection);
+            PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out Point resultIntersection);
 
             Assert.AreEqual(expectedIntersection, resultIntersection);
         }
@@ -184,7 +177,7 @@ namespace _3DS_CivilSurveySuiteTests
             var pointC = new Point(10, 100);
             var pointD = new Point(10, 100);
 
-            var result = PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out Point resultIntersection);
+            var result = PointHelpers.FourPointIntersection(pointA, pointB, pointC, pointD, out _);
 
             Assert.IsFalse(result);
         }

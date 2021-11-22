@@ -357,47 +357,47 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 calculatedPoint = new Point3d(point.X, point.Y, elevation);
                 return;
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch { } //Suppress error
 
-            double closestDistance = double.MaxValue;
+            var closestDistance = double.MaxValue;
             LineSegment2d closestEdge = null;
 
-            foreach (TinSurfaceTriangle triangle in surface.Triangles)
+            foreach (var triangle in surface.Triangles)
             {
                 var line1 = new LineSegment2d(triangle.Edge1.Vertex1.Location.ToPoint2d(), triangle.Edge1.Vertex2.Location.ToPoint2d());
                 var line2 = new LineSegment2d(triangle.Edge2.Vertex1.Location.ToPoint2d(), triangle.Edge2.Vertex2.Location.ToPoint2d());
                 var line3 = new LineSegment2d(triangle.Edge3.Vertex1.Location.ToPoint2d(), triangle.Edge3.Vertex2.Location.ToPoint2d());
 
-                var d1 = line1.GetDistanceTo(point.ToPoint2d());
-                var d2 = line2.GetDistanceTo(point.ToPoint2d());
-                var d3 = line3.GetDistanceTo(point.ToPoint2d());
+                double d1 = line1.GetDistanceTo(point.ToPoint2d());
+                double d2 = line2.GetDistanceTo(point.ToPoint2d());
+                double d3 = line3.GetDistanceTo(point.ToPoint2d());
 
                 double distance = d1;
                 if (d2 < distance)
-                {
                     distance = d2;
-                }
 
                 if (d3 < distance)
-                {
                     distance = d3;
-                }
 
-                if (distance < closestDistance)
-                {
-                    if (distance == d1)
-                        closestEdge = line1;
+                if (!(distance < closestDistance))
+                    continue;
 
-                    if (distance == d2)
-                        closestEdge = line2;
+                if (distance == d1)
+                    closestEdge = line1;
 
-                    if (distance == d3)
-                        closestEdge = line3;
+                if (distance == d2)
+                    closestEdge = line2;
 
-                    closestDistance = distance;
-                    TinSurfaceTriangle closestTriangle = triangle;
-                }
+                if (distance == d3)
+                    closestEdge = line3;
+
+                closestDistance = distance;
+                //TinSurfaceTriangle closestTriangle = triangle;
             }
+
+            if (closestEdge == null)
+                throw new InvalidOperationException("closestEdge was null.");
 
             var p = closestEdge.GetClosestPointTo(point.ToPoint2d()).Point.ToPoint3d();
             var el = surface.FindElevationAtXY(p.X, p.Y);

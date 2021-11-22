@@ -69,8 +69,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void RangeString_EmptyArray()
         {
             var expectedString = string.Empty;
-            var list = new List<string>();
-            var result = StringHelpers.GetRangeString(list);
+            var result = StringHelpers.GetRangeString(new List<string>());
             Assert.AreEqual(expectedString, result);
         }
 

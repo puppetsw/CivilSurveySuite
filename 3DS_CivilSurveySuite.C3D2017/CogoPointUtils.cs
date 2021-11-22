@@ -284,54 +284,44 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// Positions multiple <see cref="CogoPoint"/> labels below the first selected <see cref="CogoPoint"/>.
         /// Rotation is based on the first text component of the LabelStyle.
         /// Spacing is based on 10% of the label text height.
-        ///
-        /// TODO: Change this so you select the CogoPoints individually. (Won't need reverse order then)
         /// </summary>
         public static void LabelStack()
         {
-            // Put in loop?
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ",
-                "\n3DS> Remove CogoPoints: ", out string keyword,
-                new[] { Keywords.REVERSE, Keywords.ACCEPT }, Keywords.ACCEPT))
+            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var entId, "\n3DS> Select first CogoPoint: ", "\n3DS> Remove CogoPoint: ", true))
                 return;
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                // show settings
-                return;
-            }
+            double labelOffset = 0;
 
             using (var tr = AcadApp.StartTransaction())
             {
-                Point3d startLocation = default;
-                Angle angle = null;
-                double labelOffset = 0;
-                var dX = 0.0;
-                var dY = 0.0;
+                var baseCogoPoint = tr.GetObject(entId, OpenMode.ForRead) as CogoPoint;
 
-                for (int i = objectIds.Count; i-- > 0;)
+                if (baseCogoPoint == null)
+                    throw new InvalidOperationException("baseCogoPoint was null.");
+
+                var labelStyle = tr.GetObject(baseCogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                double labelHeight = LabelUtils.GetHeight(labelStyle);
+
+                //add option to use the cogoPoint rotation rather than the component rotation?
+                //or ability to type the rotation in.
+                //double textAngle = cogoPoint.LabelRotation;
+                double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
+                var angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
+
+                var startLocation = baseCogoPoint.Location;
+                double dX = baseCogoPoint.Location.X - baseCogoPoint.LabelLocation.X;
+                double dY = baseCogoPoint.Location.Y - baseCogoPoint.LabelLocation.Y;
+
+                while (true)
                 {
-                    var objectId = objectIds[i];
+                    if (!EditorUtils.GetEntityOfType<CogoPoint>(out var objectId, "\n3DS> Select CogoPoint: ",
+                        "\n3DS> Remove CogoPoint: ", true))
+                        break;
+
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
 
                     if (cogoPoint == null)
                         throw new InvalidOperationException("cogoPoint was null.");
-
-                    var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
-                    double labelHeight = LabelUtils.GetHeight(labelStyle);
-                    //add option to use the cogoPoint rotation rather than the component rotation?
-                    //or ability to type the rotation in.
-                    //double textAngle = cogoPoint.LabelRotation;
-                    double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
-
-                    if (i == objectIds.Count - 1)
-                    {
-                        startLocation = cogoPoint.Location;
-                        dX = cogoPoint.Location.X - cogoPoint.LabelLocation.X;
-                        dY = cogoPoint.Location.Y - cogoPoint.LabelLocation.Y;
-                        angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
-                        continue;
-                    }
 
                     // There seems to be a bug with setting the label location of a dragged label.
                     // So we reset the label first, before we change it and use the deltaX and deltaY
@@ -348,11 +338,74 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     cogoPoint.LabelLocation = new Point3d(newPoint.X - dX, newPoint.Y - dY, 0);
 
                     cogoPoint.DowngradeOpen();
+                    AcadApp.Editor.Regen();
                 }
-
-                AcadApp.Editor.Regen();
                 tr.Commit();
             }
+
+            // if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ",
+            //     "\n3DS> Remove CogoPoints: ", out string keyword,
+            //     new[] { Keywords.REVERSE, Keywords.ACCEPT }, Keywords.ACCEPT))
+            //     return;
+            //
+            // if (!string.IsNullOrEmpty(keyword))
+            // {
+            //     // show settings
+            //     return;
+            // }
+            //
+            // using (var tr = AcadApp.StartTransaction())
+            // {
+            //     Point3d startLocation = default;
+            //     Angle angle = null;
+            //     double labelOffset = 0;
+            //     var dX = 0.0;
+            //     var dY = 0.0;
+            //
+            //     for (int i = objectIds.Count; i-- > 0;)
+            //     {
+            //         var objectId = objectIds[i];
+            //         var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+            //
+            //         if (cogoPoint == null)
+            //             throw new InvalidOperationException("cogoPoint was null.");
+            //
+            //         var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+            //         double labelHeight = LabelUtils.GetHeight(labelStyle);
+            //         //add option to use the cogoPoint rotation rather than the component rotation?
+            //         //or ability to type the rotation in.
+            //         //double textAngle = cogoPoint.LabelRotation;
+            //         double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
+            //
+            //         if (i == objectIds.Count - 1)
+            //         {
+            //             startLocation = cogoPoint.Location;
+            //             dX = cogoPoint.Location.X - cogoPoint.LabelLocation.X;
+            //             dY = cogoPoint.Location.Y - cogoPoint.LabelLocation.Y;
+            //             angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
+            //             continue;
+            //         }
+            //
+            //         // There seems to be a bug with setting the label location of a dragged label.
+            //         // So we reset the label first, before we change it and use the deltaX and deltaY
+            //         // to calculate the offset back to the point below the first text.
+            //         cogoPoint.ResetLabelLocation();
+            //
+            //         // Add 10% of the label height as spacing between labels.
+            //         labelOffset += labelHeight + labelHeight / 10;
+            //
+            //         cogoPoint.UpgradeOpen();
+            //
+            //         // Calculate new label location.
+            //         var newPoint = PointHelpers.AngleAndDistanceToPoint(angle + 90, labelOffset, startLocation.ToPoint()).ToPoint3d();
+            //         cogoPoint.LabelLocation = new Point3d(newPoint.X - dX, newPoint.Y - dY, 0);
+            //
+            //         cogoPoint.DowngradeOpen();
+            //     }
+            //
+            //     AcadApp.Editor.Regen();
+            //     tr.Commit();
+            //}
         }
 
         public static void MarkerRotateMatch()
@@ -426,7 +479,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                         throw new InvalidOperationException("Got unexpected objectId for CogoPoint's LabelStyle.");
 
                     // loop each text component in the label style and calculate the maximum width.
-                    int maxWidth = LabelUtils.GetLabelWidth(tr, labelStyle);
+                    int maxWidth = LabelUtils.GetWidth(tr, labelStyle);
                     maxWidth += 5; // Seems like the labels have a bit extra 'space' on the width.
                                    // This might be related to the current scale and the text size?
 

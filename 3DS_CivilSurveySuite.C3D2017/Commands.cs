@@ -120,12 +120,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.Inverse_ByPointNumber();
         }
 
-        [CommandMethod("3DS", "_3DSStackLabels", CommandFlags.Modal)]
-        public static void StackLabels()
-        {
-            CogoPointUtils.LabelStack();
-        }
-
         [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()
         {
@@ -205,6 +199,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.AddLineBreakToDescription();
         }
 
+        [CommandMethod("3DS", "_3DSLabelStack", CommandFlags.Modal)]
+        public static void StackLabels()
+        {
+            CogoPointUtils.LabelStack();
+        }
 
         // [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
         // public static void Test1()

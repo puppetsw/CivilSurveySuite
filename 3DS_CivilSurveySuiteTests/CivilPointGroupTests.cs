@@ -11,7 +11,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cpg = new CivilPointGroup();
             cpg.ObjectId = "TestId";
-            
+
             Assert.AreEqual("TestId", cpg.ObjectId);
         }
 
@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cpg = new CivilPointGroup();
             cpg.Name = "TestName";
-            
+
             Assert.AreEqual("TestName", cpg.Name);
         }
 
@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cpg = new CivilPointGroup();
             cpg.Description = "TestDescription";
-            
+
             Assert.AreEqual("TestDescription", cpg.Description);
         }
 
@@ -38,7 +38,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cpg1 = new CivilPointGroup();
             var cpg2 = new CivilPointGroup();
-           
+
 
             Assert.IsTrue(cpg1.Equals(cpg2) && cpg2.Equals(cpg1));
 
@@ -69,6 +69,7 @@ namespace _3DS_CivilSurveySuiteTests
             object testObject = new object();
 
             Assert.IsFalse(Equals(cpg1, testObject));
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             Assert.IsFalse(testObject == cpg1);
             Assert.IsFalse(cpg1.Equals(testObject));
         }

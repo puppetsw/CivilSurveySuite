@@ -1,5 +1,4 @@
-﻿using System;
-using _3DS_CivilSurveySuite.Core;
+﻿using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -78,9 +77,7 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void Angle_TryParseTest_NullBearing_ShouldBeFalse()
         {
-            double? inputBearing = null;
-
-            var resultBool = Angle.TryParse(inputBearing, out Angle angle);
+            var resultBool = Angle.TryParse(null, out Angle angle);
 
             Assert.AreEqual(false, resultBool);
             Assert.AreEqual(null, angle);
@@ -91,20 +88,28 @@ namespace _3DS_CivilSurveySuiteTests
         {
             //angle problems 176.23//95.29
             var inputAngle = new Angle(95.29);
-            var expected = true;
             var result = Angle.IsValid(inputAngle);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public void Angle_IsValidTest_ShouldBeTrue_NoLimit()
+        {
+            //angle problems 176.23//95.29
+            var inputAngle = new Angle(95.29);
+            var result = Angle.IsValid(inputAngle, false);
+
+            Assert.AreEqual(true, result);
         }
 
         [TestMethod]
         public void Angle_IsValidTest_ShouldBeFalse()
         {
             var inputAngle = new Angle(999.9999);
-            var expected = false;
             var result = Angle.IsValid(inputAngle);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod]
@@ -230,7 +235,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var angle = new Angle(90, 30, 30);
             var expectedString = "90°30\'30\"";
-            
+
             Assert.AreEqual(expectedString, angle.ToString());
         }
 

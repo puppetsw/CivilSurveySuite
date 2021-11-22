@@ -50,10 +50,11 @@ namespace _3DS_CivilSurveySuiteTests
 
             public string InvalidTestProperty
             {
+                // ReSharper disable once ExplicitCallerInfoArgument
                 set => SetProperty(ref _testProperty, value, "Invalid");
             }
         }
     }
 
-  
+
 }

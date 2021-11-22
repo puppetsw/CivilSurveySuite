@@ -848,10 +848,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         //TODO: Hookup with create_between_points when I figure it out.
 
-        private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
-        {
-
-        }
+        // private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
+        // {
+        //
+        // }
 
         public static void Inverse(Point3d firstPoint, Point3d secondPoint)
         {

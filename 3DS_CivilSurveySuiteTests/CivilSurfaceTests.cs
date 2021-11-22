@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cs = new CivilSurface();
             cs.ObjectId = "TestId";
-            
+
             Assert.AreEqual("TestId", cs.ObjectId);
         }
 
@@ -21,7 +21,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cs = new CivilSurface();
             cs.Name = "TestName";
-            
+
             Assert.AreEqual("TestName", cs.Name);
         }
 
@@ -30,7 +30,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cs = new CivilSurface();
             cs.Description = "TestDescription";
-            
+
             Assert.AreEqual("TestDescription", cs.Description);
         }
 
@@ -39,7 +39,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var cs1 = new CivilSurface();
             var cs2 = new CivilSurface();
-           
+
 
             Assert.IsTrue(cs1.Equals(cs2) && cs2.Equals(cs1));
 
@@ -70,6 +70,7 @@ namespace _3DS_CivilSurveySuiteTests
             object testObject = new object();
 
             Assert.IsFalse(Equals(cs1, testObject));
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             Assert.IsFalse(testObject == cs1);
             Assert.IsFalse(cs1.Equals(testObject));
         }
