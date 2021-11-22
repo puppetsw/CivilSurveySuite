@@ -7,6 +7,7 @@
 * Overwrite Text Command.
 * Text Input Service
 * Copy raw description or full description to text entity
+* Link CogoPoint Labels (for moving)
 
 ### Setout Tool
 * Create block with point and text entities.
