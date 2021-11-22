@@ -497,7 +497,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="keywords">The keywords.</param>
         /// <param name="defaultKeyword"></param>
         /// <returns><c>true</c> if selection set was successful, <c>false</c> otherwise.</returns>
-        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage, string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
+        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage,
+            string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
         {
             if (typedValues == null)
             {
@@ -627,7 +628,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
         public static bool GetPoint(out Point3d basePoint, string message)
         {
-            //Utils.SetFocusToDwgView(); //UNDONE: Not sure why this was needed?
             var ppo = new PromptPointOptions(message)
             {
                 AllowNone = true
@@ -651,7 +651,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
         public static bool GetPoint(out Point2d basePoint, string message)
         {
-            Utils.SetFocusToDwgView();
             var ppo = new PromptPointOptions(message);
             var ppr = AcadApp.Editor.GetPoint(ppo);
             basePoint = Point2d.Origin;
@@ -742,12 +741,5 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 tr.Commit();
             }
         }
-
-        public static string BuildTypedValueString()
-        {
-            //TODO: Implement this for easier typed values?
-            throw new NotImplementedException();
-        }
-
     }
 }

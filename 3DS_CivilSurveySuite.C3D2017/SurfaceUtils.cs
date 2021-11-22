@@ -21,6 +21,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class SurfaceUtils
     {
+        private const double TOLERANCE = 0.000000001;
+
         /// <summary>
         /// Gets a <see cref="Surface"/> by name.
         /// </summary>
@@ -92,7 +94,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return tr.GetObject(objectId, OpenMode.ForRead) as TinSurface;
         }
 
-
         [Obsolete("This method is obsolete. Use CivilSurface objects.")]
         public static IEnumerable<string> GetSurfaceNames(Transaction tr)
         {
@@ -140,9 +141,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static CivilSurface GetCivilSurface(Transaction tr, ObjectId objectId)
         {
             var surface = tr.GetObject(objectId, OpenMode.ForRead) as TinSurface;
+
+            if (surface == null)
+                return null;
+
             return new CivilSurface { ObjectId = surface.ObjectId.Handle.ToString(), Name = surface.Name, Description = surface.Description };
         }
-
 
         /// <summary>
         /// Gets the surface elevation at picked point.
@@ -202,10 +206,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var breaklineDefs = surface.BreaklinesDefinition;
 
                 // Load defaults
-                var midOrd = CommandSettings.GetDefaultBreaklineMidOrdinateDistance;
-                var maxDist = CommandSettings.GetDefaultBreaklineSupplementingDistance;
-                var weedDist = CommandSettings.GetDefaultBreaklineWeedingDistance;
-                var weedAngle = CommandSettings.GetDefaultBreaklineWeedingAngle;
+                double midOrd = CommandSettings.GetDefaultBreaklineMidOrdinateDistance;
+                double maxDist = CommandSettings.GetDefaultBreaklineSupplementingDistance;
+                double weedDist = CommandSettings.GetDefaultBreaklineWeedingDistance;
+                double weedAngle = CommandSettings.GetDefaultBreaklineWeedingAngle;
 
                 breaklineDefs.AddStandardBreaklines(objectIds, midOrd, maxDist, weedDist, weedAngle);
 
@@ -226,7 +230,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             using (var tr = AcadApp.StartTransaction())
             {
-                TinSurface surface = null;
+                TinSurface surface;
 
                 if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
                 {
@@ -248,15 +252,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     var breaklineSet = breaklineDefs[i];
 
                     // Store current breakline details so we can re-create them.
-                    var midOrd = breaklineSet.MidOrdinateDistance;
-                    var maxDist = breaklineSet.MaximumDistance;
-                    var weedDist = breaklineSet.WeedingDistance;
-                    var weedAngle = breaklineSet.WeedingAngle;
-                    var description = breaklineSet.Description;
+                    double midOrd = breaklineSet.MidOrdinateDistance;
+                    double maxDist = breaklineSet.MaximumDistance;
+                    double weedDist = breaklineSet.WeedingDistance;
+                    double weedAngle = breaklineSet.WeedingAngle;
+                    string description = breaklineSet.Description;
 
                     var breaklineIds = surface.GetBreaklineEntityIds(breaklineSet);
 
-                    for (int j = 0; j < breaklineIds.Count; j++)
+                    for (var j = 0; j < breaklineIds.Count; j++)
                     {
                         //var curbl = breaklineIds[j];
                         foreach (ObjectId objectId in objectIds)
@@ -298,27 +302,27 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             string name = breaklineSet.Description;
 
-            ObjectIdCollection result = new ObjectIdCollection();
+            var result = new ObjectIdCollection();
 
             object tinsurf = surf.AcadObject;
             object breaklines = tinsurf.GetType().InvokeMember("Breaklines", BindingFlags.GetProperty, null, tinsurf, null);
-            int breaklineCount = (int)breaklines.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, breaklines, null);
+            var breaklineCount = (int)breaklines.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, breaklines, null);
 
-            object[] args = new object[1];
+            var args = new object[1];
 
-            for (int j = 0; j < breaklineCount; j++)
+            for (var j = 0; j < breaklineCount; j++)
             {
                 args[0] = j;
                 object breakline = breaklines.GetType().InvokeMember("Item", BindingFlags.InvokeMethod, null, breaklines, args);
-                string desc = (string)breakline.GetType().InvokeMember("Description", BindingFlags.GetProperty, null, breakline, null);
+                var desc = (string)breakline.GetType().InvokeMember("Description", BindingFlags.GetProperty, null, breakline, null);
 
                 if (desc != name)
                     continue;
 
-                object[] entities = (object[])breakline.GetType().InvokeMember("BreaklineEntities", BindingFlags.GetProperty, null, breakline, null);
-                for (int i = 0; i < entities.GetLength(0); i++)
+                var entities = (object[])breakline.GetType().InvokeMember("BreaklineEntities", BindingFlags.GetProperty, null, breakline, null);
+                for (var i = 0; i < entities.GetLength(0); i++)
                 {
-                    ObjectId id = DBObject.FromAcadObject(entities[i]);
+                    var id = DBObject.FromAcadObject(entities[i]);
                     result.Add(id);
                 }
             }
@@ -339,7 +343,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return surface == null ? null : surface;
         }
-
 
         /// <summary>
         /// Calculates a point near the surface edge and finds it's elevation.
@@ -383,13 +386,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 if (!(distance < closestDistance))
                     continue;
 
-                if (distance == d1)
+                if (Math.Abs(distance - d1) < TOLERANCE)
                     closestEdge = line1;
 
-                if (distance == d2)
+                if (Math.Abs(distance - d2) < TOLERANCE)
                     closestEdge = line2;
 
-                if (distance == d3)
+                if (Math.Abs(distance - d3) < TOLERANCE)
                     closestEdge = line3;
 
                 closestDistance = distance;
@@ -405,7 +408,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             edge = closestEdge;
         }
 
-
         /// <summary>
         /// Finds the elevation of a point near or on a <see cref="TinSurface"/>.
         /// </summary>
@@ -419,7 +421,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return calculatedPoint.Z;
         }
 
-
         /// <summary>
         /// The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
         /// After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare,
@@ -430,15 +431,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void PointElevationsFromSurface()
         {
-
-
-
-
-
+            // TODO: This will have to be a service.
         }
-
-
-
 
         /// <summary>
         /// Creates a selection set points above or below the selected surface.
@@ -508,7 +502,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
-
         public static IEnumerable<CivilSurface> GetCivilSurfaces()
         {
             var list = new List<CivilSurface>();
@@ -554,24 +547,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             };
         }
 
-        //public static List<CivilSurface> ToListOfCivilSurfaces(this IEnumerable<TinSurface> surfaces)
-        //{
-        //    return surfaces.Select(surface => surface.ToCivilSurface()).ToList();
-        //}
-
-        //public static List<TinSurface> ToListOfTinSurfaces(this IEnumerable<CivilSurface> surfaces, Transaction tr)
-        //{
-        //    return surfaces.Select(surface => surface.ToSurface(tr)).ToList();
-        //}
-
         public static TinSurface ToSurface(this CivilSurface surface, Transaction tr)
         {
             Handle h = new Handle(long.Parse(surface.ObjectId, NumberStyles.AllowHexSpecifier));
-            ObjectId id = ObjectId.Null;
-            AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
+            AcadApp.ActiveDatabase.TryGetObjectId(h, out var id);//TryGetObjectId method
 
             return tr.GetObject(id, OpenMode.ForRead) as TinSurface;
         }
-
     }
 }

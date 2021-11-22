@@ -36,13 +36,29 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         // ReSharper disable InconsistentNaming
-        public static Point2d SCREENSIZE => GetSystemVariable<Point2d>();
+        public static Point2d SCREENSIZE
+        {
+            get => GetSystemVariable<Point2d>();
+            set => SetSystemVariable(value);
+        }
 
-        public static double VIEWSIZE => GetSystemVariable<double>();
+        public static double VIEWSIZE
+        {
+            get => GetSystemVariable<double>();
+            set => SetSystemVariable(value);
+        }
 
-        public static short LUPREC => GetSystemVariable<short>();
+        public static short LUPREC
+        {
+            get => GetSystemVariable<short>();
+            set => SetSystemVariable(value);
+        }
 
-        public static double CANNOSCALEVALUE => GetSystemVariable<double>();
+        public static double CANNOSCALEVALUE
+        {
+            get => GetSystemVariable<double>();
+            set => SetSystemVariable(value);
+        }
         // ReSharper restore InconsistentNaming
     }
 }

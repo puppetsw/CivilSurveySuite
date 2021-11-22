@@ -10,6 +10,8 @@ namespace _3DS_CivilSurveySuite.Core
 {
     public static class AngleHelpers
     {
+        private const double TOLERANCE = 0.000000001;
+
         /// <summary>
         /// Converts a <see cref="Angle"/> to decimal degrees.
         /// </summary>
@@ -108,13 +110,13 @@ namespace _3DS_CivilSurveySuite.Core
             double minutes = Math.Floor((decimalDegrees - degrees) * 60);
             double seconds = Math.Round(((decimalDegrees - degrees) * 60 - minutes) * 60, 0);
 
-            if (seconds == 60)
+            if (Math.Abs(seconds - 60) < TOLERANCE)
             {
                 minutes++;
                 seconds = 0;
             }
 
-            if (minutes == 60)
+            if (Math.Abs(minutes - 60) < TOLERANCE)
             {
                 degrees++;
                 minutes = 0;

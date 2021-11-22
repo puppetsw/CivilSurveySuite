@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using _3DS_CivilSurveySuite.ACAD2017;
@@ -16,6 +17,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class CogoPointEditorService : ICogoPointEditorService
     {
+        private const double TOLERANCE = 0.000000001;
+
         public void Select(CivilPoint civilPoint)
         {
             using (var tr = AcadApp.StartTransaction())
@@ -90,6 +93,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     {
                         var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
 
+                        if (cogoPoint == null)
+                            throw new InvalidOperationException("cogoPoint was null.");
+
                         var civilPoint =
                             new CivilPoint
                             {
@@ -132,13 +138,13 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
             if (cogoPoint.PointNumber != civilPoint.PointNumber)
                 cogoPoint.PointNumber = civilPoint.PointNumber;
 
-            if (cogoPoint.Easting != civilPoint.Easting)
+            if (Math.Abs(cogoPoint.Easting - civilPoint.Easting) > TOLERANCE)
                 cogoPoint.Easting = civilPoint.Easting;
 
-            if (cogoPoint.Northing != civilPoint.Northing)
+            if (Math.Abs(cogoPoint.Northing - civilPoint.Northing) > TOLERANCE)
                 cogoPoint.Northing = civilPoint.Northing;
 
-            if (cogoPoint.Elevation != civilPoint.Elevation)
+            if (Math.Abs(cogoPoint.Elevation - civilPoint.Elevation) > TOLERANCE)
                 cogoPoint.Elevation = civilPoint.Elevation;
 
             if (cogoPoint.RawDescription != civilPoint.RawDescription)
@@ -151,11 +157,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         private static CogoPoint GetCogoPoint(Transaction tr, CivilPoint civilPoint)
         {
             Handle h = new Handle(long.Parse(civilPoint.ObjectId, NumberStyles.AllowHexSpecifier));
-            ObjectId id = ObjectId.Null;
-            AcadApp.ActiveDatabase.TryGetObjectId(h, out id);//TryGetObjectId method
+            AcadApp.ActiveDatabase.TryGetObjectId(h, out var id);//TryGetObjectId method
 
             return tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
         }
-
     }
 }
