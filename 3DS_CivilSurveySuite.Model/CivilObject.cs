@@ -90,12 +90,14 @@ namespace _3DS_CivilSurveySuite.Model
 
         public override int GetHashCode()
         {
-            unchecked
+            unchecked // Overflow is fine, just wrap
             {
-                int hashCode = _name != null ? _name.GetHashCode() : 0;
-                hashCode = (hashCode * 397) ^ (_description != null ? _description.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_objectId != null ? _objectId.GetHashCode() : 0);
-                return hashCode;
+                var hash = 17;
+                hash = hash * 23 + Name.GetHashCode();
+                hash = hash * 23 + Description.GetHashCode();
+                hash = hash * 23 + ObjectId.GetHashCode();
+                hash = hash * 23 + IsSelected.GetHashCode();
+                return hash;
             }
         }
     }
