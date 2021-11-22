@@ -119,19 +119,19 @@ namespace _3DS_CivilSurveySuite.Model
 
         public bool Equals(CivilPoint other)
         {
-            if (ReferenceEquals(null, other)) 
+            if (ReferenceEquals(null, other))
                 return false;
 
-            if (ReferenceEquals(this, other)) 
+            if (ReferenceEquals(this, other))
                 return true;
 
-            return _pointNumber == other._pointNumber 
-                   && _easting.Equals(other._easting) 
-                   && _northing.Equals(other._northing) 
-                   && _elevation.Equals(other._elevation) 
-                   && _rawDescription == other._rawDescription 
-                   && _descriptionFormat == other._descriptionFormat 
-                   && _objectIdHandle == other._objectIdHandle 
+            return _pointNumber == other._pointNumber
+                   && _easting.Equals(other._easting)
+                   && _northing.Equals(other._northing)
+                   && _elevation.Equals(other._elevation)
+                   && _rawDescription == other._rawDescription
+                   && _descriptionFormat == other._descriptionFormat
+                   && _objectIdHandle == other._objectIdHandle
                    && _pointName == other._pointName;
         }
 
@@ -142,17 +142,17 @@ namespace _3DS_CivilSurveySuite.Model
 
         public override int GetHashCode()
         {
-            unchecked
+            unchecked // Overflow is fine, just wrap
             {
-                var hashCode = (int)_pointNumber;
-                hashCode = (hashCode * 397) ^ _easting.GetHashCode();
-                hashCode = (hashCode * 397) ^ _northing.GetHashCode();
-                hashCode = (hashCode * 397) ^ _elevation.GetHashCode();
-                hashCode = (hashCode * 397) ^ (_rawDescription != null ? _rawDescription.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_descriptionFormat != null ? _descriptionFormat.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_objectIdHandle != null ? _objectIdHandle.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (_pointName != null ? _pointName.GetHashCode() : 0);
-                return hashCode;
+                var hash = 17;
+                hash = hash * 23 + Easting.GetHashCode();
+                hash = hash * 23 + Northing.GetHashCode();
+                hash = hash * 23 + Elevation.GetHashCode();
+                hash = hash * 23 + RawDescription.GetHashCode();
+                hash = hash * 23 + DescriptionFormat.GetHashCode();
+                hash = hash * 23 + ObjectId.GetHashCode();
+                hash = hash * 23 + PointName.GetHashCode();
+                return hash;
             }
         }
     }

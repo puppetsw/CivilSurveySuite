@@ -23,6 +23,7 @@
 * When user selects a line in traverse window it should clear the current traverse?
   * This should fix the issue with the basePoint not being set and zoom?
 * Add ability to select multiple lines.
+  * Pick in order, so we can test if the next line is connected to the previous.
 * Add load/save to traverse palette
 * Add Curves to traverse?
 
@@ -82,8 +83,8 @@ intention.
 implements IExtensionApplication, but if you really wanted to do that, you could
 if you make the command handler methods static. If you're not sure about the
 difference between static and non-static (or 'instance') methods, get a hold of
-some basic C# learning materials, and try to become more familar with the basic
-concepts that underly the tools you're working with.
+some basic C# learning materials, and try to become more familiar with the basic
+concepts that underlie the tools you're working with.
 
 > As can be seen, it is not necessary to commit transactions for object reading access, 
 but for performance sake, we had better commit such transactions as well. In addition, 
@@ -93,5 +94,10 @@ than aborting them even for reading operations.
 
 > Therefore, another good practice comes out, always committing transactions after they started.
 
-> For an instance command method, the method's enclosing type is instantiated separately for each open document. This means that each document gets a private copy of the command's instance data. Thus there is no danger of overwriting document-specific data when the user switches documents. If an instance method needs to share data globally, it can do so by declaring static or Shared member variables.
-For a static command method, the managed wrapper runtime module does not need to instantiate the enclosing type. A single copy of the method's data is used, regardless of the document context. Static commands normally do not use per-document data and do not require special consideration for MDI mode.
+> For an instance command method, the method's enclosing type is instantiated separately for each open document. 
+> This means that each document gets a private copy of the command's instance data. Thus there is no danger 
+> of overwriting document-specific data when the user switches documents. If an instance method needs to share 
+> data globally, it can do so by declaring static or Shared member variables. For a static command method, 
+> the managed wrapper runtime module does not need to instantiate the enclosing type.
+> A single copy of the method's data is used, regardless of the document context. Static commands normally do 
+> not use per-document data and do not require special consideration for MDI mode.
