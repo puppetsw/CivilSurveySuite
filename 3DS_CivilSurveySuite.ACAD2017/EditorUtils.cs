@@ -16,6 +16,10 @@ using Autodesk.AutoCAD.Runtime;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
+    /// <summary>
+    /// Editor utilities class for handling common editor functions.
+    /// </summary>
+    /// <remarks>Scott Whitney, 23/11/2021.</remarks>
     public static class EditorUtils
     {
         /// <summary>
@@ -667,13 +671,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <param name="input">The typed input string.</param>
         /// <param name="message">The message to display to the user.</param>
-        /// <param name="useDefaultValue"></param>
-        /// <param name="defaultValue"></param>
-        /// <returns><c>true</c> if got a string successfully, <c>false</c> otherwise.</returns>
-        public static bool GetString(out string input, string message, bool useDefaultValue = false, string defaultValue = "")
+        /// <param name="useDefaultValue">Whether or not to use the default value.</param>
+        /// <param name="defaultValue">The default value to use.</param>
+        /// <param name="allowSpaces">Whether or not to allow spaces as input.</param>
+        /// <returns><c>True</c> if got a string successfully, <c>false</c> otherwise.</returns>
+        public static bool GetString(out string input, string message, bool useDefaultValue = false, string defaultValue = "", bool allowSpaces = false)
         {
             input = string.Empty;
-            var pso = new PromptStringOptions(message) { AllowSpaces = false };
+            var pso = new PromptStringOptions(message) { AllowSpaces = allowSpaces };
 
             if (useDefaultValue)
                 pso.DefaultValue = defaultValue;

@@ -10,6 +10,12 @@ using Autodesk.AutoCAD.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
+    /// <summary>
+    /// Text utilities class for handling manipulation of text objects.
+    /// </summary>
+    /// <remarks>
+    /// Scott Whitney, 23/11/2021.
+    /// </remarks>
     public static class TextUtils
     {
         /// <summary>
@@ -32,6 +38,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        /// <summary>
+        /// Updates either a TEXT or MTEXT entity with the updateText.
+        /// </summary>
+        /// <param name="textEntity">The entity to update.</param>
+        /// <param name="updateText">The text to update the entity with.</param>
+        /// <typeparam name="T">The base item type.</typeparam>
         private static void UpdateText<T>(T textEntity, string updateText) where T : Entity
         {
             if (textEntity.ObjectId.IsType<DBText>())
@@ -57,6 +69,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
+        /// <summary>
+        /// Gets the text from a TEXT or MTEXT entity.
+        /// </summary>
+        /// <param name="textEntity"></param>
+        /// <typeparam name="T">The base item type.</typeparam>
+        /// <returns>A string containing the text from the entity.</returns>
         private static string GetText<T>(T textEntity) where T : Entity
         {
             if (textEntity.ObjectId.IsType<DBText>())
@@ -116,8 +134,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void AddPrefixToText()
         {
-            //TODO: add space option?
-            if (!EditorUtils.GetString(out string prefixText, "\n3DS> Enter prefix text: "))
+            if (!EditorUtils.GetString(out string prefixText, "\n3DS> Enter prefix text: ", allowSpaces: true))
                 return;
 
             if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
