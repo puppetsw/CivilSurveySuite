@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     public static class PolylineUtils
     {
         /// <summary>
-        /// Creates a point at the midpoint between two selected <see cref="Polyline"/> entities. 
+        /// Creates a point at the midpoint between two selected <see cref="Polyline"/> entities.
         /// </summary>
         /// <param name="createAction">The create point action.</param>
         /// <remarks>This can be useful for using the BestFit Alignment tool in Civil 3D when the
@@ -59,7 +59,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                     graphics.DrawDot(calcMidPoint, Settings.GraphicsSize);
 
-                    //PointUtils.CreatePoint(tr, calcMidPoint); //TODO: Make a parameter so can pass CogoPoints to this method.
                     createAction(tr, calcMidPoint);
 
                 } while (true);
@@ -188,9 +187,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Point3d wcsPickedPoint = nestedEntity.PickedPoint.TransformBy(AcadApp.Editor.CurrentUserCoordinateSystem);
 
             // Get the closest point to picked point on the polyline.
-            // If the polyline is nested, it's needed to transform the picked point using the 
+            // If the polyline is nested, it's needed to transform the picked point using the
             // the transformation matrix that is applied to the polyline by its containers.
-            var pointOnPolyline = nestedEntity.GetContainers().Length == 0 ? 
+            var pointOnPolyline = nestedEntity.GetContainers().Length == 0 ?
                 polyline.GetClosestPointTo(wcsPickedPoint, false) : // Not nested polyline.
                 polyline.GetClosestPointTo(wcsPickedPoint.TransformBy(nestedEntity.Transform.Inverse()), false); // Nested polyline
 

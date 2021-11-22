@@ -54,6 +54,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Intersection_Of_Four_Points(CogoPointUtils.CreatePoint);
         }
 
+        [CommandMethod("3DS", "_3DSCptMidBetweenPoly", CommandFlags.Modal)]
+        public static void CptMidBetweenPoly()
+        {
+            PolylineUtils.MidPointBetweenPolylines(CogoPointUtils.CreatePoint);
+        }
+
         [CommandMethod("3DS", "_3DSCptSlope", CommandFlags.Modal)]
         public static void PtSlope()
         {
