@@ -398,14 +398,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the an entity of type <see cref="T"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Entity type.</typeparam>
         /// <param name="objectId">The object identifier.</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
         /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>True</c> if an entity was selected, <c>false</c> otherwise.</returns>
         public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
         {
+            //TODO: Add keyword support.
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage(removeMessage);
 
@@ -413,7 +414,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             peo.AddAllowedClass(typeof(T), exactMatch);
 
-            PromptEntityResult entity = AcadApp.Editor.GetEntity(peo);
+            var entity = AcadApp.Editor.GetEntity(peo);
 
             if (entity.Status != PromptStatus.OK)
                 return false;
@@ -422,6 +423,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        [Obsolete("This method is obsolete. Use GetEntityOfType<T>(ObjectId, String, String)", false)]
         public static bool GetEntity(out ObjectId objectId, out Point3d pickedPoint, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
             var peo = new PromptEntityOptions(addMessage);
@@ -433,7 +435,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             foreach (Type type in allowedClasses)
                 peo.AddAllowedClass(type, true);
 
-            PromptEntityResult entity = AcadApp.Editor.GetEntity(peo);
+            var entity = AcadApp.Editor.GetEntity(peo);
 
             if (entity.Status != PromptStatus.OK)
                 return false;
@@ -744,13 +746,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static string BuildTypedValueString()
         {
             //TODO: Implement this for easier typed values?
-
-
-
             throw new NotImplementedException();
         }
-
-
 
     }
 }
