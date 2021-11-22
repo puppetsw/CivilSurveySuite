@@ -140,7 +140,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="tr">The active transaction.</param>
         /// <param name="labelStyle">The label style.</param>
         /// <returns>A int value containing the maximum width of the label style.</returns>
-        public static int GetLabelWidth(Transaction tr, LabelStyle labelStyle)
+        public static int GetWidth(Transaction tr, LabelStyle labelStyle)
         {
             var maxWidth = 0.0;
             foreach (ObjectId componentId in labelStyle.GetComponents(LabelStyleComponentType.Text))
