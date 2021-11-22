@@ -43,7 +43,22 @@ namespace _3DS_CivilSurveySuite.Model
         public override bool Equals(object obj)
         {
             var v = (Vector)obj;
+
+            if (v == null)
+                return false;
+
             return IsZero(X - v.X) && IsZero(Y - v.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                var hash = 17;
+                hash = hash * 23 + X.GetHashCode();
+                hash = hash * 23 + Y.GetHashCode();
+                return hash;
+            }
         }
 
         public static bool IsZero(double d)
