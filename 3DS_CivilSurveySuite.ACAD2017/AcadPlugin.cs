@@ -10,14 +10,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class AcadPlugin : IExtensionApplication
     {
+        private const string _3DS_CUI_FILE = "3DS_CSS_ACAD.cuix";
+
         public void Initialize()
         {
             AcadService.Register();
+            AcadApp.LoadCuiFile(_3DS_CUI_FILE);
         }
 
         public void Terminate()
         {
             Properties.Settings.Default.Save();
+            AcadApp.UnloadCuiFile(_3DS_CUI_FILE);
         }
     }
 }

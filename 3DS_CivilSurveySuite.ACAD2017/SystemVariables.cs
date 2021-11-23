@@ -59,6 +59,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             get => GetSystemVariable<double>();
             set => SetSystemVariable(value);
         }
+
+        public static string MENUNAME => GetSystemVariable<string>();
+        //set => SetSystemVariable(value);
         // ReSharper restore InconsistentNaming
     }
 }

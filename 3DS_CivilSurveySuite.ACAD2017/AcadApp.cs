@@ -4,7 +4,10 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.IO;
+using System.Reflection;
 using Autodesk.AutoCAD.ApplicationServices;
+using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
@@ -49,6 +52,64 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <returns>Transaction.</returns>
         public static Transaction StartLockedTransaction() => ActiveDocument.TransactionManager.StartLockedTransaction();
+
+        /// <summary>
+        /// Check if the user is running inside Civil 3D.
+        /// </summary>
+        /// <returns><c>True</c> if Civil 3D is running. Otherwise <c>false</c>.</returns>
+        public static bool IsCivil3DRunning()
+        {
+            return SystemObjects.DynamicLinker.GetLoadedModules().Contains("AecBase.dbx".ToLower());
+        }
+
+        /// <summary>
+        /// Loads a partial cui file.
+        /// </summary>
+        /// <param name="fileName">Path to cui file.</param>
+        public static void LoadCuiFile(string fileName)
+        {
+            if (IsCivil3DRunning())
+                return;
+
+            // We aren't in AutoCAD, so we can load the normal CUI file.
+            // Is Cui file already loaded?
+            if (IsCuiFileLoaded(fileName))
+                return;
+
+            // Load the CUI file.
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + fileName;
+            Application.LoadPartialMenu(filePath);
+        }
+
+        /// <summary>
+        /// Unloads a partial cui file.
+        /// </summary>
+        /// <param name="fileName">Path to cui file.</param>
+        public static void UnloadCuiFile(string fileName)
+        {
+            // Is Cui file already unloaded?
+            if (!IsCuiFileLoaded(fileName))
+                return;
+
+            // Unload the CUI file.
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + fileName;
+            Application.UnloadPartialMenu(filePath);
+        }
+
+        private static bool IsCuiFileLoaded(string fileName)
+        {
+            string mainCuiFile = SystemVariables.MENUNAME;
+            mainCuiFile += ".cuix";
+
+            var cs = new CustomizationSection(mainCuiFile);
+            foreach (string file in cs.PartialCuiFiles)
+            {
+                if (file == fileName)
+                    return true;
+            }
+
+            return false;
+        }
 
         public static void UsingTransaction(Action<Transaction> action)
         {

@@ -36,6 +36,10 @@
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\accoremgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AcCui, Version=21.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AcCui.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="acdbmgd">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acdbmgd.dll</HintPath>
       <Private>False</Private>
