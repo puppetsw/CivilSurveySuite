@@ -148,10 +148,10 @@ namespace _3DS_CivilSurveySuite.Model
                 hash = hash * 23 + Easting.GetHashCode();
                 hash = hash * 23 + Northing.GetHashCode();
                 hash = hash * 23 + Elevation.GetHashCode();
-                hash = hash * 23 + RawDescription.GetHashCode();
-                hash = hash * 23 + DescriptionFormat.GetHashCode();
-                hash = hash * 23 + ObjectId.GetHashCode();
-                hash = hash * 23 + PointName.GetHashCode();
+                hash = hash * 23 + (RawDescription == null ? 0 : RawDescription.GetHashCode());
+                hash = hash * 23 + (DescriptionFormat == null ? 0 : DescriptionFormat.GetHashCode());
+                hash = hash * 23 + (ObjectId == null ? 0 : ObjectId.GetHashCode());
+                hash = hash * 23 + (PointName == null ? 0 : PointName.GetHashCode());
                 return hash;
             }
         }

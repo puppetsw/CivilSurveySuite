@@ -93,9 +93,9 @@ namespace _3DS_CivilSurveySuite.Model
             unchecked // Overflow is fine, just wrap
             {
                 var hash = 17;
-                hash = hash * 23 + Name.GetHashCode();
-                hash = hash * 23 + Description.GetHashCode();
-                hash = hash * 23 + ObjectId.GetHashCode();
+                hash = hash * 23 + (Name == null ? 0 : Name.GetHashCode());
+                hash = hash * 23 + (Description == null ? 0 : Description.GetHashCode());
+                hash = hash * 23 + (ObjectId == null ? 0 : ObjectId.GetHashCode());
                 hash = hash * 23 + IsSelected.GetHashCode();
                 return hash;
             }
