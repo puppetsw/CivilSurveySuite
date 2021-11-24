@@ -21,21 +21,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class CogoPointUtils
     {
-        //TODO: add more parameters for setting elevation etc.
         public static void CreatePoint(Transaction tr, Point3d position)
         {
             var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
             var cogoPointId = cogoPoints.Add(position, true);
 
-            if (!EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: "))
-                return;
+            //var descriptionFormat = "";
+
+            EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: ");
+
+            //if (promptDescriptionFormat) //, bool promptDescriptionFormat = false
+            //    EditorUtils.GetString(out descriptionFormat, "\n3DS> Enter description format: ");
 
             var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForWrite) as CogoPoint;
 
             if (cogoPoint == null)
-                throw new NullReferenceException(nameof(cogoPoint));
+                throw new InvalidOperationException("cogoPoint was null.");
 
             cogoPoint.RawDescription = rawDescription;
+            //cogoPoint.DescriptionFormat = descriptionFormat;
             cogoPoint.DowngradeOpen();
         }
 
@@ -246,7 +250,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (cogoPoint == null)
                         continue;
 
-                    //cogoPoint.ResetLabel();
                     cogoPoint.ResetLabelLocation();
                     cogoPoint.ResetLabelRotation();
                     cogoPoint.DowngradeOpen();
@@ -304,7 +307,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 //add option to use the cogoPoint rotation rather than the component rotation?
                 //or ability to type the rotation in.
-                //double textAngle = cogoPoint.LabelRotation;
                 double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
                 var angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
 
@@ -342,75 +344,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 }
                 tr.Commit();
             }
-
-            // if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints: ",
-            //     "\n3DS> Remove CogoPoints: ", out string keyword,
-            //     new[] { Keywords.REVERSE, Keywords.ACCEPT }, Keywords.ACCEPT))
-            //     return;
-            //
-            // if (!string.IsNullOrEmpty(keyword))
-            // {
-            //     // show settings
-            //     return;
-            // }
-            //
-            // using (var tr = AcadApp.StartTransaction())
-            // {
-            //     Point3d startLocation = default;
-            //     Angle angle = null;
-            //     double labelOffset = 0;
-            //     var dX = 0.0;
-            //     var dY = 0.0;
-            //
-            //     for (int i = objectIds.Count; i-- > 0;)
-            //     {
-            //         var objectId = objectIds[i];
-            //         var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
-            //
-            //         if (cogoPoint == null)
-            //             throw new InvalidOperationException("cogoPoint was null.");
-            //
-            //         var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
-            //         double labelHeight = LabelUtils.GetHeight(labelStyle);
-            //         //add option to use the cogoPoint rotation rather than the component rotation?
-            //         //or ability to type the rotation in.
-            //         //double textAngle = cogoPoint.LabelRotation;
-            //         double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
-            //
-            //         if (i == objectIds.Count - 1)
-            //         {
-            //             startLocation = cogoPoint.Location;
-            //             dX = cogoPoint.Location.X - cogoPoint.LabelLocation.X;
-            //             dY = cogoPoint.Location.Y - cogoPoint.LabelLocation.Y;
-            //             angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
-            //             continue;
-            //         }
-            //
-            //         // There seems to be a bug with setting the label location of a dragged label.
-            //         // So we reset the label first, before we change it and use the deltaX and deltaY
-            //         // to calculate the offset back to the point below the first text.
-            //         cogoPoint.ResetLabelLocation();
-            //
-            //         // Add 10% of the label height as spacing between labels.
-            //         labelOffset += labelHeight + labelHeight / 10;
-            //
-            //         cogoPoint.UpgradeOpen();
-            //
-            //         // Calculate new label location.
-            //         var newPoint = PointHelpers.AngleAndDistanceToPoint(angle + 90, labelOffset, startLocation.ToPoint()).ToPoint3d();
-            //         cogoPoint.LabelLocation = new Point3d(newPoint.X - dX, newPoint.Y - dY, 0);
-            //
-            //         cogoPoint.DowngradeOpen();
-            //     }
-            //
-            //     AcadApp.Editor.Regen();
-            //     tr.Commit();
-            //}
         }
 
         public static void MarkerRotateMatch()
         {
-
+            // TODO
         }
 
         [Obsolete("This method is obsolete. Use the ReplaceDuplicateService implementation.")]

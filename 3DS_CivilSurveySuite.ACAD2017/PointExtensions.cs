@@ -15,9 +15,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         public static Point2d ToPoint2d(this Point point) => new Point2d(point.X, point.Y);
 
-        public static Point3d ToPoint3d(this Point point) => new Point3d(point.X, point.Y, point.Z);
-
         public static Point2d ToPoint2d(this Point3d point) => new Point2d(point.X, point.Y);
+
+        public static Point3d ToPoint3d(this Point point) => new Point3d(point.X, point.Y, point.Z);
 
         public static Point3d ToPoint3d(this Point2d point, double elevation = 0) => new Point3d(point.X, point.Y, elevation);
 
@@ -30,14 +30,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return pointList.Select(point => new Point2d(point.X, point.Y)).ToList();
         }
 
-        public static List<Point3d> ToListOfPoint3d(this IEnumerable<Point> pointList)
-        {
-            return pointList.Select(point => new Point3d(point.X, point.Y, point.Z)).ToList();
-        }
-
         public static List<Point2d> ToListOfPoint2d(this IEnumerable<Point3d> points)
         {
             return points.Select(point => new Point2d(point.X, point.Y)).ToList();
+        }
+
+        public static List<Point3d> ToListOfPoint3d(this IEnumerable<Point> pointList)
+        {
+            return pointList.Select(point => new Point3d(point.X, point.Y, point.Z)).ToList();
         }
 
         public static List<Point3d> ToListOfPoint3d(this IEnumerable<Point2d> points, double elevation = 0)

@@ -326,10 +326,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Editor.UpdateScreen();
         }
 
-        public void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
+            if (!disposing)
+                return;
+
             ClearGraphics();
             _graphics?.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

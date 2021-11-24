@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.Model
     /// A class for working with surveyors bearings in degrees, minutes, seconds.
     /// Works to Australian standards.
     /// </summary>
-    public class Angle : IEquatable<Angle>
+    public sealed class Angle : IEquatable<Angle>
     {
         /// <summary>
         /// Gets or sets the degrees.
@@ -149,7 +149,7 @@ namespace _3DS_CivilSurveySuite.Model
         {
             if (limit)
                 return angle.Degrees < 360 && angle.Minutes < 60 && angle.Seconds < 60;
-            
+
             return angle.Minutes < 60 && angle.Seconds < 60;
         }
 

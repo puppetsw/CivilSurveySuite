@@ -75,44 +75,61 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var cancelled = false;
             do
             {
-                PromptDoubleResult pdoResult = AcadApp.Editor.GetDouble(pdo);
-                switch (pdoResult.Status)
+                var pdoResult = AcadApp.Editor.GetDouble(pdo);
+
+                if (pdoResult.Status == PromptStatus.Keyword)
                 {
-                    case PromptStatus.Keyword:
-                        if (pdoResult.StringResult == Keywords.PICK)
-                        {
-                            var pao = new PromptAngleOptions(pickMessage) { UseBasePoint = true, BasePoint = basePoint, UseAngleBase = false };
-                            var innerCancelled = false;
-                            do
-                            {
-                                PromptDoubleResult pdrAngle = AcadApp.ActiveDocument.Editor.GetAngle(pao);
+                    if (pdoResult.StringResult != Keywords.PICK)
+                        break;
 
-                                switch (pdrAngle.Status)
-                                {
-                                    case PromptStatus.OK:
-                                        angle = AngleHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
-                                        cancelled = true;
-                                        innerCancelled = true;
-                                        break;
-                                    case PromptStatus.Cancel:
-                                        innerCancelled = true;
-                                        break;
-                                }
-                            } while (!innerCancelled);
-                        }
-
+                    if (PickAngle(out angle, pickMessage, basePoint))
                         break;
-                    case PromptStatus.OK:
-                        angle = new Angle(pdoResult.Value);
-                        cancelled = true;
-                        break;
-                    case PromptStatus.Cancel:
-                        cancelled = true;
-                        break;
+                }
+                else if (pdoResult.Status == PromptStatus.OK)
+                {
+                    angle = new Angle(pdoResult.Value);
+                    cancelled = true;
+                }
+                else
+                {
+                    cancelled = true;
                 }
             } while (!cancelled);
 
             return true;
+        }
+
+        /// <summary>
+        /// Lets the user pick or enter an angle.
+        /// </summary>
+        /// <param name="angle">The picked or entered angle.</param>
+        /// <param name="pickMessage">The pick message to display to the user.</param>
+        /// <param name="basePoint">Basepoint to start the pick from.</param>
+        /// <param name="useBasePoint">If true use the basepoint.</param>
+        /// <param name="useAngleBase">Use drawing angle base in ACAD.</param>
+        /// <returns></returns>
+        private static bool PickAngle(out Angle angle, string pickMessage, Point3d basePoint, bool useBasePoint = true, bool useAngleBase = false)
+        {
+            var pao = new PromptAngleOptions(pickMessage)
+            {
+                UseBasePoint = useBasePoint,
+                BasePoint = basePoint,
+                UseAngleBase = useAngleBase
+            };
+            angle = null;
+            while (true)
+            {
+                var pdrAngle = AcadApp.ActiveDocument.Editor.GetAngle(pao);
+
+                switch (pdrAngle.Status)
+                {
+                    case PromptStatus.OK:
+                        angle = AngleHelpers.RadiansToAngle(pdrAngle.Value).ToClockwise();
+                        return true;
+                    case PromptStatus.Cancel:
+                        return false;
+                }
+            }
         }
 
         [Obsolete("This method is obsolete. Use GetPoint()", false)]

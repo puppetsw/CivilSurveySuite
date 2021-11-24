@@ -61,7 +61,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         public static string MENUNAME => GetSystemVariable<string>();
-        //set => SetSystemVariable(value);
         // ReSharper restore InconsistentNaming
     }
 }
