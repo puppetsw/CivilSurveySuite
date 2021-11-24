@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -24,14 +25,27 @@ namespace _3DS_CivilSurveySuite
             {
                 Assembly.Load(dll);
                 if (!IsAssemblyLoaded(dll))
-                    throw new Exception($"Unable to load {dll}");
+                    throw new FileLoadException($"Unable to load {dll}");
             }
 
+            string versionYear = VersionYear();
+            if (string.IsNullOrEmpty(versionYear))
+                return;
+
+            Assembly.Load($"3DS_CivilSurveySuite.ACAD{versionYear}");
+
+            // Check if we are running Civil3D.
+            if (IsCivil3D())
+                Assembly.Load($"3DS_CivilSurveySuite.C3D{versionYear}");
+        }
+
+        private static string VersionYear()
+        {
             // Load plugin dlls
             string registryProductRootKey = HostApplicationServices.Current.UserRegistryProductRootKey;
 
             // Check which version to load.
-            var versionYear = "";
+            string versionYear;
             if (registryProductRootKey.Contains("\\R19.0\\"))
                 versionYear = "";
             else if (registryProductRootKey.Contains("\\R19.1\\"))
@@ -50,16 +64,14 @@ namespace _3DS_CivilSurveySuite
                 versionYear = "";
             else if (registryProductRootKey.Contains("\\R24.0\\"))
                 versionYear = "";
-
-            Assembly.Load($"3DS_CivilSurveySuite.ACAD{versionYear}");
-
-            // Check if we are running Civil3D.
-            if (IsCivil3D())
-                Assembly.Load($"3DS_CivilSurveySuite.C3D{versionYear}");
+            else
+                versionYear = "";
+            return versionYear;
         }
 
         public void Terminate()
         {
+            // Do nothing.
         }
 
         private static bool IsCivil3D()

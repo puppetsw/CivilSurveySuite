@@ -323,7 +323,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
                     {
                         //use first point
-                        //CreatePoint(tr, firstInt.ToPoint3d());
                         graphics.DrawDot(firstInt.ToPoint3d(), Settings.GraphicsSize/2);
                         createAction(tr, firstInt.ToPoint3d());
                     }
@@ -487,7 +486,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), firstInt) <= PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), secondInt))
                     {
                         //use first point
-                        //CreatePoint(tr, firstInt.ToPoint3d());
                         graphics.DrawDot(firstInt.ToPoint3d(), Settings.GraphicsSize/2);
                         createAction(tr, firstInt.ToPoint3d());
                     }
@@ -601,10 +599,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void Create_At_Label_Location(Action<Transaction, Point3d> createAction, bool useTextAsElevation = false)
         {
-            //TODO: Better method for building TypedValues ?
-            //var typedValue = new TypedValue[1];
-            //typedValue.SetValue(new TypedValue((int)DxfCode.Start, "TEXT,MTEXT"), 0);
-
             if (!EditorUtils.GetSelectionOfType<MText, DBText>(out var selectedTextIds, "\n3DS> Select text entities: "))
                 return;
 
@@ -613,45 +607,39 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 foreach (ObjectId objectId in selectedTextIds)
                 {
                     var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
-                    Point3d point = Point3d.Origin;
+                    var textPoint = Point3d.Origin;
 
-                    if (objectId.IsType<DBText>())
+                    if (textEnt == null)
+                        throw new InvalidOperationException("textEnt was null");
+
+                    var contents = "";
+
+                    var type = textEnt.GetType().ToString();
+
+                    switch (type)
                     {
-                        var text = textEnt as DBText;
+                        case "Autodesk.AutoCAD.DatabaseServices.DBText":
+                            var dbText = textEnt as DBText;
+                            if (dbText == null)
+                                throw new InvalidOperationException("dbText was null.");
+                            contents = dbText.TextString;
+                            textPoint = dbText.Position;
+                            break;
+                        case "Autodesk.AutoCAD.DatabaseServices.MText":
+                            var mText = textEnt as MText;
+                            if (mText == null)
+                                throw new InvalidOperationException("mText was null.");
+                            contents = mText.Contents;
+                            textPoint = mText.Location;
+                            break;
 
-                        if (text == null)
-                            throw new ArgumentNullException(nameof(text));
-
-                        if (useTextAsElevation)
-                        {
-                            //add way to use text contents as elevation.
-                            var elevText = StringHelpers.ExtractDoubleFromString(text.TextString);
-                            point = new Point3d(text.Position.X, text.Position.Y, elevText);
-                        }
-                        else
-                        {
-                            point = new Point3d(text.Position.X, text.Position.Y, text.Position.Z);
-                        }
                     }
 
-                    if (objectId.IsType<MText>())
-                    {
-                        var text = textEnt as MText;
+                    double elevText = StringHelpers.ExtractDoubleFromString(contents);
 
-                        if (text == null)
-                            throw new ArgumentNullException(nameof(text));
+                    var point = useTextAsElevation ? new Point3d(textPoint.X, textPoint.Y, elevText) :
+                                                     new Point3d(textPoint.X, textPoint.Y, textPoint.Z);
 
-                        if (useTextAsElevation)
-                        {
-                            var elevText = StringHelpers.ExtractDoubleFromString(text.Contents);
-                            point = new Point3d(text.Location.X, text.Location.Y, elevText);
-                        }
-                        else
-                        {
-                            point = new Point3d(text.Location.X, text.Location.Y, text.Location.Z);
-                        }
-
-                    }
                     createAction(tr, point);
                 }
                 tr.Commit();
@@ -720,10 +708,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             {
                 graphics.Dispose();
             }
-
-
-
-
         }
 
         /// <summary>
@@ -811,8 +795,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     {
                         //TODO: Implement way to show point moving along line relative to mouse position for point creation.
                         /*
-                        var pointerGraphics = new TransientGraphics();
-                        AcadApp.Editor.PointMonitor += CreatePointBetweenPoints_PointMonitor;
                         Having brain wave moment. Can use methods like intersect 2 bearings to calculate point
                         on the line relative to the mouse position. if we take the line and add 90°? depending
                         on which side of the line the mouse is. we can use the IsLeft() method.
@@ -840,18 +822,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
             finally
             {
-                //AcadApp.Editor.PointMonitor -= CreatePointBetweenPoints_PointMonitor;
                 graphics.Dispose();
             }
         }
-
-
-        //TODO: Hookup with create_between_points when I figure it out.
-
-        // private static void CreatePointBetweenPoints_PointMonitor(object sender, PointMonitorEventArgs e)
-        // {
-        //
-        // }
 
         public static void Inverse(Point3d firstPoint, Point3d secondPoint)
         {

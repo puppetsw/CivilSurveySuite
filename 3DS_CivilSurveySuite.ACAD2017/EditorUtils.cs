@@ -186,14 +186,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AllowNone = true
             };
 
-            PromptDoubleResult pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
+            var pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
 
             if (pdrDistance.Status != PromptStatus.OK)
                 return false;
-
-            //UNDONE: If nothing entered, 0 distance.
-            //if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
-            //    return false;
 
             distance = pdrDistance.Value;
 
@@ -217,13 +213,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AllowNone = true
             };
 
-            PromptDoubleResult pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
+            var pdrDistance = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
 
             if (pdrDistance.Status != PromptStatus.OK)
                 return false;
-
-            //if (string.IsNullOrEmpty(pdrDistance.StringResult) && pdrDistance.Value == 0)
-            //    return false;
 
             distance = pdrDistance.Value;
 
@@ -358,18 +351,32 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return GetSelection(out objectIds, typedValues, addMessage, removeMessage);
         }
 
-        [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
-        public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
+        /// <summary>
+        /// Gets the an entity of type <see cref="T"/>.
+        /// </summary>
+        /// <typeparam name="T">Entity type.</typeparam>
+        /// <param name="objectId">The object identifier.</param>
+        /// <param name="addMessage">The add message.</param>
+        /// <param name="removeMessage">The remove message.</param>
+        /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
+        /// <returns><c>True</c> if an entity was selected, <c>false</c> otherwise.</returns>
+        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
         {
+            //TODO: Add keyword support.
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage(removeMessage);
 
-            foreach (Type type in allowedClasses)
-            {
-                peo.AddAllowedClass(type, true);
-            }
+            objectId = ObjectId.Null;
 
-            return AcadApp.Editor.GetEntity(peo);
+            peo.AddAllowedClass(typeof(T), exactMatch);
+
+            var entity = AcadApp.Editor.GetEntity(peo);
+
+            if (entity.Status != PromptStatus.OK)
+                return false;
+
+            objectId = entity.ObjectId;
+            return true;
         }
 
         /// <summary>
@@ -399,32 +406,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-        /// <summary>
-        /// Gets the an entity of type <see cref="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Entity type.</typeparam>
-        /// <param name="objectId">The object identifier.</param>
-        /// <param name="addMessage">The add message.</param>
-        /// <param name="removeMessage">The remove message.</param>
-        /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
-        /// <returns><c>True</c> if an entity was selected, <c>false</c> otherwise.</returns>
-        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
+        [Obsolete("This method is obsolete. Use GetEntity(ObjectId, IEnumerable<Type>, String, String)", false)]
+        public static PromptEntityResult GetEntity(IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
-            //TODO: Add keyword support.
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage(removeMessage);
 
-            objectId = ObjectId.Null;
+            foreach (Type type in allowedClasses)
+            {
+                peo.AddAllowedClass(type, true);
+            }
 
-            peo.AddAllowedClass(typeof(T), exactMatch);
-
-            var entity = AcadApp.Editor.GetEntity(peo);
-
-            if (entity.Status != PromptStatus.OK)
-                return false;
-
-            objectId = entity.ObjectId;
-            return true;
+            return AcadApp.Editor.GetEntity(peo);
         }
 
         [Obsolete("This method is obsolete. Use GetEntityOfType<T>(ObjectId, String, String)", false)]
@@ -560,7 +553,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (e.ErrorStatus == ErrorStatus.OK)
                 {
                     keyword = e.Message;
-                    //AcadApp.Editor.WriteMessage($"Keyword: {e.Message}");
                     pso.KeywordInput -= OnKeywordInput; //unhook event handler.
                 }
             }

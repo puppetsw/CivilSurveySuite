@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void Initialize()
         {
             AcadService.Register();
-            AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+            AcadApp.LoadCuiFile(_3DS_CUI_FILE, true);
         }
 
         public void Terminate()

@@ -287,16 +287,8 @@ namespace _3DS_CivilSurveySuite.Core
             double num5 = (point1.X - point2.X) * (point1.X - point2.X) + (point1.Y - point2.Y) * (point1.Y - point2.Y) - radius * radius;
             double d = num4 * num4 - 4.0 * num3 * num5;
 
-            if (num3 <= 1E-07 | d < 0.0)
+            if (num3 <= 1E-07 || d < 0.0)
                 return false; // No intersection found.
-
-            //if (d == 0.0) // Only one intersection? // Not needed?
-            //{
-            //    double num6 = -num4 / (2.0 * num3);
-            //    solution1 = new Point(Math.Round(point1.X + num6 * num1, decimalPlaces), Math.Round(point1.Y + num6 * num2, decimalPlaces), 0.0);
-            //    solution2 = Point.Origin;
-            //    return true;
-            //}
 
             double num7 = (-num4 + Math.Sqrt(d)) / (2.0 * num3);
             solution1 = new Point(Math.Round(point1.X + num7 * num1, decimalPlaces), Math.Round(point1.Y + num7 * num2, decimalPlaces), 0.0);

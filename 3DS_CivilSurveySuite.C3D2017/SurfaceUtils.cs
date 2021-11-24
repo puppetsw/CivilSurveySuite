@@ -113,6 +113,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return surfaceNames;
         }
 
+        public static IEnumerable<CivilSurface> GetCivilSurfaces()
+        {
+            var list = new List<CivilSurface>();
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
+
+                foreach (ObjectId surfaceId in surfaceIds)
+                {
+                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
+                    list.Add(surface.ToCivilSurface());
+                }
+
+                tr.Commit();
+            }
+
+            return list;
+        }
+
         [Obsolete("This method is obsolete, use SurfaceExtensions.", true)]
         public static IEnumerable<CivilSurface> GetCivilSurfaces(Transaction tr)
         {
@@ -232,14 +251,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
             {
                 TinSurface surface;
 
-                if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
-                {
-                    surface = C3DService.SelectSurface();
-                }
-                else
-                {
-                    surface = GetSurfaceByIndex(tr, 0);
-                }
+                surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
+                    ? C3DService.SelectSurface()
+                       : GetSurfaceByIndex(tr, 0);
 
                 if (surface == null)
                     return;
@@ -247,7 +261,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var breaklineDefs = surface.BreaklinesDefinition;
                 var breaklinesToBeRemoved = new List<int>();
 
-                for (int i = 0; i < breaklineDefs.Count; i++)
+                for (var i = 0; i < breaklineDefs.Count; i++)
                 {
                     var breaklineSet = breaklineDefs[i];
 
@@ -262,17 +276,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                     for (var j = 0; j < breaklineIds.Count; j++)
                     {
-                        //var curbl = breaklineIds[j];
                         foreach (ObjectId objectId in objectIds)
                         {
                             if (breaklineIds[j].Handle == objectId.Handle)
                                 breaklinesToBeRemoved.Add(j); //Add index of handle match to remove list
                         }
 
-                        foreach (int breaklineIndex in breaklinesToBeRemoved)
-                        {
-                            breaklineIds.RemoveAt(breaklineIndex);
-                        }
+                        breaklineIds.RemoveAtIndexes(breaklinesToBeRemoved);
 
                         // Remove current definition from surface
                         surface.BreaklinesDefinition.RemoveAt(i);
@@ -360,8 +370,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 calculatedPoint = new Point3d(point.X, point.Y, elevation);
                 return;
             }
-            // ReSharper disable once EmptyGeneralCatchClause
-            catch { } //Suppress error
+            catch
+            {
+                AcadApp.WriteMessage("\nPoint is not in surface bounds.");
+            } //Suppress error
 
             var closestDistance = double.MaxValue;
             LineSegment2d closestEdge = null;
@@ -383,7 +395,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 if (d3 < distance)
                     distance = d3;
 
-                if (!(distance < closestDistance))
+                //UNDONE: !(distance < closestDistance)
+                if (distance >= closestDistance)
                     continue;
 
                 if (Math.Abs(distance - d1) < TOLERANCE)
@@ -396,7 +409,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     closestEdge = line3;
 
                 closestDistance = distance;
-                //TinSurfaceTriangle closestTriangle = triangle;
             }
 
             if (closestEdge == null)
@@ -445,7 +457,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             using (var tr = AcadApp.StartTransaction())
             {
-                TinSurface surface = SelectSurface(tr);
+                var surface = SelectSurface(tr);
 
                 if (surface == null)
                 {
@@ -456,7 +468,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 var selectionObjectIds = new ObjectIdCollection();
 
                 // Prompt for above or below surface.
-                PromptKeywordOptions pko = new PromptKeywordOptions("\n3DS> Select points above or below surface: ");
+                var pko = new PromptKeywordOptions("\n3DS> Select points above or below surface: ");
                 pko.Keywords.Add("Above");
                 pko.Keywords.Add("Below");
                 pko.AllowNone = true;
@@ -465,60 +477,43 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 EditorUtils.GetDouble(out double tolerance, "\n3DS> Tolerance: ", true, 0.001);
 
-                if (pkr.Status == PromptStatus.OK && !string.IsNullOrEmpty(pkr.StringResult))
+                if (pkr.Status != PromptStatus.OK && string.IsNullOrEmpty(pkr.StringResult))
                 {
-                    foreach (ObjectId cogoPointId in C3DApp.ActiveDocument.CogoPoints)
+                    tr.Commit();
+                    return;
+                }
+
+                foreach (var cogoPointId in C3DApp.ActiveDocument.CogoPoints)
+                {
+                    var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForRead) as CogoPoint;
+
+                    if (cogoPoint == null)
+                        continue;
+
+                    try
                     {
-                        var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForRead) as CogoPoint;
+                        double elevationAtXy = surface.FindElevationAtXY(cogoPoint.Easting, cogoPoint.Northing);
 
-                        if (cogoPoint == null) continue;
-
-                        try
+                        if (pkr.StringResult == "Above" && cogoPoint.Elevation > elevationAtXy
+                                                        && cogoPoint.Elevation - elevationAtXy > tolerance)
                         {
-                            var elevationAtXy = surface.FindElevationAtXY(cogoPoint.Easting, cogoPoint.Northing);
-
-                            if (pkr.StringResult == "Above"
-                                && cogoPoint.Elevation > elevationAtXy
-                                && cogoPoint.Elevation - elevationAtXy > tolerance)
-                            {
-                                selectionObjectIds.Add(cogoPointId);
-                            }
-
-                            if (pkr.StringResult == "Below"
-                                && cogoPoint.Elevation < elevationAtXy
-                                && elevationAtXy - cogoPoint.Elevation > tolerance)
-                            {
-                                selectionObjectIds.Add(cogoPointId);
-                            }
+                            selectionObjectIds.Add(cogoPointId);
                         }
-                        catch (PointNotOnEntityException e)
+
+                        if (pkr.StringResult == "Below" && cogoPoint.Elevation < elevationAtXy
+                                                        && elevationAtXy - cogoPoint.Elevation > tolerance)
                         {
-                            AcadApp.Editor.WriteMessage($"\n3DS> {e.Message} X:{cogoPoint.Easting},Y:{cogoPoint.Northing}");
+                            selectionObjectIds.Add(cogoPointId);
                         }
                     }
-                    AcadApp.Editor.SetImpliedSelection(selectionObjectIds.ToArray());
+                    catch (PointNotOnEntityException e)
+                    {
+                        AcadApp.Editor.WriteMessage($"\n3DS> {e.Message} X:{cogoPoint.Easting},Y:{cogoPoint.Northing}");
+                    }
                 }
+                AcadApp.Editor.SetImpliedSelection(selectionObjectIds.ToArray());
                 tr.Commit();
             }
-        }
-
-        public static IEnumerable<CivilSurface> GetCivilSurfaces()
-        {
-            var list = new List<CivilSurface>();
-            using (var tr = AcadApp.StartLockedTransaction())
-            {
-                var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
-
-                foreach (ObjectId surfaceId in surfaceIds)
-                {
-                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
-                    list.Add(surface.ToCivilSurface());
-                }
-
-                tr.Commit();
-            }
-
-            return list;
         }
 
         public static CivilSurface SelectCivilSurface()

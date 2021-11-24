@@ -66,9 +66,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Loads a partial cui file.
         /// </summary>
         /// <param name="fileName">Path to cui file.</param>
-        public static void LoadCuiFile(string fileName)
+        /// <param name="civilCheck"></param>
+        public static void LoadCuiFile(string fileName, bool civilCheck = false)
         {
-            if (IsCivil3DRunning())
+            if (IsCivil3DRunning() && civilCheck)
                 return;
 
             // We aren't in AutoCAD, so we can load the normal CUI file.
@@ -77,7 +78,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return;
 
             // Load the CUI file.
-            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + fileName;
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
             Application.LoadPartialMenu(filePath);
         }
 
@@ -92,7 +93,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return;
 
             // Unload the CUI file.
-            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + fileName;
+            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
             Application.UnloadPartialMenu(filePath);
         }
 
