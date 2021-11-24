@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using System.IO;
 using System.Reflection;
 using Autodesk.AutoCAD.ApplicationServices;
@@ -78,7 +77,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return;
 
             // Load the CUI file.
-            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
+            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
+
+            if (!File.Exists(filePath))
+            {
+                Editor.WriteMessage($"\n3DS> Could not find CUI file: {filePath}");
+                return;
+            }
+
+            Editor.WriteMessage("\n");
             Application.LoadPartialMenu(filePath);
         }
 
@@ -93,80 +100,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return;
 
             // Unload the CUI file.
-            string filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
+            var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
             Application.UnloadPartialMenu(filePath);
         }
 
         private static bool IsCuiFileLoaded(string fileName)
         {
-            string mainCuiFile = SystemVariables.MENUNAME;
+            var mainCuiFile = SystemVariables.MENUNAME;
             mainCuiFile += ".cuix";
 
             var cs = new CustomizationSection(mainCuiFile);
-            foreach (string file in cs.PartialCuiFiles)
+            foreach (var file in cs.PartialCuiFiles)
             {
                 if (file == fileName)
                     return true;
             }
-
             return false;
-        }
-
-        public static void UsingTransaction(Action<Transaction> action)
-        {
-            using (var tr = StartTransaction())
-            {
-                action(tr);
-                tr.Commit();
-            }
-        }
-
-        public static void UsingLockedTransaction(Action<Transaction> action)
-        {
-            using (var tr = StartLockedTransaction())
-            {
-                action(tr);
-                tr.Commit();
-            }
-        }
-
-        public static void UsingModelSpace(Action<Transaction, BlockTableRecord> action)
-        {
-            using (var tr = StartTransaction())
-            {
-                // Get BlockTable and ModelSpace
-                var blockTable = (BlockTable) tr.GetObject(ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                var modelSpace = (BlockTableRecord) tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForRead);
-
-                // Execute the action.
-                action(tr, modelSpace);
-
-                tr.Commit();
-            }
-        }
-
-        public static void ForEach<T>(this Database database, Action<T> action) where T : Entity
-        {
-            using (var tr = StartTransaction())
-            {
-                // Get BlockTable and ModelSpace.
-                var blockTable = (BlockTable) tr.GetObject(ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
-                var modelSpace = (BlockTableRecord) tr.GetObject(blockTable[BlockTableRecord.ModelSpace], OpenMode.ForRead);
-
-                // Get the entity type.
-                RXClass entityType = RXObject.GetClass(typeof(T));
-
-                foreach (ObjectId objectId in modelSpace)
-                {
-                    // Match correct type
-                    if (objectId.ObjectClass.IsDerivedFrom(entityType))
-                    {
-                        var entity = (T) tr.GetObject(objectId, OpenMode.ForRead);
-                        action(entity);
-                    }
-                }
-                tr.Commit();
-            }
         }
 
         public static void WriteMessage(string message)
