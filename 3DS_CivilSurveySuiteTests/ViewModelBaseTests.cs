@@ -18,14 +18,6 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void SetProperty_Is_Failed()
-        {
-            var value = "Test";
-            var vm = new TestViewModelBase();
-            Assert.ThrowsException<Exception>(() => vm.InvalidTestProperty = value);
-        }
-
-        [TestMethod]
         public void SetProperty_Is_The_Same()
         {
             var value = "Test";
@@ -40,18 +32,10 @@ namespace _3DS_CivilSurveySuiteTests
         {
             private string _testProperty;
 
-            protected override bool ThrowOnInvalidPropertyName => true;
-
             public string TestProperty
             {
                 get => _testProperty;
                 set => SetProperty(ref _testProperty, value);
-            }
-
-            public string InvalidTestProperty
-            {
-                // ReSharper disable once ExplicitCallerInfoArgument
-                set => SetProperty(ref _testProperty, value, "Invalid");
             }
         }
     }

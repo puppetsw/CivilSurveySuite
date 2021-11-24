@@ -84,7 +84,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new ConnectLineworkViewModel(_mock.Object);
 
-            vm.ConnectCommand.CanExecute(true);
+            Assert.IsTrue(vm.ConnectCommand.CanExecute(true));
             vm.ConnectCommand.Execute(true);
         }
     }

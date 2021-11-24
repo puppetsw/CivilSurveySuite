@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
@@ -14,10 +13,6 @@ namespace _3DS_CivilSurveySuite.UI.Views
             InitializeComponent();
 
             DataContext = viewModel;
-        }
-
-        private void dgTraverse_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
         }
     }
 }

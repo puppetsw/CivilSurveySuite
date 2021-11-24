@@ -7,6 +7,9 @@ namespace _3DS_CivilSurveySuite.UI.Behaviors
 {
     public class SimpleCalculationTextBoxBehavior
     {
+        protected SimpleCalculationTextBoxBehavior()
+        { }
+
         public static bool GetEnable(FrameworkElement frameworkElement)
         {
             return (bool)frameworkElement.GetValue(EnableProperty);
@@ -45,10 +48,6 @@ namespace _3DS_CivilSurveySuite.UI.Behaviors
                     e.Handled = true;
                     return;
                 }
-
-                //if the last character is an operator don't add. 
-                //if (textBox.Text.Last() == '-' || textBox.Text.Last() == '+')
-                //    e.Handled = true;
 
                 if (textBox.Text.Contains("+") || textBox.Text.Contains("-"))
                     e.Handled = true;
