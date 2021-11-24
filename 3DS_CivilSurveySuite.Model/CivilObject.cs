@@ -3,13 +3,12 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Model
 {
-    public abstract class CivilObject : INotifyPropertyChanged, IEquatable<CivilObject>
+    public abstract class CivilObject : INotifyPropertyChanged
     {
         private string _name;
         private string _description;
@@ -68,37 +67,6 @@ namespace _3DS_CivilSurveySuite.Model
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public bool Equals(CivilObject other)
-        {
-            if (ReferenceEquals(null, other))
-                return false;
-
-            if (ReferenceEquals(this, other))
-                return true;
-
-            return _name == other._name
-                   && _description == other._description
-                   && _objectId == other._objectId;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is CivilObject item && Equals(item);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                var hash = 17;
-                hash = hash * 23 + (Name == null ? 0 : Name.GetHashCode());
-                hash = hash * 23 + (Description == null ? 0 : Description.GetHashCode());
-                hash = hash * 23 + (ObjectId == null ? 0 : ObjectId.GetHashCode());
-                hash = hash * 23 + IsSelected.GetHashCode();
-                return hash;
-            }
         }
     }
 }
