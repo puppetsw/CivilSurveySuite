@@ -9,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
-using Exception = System.Exception;
 
 [assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader))]
 namespace _3DS_CivilSurveySuite

@@ -6,7 +6,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.Civil.DatabaseServices.Styles;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
