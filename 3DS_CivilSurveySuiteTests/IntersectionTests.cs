@@ -43,18 +43,6 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [TestMethod]
-        public void AngleAngle_Intersect_North_NegativeTriangle()
-        {
-
-        }
-
-        [TestMethod]
-        public void AngleAngle_Intersect_South_NegativeTriangle()
-        {
-
-        }
-
-        [TestMethod]
         public void AngleAngle_Intersect_NoIntersection_ShouldReturnOrigin()
         {
             var point1 = new Point(0, 0);

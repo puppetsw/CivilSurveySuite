@@ -2,7 +2,8 @@
 {
     public struct Bounds
     {
-        public Point MinPoint;
-        public Point MaxPoint;
+        public Point MinPoint { get; set; }
+
+        public Point MaxPoint { get; set; }
     }
 }

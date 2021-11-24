@@ -9,6 +9,8 @@ namespace _3DS_CivilSurveySuite.UI.Behaviors
     /// </summary>
     public class SelectAllFocusBehavior
     {
+        protected SelectAllFocusBehavior() {}
+
         public static bool GetEnable(FrameworkElement frameworkElement)
         {
             return (bool)frameworkElement.GetValue(EnableProperty);
@@ -24,9 +26,11 @@ namespace _3DS_CivilSurveySuite.UI.Behaviors
         private static void OnEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var frameworkElement = d as FrameworkElement;
-            if (frameworkElement == null) return;
+            if (frameworkElement == null)
+                return;
 
-            if (e.NewValue is bool == false) return;
+            if (e.NewValue is bool == false)
+                return;
 
             if ((bool)e.NewValue)
             {

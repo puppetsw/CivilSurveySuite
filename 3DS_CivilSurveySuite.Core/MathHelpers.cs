@@ -32,7 +32,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// </summary>
         /// <param name="feetAndInches">
         /// Feet and inches represented as decimal. 5feet 2inch 5.02.
-        /// Inches less than 10 must have a preceding 0. 
+        /// Inches less than 10 must have a preceding 0.
         /// </param>
         /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the feet and inches in meters.</returns>
@@ -105,9 +105,11 @@ namespace _3DS_CivilSurveySuite.Core
             {
                 // 1. If either  0 <= (q - p) * r <= r * r or 0 <= (p - q) * s <= * s
                 // then the two lines are overlapping,
-                if (considerCollinearOverlapAsIntersect)
-                    if (0 <= (q - p) * r && (q - p) * r <= r * r || 0 <= (p - q) * s && (p - q) * s <= s * s)
-                        return true;
+                if (considerCollinearOverlapAsIntersect && (0 <= (q - p) * r
+                    && (q - p) * r <= r * r
+                    || 0 <= (p - q) * s
+                    && (p - q) * s <= s * s))
+                    return true;
 
                 // 2. If neither 0 <= (q - p) * r = r * r nor 0 <= (p - q) * s <= s * s
                 // then the two lines are collinear but disjoint.
@@ -167,7 +169,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="x">The first comparison number.</param>
         /// <param name="y">The second comparison number.</param>
         /// <returns><c>true</c> if the numbers are nearly equal, <c>false</c> otherwise.</returns>
-        public static bool NearlyEqual(double x, double y) 
+        public static bool NearlyEqual(double x, double y)
         {
             double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
             return Math.Abs(x - y) <= epsilon;
@@ -175,7 +177,7 @@ namespace _3DS_CivilSurveySuite.Core
 
         public static bool NearlyEqual(double x, double y, double tolerance)
         {
-            return !(x - y > tolerance);
+            return x - y < tolerance;
         }
 
         /// <summary>
@@ -192,7 +194,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <para>Returns <c>1</c> if the <c>pickedPoint</c> is to the left of the line.</para></returns>
         public static int IsLeft(Point startPoint, Point endPoint, Point pickedPoint)
         {
-            double side = (endPoint.X - startPoint.X) * (pickedPoint.Y - startPoint.Y) - 
+            double side = (endPoint.X - startPoint.X) * (pickedPoint.Y - startPoint.Y) -
                          (pickedPoint.X - startPoint.X) * (endPoint.Y - startPoint.Y);
 
             if (Math.Abs(side) < 1.0e-8)
@@ -229,7 +231,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <returns>Returns <see cref="Point"/> containing the delta as coordinates.</returns>
         public static Point DeltaPoint(Point firstPoint, Point secondPoint, int decimalPlaces = 4)
         {
-            return new Point(Math.Round(firstPoint.X - secondPoint.X, decimalPlaces), 
+            return new Point(Math.Round(firstPoint.X - secondPoint.X, decimalPlaces),
                              Math.Round(firstPoint.Y - secondPoint.Y, decimalPlaces),
                              Math.Round(firstPoint.Z - secondPoint.Z, decimalPlaces));
         }

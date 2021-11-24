@@ -15,10 +15,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             _docLock = docLock;
         }
 
-        protected override void Dispose(bool a1)
+        // ReSharper disable once InconsistentNaming
+        protected override void Dispose(bool A_0)
         {
-            base.Dispose(a1);
-            if (a1)
+            base.Dispose(A_0);
+            if (A_0)
             {
                 _docLock.Dispose();
             }

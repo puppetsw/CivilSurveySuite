@@ -200,8 +200,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private void FindReplace()
         {
             _cogoPointReplaceDuplicateService.FindCode = FindCode;
-            _cogoPointReplaceDuplicateService.ReplaceCode = ReplaceCode;
-            _cogoPointReplaceDuplicateService.DuplicateCode = DuplicateCode;
+            _cogoPointReplaceDuplicateService.ReplaceCodeText = ReplaceCode;
+            _cogoPointReplaceDuplicateService.DuplicateCodeText = DuplicateCode;
             _cogoPointReplaceDuplicateService.ShouldDuplicateCode = ShouldDuplicateCode;
             _cogoPointReplaceDuplicateService.ShouldOverwriteStyle = ShouldOverwriteStyle;
             _cogoPointReplaceDuplicateService.ShouldReplaceCode = ShouldReplaceCode;

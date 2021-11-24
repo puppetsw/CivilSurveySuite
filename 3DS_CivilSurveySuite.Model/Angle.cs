@@ -204,7 +204,7 @@ namespace _3DS_CivilSurveySuite.Model
         /// <returns>A double value that represents the current object.</returns>
         public double ToDouble()
         {
-            var bearing = Degrees + ((double) Minutes / 100) + ((double) Seconds / 10000);
+            double bearing = Degrees + ((double) Minutes / 100) + ((double) Seconds / 10000);
             return bearing;
         }
 
@@ -236,6 +236,14 @@ namespace _3DS_CivilSurveySuite.Model
             return new Angle { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
+        public static Angle Add(double bearing1, double bearing2, bool limit = false)
+        {
+            var angle1 = new Angle(bearing1);
+            var angle2 = new Angle(bearing2);
+
+            return Add(angle1, angle2, limit);
+        }
+
         public static Angle Subtract(Angle angle1, Angle angle2, bool limit = false)
         {
             int degrees = angle1.Degrees - angle2.Degrees;
@@ -264,14 +272,6 @@ namespace _3DS_CivilSurveySuite.Model
             return new Angle { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        public static Angle Add(double bearing1, double bearing2, bool limit = false)
-        {
-            var angle1 = new Angle(bearing1);
-            var angle2 = new Angle(bearing2);
-
-            return Add(angle1, angle2, limit);
-        }
-
         public static Angle Subtract(double bearing1, double bearing2, bool limit = false)
         {
             var angle1 = new Angle(bearing1);
@@ -294,9 +294,9 @@ namespace _3DS_CivilSurveySuite.Model
                    && (this.Seconds == other.Seconds);
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object obj)
         {
-            return other is Angle angle && Equals(angle);
+            return obj is Angle angle && Equals(angle);
         }
 
         // ReSharper disable NonReadonlyMemberInGetHashCode

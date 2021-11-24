@@ -36,7 +36,6 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var point = new Point(0, 0, 0);
 
-            //return $"X:{X},Y:{Y},Z:{Z}";
             var expectedString = "X:0,Y:0,Z:0";
 
             var result = point.ToString();

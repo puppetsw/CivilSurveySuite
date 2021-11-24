@@ -164,10 +164,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 }
             }
 
-            // Ignore for dragged state?
-            // if (labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value > maxWidth)
-            //     maxWidth = labelStyle.Properties.DraggedStateComponents.MaxTextWidth.Value;
-
             return Convert.ToInt32(maxWidth);
         }
     }

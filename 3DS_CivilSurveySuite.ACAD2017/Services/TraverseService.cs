@@ -138,6 +138,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             _graphics?.ClearGraphics();
             _graphics?.Dispose();
         }

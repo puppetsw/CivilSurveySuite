@@ -6,14 +6,6 @@ namespace _3DS_CivilSurveySuiteTests
     [TestClass]
     public class DescriptionKeyTests
     {
-
-        /*        private string _description;
-        private bool _draw2D;
-        private bool _draw3D;
-
-        private string _key;
-        private string _layer;*/
-
         [TestMethod]
         public void Property_Description_StoresCorrectly()
         {

@@ -95,13 +95,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             if (EditorUtils.IsType(firstLineResult.ObjectId, typeof(Line)))
             {
-                //line = firstLineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
                 line = tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead) as Line;
             }
 
             if (EditorUtils.IsType(firstLineResult.ObjectId, typeof(Polyline)))
             {
-                //var polyline = firstLineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
                 var polyline = tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead) as Polyline;
                 var segmentId = PolylineUtils.GetPolylineSegment(polyline, firstLineResult);
                 var segment = polyline.GetLineSegment2dAt(segmentId);
@@ -125,14 +123,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             if (lineResult.ObjectId.IsType<Line>())
             {
-                //line = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Line;
                 line = tr.GetObject(lineResult.ObjectId, OpenMode.ForRead) as Line;
                 endPoint = line.GetClosestEndPoint(lineResult.PickedPoint);
             }
 
             if (lineResult.ObjectId.IsType<Polyline>())
             {
-                //var polyline = lineResult.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
                 var polyline = tr.GetObject(lineResult.ObjectId, OpenMode.ForRead) as Polyline;
                 line = polyline.GetLineSegmentFromPolyline(lineResult.PickedPoint);
                 endPoint = line.GetClosestEndPoint(lineResult.PickedPoint);

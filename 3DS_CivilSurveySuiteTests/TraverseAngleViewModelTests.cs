@@ -338,7 +338,7 @@ namespace _3DS_CivilSurveySuiteTests
             Mock<ITraverseService> traverseService = new Mock<ITraverseService>();
             var vm = new TraverseAngleViewModel(traverseService.Object, null, null);
 
-            vm.DrawCommand.CanExecute(true);
+            Assert.IsTrue(vm.DrawCommand.CanExecute(true));
             vm.DrawCommand.Execute(null);
         }
 
@@ -349,7 +349,7 @@ namespace _3DS_CivilSurveySuiteTests
             var mockProc = new Mock<IProcessService>();
 
             var vm = new TraverseAngleViewModel(mockTrav.Object, mockProc.Object, null);
-            vm.ShowHelpCommand.CanExecute(true);
+            Assert.IsTrue(vm.ShowHelpCommand.CanExecute(true));
             vm.ShowHelpCommand.Execute(true);
         }
 
@@ -362,7 +362,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
-            vm.CloseWindowCommand.CanExecute(true);
+            Assert.IsTrue(vm.CloseWindowCommand.CanExecute(true));
             vm.CloseWindowCommand.Execute(null);
         }
 
@@ -374,7 +374,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
-            vm.SetBasePointCommand.CanExecute(true);
+            Assert.IsTrue(vm.SetBasePointCommand.CanExecute(true));
             vm.SetBasePointCommand.Execute(null);
         }
 
@@ -389,7 +389,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseAngles.Add(new TraverseAngleObject());
             vm.TraverseAngles.Add(new TraverseAngleObject());
 
-            vm.SetBasePointCommand.CanExecute(true);
+            Assert.IsTrue(vm.SetBasePointCommand.CanExecute(true));
             vm.SetBasePointCommand.Execute(null);
         }
 
@@ -403,7 +403,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, null);
 
-            vm.SelectLineCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectLineCommand.CanExecute(true));
             vm.SelectLineCommand.Execute(null);
 
             Assert.AreEqual(1, vm.TraverseAngles.Count);
@@ -418,7 +418,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseAngleViewModel(travServ.Object, procServ.Object, mesServ.Object);
 
-            vm.ZoomExtentsCommand.CanExecute(true);
+            Assert.IsTrue(vm.ZoomExtentsCommand.CanExecute(true));
             vm.ZoomExtentsCommand.Execute(null);
         }
     }

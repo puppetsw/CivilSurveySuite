@@ -262,7 +262,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseItems[0].Bearing = bearing;
 
             vm.SelectedTraverseItem = vm.TraverseItems[0];
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -285,7 +285,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseItems[0].Bearing = bearing;
 
             vm.SelectedTraverseItem = vm.TraverseItems[0];
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -308,7 +308,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseItems[0].Bearing = bearing;
 
             vm.SelectedTraverseItem = null;
-            
+
             vm.FlipBearingCommand.CanExecute(true);
             vm.FlipBearingCommand.Execute(null);
 
@@ -321,7 +321,7 @@ namespace _3DS_CivilSurveySuiteTests
             Mock<ITraverseService> traverseService = new Mock<ITraverseService>();
             var vm = new TraverseViewModel(traverseService.Object, null, null);
 
-            vm.DrawCommand.CanExecute(true);
+            Assert.IsTrue(vm.DrawCommand.CanExecute(true));
             vm.DrawCommand.Execute(null);
 
         }
@@ -333,7 +333,7 @@ namespace _3DS_CivilSurveySuiteTests
             var processService = new Mock<IProcessService>();
 
             var vm = new TraverseViewModel(traverseService.Object, processService.Object, null);
-            vm.ShowHelpCommand.CanExecute(true);
+            Assert.IsTrue(vm.ShowHelpCommand.CanExecute(true));
             vm.ShowHelpCommand.Execute(null);
         }
 
@@ -345,7 +345,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
-            vm.CloseWindowCommand.CanExecute(true);
+            Assert.IsTrue(vm.CloseWindowCommand.CanExecute(true));
             vm.CloseWindowCommand.Execute(null);
         }
 
@@ -357,7 +357,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
-            vm.SetBasePointCommand.CanExecute(true);
+            Assert.IsTrue(vm.SetBasePointCommand.CanExecute(true));
             vm.SetBasePointCommand.Execute(null);
         }
 
@@ -372,7 +372,7 @@ namespace _3DS_CivilSurveySuiteTests
             vm.TraverseItems.Add(new TraverseObject());
             vm.TraverseItems.Add(new TraverseObject());
 
-            vm.SetBasePointCommand.CanExecute(true);
+            Assert.IsTrue(vm.SetBasePointCommand.CanExecute(true));
             vm.SetBasePointCommand.Execute(null);
         }
 
@@ -383,10 +383,10 @@ namespace _3DS_CivilSurveySuiteTests
             var procServ = new Mock<IProcessService>();
 
             travServ.Setup(m => m.SelectLine()).Returns(new AngleDistance { Angle = new Angle(), Distance = 30 });
-            
+
             var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
-            vm.SelectLineCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectLineCommand.CanExecute(true));
             vm.SelectLineCommand.Execute(null);
 
             Assert.AreEqual(1, vm.TraverseItems.Count);
@@ -401,12 +401,8 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new TraverseViewModel(travServ.Object, procServ.Object, mesServ.Object);
 
-            vm.ZoomExtentsCommand.CanExecute(true);
+            Assert.IsTrue(vm.ZoomExtentsCommand.CanExecute(true));
             vm.ZoomExtentsCommand.Execute(null);
         }
-
-
-
-
     }
 }

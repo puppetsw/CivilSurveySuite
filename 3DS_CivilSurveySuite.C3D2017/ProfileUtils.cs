@@ -41,9 +41,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             using (var tr = AcadApp.StartTransaction())
             {
                 var alignment = AlignmentUtils.GetAlignmentByObjectId(tr, civilAlignment.ObjectId.ToObjectId());
-                //HACK: May be faster to get by name? I'll have to test.
-                //UNDONE: 22/9 getting by objectId is approximately 1 second faster.
-                //var alignment = AlignmentUtils.GetAlignmentByName(tr, civilAlignment.Name);
 
                 foreach (ObjectId objectId in alignment.GetProfileIds())
                 {

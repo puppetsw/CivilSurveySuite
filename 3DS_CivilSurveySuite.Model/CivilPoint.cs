@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.Model
     /// <summary>
     /// Abstraction class for Civil 3D's CogoPoints.
     /// </summary>
-    public class CivilPoint : INotifyPropertyChanged, IEquatable<CivilPoint>
+    public sealed class CivilPoint : INotifyPropertyChanged, IEquatable<CivilPoint>
     {
         private uint _pointNumber;
         private double _easting;
@@ -112,7 +112,7 @@ namespace _3DS_CivilSurveySuite.Model
         /// Raises this object's PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">The property that has a new value.</param>
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

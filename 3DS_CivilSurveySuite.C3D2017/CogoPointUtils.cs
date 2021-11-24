@@ -26,12 +26,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
             var cogoPointId = cogoPoints.Add(position, true);
 
-            //var descriptionFormat = "";
-
             EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: ");
-
-            //if (promptDescriptionFormat) //, bool promptDescriptionFormat = false
-            //    EditorUtils.GetString(out descriptionFormat, "\n3DS> Enter description format: ");
 
             var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForWrite) as CogoPoint;
 
@@ -39,7 +34,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 throw new InvalidOperationException("cogoPoint was null.");
 
             cogoPoint.RawDescription = rawDescription;
-            //cogoPoint.DescriptionFormat = descriptionFormat;
             cogoPoint.DowngradeOpen();
         }
 

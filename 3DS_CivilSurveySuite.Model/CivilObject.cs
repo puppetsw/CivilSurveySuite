@@ -59,13 +59,13 @@ namespace _3DS_CivilSurveySuite.Model
         /// <summary>
         /// Raised when a property on this object has a new value.
         /// </summary>
-        public virtual event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Raises this object's PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">The property that has a new value.</param>
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

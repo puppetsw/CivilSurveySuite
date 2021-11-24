@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var moveLabelService = new Mock<ICogoPointMoveLabelService>();
             var vm = new CogoPointMoveLabelViewModel(moveLabelService.Object);
-            vm.MoveCommand.CanExecute(true);
+            Assert.IsTrue(vm.MoveCommand.CanExecute(true));
             vm.MoveCommand.Execute(null);
         }
     }

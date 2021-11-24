@@ -87,7 +87,6 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var expectedString = "1-4,10-12";
             var list = new[] { "1", "2", "3", "test","4", "10", "11", "12" };
-            //var result = StringHelpers.RangeString(list);
             var result = StringHelpers.GetRangeString(list);
             Assert.AreEqual(expectedString, result);
         }

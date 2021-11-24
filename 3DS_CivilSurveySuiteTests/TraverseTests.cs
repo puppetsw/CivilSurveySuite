@@ -84,7 +84,6 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var expectedResult = new Angle() { Degrees = 54, Minutes = 20, Seconds = 0 };
             double testString = 54.20;
-            //Assert.AreEqual(expectedResult, ParseBearing(testString));
             Assert.AreEqual(expectedResult, Angle.Parse(testString));
         }
 

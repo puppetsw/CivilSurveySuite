@@ -39,8 +39,8 @@ namespace _3DS_CivilSurveySuiteTests
             var cpg1 = new CivilPointGroup();
             var cpg2 = new CivilPointGroup();
 
-
-            Assert.IsTrue(cpg1.Equals(cpg2) && cpg2.Equals(cpg1));
+            Assert.IsTrue(cpg1.Equals(cpg2));
+            Assert.IsTrue(cpg2.Equals(cpg1));
 
             Assert.IsTrue(cpg1.GetHashCode() == cpg2.GetHashCode());
 

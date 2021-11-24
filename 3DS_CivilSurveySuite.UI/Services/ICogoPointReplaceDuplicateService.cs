@@ -14,9 +14,9 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         int FoundCount{ get; set; }
 
-        string ReplaceCode { get; set; }
+        string ReplaceCodeText { get; set; }
 
-        string DuplicateCode { get; set; }
+        string DuplicateCodeText { get; set; }
 
         bool ShouldApplyDescriptionKey { get; set; }
 
@@ -37,12 +37,6 @@ namespace _3DS_CivilSurveySuite.UI.Services
         void Save();
 
         void ReplaceDuplicate();
-
-        [Obsolete("This method is obsolete. Use ReplaceDuplicate()")]
-        void ReplaceDuplicate(string findCode, string replaceCode, string duplicateCode, bool shouldReplaceCode,
-            bool shouldApplyDescriptionKey, bool shouldOverwriteStyle, bool shouldDuplicateCode,
-            bool shouldDuplicateApplyDescriptionKey, bool shouldDuplicateOverwriteStyle,
-            string replaceSymbol, string duplicateSymbol);
 
         void Find();
 

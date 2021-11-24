@@ -60,7 +60,7 @@ namespace _3DS_CivilSurveySuiteTests
             var vm = new SelectSurfaceViewModel(mock.Object);
             vm.SelectSurfaceCommand.CanExecute(true);
             vm.SelectSurfaceCommand.Execute(null);
-            
+
             Assert.AreEqual(selectableSurface, vm.SelectedSurface);
         }
 
@@ -77,7 +77,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new SelectSurfaceViewModel(mock.Object);
 
-            vm.SelectSurfaceCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectSurfaceCommand.CanExecute(true));
             vm.SelectSurfaceCommand.Execute(null);
         }
 
@@ -94,7 +94,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new SelectSurfaceViewModel(mock.Object);
 
-            vm.SelectSurfaceCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectSurfaceCommand.CanExecute(true));
             vm.SelectSurfaceCommand.Execute(null);
         }
 

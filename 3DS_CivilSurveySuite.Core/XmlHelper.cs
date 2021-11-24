@@ -55,9 +55,3 @@ namespace _3DS_CivilSurveySuite.Core
         }
     }
 }
-/*
- * // Write the list of salesman objects to file.
-WriteToXmlFile<Customer>("C:\TheGarage.txt", customer);
-
-// Read the list of salesman objects from the file back into a variable.
-Customer customer = ReadFromXmlFile<Customer>("C:\TheGarage.txt");*/

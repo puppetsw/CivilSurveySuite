@@ -37,7 +37,7 @@ namespace _3DS_CivilSurveySuite.UI
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute == null || _canExecute((T)parameter);
         }
     }
 
@@ -47,7 +47,7 @@ namespace _3DS_CivilSurveySuite.UI
         {
         }
 
-        public RelayCommand(Action execute, Func<bool> canExecute) : 
+        public RelayCommand(Action execute, Func<bool> canExecute) :
             base(param => execute(), param => canExecute())
         {
         }

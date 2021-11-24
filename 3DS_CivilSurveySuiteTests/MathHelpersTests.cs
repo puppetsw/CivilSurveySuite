@@ -323,7 +323,6 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vector = new Vector();
             Assert.AreEqual("X:NaN,Y:NaN", vector.ToString());
-            //Assert.AreEqual(new Vector(double.NaN, double.NaN), vector);
         }
 
         [TestMethod]
@@ -358,7 +357,6 @@ namespace _3DS_CivilSurveySuiteTests
             var expectedRadians = 1.570796326794897;
             var radians = MathHelpers.DecimalDegreesToRadians(dec);
 
-            //Assert.AreEqual(expectedRadians, radians);
             var checkEqualsRadians = MathHelpers.NearlyEqual(expectedRadians, radians);
             Assert.AreEqual(true, checkEqualsRadians);
 
@@ -366,7 +364,6 @@ namespace _3DS_CivilSurveySuiteTests
 
             var checkEquals = MathHelpers.NearlyEqual(expectedDecimalDegrees, convertedRadians);
 
-            //Assert.AreEqual(expectedDecimalDegrees, convertedRadians);
             Assert.AreEqual(true, checkEquals);
 
 

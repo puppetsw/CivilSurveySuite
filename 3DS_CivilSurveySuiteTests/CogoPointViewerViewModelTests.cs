@@ -33,7 +33,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             vm.SelectedItem = new CivilPoint();
 
-            vm.SelectCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectCommand.CanExecute(true));
             vm.SelectCommand.Execute(null);
         }
 
@@ -42,7 +42,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            vm.SelectionChangedCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectionChangedCommand.CanExecute(true));
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
 
             vm.CopyDescriptionFormatCommand.Execute(null);
@@ -53,7 +53,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            vm.CopyDescriptionFormatCommand.CanExecute(true);
+            Assert.IsTrue(vm.CopyDescriptionFormatCommand.CanExecute(true));
             vm.CopyDescriptionFormatCommand.Execute(null);
         }
 
@@ -62,7 +62,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            vm.SelectionChangedCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectionChangedCommand.CanExecute(true));
             vm.SelectionChangedCommand.Execute(vm.CogoPoints);
 
             vm.CopyRawDescriptionCommand.Execute(null);
@@ -73,7 +73,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            vm.CopyRawDescriptionCommand.CanExecute(true);
+            Assert.IsTrue(vm.CopyRawDescriptionCommand.CanExecute(true));
             vm.CopyRawDescriptionCommand.Execute(null);
         }
 
@@ -84,7 +84,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             vm.SelectedItem = new CivilPoint();
 
-            vm.UpdateCommand.CanExecute(true);
+            Assert.IsTrue(vm.UpdateCommand.CanExecute(true));
             vm.UpdateCommand.Execute(null);
         }
 
@@ -95,7 +95,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             vm.SelectedItem = new CivilPoint();
 
-            vm.ZoomToCommand.CanExecute(true);
+            Assert.IsTrue(vm.ZoomToCommand.CanExecute(true));
             vm.ZoomToCommand.Execute(null);
         }
 
@@ -115,7 +115,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            vm.SelectionChangedCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectionChangedCommand.CanExecute(true));
             vm.SelectionChangedCommand.Execute(null);
         }
 

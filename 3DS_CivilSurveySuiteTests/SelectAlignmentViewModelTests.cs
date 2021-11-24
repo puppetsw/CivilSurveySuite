@@ -65,7 +65,7 @@ namespace _3DS_CivilSurveySuiteTests
             var vm = new SelectAlignmentViewModel(mock.Object);
             vm.SelectAlignmentCommand.CanExecute(true);
             vm.SelectAlignmentCommand.Execute(null);
-            
+
             Assert.AreEqual(selectableAlignment, vm.SelectedAlignment);
         }
 
@@ -82,7 +82,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new SelectAlignmentViewModel(mock.Object);
 
-            vm.SelectAlignmentCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectAlignmentCommand.CanExecute(true));
             vm.SelectAlignmentCommand.Execute(null);
         }
 
@@ -99,7 +99,7 @@ namespace _3DS_CivilSurveySuiteTests
 
             var vm = new SelectAlignmentViewModel(mock.Object);
 
-            vm.SelectAlignmentCommand.CanExecute(true);
+            Assert.IsTrue(vm.SelectAlignmentCommand.CanExecute(true));
             vm.SelectAlignmentCommand.Execute(null);
         }
 

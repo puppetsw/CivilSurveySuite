@@ -19,11 +19,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Quickly add/remove points by description match, elevation range, number range, etc.
         /// </summary>
-        static void AddPointToPointGroupBy()
-        { }
+        public static void AddPointToPointGroupBy()
+        {
+            throw new NotSupportedException();
+        }
 
-        static void RemovePointFromPointGroupBy()
-        { }
+        public static void RemovePointFromPointGroupBy()
+        {
+            throw new NotSupportedException();
+        }
 
 
         public static CivilPointGroup SelectCivilPointGroup()

@@ -2,7 +2,8 @@
 {
     public struct AngleDistance
     {
-        public Angle Angle;
-        public double Distance;
+        public Angle Angle { get; set;  }
+
+        public double Distance { get; set; }
     }
 }

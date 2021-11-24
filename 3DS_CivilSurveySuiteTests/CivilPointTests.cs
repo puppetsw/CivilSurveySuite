@@ -89,8 +89,8 @@ namespace _3DS_CivilSurveySuiteTests
             var civilPoint1 = new CivilPoint() { ObjectId = "Test" } ;
             var civilPoint2 = new CivilPoint() { ObjectId = "Test" } ;
 
-
-            Assert.IsTrue(civilPoint1.Equals(civilPoint2) && civilPoint2.Equals(civilPoint1));
+            Assert.IsTrue(civilPoint1.Equals(civilPoint2));
+            Assert.IsTrue(civilPoint2.Equals(civilPoint1));
 
             Assert.IsTrue(civilPoint1.GetHashCode() == civilPoint2.GetHashCode());
 

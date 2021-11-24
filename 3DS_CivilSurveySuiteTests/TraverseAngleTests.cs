@@ -111,8 +111,6 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(-109.9599, 77.1108)
             };
 
-            //CollectionAssert.AreEqual(expectedList, newPointList);
-
             Assert.IsTrue(MathHelpers.NearlyEqual(expectedList[0].X, newPointList[0].X, 0.0001));
             Assert.IsTrue(MathHelpers.NearlyEqual(expectedList[0].Y, newPointList[0].Y, 0.0001));
 
@@ -133,9 +131,6 @@ namespace _3DS_CivilSurveySuiteTests
                 new TraverseAngleObject { Distance = 11.51, Bearing = 98.07, },
                 new TraverseAngleObject { Distance = 38.15, Bearing = 176.23, RotationDirection = AngleRotationDirection.Positive, },
                 new TraverseAngleObject { Distance = 279.55, Bearing = 95.29 },
-                //new TraverseAngleItem { Distance = 212.35, InternalAngle = 84 },
-                //new TraverseAngleItem { Distance = 66.22, AdjacentAngle = 66.11 },
-                //new TraverseAngleItem { Distance = 105.66, InternalAngle = 168.58 }
             };
 
             var newPointList = PointHelpers.TraverseObjectsToCoordinates(angleList, new Point(0, 0));
@@ -149,8 +144,6 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(-111.8904, 126.7156),
                 new Point(164.5528, 168.2770)
             };
-
-            //CollectionAssert.AreEqual(expectedList, newPointList);
 
             for (int i = 0; i < expectedList.Count - 1; i++)
             {
@@ -180,8 +173,6 @@ namespace _3DS_CivilSurveySuiteTests
                 new Point(22.6128, -2.6289),
                 new Point(13.7849, -1.2175)
             };
-
-            //CollectionAssert.AreEqual(expectedList, newPointList);
 
             for (int i = 0; i < expectedList.Count - 1; i++)
             {

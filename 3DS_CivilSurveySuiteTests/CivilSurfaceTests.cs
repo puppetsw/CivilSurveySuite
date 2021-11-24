@@ -40,9 +40,8 @@ namespace _3DS_CivilSurveySuiteTests
             var cs1 = new CivilSurface();
             var cs2 = new CivilSurface();
 
-
-            Assert.IsTrue(cs1.Equals(cs2) && cs2.Equals(cs1));
-
+            Assert.IsTrue(cs1.Equals(cs2));
+            Assert.IsTrue(cs2.Equals(cs1));
             Assert.IsTrue(cs1.GetHashCode() == cs2.GetHashCode());
 
         }

@@ -70,7 +70,7 @@ namespace _3DS_CivilSurveySuiteTests
             reportService.Setup(m => m.SelectAlignment()).Returns(() => null);
             var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
 
-            viewModel.SelectAlignmentCommand.CanExecute(true);
+            Assert.IsTrue(viewModel.SelectAlignmentCommand.CanExecute(true));
             viewModel.SelectAlignmentCommand.Execute(null);
         }
 
@@ -90,7 +90,7 @@ namespace _3DS_CivilSurveySuiteTests
             reportService.Setup(m => m.SelectSurface()).Returns(() => null);
             var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
 
-            viewModel.SelectSurfaceCommand.CanExecute(true);
+            Assert.IsTrue(viewModel.SelectSurfaceCommand.CanExecute(true));
             viewModel.SelectSurfaceCommand.Execute(null);
         }
 
@@ -110,7 +110,7 @@ namespace _3DS_CivilSurveySuiteTests
             reportService.Setup(m => m.SelectPointGroup()).Returns(() => null);
             var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
 
-            viewModel.SelectPointGroupCommand.CanExecute(true);
+            Assert.IsTrue(viewModel.SelectPointGroupCommand.CanExecute(true));
             viewModel.SelectPointGroupCommand.Execute(null);
         }
 
@@ -202,18 +202,8 @@ namespace _3DS_CivilSurveySuiteTests
         [TestMethod]
         public void CreateReportCommand_Execute()
         {
-            _viewModel.CreateReportCommand.CanExecute(true);
+            Assert.IsTrue(_viewModel.CreateReportCommand.CanExecute(true));
             _viewModel.CreateReportCommand.Execute(null);
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

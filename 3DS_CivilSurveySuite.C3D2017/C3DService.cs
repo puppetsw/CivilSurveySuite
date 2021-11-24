@@ -13,7 +13,6 @@ using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.Civil.DatabaseServices;
 using SimpleInjector;
-//using SimpleInjector.Diagnostics;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -62,7 +61,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<CogoPointReplaceDuplicateViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
-            //var debug = Analyzer.Analyze(Container);
         }
 
         [Obsolete("This method is obsolete. Use ShowDialog<TView>() instead.", false)]
