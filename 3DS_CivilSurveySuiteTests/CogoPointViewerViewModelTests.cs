@@ -53,7 +53,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            Assert.IsTrue(vm.CopyDescriptionFormatCommand.CanExecute(true));
+            Assert.IsFalse(vm.CopyDescriptionFormatCommand.CanExecute(true));
             vm.CopyDescriptionFormatCommand.Execute(null);
         }
 
@@ -73,7 +73,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var vm = new CogoPointEditorViewModel(_mock.Object);
 
-            Assert.IsTrue(vm.CopyRawDescriptionCommand.CanExecute(true));
+            Assert.IsFalse(vm.CopyRawDescriptionCommand.CanExecute(true));
             vm.CopyRawDescriptionCommand.Execute(null);
         }
 
