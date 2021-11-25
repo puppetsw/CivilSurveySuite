@@ -65,13 +65,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Loads a partial cui file.
         /// </summary>
         /// <param name="fileName">Path to cui file.</param>
-        /// <param name="civilCheck"></param>
-        public static void LoadCuiFile(string fileName, bool civilCheck = false)
+        public static void LoadCuiFile(string fileName)
         {
-            if (IsCivil3DRunning() && civilCheck)
-                return;
-
-            // We aren't in AutoCAD, so we can load the normal CUI file.
             // Is Cui file already loaded?
             if (IsCuiFileLoaded(fileName))
                 return;

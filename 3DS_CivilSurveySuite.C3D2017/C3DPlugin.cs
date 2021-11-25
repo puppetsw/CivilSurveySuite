@@ -17,7 +17,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             AcadApp.Editor.WriteMessage($"\n3DS> Loading Civil Survey Suite for Civil 3D... {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
             C3DService.Register();
-            AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+
+            if (AcadApp.IsCivil3DRunning())
+                AcadApp.LoadCuiFile(_3DS_CUI_FILE);
         }
 
         public void Terminate()
