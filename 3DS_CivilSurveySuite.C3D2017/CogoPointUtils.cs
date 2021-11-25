@@ -11,7 +11,6 @@ using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
@@ -104,19 +103,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void RawDescriptionToUpper()
         {
-            var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
-
-            if (pso.Status != PromptStatus.OK)
+            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cogoPointId, "\n3DS> Select points: ", "\n3DS> Remove points: "))
                 return;
 
-            using (Transaction tr = AcadApp.StartTransaction())
+            using (var tr = AcadApp.StartTransaction())
             {
-                foreach (ObjectId objectId in pso.Value.GetObjectIds())
-                {
-                    CogoPoint pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
-                    pt.RawDescription = pt.RawDescription.ToUpper();
-                    pt.DowngradeOpen();
-                }
+                var pt = (CogoPoint)cogoPointId.GetObject(OpenMode.ForWrite);
+                pt.RawDescription = pt.RawDescription.ToUpper();
+                pt.DowngradeOpen();
 
                 tr.Commit();
             }
@@ -127,19 +121,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void FullDescriptionToUpper()
         {
-            var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
-
-            if (pso.Status != PromptStatus.OK)
+            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cogoPointId, "\n3DS> Select points: ", "\n3DS> Remove points: "))
                 return;
 
-            using (Transaction tr = AcadApp.StartTransaction())
+            using (var tr = AcadApp.StartTransaction())
             {
-                foreach (ObjectId objectId in pso.Value.GetObjectIds())
-                {
-                    CogoPoint pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
-                    pt.DescriptionFormat = pt.DescriptionFormat.ToUpper();
-                    pt.DowngradeOpen();
-                }
+                var pt = (CogoPoint)cogoPointId.GetObject(OpenMode.ForWrite);
+                pt.DescriptionFormat = pt.DescriptionFormat.ToUpper();
+                pt.DowngradeOpen();
 
                 tr.Commit();
             }
@@ -150,18 +139,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void LabelRotateMatch()
         {
-            var pso = EditorUtils.GetEntities<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ");
-
-            if (pso.Status != PromptStatus.OK)
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds,
+                "\n3DS> Select points: ", "\n3DS> Remove points: "))
                 return;
 
-            var perLines = EditorUtils.GetEntity(new[] { typeof(Line), typeof(Polyline), typeof(Polyline2d), typeof(Polyline3d) }, "\n3DS> Select line or polyline.");
-
-            if (perLines.Status != PromptStatus.OK)
+            if (!EditorUtils.GetEntity(out var perId, out var pickedPoint,
+                new[]
+                {
+                    typeof(Line),
+                    typeof(Polyline),
+                    typeof(Polyline2d),
+                    typeof(Polyline3d)
+                }, "\n3DS> Select line or polyline."))
                 return;
 
-            string lineType = perLines.ObjectId.ObjectClass.DxfName;
-            using (Transaction tr = AcadApp.StartTransaction())
+            var lineType = perId.ObjectClass.DxfName;
+            using (var tr = AcadApp.StartTransaction())
             {
                 double angle = 0;
 
@@ -169,22 +162,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     case DxfNames.LWPOLYLINE:
                     case DxfNames.POLYLINE:
-                        var poly = perLines.ObjectId.GetObject(OpenMode.ForRead) as Polyline;
+                        var poly = perId.GetObject(OpenMode.ForRead) as Polyline;
                         if (poly != null)
                         {
-                            angle = PolylineUtils.GetPolylineSegmentAngle(poly, perLines.PickedPoint);
+                            angle = PolylineUtils.GetPolylineSegmentAngle(poly, pickedPoint);
                             break;
                         }
 
-                        var poly3d = perLines.ObjectId.GetObject(OpenMode.ForRead) as Polyline3d;
+                        var poly3d = perId.GetObject(OpenMode.ForRead) as Polyline3d;
                         if (poly3d != null)
                         {
-                            angle = PolylineUtils.GetPolyline3dSegmentAngle(poly3d, perLines.PickedPoint);
+                            angle = PolylineUtils.GetPolyline3dSegmentAngle(poly3d, pickedPoint);
                         }
 
                         break;
                     case DxfNames.LINE:
-                        var line = (Line) perLines.ObjectId.GetObject(OpenMode.ForRead);
+                        var line = (Line) perId.GetObject(OpenMode.ForRead);
 
                         // Check if the points of the line form and ordinary angle.
                         if (MathHelpers.IsOrdinaryAngle(line.StartPoint.ToPoint(), line.EndPoint.ToPoint()))
@@ -204,11 +197,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 AcadApp.Editor.WriteMessage("\n3DS> Polyline segment angle (radians): " + angle);
 
-                foreach (ObjectId id in pso.Value.GetObjectIds())
+                foreach (ObjectId id in objectIds)
                 {
                     var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
                     var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
-                    double textAngle = LabelUtils.GetFirstComponentAngle(style);
+                    var textAngle = LabelUtils.GetFirstComponentAngle(style);
 
                     AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
                     AcadApp.Editor.WriteMessage($"\n3DS> Rotating label to {angle} to match polyline segment");
@@ -297,16 +290,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     throw new InvalidOperationException("baseCogoPoint was null.");
 
                 var labelStyle = tr.GetObject(baseCogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
-                double labelHeight = LabelUtils.GetHeight(labelStyle);
+                var labelHeight = LabelUtils.GetHeight(labelStyle);
 
                 //add option to use the cogoPoint rotation rather than the component rotation?
                 //or ability to type the rotation in.
-                double textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
+                var textAngle = LabelUtils.GetFirstComponentAngle(labelStyle);
                 var angle = AngleHelpers.RadiansToAngle(textAngle).ToClockwise();
 
                 var startLocation = baseCogoPoint.Location;
-                double dX = baseCogoPoint.Location.X - baseCogoPoint.LabelLocation.X;
-                double dY = baseCogoPoint.Location.Y - baseCogoPoint.LabelLocation.Y;
+                var dX = baseCogoPoint.Location.X - baseCogoPoint.LabelLocation.X;
+                var dY = baseCogoPoint.Location.Y - baseCogoPoint.LabelLocation.Y;
 
                 while (true)
                 {
@@ -340,9 +333,89 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+        /// <summary>
+        /// Matches selected <see cref="CogoPoint"/>. MarkerRotation to the selected line, polyline or 3d polyline.
+        /// </summary>
         public static void MarkerRotateMatch()
         {
-            // TODO
+            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds,
+                "\n3DS> Select points: ", "\n3DS> Remove points: "))
+                return;
+
+            if (!EditorUtils.GetEntity(out var perId, out var pickedPoint,
+                new[]
+                {
+                    typeof(Line),
+                    typeof(Polyline),
+                    typeof(Polyline2d),
+                    typeof(Polyline3d)
+                }, "\n3DS> Select line or polyline."))
+                return;
+
+            var lineType = perId.ObjectClass.DxfName;
+            using (var tr = AcadApp.StartTransaction())
+            {
+                double angle = 0;
+
+                switch (lineType)
+                {
+                    case DxfNames.LWPOLYLINE:
+                    case DxfNames.POLYLINE:
+                        var poly = perId.GetObject(OpenMode.ForRead) as Polyline;
+                        if (poly != null)
+                        {
+                            angle = PolylineUtils.GetPolylineSegmentAngle(poly, pickedPoint);
+                            break;
+                        }
+
+                        var poly3d = perId.GetObject(OpenMode.ForRead) as Polyline3d;
+                        if (poly3d != null)
+                        {
+                            angle = PolylineUtils.GetPolyline3dSegmentAngle(poly3d, pickedPoint);
+                        }
+
+                        break;
+                    case DxfNames.LINE:
+                        var line = (Line)perId.GetObject(OpenMode.ForRead);
+
+                        // Check if the points of the line form and ordinary angle.
+                        if (MathHelpers.IsOrdinaryAngle(line.StartPoint.ToPoint(), line.EndPoint.ToPoint()))
+                        {
+                            angle = line.Angle;
+                        }
+                        else
+                        {
+                            // if it isn't an ordinary angle, we flip it.
+                            // because we don't really care if the radians are in clockwise or not
+                            // we can just flip the angle without it being in the correct system.
+                            angle = AngleHelpers.RadiansToAngle(line.Angle).Flip().ToRadians();
+                        }
+
+                        break;
+                }
+
+                AcadApp.Editor.WriteMessage("\n3DS> Polyline segment angle (radians): " + angle);
+
+                foreach (ObjectId id in objectIds)
+                {
+                    var pt = (CogoPoint)id.GetObject(OpenMode.ForRead);
+                    var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                    var textAngle = LabelUtils.GetFirstComponentAngle(style);
+
+                    AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
+                    AcadApp.Editor.WriteMessage($"\n3DS> Rotating label to {angle} to match polyline segment");
+
+                    pt.UpgradeOpen();
+
+                    pt.MarkerRotation = 0;
+                    pt.MarkerRotation -= textAngle;
+                    pt.MarkerRotation += angle;
+
+                    pt.DowngradeOpen();
+                }
+
+                tr.Commit();
+            }
         }
 
         [Obsolete("This method is obsolete. Use the ReplaceDuplicateService implementation.")]

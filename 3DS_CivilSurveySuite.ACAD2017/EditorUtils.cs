@@ -330,7 +330,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>true</c> if successfully got a selection, <c>false</c> otherwise.</returns>
         public static bool GetSelectionOfType<T>(out ObjectIdCollection objectIds, string addMessage, string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
         {
-            RXClass entityType = RXObject.GetClass(typeof(T));
+            var entityType = RXObject.GetClass(typeof(T));
             TypedValue[] typedValues = { new TypedValue((int)DxfCode.Start, entityType.DxfName) };
             return GetSelection(out objectIds, typedValues, addMessage, removeMessage, out keyword, keywords, defaultKeyword);
         }
@@ -338,8 +338,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static bool GetSelectionOfType<T1, T2>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
             where T1 : Entity where T2 : Entity
         {
-            RXClass entityType1 = RXObject.GetClass(typeof(T1));
-            RXClass entityType2 = RXObject.GetClass(typeof(T2));
+            var entityType1 = RXObject.GetClass(typeof(T1));
+            var entityType2 = RXObject.GetClass(typeof(T2));
 
             var dxfNames = $"{entityType1.DxfName},{entityType2.DxfName}";
 
@@ -354,9 +354,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static bool GetSelectionOfType<T1, T2, T3>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
             where T1 : Entity where T2 : Entity where T3 : Entity
         {
-            RXClass entityType1 = RXObject.GetClass(typeof(T1));
-            RXClass entityType2 = RXObject.GetClass(typeof(T2));
-            RXClass entityType3 = RXObject.GetClass(typeof(T3));
+            var entityType1 = RXObject.GetClass(typeof(T1));
+            var entityType2 = RXObject.GetClass(typeof(T2));
+            var entityType3 = RXObject.GetClass(typeof(T3));
 
             var dxfNames = $"{entityType1.DxfName},{entityType2.DxfName},{entityType3.DxfName}";
 
@@ -396,6 +396,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
+        public static bool GetEntityOfType<T>(out ObjectId objectId, out Point3d pickedPoint, string addMessage, string removeMessage = "", bool exactMatch = false)
+        {
+            var peo = new PromptEntityOptions(addMessage);
+            peo.SetRejectMessage(removeMessage);
+
+            objectId = ObjectId.Null;
+            pickedPoint = Point3d.Origin;
+
+            peo.AddAllowedClass(typeof(T), exactMatch);
+
+            var entity = AcadApp.Editor.GetEntity(peo);
+
+            if (entity.Status != PromptStatus.OK)
+                return false;
+
+            pickedPoint = entity.PickedPoint;
+            objectId = entity.ObjectId;
+            return true;
+        }
+
         /// <summary>
         /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
         /// </summary>
@@ -414,7 +434,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             foreach (Type type in allowedClasses)
                 peo.AddAllowedClass(type, true);
 
-            PromptEntityResult entity = AcadApp.Editor.GetEntity(peo);
+            var entity = AcadApp.Editor.GetEntity(peo);
 
             if (entity.Status != PromptStatus.OK)
                 return false;
@@ -437,7 +457,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return AcadApp.Editor.GetEntity(peo);
         }
 
-        [Obsolete("This method is obsolete. Use GetEntityOfType<T>(ObjectId, String, String)", false)]
+        /// <summary>
+        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
+        /// </summary>
+        /// <param name="objectId"></param>
+        /// <param name="pickedPoint"></param>
+        /// <param name="allowedClasses"></param>
+        /// <param name="addMessage"></param>
+        /// <param name="removeMessage"></param>
+        /// <returns></returns>
         public static bool GetEntity(out ObjectId objectId, out Point3d pickedPoint, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
         {
             var peo = new PromptEntityOptions(addMessage);
@@ -446,7 +474,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             objectId = ObjectId.Null;
             pickedPoint = Point3d.Origin;
 
-            foreach (Type type in allowedClasses)
+            foreach (var type in allowedClasses)
                 peo.AddAllowedClass(type, true);
 
             var entity = AcadApp.Editor.GetEntity(peo);

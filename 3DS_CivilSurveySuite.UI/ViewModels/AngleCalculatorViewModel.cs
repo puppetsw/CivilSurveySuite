@@ -46,14 +46,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void DigitButtonPress(string button)
         {
-            if (_clearAll)
-            {
-                FullExpression = "";
-                Display = "";
-                _lastOperation = "";
-                _lastValue = "0";
-                _clearAll = false;
-            }
+            Reset();
 
             switch (button)
             {
@@ -61,21 +54,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                     Display = "0";
                     break;
                 case "Del":
-                    if (Display.Length > 0)
-                        Display = Display.Remove(Display.Length - 1, 1);
-
-                    if (Display.Length == 0)
-                        Display = "0";
+                    DeleteButton();
                     break;
                 case ".":
-                    if (Display == "0" || _clearDisplay)
-                    {
-                        Display = "0.";
-                        _clearDisplay = false;
-                    }
-
-                    if (!Display.Contains("."))
-                        Display += ".";
+                    DecimalButton();
                     break;
                 default:
                     if (Display == "0" || _clearDisplay)
@@ -84,9 +66,44 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                         _clearDisplay = false;
                     }
                     else
+                    {
                         Display += button;
+                    }
                     break;
             }
+        }
+
+        private void DeleteButton()
+        {
+            if (Display.Length > 0)
+                Display = Display.Remove(Display.Length - 1, 1);
+
+            if (Display.Length == 0)
+                Display = "0";
+        }
+
+        private void DecimalButton()
+        {
+            if (Display == "0" || _clearDisplay)
+            {
+                Display = "0.";
+                _clearDisplay = false;
+            }
+
+            if (!Display.Contains("."))
+                Display += ".";
+        }
+
+        private void Reset()
+        {
+            if (!_clearAll)
+                return;
+
+            FullExpression = "";
+            Display = "";
+            _lastOperation = "";
+            _lastValue = "0";
+            _clearAll = false;
         }
 
         private void OperationButtonPress(string operation)

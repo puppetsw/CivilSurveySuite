@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using System.Collections.Generic;
 
 namespace _3DS_CivilSurveySuite.UI.Services

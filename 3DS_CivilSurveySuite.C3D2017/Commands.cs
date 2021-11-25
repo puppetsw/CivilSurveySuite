@@ -90,12 +90,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DService.ShowDialog<CogoPointMoveLabelView>();
         }
 
-        [CommandMethod("3DS", "_3DSCptTrunkAtTrees", CommandFlags.Modal)]
-        public static void CptTrunkAtTrees()
-        {
-            CogoPointUtils.Create_Trunks_At_Trees();
-        }
-
         [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal)]
         public static void RawDesUpper()
         {
@@ -112,6 +106,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static void CptMatchLblRot()
         {
             CogoPointUtils.LabelRotateMatch();
+        }
+
+        [CommandMethod("3DS", "_3DSCptMatchMrkRot", CommandFlags.Modal)]
+        public static void CptMatchMrkRot()
+        {
+            CogoPointUtils.MarkerRotateMatch();
         }
 
         [CommandMethod("3DS", "_3DSZoomToCpt", CommandFlags.Modal)]

@@ -9,7 +9,6 @@ using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Services;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
-using Autodesk.Civil.DatabaseServices.Styles;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services

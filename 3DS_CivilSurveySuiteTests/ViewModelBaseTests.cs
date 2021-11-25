@@ -1,5 +1,4 @@
-﻿using System;
-using _3DS_CivilSurveySuite.UI.ViewModels;
+﻿using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace _3DS_CivilSurveySuiteTests
