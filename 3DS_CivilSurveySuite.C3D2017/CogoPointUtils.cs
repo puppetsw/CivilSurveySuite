@@ -516,6 +516,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+        /// <summary>
+        /// Moves a CogoPoint to a new location.
+        /// </summary>
+        /// <param name="deltaX">The X amount to move.</param>
+        /// <param name="deltaY">The Y amount to move.</param>
         public static void Move_CogoPoint_Labels(double deltaX, double deltaY)
         {
             if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
@@ -541,6 +546,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.Regen();
         }
 
+        /// <summary>
+        /// Convert a <see cref="CogoPoint"/> to a <see cref="CivilPoint"/>.
+        /// </summary>
+        /// <param name="cogoPoint">The <see cref="CogoPoint"/> to convert.</param>
+        /// <returns>A <see cref="CivilPoint"/> representing the <see cref="CogoPoint"/>.</returns>
         public static CivilPoint ToCivilPoint(this CogoPoint cogoPoint)
         {
             return new CivilPoint
@@ -702,6 +712,36 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 tr.Commit();
             }
+        }
+
+        /// <summary>
+        /// Converts a string into a <see cref="UDPString"/>.
+        /// </summary>
+        /// <param name="udpName">The name of the UDPString</param>
+        /// <returns>A <see cref="UDPString"/> if the <c>udpName</c> was a valid name.</returns>
+        public static UDPString GetUDP(string udpName)
+        {
+            foreach (var udp in C3DApp.ActiveDocument.PointUDPs)
+            {
+                if (udp.Name == udpName)
+                    return (UDPString)udp;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets a list of all the UDP names in the active drawing.
+        /// </summary>
+        /// <returns>A IEnumerable of UDP names.</returns>
+        public static IEnumerable<string> GetUDPNames()
+        {
+            var list = new List<string>();
+            foreach (var udp in C3DApp.ActiveDocument.PointUDPs)
+            {
+                list.Add(udp.Name);
+            }
+            return list;
         }
     }
 }

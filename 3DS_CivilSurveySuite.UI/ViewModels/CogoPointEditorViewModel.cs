@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using _3DS_CivilSurveySuite.Model;
@@ -23,21 +24,37 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private CivilPoint _selectedCivilPoint;
         private string _filterText;
 
-        public ObservableCollection<CivilPoint> CogoPoints { get; }
+        public ObservableCollection<CivilPoint> CogoPoints
+        {
+            [DebuggerStepThrough]
+            get;
+        }
 
         public CivilPoint SelectedItem
         {
+            [DebuggerStepThrough]
             get => _selectedCivilPoint;
+            [DebuggerStepThrough]
             set => SetProperty(ref _selectedCivilPoint, value);
         }
 
-        public ObservableCollection<CivilPoint> SelectedItems { get; private set; }
+        public ObservableCollection<CivilPoint> SelectedItems
+        {
+            [DebuggerStepThrough]
+            get; private set;
+        }
 
-        public ICollectionView ItemsView => CollectionViewSource.GetDefaultView(CogoPoints);
+        public ICollectionView ItemsView
+        {
+            [DebuggerStepThrough]
+            get => CollectionViewSource.GetDefaultView(CogoPoints);
+        }
 
         public string FilterText
         {
+            [DebuggerStepThrough]
             get => _filterText;
+            [DebuggerStepThrough]
             set
             {
                 _filterText = value;
@@ -46,7 +63,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public bool MultipleSelected => SelectedItems != null && SelectedItems.Count > 0;
+        public bool MultipleSelected
+        {
+            [DebuggerStepThrough]
+            get => SelectedItems != null && SelectedItems.Count > 0;
+        }
 
         //TODO: Add option to export filtered list of points?
         //TODO: Add more complex filtering options for easting, northing, height?
@@ -98,7 +119,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void CopyRawDescription()
         {
-            if (SelectedItems == null) 
+            if (SelectedItems == null)
                 return;
 
             _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.RawDescription), SelectedItems[0].RawDescription);
@@ -106,7 +127,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void CopyDescriptionFormat()
         {
-            if (SelectedItems == null) 
+            if (SelectedItems == null)
                 return;
 
             _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.DescriptionFormat), SelectedItems[0].DescriptionFormat);

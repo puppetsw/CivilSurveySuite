@@ -8,6 +8,7 @@ using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -218,14 +219,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
         public static void Test()
         {
-            if (!EditorUtils.GetEntityOfType<DBText>(out var textId, "\nSelect Text", false, new []{ "Settings", "Other" }, out var selectedKeyword, "Other"))
+            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cgId, ""))
+            {
                 return;
+            }
 
-            if (selectedKeyword == "Other")
-                AcadApp.WriteMessage("\nOther was selected");
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint = (CogoPoint)tr.GetObject(cgId, OpenMode.ForRead);
 
-            if (selectedKeyword == "Settings")
-                AcadApp.WriteMessage("\nSettings was selected");
+                var udp = CogoPointUtils.GetUDP("PointId");
+                AcadApp.Editor.WriteMessage($"\n3DS> UDP: {cogoPoint.GetUDPValue(udp)}");
+
+                tr.Commit();
+            }
+
+
 
         }
     }
