@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
+        xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
         mc:Ignorable="d"
-        Title="Select Alignment" Height="180" Width="280"  MinHeight="180" MaxHeight="180" MinWidth="280" 
+        Title="Select Alignment" Height="180" Width="280"  MinHeight="180" MaxHeight="180" MinWidth="280"
         ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
-        Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico">
+        Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
+        d:DataContext="{d:DesignInstance vm:SelectAlignmentViewModel}"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -46,7 +48,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        
+
         <Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Command="{Binding SelectAlignmentCommand}">
             <Image Source="{StaticResource SelectObjectIcon}"></Image>
         </Button>

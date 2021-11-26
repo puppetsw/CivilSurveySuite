@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
+        xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
         mc:Ignorable="d"
         Title="CogoPoint Surface Report" Height="450" Width="800" ResizeMode="CanResizeWithGrip"
-        d:DataContext="{d:DesignData }">
+        d:DataContext="{d:DesignInstance vm:CogoPointSurfaceReportViewModel}">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -132,7 +132,7 @@
                         <Button Width="80" Height="23" Margin="2" Content="Cancel" Click="BtnCancel_Click"/>
                         <Button Width="80" Height="23" Margin="2" Content="Help"/>
                     </StackPanel>
-                    
+
                 </DockPanel>
 
             </Grid>
@@ -150,7 +150,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                
+
 
 
             </Grid>

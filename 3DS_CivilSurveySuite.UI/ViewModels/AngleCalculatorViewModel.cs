@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Diagnostics;
 using System.Globalization;
 using _3DS_CivilSurveySuite.Model;
 
@@ -24,17 +25,21 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public string Display
         {
+            [DebuggerStepThrough]
             get => _display;
+            [DebuggerStepThrough]
             set => SetProperty(ref _display, value);
         }
 
         public string FullExpression
         {
+            [DebuggerStepThrough]
             get => _fullExpression;
+            [DebuggerStepThrough]
             set => SetProperty(ref _fullExpression, value);
         }
 
-        public RelayCommand<string> DigitButtonPressCommand => new RelayCommand<string>(DigitButtonPress);
+        public RelayCommand<string> DigitButtonPressCommand  => new RelayCommand<string>(DigitButtonPress);
 
         public RelayCommand<string> OperationButtonPressCommand => new RelayCommand<string>(OperationButtonPress);
 

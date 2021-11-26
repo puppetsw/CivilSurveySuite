@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
+        xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
         mc:Ignorable="d"
         Title="Select Point Group" Height="180" Width="280" WindowStartupLocation="CenterScreen" MinHeight="180" MaxHeight="180" MinWidth="280" ResizeMode="CanResizeWithGrip"
         Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
-        >
+        d:DataContext="{d:DesignInstance vm:SelectPointGroupViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -29,7 +29,7 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="CmbPointGroup" ItemsSource="{Binding PointGroups}" SelectedItem="{Binding SelectedPointGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+        <ComboBox x:Name="CmbPointGroup" ItemsSource="{Binding PointGroups}" SelectedItem="{Binding SelectedPointGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   IsSynchronizedWithCurrentItem="True" Grid.ColumnSpan="2"
                   Height="22" Margin="0,0,4,0">
             <ComboBox.Background>
@@ -47,7 +47,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        
+
         <!--<Button Grid.Row="0" Grid.Column="1" Width="20" Height="20" Command="{Binding SelectSurfaceCommand}">
             <Image Source="{StaticResource SelectObjectIcon}"></Image>
         </Button>-->
@@ -69,7 +69,7 @@
             <Button Grid.Column="2" Margin="2,0,0,0" Content="Close" Height="23" Click="Button_Cancel_Click" />
 
         </Grid>
-        
+
 
     </Grid>
 </Window>

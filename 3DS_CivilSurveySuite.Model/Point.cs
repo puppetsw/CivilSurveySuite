@@ -4,9 +4,11 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Diagnostics;
 
 namespace _3DS_CivilSurveySuite.Model
 {
+    [DebuggerDisplay("{X}"+ "," + "{Y}" + "," + "{Z}")]
     public readonly struct Point
     {
         public double X { get; }

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
         mc:Ignorable="d"
         Title="Move CogoPoint Labels" Height="120" MinHeight="120" MaxHeight="120" Width="230" MinWidth="230" ResizeMode="CanResizeWithGrip" >
     <Grid Margin="3">

@@ -6,7 +6,8 @@
              xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.UI.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.UI.Behaviors"
-             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:TraverseAngleViewModel}"
              d:DesignHeight="450" d:DesignWidth="800" Title="Traverse Angle Tool" ResizeMode="CanResizeWithGrip">
     <Window.Resources>
         <ResourceDictionary>

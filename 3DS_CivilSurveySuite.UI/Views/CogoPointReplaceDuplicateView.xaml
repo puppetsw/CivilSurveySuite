@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:CogoPointReplaceDuplicateViewModel}"
         Title="Replace &amp; Duplicate" Height="430" Width="500" >
     <Window.Resources>
 
