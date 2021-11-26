@@ -163,7 +163,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns>A double value containing the distance.</returns>
         /// <remarks>If the action is cancelled returns a <see cref="double.NaN"/> which
         /// can be checked with double.IsNaN(distance).</remarks>
-        [Obsolete("This method is obsolete. Use GetDistance (bool) instead. To be removed.", true)]
+        [Obsolete("This method is obsolete. Use GetDistance (bool) instead.", true)]
         public static double GetDistance(string message, Point3d? basePoint = null)
         {
             if (basePoint == null)
@@ -269,7 +269,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return true;
         }
 
-        [Obsolete("This method is obsolete. Use GetEntityOfType<T>(out ObjectId, String, String)", false)]
+        [Obsolete("This method is obsolete. Use GetSelectionOfType<T>()", false)]
         public static PromptSelectionResult GetEntities<T>(string addMessage, string removeMessage = "") where T : Entity
         {
             RXClass entityType = RXObject.GetClass(typeof(T));
@@ -379,7 +379,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns><c>True</c> if an entity was selected, <c>false</c> otherwise.</returns>
         public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
         {
-            //TODO: Add keyword support.
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage(removeMessage);
 
@@ -394,6 +393,62 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             objectId = entity.ObjectId;
             return true;
+        }
+
+        /// <summary>
+        /// Gets the an entity of type <see cref="T"/>.
+        /// </summary>
+        /// <param name="objectId">The objectId of the selected entity.</param>
+        /// <param name="addMessage">The message to display to the user when picking.</param>
+        /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
+        /// <param name="keywords">List of keywords to display.</param>
+        /// <param name="selectedKeyword">Returns the selected keyword. Empty if none.</param>
+        /// <param name="defaultKeyword">The default selected keyword in the command prompt.</param>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <returns><c>True</c> if an entity or keyword was selected, <c>false</c> otherwise.</returns>
+        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, bool exactMatch, string[] keywords, out string selectedKeyword, string defaultKeyword)
+        {
+            var peo = new PromptEntityOptions(addMessage);
+            peo.SetRejectMessage("\n3DS> Invalid entity type.");
+            selectedKeyword = string.Empty;
+
+            if (keywords != null)
+            {
+                foreach (var word in keywords)
+                    if (!string.IsNullOrEmpty(word))
+                        peo.Keywords.Add(word);
+
+                if (!string.IsNullOrEmpty(defaultKeyword) && keywords.Contains(defaultKeyword))
+                    peo.Keywords.Default = defaultKeyword;
+            }
+
+            peo.AppendKeywordsToMessage = true;
+
+            objectId = ObjectId.Null;
+
+            peo.AddAllowedClass(typeof(T), exactMatch);
+
+            var entity = AcadApp.Editor.GetEntity(peo);
+
+            switch (entity.Status)
+            {
+                case PromptStatus.OK:
+                    objectId = entity.ObjectId;
+                    return true;
+                case PromptStatus.Keyword:
+                    selectedKeyword = entity.StringResult;
+                    return true;
+                case PromptStatus.Cancel:
+                case PromptStatus.None:
+                case PromptStatus.Error:
+                case PromptStatus.Modeless:
+                case PromptStatus.Other:
+                    break;
+                default:
+                    return false;
+            }
+
+            return false;
         }
 
         public static bool GetEntityOfType<T>(out ObjectId objectId, out Point3d pickedPoint, string addMessage, string removeMessage = "", bool exactMatch = false)

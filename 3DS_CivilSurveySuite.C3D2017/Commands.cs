@@ -3,8 +3,10 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Runtime.InteropServices;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Views;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
@@ -211,76 +213,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.LabelStack();
         }
 
-        // [CommandMethod("3DS", "3DSTest1", CommandFlags.Modal)]
-        // public static void Test1()
-        // {
-        //     var sites = SiteUtils.GetCivilSites();
-        //
-        //     foreach (CivilSite civilSite in sites)
-        //     {
-        //         AcadApp.Editor.WriteMessage(civilSite.Name);
-        //     }
-        // }
-        //
-        //
-        // [CommandMethod("3DS", "3DSTest2", CommandFlags.Modal)]
-        // public static void Test12314123()
-        // {
-        //     var typedValues = new TypedValue[] { };
-        //
-        //     EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage, new string[] { "tEst", "Scott" }, "Scott");
-        //
-        //     AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
-        // }
-        //
-        // [CommandMethod("3DS", "3DSTest3", CommandFlags.Modal)]
-        // public static void Test12314123455123()
-        // {
-        //     var typedValues = new[] { new TypedValue((int)DxfCode.Start, "LINE,CIRCLE") };
-        //
-        //     EditorUtils.GetSelection(out var objetIds, typedValues, "Add Message", "", out string keywordMessage,
-        //         new string[] { "tEst", "Scott" });
-        //
-        //     AcadApp.Editor.WriteMessage($"Test from end of method: {keywordMessage}");
-        // }
 
-
+        // Testing Command
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
         public static void Test()
         {
-            //AcadApp.Editor.WriteMessage($"Point Group Name: {C3DService.PointGroupSelect().GetPointGroup().Name}");
+            if (!EditorUtils.GetEntityOfType<DBText>(out var textId, "\nSelect Text", false, new []{ "Settings", "Other" }, out var selectedKeyword, "Other"))
+                return;
 
-            //C3DService.SelectSurface();
-            //var pg = C3DService.SelectAlignment();
-            //C3DService.ShowDialog<CogoPointSurfaceReportView>();
-            C3DService.ShowDialog<CogoPointReplaceDuplicateView>();
+            if (selectedKeyword == "Other")
+                AcadApp.WriteMessage("\nOther was selected");
 
+            if (selectedKeyword == "Settings")
+                AcadApp.WriteMessage("\nSettings was selected");
 
-            //using (var graphics = new TransientGraphics())
-            //using (var tr = AcadApp.StartTransaction())
-            //{
-            //    var surface = C3DService.SelectSurface();
-
-            //    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick point: "))
-            //        return;
-
-            //    graphics.DrawPlus(pickedPoint, Settings.GraphicsSize);
-
-
-            //    SurfaceUtils.FindPointNearSurface(surface, pickedPoint, out Point3d calculatedPoint, out _);
-
-            //    graphics.DrawDot(calculatedPoint, Settings.GraphicsSize);
-
-            //    AcadApp.Editor.WriteMessage($"\n3DS> Elevation: {calculatedPoint.Z}");
-
-            //    if (!EditorUtils.GetString(out string input, "\n3DS> Paused: "))
-            //        return;
-
-            //    tr.Commit();
-            //}
         }
-
-
-
     }
 }
