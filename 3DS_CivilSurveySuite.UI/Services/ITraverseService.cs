@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.Model;
 
@@ -23,7 +24,10 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         void ZoomTo(IEnumerable<TraverseObject> traverse);
 
+        [Obsolete("This method is obsolete. Use SelectLines() instead.")]
         AngleDistance SelectLine();
+
+        IEnumerable<TraverseObject> SelectLines();
 
     }
 }

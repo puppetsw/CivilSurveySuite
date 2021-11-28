@@ -1,4 +1,5 @@
-﻿using _3DS_CivilSurveySuite.Model;
+﻿using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -382,14 +383,16 @@ namespace _3DS_CivilSurveySuiteTests
             var travServ = new Mock<ITraverseService>();
             var procServ = new Mock<IProcessService>();
 
-            travServ.Setup(m => m.SelectLine()).Returns(new AngleDistance { Angle = new Angle(), Distance = 30 });
+            var travObjects = new List<TraverseObject> { new TraverseObject(), new TraverseObject() };
+
+            travServ.Setup(m => m.SelectLines()).Returns(travObjects);
 
             var vm = new TraverseViewModel(travServ.Object, procServ.Object, null);
 
             Assert.IsTrue(vm.SelectLineCommand.CanExecute(true));
             vm.SelectLineCommand.Execute(null);
 
-            Assert.AreEqual(1, vm.TraverseItems.Count);
+            Assert.AreEqual(2, vm.TraverseItems.Count);
         }
 
         [TestMethod]

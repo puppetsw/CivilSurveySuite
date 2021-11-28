@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -21,13 +22,25 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly IProcessService _processService;
         private readonly IMessageBoxService _messageBoxService;
 
-        public ObservableCollection<TraverseObject> TraverseItems { get; } = new ObservableCollection<TraverseObject>();
+        public ObservableCollection<TraverseObject> TraverseItems
+        {
+            [DebuggerStepThrough]
+            get;
+        } = new ObservableCollection<TraverseObject>();
 
-        public TraverseObject SelectedTraverseItem { get; set; }
+        public TraverseObject SelectedTraverseItem
+        {
+            [DebuggerStepThrough]
+            get;
+            [DebuggerStepThrough]
+            set;
+        }
 
         public string CloseDistance
         {
+            [DebuggerStepThrough]
             get => _closeDistance;
+            [DebuggerStepThrough]
             set
             {
                 _closeDistance = value;
@@ -37,9 +50,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public string CloseBearing
         {
+            [DebuggerStepThrough]
             get => _closeBearing;
+            [DebuggerStepThrough]
             set
             {
+
                 _closeBearing = value;
                 NotifyPropertyChanged();
             }
@@ -85,8 +101,18 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectLine()
         {
-            var angDist = _traverseService.SelectLine();
-            TraverseItems.Add(new TraverseObject(angDist.Angle.ToDouble(), angDist.Distance));
+            var trav = _traverseService?.SelectLines();
+
+            if (trav == null)
+                return;
+
+            TraverseItems.Clear();
+            foreach (var traverseObject in trav)
+                TraverseItems.Add(traverseObject);
+
+            UpdateIndex();
+            NotifyPropertyChanged(nameof(TraverseItems));
+            CloseTraverse();
         }
 
         private void SetBasePoint()
@@ -115,13 +141,13 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             var ti = new TraverseObject();
             TraverseItems.Add(ti);
 
-            //hack: add index property and update method
             UpdateIndex();
         }
 
         private void RemoveRow()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
             _ = TraverseItems.Remove(SelectedTraverseItem);
             UpdateIndex();
@@ -154,22 +180,24 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void FeetToMeters()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
-            int index = TraverseItems.IndexOf(SelectedTraverseItem);
+            var index = TraverseItems.IndexOf(SelectedTraverseItem);
 
-            double distance = TraverseItems[index].Distance;
+            var distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
             CloseTraverse();
         }
 
         private void LinksToMeters()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
-            int index = TraverseItems.IndexOf(SelectedTraverseItem);
+            var index = TraverseItems.IndexOf(SelectedTraverseItem);
 
-            double distance = TraverseItems[index].Distance;
+            var distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
             CloseTraverse();
         }
@@ -187,8 +215,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
             SelectedTraverseItem.Bearing = angle.ToDouble();
             CloseTraverse();
-
-
         }
 
         private void ShowHelp()
@@ -198,8 +224,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void UpdateIndex()
         {
-            int i = 0;
-            foreach (TraverseObject item in TraverseItems)
+            var i = 0;
+            foreach (var item in TraverseItems)
             {
                 item.Index = i;
                 i++;

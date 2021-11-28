@@ -102,8 +102,21 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectLine()
         {
-            var angDist = _traverseService.SelectLine();
-            TraverseAngles.Add(new TraverseAngleObject(angDist.Angle.ToDouble(), angDist.Distance));
+            var trav = _traverseService?.SelectLines();
+
+            if (trav == null)
+                return;
+
+            TraverseAngles.Clear();
+            foreach (var traverseObject in trav)
+            {
+                var travAngle = new TraverseAngleObject(traverseObject.Angle.ToDouble(), traverseObject.Distance);
+                TraverseAngles.Add(travAngle);
+            }
+
+            UpdateIndex();
+            NotifyPropertyChanged(nameof(TraverseAngles));
+            CloseTraverse();
         }
 
         private void CloseWindow()
