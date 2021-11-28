@@ -73,6 +73,8 @@
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
+    <Compile Include="Services\IOpenFileDialogService.cs" />
+    <Compile Include="Services\ISaveFileDialogService.cs" />
     <Compile Include="Services\ISelectPointGroupService.cs" />
     <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISelectAlignmentService.cs" />
