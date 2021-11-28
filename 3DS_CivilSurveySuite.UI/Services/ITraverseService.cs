@@ -29,5 +29,9 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         IEnumerable<TraverseObject> SelectLines();
 
+        IEnumerable<TraverseObject> GetTraverseData(string fileName);
+
+        void WriteTraverseData(string fileName, IEnumerable<TraverseObject> traverseData);
+
     }
 }

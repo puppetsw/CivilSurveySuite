@@ -119,7 +119,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 
             var lastEndPoint = Point.Origin;
 
-            using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartLockedTransaction())
             {
                 while (true)
@@ -143,17 +142,27 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
                         basePoint = line.StartPoint.ToPoint();
 
                     traverse.Add(new TraverseObject(angle.ToDouble(), distance));
-                    graphics.DrawLine(line.StartPoint, line.EndPoint);
+                    _graphics.DrawLine(line.StartPoint, line.EndPoint);
 
                     lastEndPoint = line.EndPoint.ToPoint();
                 }
 
-                graphics.ClearGraphics();
+                ClearGraphics();
                 tr.Commit();
             }
 
             _basePoint = basePoint;
             return traverse;
+        }
+
+        public IEnumerable<TraverseObject> GetTraverseData(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteTraverseData(string fileName, IEnumerable<TraverseObject> traverseData)
+        {
+            throw new NotImplementedException();
         }
 
         private void DrawTraverseLines(IEnumerable<Point> coordinates)
