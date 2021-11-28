@@ -19,14 +19,6 @@
 ### Insert Pictures From Folder
 * Insert picture(s) tool
 
-### Traverse Windows
-* When user selects a line in traverse window it should clear the current traverse?
-  * This should fix the issue with the basePoint not being set and zoom?
-* Add ability to select multiple lines.
-  * Pick in order, so we can test if the next line is connected to the previous.
-* Add load/save to traverse palette
-* Add Curves to traverse?
-
 ### Point Reports
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
 Save entire report as HTML or data table only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
