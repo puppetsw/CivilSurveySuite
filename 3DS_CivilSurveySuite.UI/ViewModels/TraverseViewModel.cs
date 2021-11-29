@@ -21,6 +21,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly IOpenFileDialogService _openFileDialogService;
+        private readonly ISaveFileDialogService _saveFileDialogService;
 
         public ObservableCollection<TraverseObject> TraverseItems
         {
@@ -87,11 +89,44 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
 
-        public TraverseViewModel(ITraverseService traverseService, IProcessService processService, IMessageBoxService messageBoxService)
+        public RelayCommand OpenFileCommand => new RelayCommand(OpenFile, () => true);
+
+        public RelayCommand SaveFileCommand => new RelayCommand(SaveFile, () => true);
+
+        public TraverseViewModel(ITraverseService traverseService, IProcessService processService,
+            IMessageBoxService messageBoxService, IOpenFileDialogService openFileDialogService,
+            ISaveFileDialogService saveFileDialogService)
         {
             _traverseService = traverseService;
             _processService = processService;
             _messageBoxService = messageBoxService;
+            _openFileDialogService = openFileDialogService;
+            _saveFileDialogService = saveFileDialogService;
+        }
+
+        private void OpenFile()
+        {
+            _openFileDialogService.DefaultExt = ".csv";
+            _openFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_openFileDialogService?.ShowDialog() == true)
+            {
+                // Do the loading.
+                var fileName = _openFileDialogService.FileName;
+                var data = CsvHelpers.ReadCsv(fileName);
+            }
+        }
+
+        private void SaveFile()
+        {
+            _saveFileDialogService.DefaultExt = ".csv";
+            _saveFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_saveFileDialogService.ShowDialog() == true)
+            {
+                // Do the saving.
+
+            }
         }
 
         private void Zoom()

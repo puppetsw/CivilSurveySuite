@@ -57,6 +57,27 @@
                     <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
                 </Button>
                 <Separator IsTabStop="False" />
+
+                <Button Command="{Binding OpenFileCommand}">
+                    <!-- <Button.ToolTip> -->
+                    <!--     <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/> -->
+                    <!-- </Button.ToolTip> -->
+                    <StackPanel Orientation="Horizontal">
+                        <!-- <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/> -->
+                        <TextBlock>Open</TextBlock>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding SaveFileCommand}">
+                    <!-- <Button.ToolTip> -->
+                    <!--     <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/> -->
+                    <!-- </Button.ToolTip> -->
+                    <StackPanel Orientation="Horizontal">
+                        <!-- <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/> -->
+                        <TextBlock>Save</TextBlock>
+                    </StackPanel>
+                </Button>
+
                 <Button Command="{Binding SetBasePointCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>

@@ -8,5 +8,11 @@ namespace _3DS_CivilSurveySuite.UI.Services
     public interface ISaveFileDialogService
     {
         bool? ShowDialog();
+
+        string FileName { get; set; }
+
+        string DefaultExt { get; set; }
+
+        string Filter { get; set; }
     }
 }
