@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
@@ -20,6 +21,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly IOpenFileDialogService _openFileDialogService;
+        private readonly ISaveFileDialogService _saveFileDialogService;
 
         public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
 
@@ -78,11 +81,52 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
 
-        public TraverseAngleViewModel(ITraverseService traverseService, IProcessService processService, IMessageBoxService messageBoxService)
+        public RelayCommand OpenFileCommand => new RelayCommand(OpenFile, () => true);
+
+        public RelayCommand SaveFileCommand => new RelayCommand(SaveFile, () => true);
+
+        public TraverseAngleViewModel(ITraverseService traverseService, IProcessService processService,
+            IMessageBoxService messageBoxService, IOpenFileDialogService openFileDialogService,
+            ISaveFileDialogService saveFileDialogService)
         {
             _traverseService = traverseService;
             _processService = processService;
             _messageBoxService = messageBoxService;
+            _openFileDialogService = openFileDialogService;
+            _saveFileDialogService = saveFileDialogService;
+        }
+
+        private void OpenFile()
+        {
+            _openFileDialogService.DefaultExt = ".csv";
+            _openFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_openFileDialogService?.ShowDialog() != true)
+                return;
+
+            // Do the loading.
+            var fileName = _openFileDialogService.FileName;
+            var values = File.ReadAllLines(fileName).Select(v => TraverseObject.FromCsv(v)).ToList();
+
+            TraverseAngles.Clear();
+            foreach (var traverseObject in values)
+            {
+                var travAng = new TraverseAngleObject(traverseObject.Bearing, traverseObject.Distance);
+                TraverseAngles.Add(travAng);
+            }
+        }
+
+        private void SaveFile()
+        {
+            _saveFileDialogService.DefaultExt = ".csv";
+            _saveFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_saveFileDialogService.ShowDialog() != true)
+                return;
+
+            // Do the saving.
+            var fileName = _saveFileDialogService.FileName;
+            File.WriteAllLines(fileName, TraverseAngles.Select(t => t.ToCsv()));
         }
 
         private void SetBasePoint()

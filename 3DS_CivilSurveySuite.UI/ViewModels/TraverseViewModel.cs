@@ -3,8 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -109,11 +112,17 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             _openFileDialogService.DefaultExt = ".csv";
             _openFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
 
-            if (_openFileDialogService?.ShowDialog() == true)
+            if (_openFileDialogService?.ShowDialog() != true)
+                return;
+
+            // Do the loading.
+            var fileName = _openFileDialogService.FileName;
+            var values = File.ReadAllLines(fileName).Select(v => TraverseObject.FromCsv(v)).ToList();
+
+            TraverseItems.Clear();
+            foreach (var traverseObject in values)
             {
-                // Do the loading.
-                var fileName = _openFileDialogService.FileName;
-                var data = CsvHelpers.ReadCsv(fileName);
+                TraverseItems.Add(traverseObject);
             }
         }
 
@@ -122,11 +131,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             _saveFileDialogService.DefaultExt = ".csv";
             _saveFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
 
-            if (_saveFileDialogService.ShowDialog() == true)
-            {
-                // Do the saving.
+            if (_saveFileDialogService.ShowDialog() != true)
+                return;
 
-            }
+            // Do the saving.
+            var fileName = _saveFileDialogService.FileName;
+            File.WriteAllLines(fileName, TraverseItems.Select(t => t.ToCsv()));
         }
 
         private void Zoom()
