@@ -3,7 +3,9 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace _3DS_CivilSurveySuite.Model
 {
@@ -47,6 +49,16 @@ namespace _3DS_CivilSurveySuite.Model
         {
             Bearing = bearing;
             Distance = distance;
+        }
+
+        public static TraverseAngleObject FromTraverseObject(TraverseObject traverseObject)
+        {
+            return new TraverseAngleObject(traverseObject.Bearing, traverseObject.Distance);
+        }
+
+        public static IEnumerable<TraverseAngleObject> FromTraverseObjects(IEnumerable<TraverseObject> traverseObjects)
+        {
+            return traverseObjects.Select(FromTraverseObject);
         }
     }
 }

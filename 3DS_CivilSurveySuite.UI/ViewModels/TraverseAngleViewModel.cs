@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using _3DS_CivilSurveySuite.Core;
@@ -24,20 +25,36 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly IOpenFileDialogService _openFileDialogService;
         private readonly ISaveFileDialogService _saveFileDialogService;
 
-        public ObservableCollection<TraverseAngleObject> TraverseAngles { get; } = new ObservableCollection<TraverseAngleObject>();
+        public ObservableCollection<TraverseAngleObject> TraverseAngles
+        {
+            [DebuggerStepThrough]
+            get;
+            [DebuggerStepThrough]
+            set;
+        }
 
         public TraverseAngleObject SelectedTraverseAngle { get; set; }
 
         //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
         //Probably need to look into ComboBox events and use behaviors to fire the update.
-        public static IEnumerable<AngleReferenceDirection> ReferenceDirectionValues => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
+        public static IEnumerable<AngleReferenceDirection> ReferenceDirectionValues
+        {
+            [DebuggerStepThrough]
+            get => Enum.GetValues(typeof(AngleReferenceDirection)).Cast<AngleReferenceDirection>();
+        }
 
         //BUG: When DataGrid Combobox for this property is changed, the GridUpdateCommand Event is not fired.
-        public static IEnumerable<AngleRotationDirection> RotationDirectionValues => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
+        public static IEnumerable<AngleRotationDirection> RotationDirectionValues
+        {
+            [DebuggerStepThrough]
+            get => Enum.GetValues(typeof(AngleRotationDirection)).Cast<AngleRotationDirection>();
+        }
 
         public string CloseDistance
         {
+            [DebuggerStepThrough]
             get => _closeDistance;
+            [DebuggerStepThrough]
             set
             {
                 _closeDistance = value;
@@ -47,7 +64,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public string CloseBearing
         {
+            [DebuggerStepThrough]
             get => _closeBearing;
+            [DebuggerStepThrough]
             set
             {
                 _closeBearing = value;
@@ -89,6 +108,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             IMessageBoxService messageBoxService, IOpenFileDialogService openFileDialogService,
             ISaveFileDialogService saveFileDialogService)
         {
+            TraverseAngles = new ObservableCollection<TraverseAngleObject>();
+
             _traverseService = traverseService;
             _processService = processService;
             _messageBoxService = messageBoxService;
@@ -106,14 +127,15 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
             // Do the loading.
             var fileName = _openFileDialogService.FileName;
-            var values = File.ReadAllLines(fileName).Select(v => TraverseObject.FromCsv(v)).ToList();
+            var csvValues = File.ReadAllLines(fileName)
+                .Select(v => TraverseAngleObject.FromTraverseObject(TraverseObject.FromCsv(v))).ToList();
 
             TraverseAngles.Clear();
-            foreach (var traverseObject in values)
-            {
-                var travAng = new TraverseAngleObject(traverseObject.Bearing, traverseObject.Distance);
-                TraverseAngles.Add(travAng);
-            }
+            TraverseAngles = new ObservableCollection<TraverseAngleObject>(csvValues);
+
+            GridUpdated();
+            UpdateIndex();
+            CloseTraverse();
         }
 
         private void SaveFile()
@@ -147,16 +169,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private void SelectLine()
         {
             var trav = _traverseService?.SelectLines();
-
             if (trav == null)
                 return;
 
             TraverseAngles.Clear();
-            foreach (var traverseObject in trav)
-            {
-                var travAngle = new TraverseAngleObject(traverseObject.Angle.ToDouble(), traverseObject.Distance);
-                TraverseAngles.Add(travAngle);
-            }
+            TraverseAngles = new ObservableCollection<TraverseAngleObject>(TraverseAngleObject.FromTraverseObjects(trav));
 
             UpdateIndex();
             NotifyPropertyChanged(nameof(TraverseAngles));
@@ -183,8 +200,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
             var coordinates = PointHelpers.TraverseObjectsToCoordinates(TraverseAngles, new Point(0, 0));
 
-            double distance = PointHelpers.GetDistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
-            Angle angle = AngleHelpers.GetAngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            var distance = PointHelpers.GetDistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
+            var angle = AngleHelpers.GetAngleBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
 
             CloseDistance = $"{distance:0.000}";
             CloseBearing = angle.ToString();
@@ -195,7 +212,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             var ti = new TraverseAngleObject();
             TraverseAngles.Add(ti);
 
-            //hack: add index property and update method
             UpdateIndex();
         }
 
@@ -222,22 +238,24 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void FeetToMeters()
         {
-            if (SelectedTraverseAngle == null) return;
+            if (SelectedTraverseAngle == null)
+                return;
 
-            int index = TraverseAngles.IndexOf(SelectedTraverseAngle);
+            var index = TraverseAngles.IndexOf(SelectedTraverseAngle);
 
-            double distance = TraverseAngles[index].Distance;
+            var distance = TraverseAngles[index].Distance;
             TraverseAngles[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
             CloseTraverse();
         }
 
         private void LinksToMeters()
         {
-            if (SelectedTraverseAngle == null) return;
+            if (SelectedTraverseAngle == null)
+                return;
 
-            int index = TraverseAngles.IndexOf(SelectedTraverseAngle);
+            var index = TraverseAngles.IndexOf(SelectedTraverseAngle);
 
-            double distance = TraverseAngles[index].Distance;
+            var distance = TraverseAngles[index].Distance;
             TraverseAngles[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
             CloseTraverse();
         }

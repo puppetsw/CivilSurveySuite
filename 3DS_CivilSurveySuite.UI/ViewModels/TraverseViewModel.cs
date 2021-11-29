@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -31,7 +30,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         {
             [DebuggerStepThrough]
             get;
-        } = new ObservableCollection<TraverseObject>();
+            [DebuggerStepThrough]
+            set;
+        }
 
         public TraverseObject SelectedTraverseItem
         {
@@ -100,6 +101,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             IMessageBoxService messageBoxService, IOpenFileDialogService openFileDialogService,
             ISaveFileDialogService saveFileDialogService)
         {
+            TraverseItems = new ObservableCollection<TraverseObject>();
+
             _traverseService = traverseService;
             _processService = processService;
             _messageBoxService = messageBoxService;
@@ -124,6 +127,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             {
                 TraverseItems.Add(traverseObject);
             }
+            GridUpdated();
+            UpdateIndex();
+            CloseTraverse();
         }
 
         private void SaveFile()
@@ -206,9 +212,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private void CloseTraverse()
         {
             if (TraverseItems.Count < 2)
-            {
                 return;
-            }
 
             var coordinates = PointHelpers.TraverseObjectsToCoordinates(TraverseItems, new Point(0,0));
             var distance = PointHelpers.GetDistanceBetweenPoints(coordinates[coordinates.Count - 1], coordinates[0]);
