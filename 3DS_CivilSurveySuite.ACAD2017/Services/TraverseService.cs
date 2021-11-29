@@ -18,6 +18,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
     /// <summary>
     /// Traverse service implementation.
     /// </summary>
+    /// <remarks>
+    /// Things to do...
+    /// * When user selects a line in traverse window it should clear the current traverse?
+    /// * This should fix the issue with the basePoint not being set and zoom?
+    /// * Add ability to select multiple lines.
+    /// * Pick in order, so we can test if the next line is connected to the previous.
+    /// * Add load/save to traverse palette
+    /// * Add Curves to traverse?
+    /// </remarks>
     public class TraverseService : ITraverseService, IDisposable
     {
         private readonly TransientGraphics _graphics;
@@ -100,6 +109,62 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
             return angDist;
         }
 
+        public IEnumerable<TraverseObject> SelectLines()
+        {
+            Utils.SetFocusToDwgView();
+            //BUG: There is a bug when the loop starts again, there is a flash of the TraverseWindow.
+
+            var traverse = new List<TraverseObject>();
+            var basePoint = Point.Origin;
+
+            var lastEndPoint = Point.Origin;
+
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                while (true)
+                {
+                    var line = LineUtils.GetLineOrPolylineSegment(tr);
+
+                    if (line == null)
+                        break;
+
+                    if (!lastEndPoint.Equals(Point.Origin) && !line.StartPoint.ToPoint().Equals(lastEndPoint))
+                    {
+                        AcadApp.Editor.WriteMessage("\n3DS> Line was not connected to previous.");
+                        continue;
+                    }
+
+                    var angle = AngleHelpers.GetAngleBetweenPoints(line.StartPoint.ToPoint(), line.EndPoint.ToPoint());
+                    var distance = line.Length;
+
+                    // Set new base point.
+                    if (basePoint.Equals(Point.Origin))
+                        basePoint = line.StartPoint.ToPoint();
+
+                    traverse.Add(new TraverseObject(angle.ToDouble(), distance));
+                    _graphics.DrawLine(line.StartPoint, line.EndPoint);
+
+                    lastEndPoint = line.EndPoint.ToPoint();
+                }
+
+                ClearGraphics();
+                tr.Commit();
+            }
+
+            _basePoint = basePoint;
+            return traverse;
+        }
+
+        public IEnumerable<TraverseObject> GetTraverseData(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteTraverseData(string fileName, IEnumerable<TraverseObject> traverseData)
+        {
+            throw new NotImplementedException();
+        }
+
         private void DrawTraverseLines(IEnumerable<Point> coordinates)
         {
             _graphics?.ClearGraphics();
@@ -144,6 +209,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 
         protected virtual void Dispose(bool disposing)
         {
+            if (!disposing)
+                return;
+
             _graphics?.ClearGraphics();
             _graphics?.Dispose();
         }

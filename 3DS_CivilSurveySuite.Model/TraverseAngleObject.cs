@@ -3,6 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Diagnostics;
+
 namespace _3DS_CivilSurveySuite.Model
 {
     public class TraverseAngleObject : TraverseObject
@@ -12,7 +14,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public AngleRotationDirection RotationDirection
         {
+            [DebuggerStepThrough]
             get => _angleDirection;
+            [DebuggerStepThrough]
             set
             {
                 _angleDirection = value;
@@ -22,7 +26,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public AngleReferenceDirection ReferenceDirection
         {
+            [DebuggerStepThrough]
             get => _referenceDirection;
+            [DebuggerStepThrough]
             set
             {
                 _referenceDirection = value;

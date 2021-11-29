@@ -27,6 +27,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
             Container.Register<IMessageBoxService, MessageBoxService>();
 
+            Container.Register<IOpenFileDialogService, OpenFileDialogService>();
+            Container.Register<ISaveFileDialogService, SaveFileDialogService>();
+
             Container.Register<AngleCalculatorView>();
             Container.Register<AngleCalculatorViewModel>();
 

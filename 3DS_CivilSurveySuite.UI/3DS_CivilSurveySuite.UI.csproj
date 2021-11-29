@@ -73,11 +73,15 @@
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
+    <Compile Include="Services\IOpenFileDialogService.cs" />
+    <Compile Include="Services\ISaveFileDialogService.cs" />
     <Compile Include="Services\ISelectPointGroupService.cs" />
     <Compile Include="Services\IProcessService.cs" />
     <Compile Include="Services\ISelectAlignmentService.cs" />
     <Compile Include="Services\ISelectSurfaceService.cs" />
     <Compile Include="Services\ITraverseService.cs" />
+    <Compile Include="Services\OpenFileDialogService.cs" />
+    <Compile Include="Services\SaveFileDialogService.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />

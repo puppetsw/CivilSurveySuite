@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Model
@@ -17,7 +18,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public Angle Angle
         {
+            [DebuggerStepThrough]
             get => _angle;
+            [DebuggerStepThrough]
             protected set
             {
                 _angle = value;
@@ -27,7 +30,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public int Index
         {
+            [DebuggerStepThrough]
             get => _index;
+            [DebuggerStepThrough]
             set
             {
                 _index = value;
@@ -37,7 +42,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public double Bearing
         {
+            [DebuggerStepThrough]
             get => _bearing;
+            [DebuggerStepThrough]
             set
             {
                 if (Angle.IsValid(value))
@@ -57,7 +64,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public double Distance
         {
+            [DebuggerStepThrough]
             get => _distance;
+            [DebuggerStepThrough]
             set
             {
                 _distance = value;
@@ -82,6 +91,34 @@ namespace _3DS_CivilSurveySuite.Model
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Converts a CSV string to a TraverseObject
+        /// </summary>
+        /// <param name="csvString">The CSV string containing the data.</param>
+        /// <param name="delimiter">The delimiter.</param>
+        /// <returns>A <see cref="TraverseObject"/>.</returns>
+        public static TraverseObject FromCsv(string csvString, char delimiter = ',')
+        {
+            var data = csvString.Split(delimiter);
+
+            var traverseObject = new TraverseObject();
+            traverseObject.Index = int.Parse(data[0]);
+            traverseObject.Bearing = double.Parse(data[1]);
+            traverseObject.Distance = double.Parse(data[2]);
+
+            return traverseObject;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="TraverseObject"/> to a CSV string.
+        /// </summary>
+        /// <param name="delimiter">The delimiter.</param>
+        /// <returns>A string representing the <see cref="TraverseObject"/>.</returns>
+        public string ToCsv(char delimiter = ',')
+        {
+            return $"{Index}{delimiter}{Bearing}{delimiter}{Distance}";
         }
     }
 }

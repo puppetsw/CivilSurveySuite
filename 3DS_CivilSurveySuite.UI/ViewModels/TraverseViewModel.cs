@@ -3,7 +3,11 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -20,14 +24,28 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly ITraverseService _traverseService;
         private readonly IProcessService _processService;
         private readonly IMessageBoxService _messageBoxService;
+        private readonly IOpenFileDialogService _openFileDialogService;
+        private readonly ISaveFileDialogService _saveFileDialogService;
 
-        public ObservableCollection<TraverseObject> TraverseItems { get; } = new ObservableCollection<TraverseObject>();
+        public ObservableCollection<TraverseObject> TraverseItems
+        {
+            [DebuggerStepThrough]
+            get;
+        } = new ObservableCollection<TraverseObject>();
 
-        public TraverseObject SelectedTraverseItem { get; set; }
+        public TraverseObject SelectedTraverseItem
+        {
+            [DebuggerStepThrough]
+            get;
+            [DebuggerStepThrough]
+            set;
+        }
 
         public string CloseDistance
         {
+            [DebuggerStepThrough]
             get => _closeDistance;
+            [DebuggerStepThrough]
             set
             {
                 _closeDistance = value;
@@ -37,9 +55,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public string CloseBearing
         {
+            [DebuggerStepThrough]
             get => _closeBearing;
+            [DebuggerStepThrough]
             set
             {
+
                 _closeBearing = value;
                 NotifyPropertyChanged();
             }
@@ -71,11 +92,51 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand ZoomExtentsCommand => new RelayCommand(Zoom, () => true);
 
-        public TraverseViewModel(ITraverseService traverseService, IProcessService processService, IMessageBoxService messageBoxService)
+        public RelayCommand OpenFileCommand => new RelayCommand(OpenFile, () => true);
+
+        public RelayCommand SaveFileCommand => new RelayCommand(SaveFile, () => true);
+
+        public TraverseViewModel(ITraverseService traverseService, IProcessService processService,
+            IMessageBoxService messageBoxService, IOpenFileDialogService openFileDialogService,
+            ISaveFileDialogService saveFileDialogService)
         {
             _traverseService = traverseService;
             _processService = processService;
             _messageBoxService = messageBoxService;
+            _openFileDialogService = openFileDialogService;
+            _saveFileDialogService = saveFileDialogService;
+        }
+
+        private void OpenFile()
+        {
+            _openFileDialogService.DefaultExt = ".csv";
+            _openFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_openFileDialogService?.ShowDialog() != true)
+                return;
+
+            // Do the loading.
+            var fileName = _openFileDialogService.FileName;
+            var values = File.ReadAllLines(fileName).Select(v => TraverseObject.FromCsv(v)).ToList();
+
+            TraverseItems.Clear();
+            foreach (var traverseObject in values)
+            {
+                TraverseItems.Add(traverseObject);
+            }
+        }
+
+        private void SaveFile()
+        {
+            _saveFileDialogService.DefaultExt = ".csv";
+            _saveFileDialogService.Filter = "CSV Files (*.csv)|*.csv";
+
+            if (_saveFileDialogService.ShowDialog() != true)
+                return;
+
+            // Do the saving.
+            var fileName = _saveFileDialogService.FileName;
+            File.WriteAllLines(fileName, TraverseItems.Select(t => t.ToCsv()));
         }
 
         private void Zoom()
@@ -85,8 +146,18 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectLine()
         {
-            var angDist = _traverseService.SelectLine();
-            TraverseItems.Add(new TraverseObject(angDist.Angle.ToDouble(), angDist.Distance));
+            var trav = _traverseService?.SelectLines();
+
+            if (trav == null)
+                return;
+
+            TraverseItems.Clear();
+            foreach (var traverseObject in trav)
+                TraverseItems.Add(traverseObject);
+
+            UpdateIndex();
+            NotifyPropertyChanged(nameof(TraverseItems));
+            CloseTraverse();
         }
 
         private void SetBasePoint()
@@ -115,13 +186,13 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             var ti = new TraverseObject();
             TraverseItems.Add(ti);
 
-            //hack: add index property and update method
             UpdateIndex();
         }
 
         private void RemoveRow()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
             _ = TraverseItems.Remove(SelectedTraverseItem);
             UpdateIndex();
@@ -154,22 +225,24 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void FeetToMeters()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
-            int index = TraverseItems.IndexOf(SelectedTraverseItem);
+            var index = TraverseItems.IndexOf(SelectedTraverseItem);
 
-            double distance = TraverseItems[index].Distance;
+            var distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertFeetToMeters(distance);
             CloseTraverse();
         }
 
         private void LinksToMeters()
         {
-            if (SelectedTraverseItem == null) return;
+            if (SelectedTraverseItem == null)
+                return;
 
-            int index = TraverseItems.IndexOf(SelectedTraverseItem);
+            var index = TraverseItems.IndexOf(SelectedTraverseItem);
 
-            double distance = TraverseItems[index].Distance;
+            var distance = TraverseItems[index].Distance;
             TraverseItems[index].Distance = MathHelpers.ConvertLinkToMeters(distance);
             CloseTraverse();
         }
@@ -187,8 +260,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
             SelectedTraverseItem.Bearing = angle.ToDouble();
             CloseTraverse();
-
-
         }
 
         private void ShowHelp()
@@ -198,8 +269,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void UpdateIndex()
         {
-            int i = 0;
-            foreach (TraverseObject item in TraverseItems)
+            var i = 0;
+            foreach (var item in TraverseItems)
             {
                 item.Index = i;
                 i++;
