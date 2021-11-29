@@ -103,33 +103,41 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void RawDescriptionToUpper()
         {
-            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cogoPointId, "\n3DS> Select points: ", "\n3DS> Remove points: "))
+            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
+                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: "))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
             {
-                var pt = (CogoPoint)cogoPointId.GetObject(OpenMode.ForWrite);
-                pt.RawDescription = pt.RawDescription.ToUpper();
-                pt.DowngradeOpen();
-
+                foreach (ObjectId objectId in pointIds)
+                {
+                    var pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
+                    pt.RawDescription = pt.RawDescription.ToUpper();
+                    pt.DowngradeOpen();
+                }
                 tr.Commit();
             }
         }
 
         /// <summary>
-        /// Changes a <see cref="CogoPoint"/>'s Full Description to upper case.
+        /// Changes a <see cref="CogoPoint"/>'s DescriptionFormat to upper case.
         /// </summary>
-        public static void FullDescriptionToUpper()
+        public static void DescriptionFormatToUpper()
         {
-            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cogoPointId, "\n3DS> Select points: ", "\n3DS> Remove points: "))
+            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
+                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: "))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
             {
-                var pt = (CogoPoint)cogoPointId.GetObject(OpenMode.ForWrite);
-                pt.DescriptionFormat = pt.DescriptionFormat.ToUpper();
-                pt.DowngradeOpen();
-
+                foreach (ObjectId objectId in pointIds)
+                {
+                    var pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
+                    pt.DescriptionFormat = pt.DescriptionFormat.ToUpper();
+                    pt.DowngradeOpen();
+                }
                 tr.Commit();
             }
         }
@@ -225,7 +233,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void LabelResetSelection()
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var pointIds, "\n3DS> Select CogoPoints labels to reset: "))
+            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
+                    "\n3DS> Select CogoPoints labels to reset: "))
                 return;
 
             using (var tr = AcadApp.StartTransaction())

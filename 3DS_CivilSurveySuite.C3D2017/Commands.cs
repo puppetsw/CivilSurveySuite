@@ -81,7 +81,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint, true);
         }
 
-        [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void CptResetLabels()
         {
             CogoPointUtils.LabelResetSelection();
@@ -93,16 +93,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DService.ShowDialog<CogoPointMoveLabelView>();
         }
 
-        [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void RawDesUpper()
         {
             CogoPointUtils.RawDescriptionToUpper();
         }
 
-        [CommandMethod("3DS", "_3DSFullDesUpper", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSFullDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void FullDesUpper()
         {
-            CogoPointUtils.FullDescriptionToUpper();
+            CogoPointUtils.DescriptionFormatToUpper();
         }
 
         [CommandMethod("3DS", "_3DSCptMatchLblRot", CommandFlags.Modal)]

@@ -369,6 +369,34 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
+        /// Gets a implied selection of type T.
+        /// </summary>
+        /// <param name="objectIds">Collection of <see cref="ObjectId"/>s obtained from the selection set.</param>
+        /// <typeparam name="T">Type of <see cref="Entity"/></typeparam>
+        /// <returns><c>true</c> if the selection was successful, otherwise <c>false</c>.</returns>
+        /// <remarks>Will filter out any entities not of type T.</remarks>
+        public static bool GetImpliedSelectionOfType<T>(out ObjectIdCollection objectIds) where T : Entity
+        {
+            var psr = AcadApp.Editor.SelectImplied();
+            objectIds = new ObjectIdCollection();
+
+            if (psr.Status != PromptStatus.OK)
+                return false;
+
+            var entityType = RXObject.GetClass(typeof(T));
+            foreach (var objectId in psr.Value.GetObjectIds())
+            {
+                // check that the objectId type matches the entityType
+                if (objectId.ObjectClass.Equals(entityType))
+                {
+                    objectIds.Add(objectId);
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the an entity of type <see cref="T"/>.
         /// </summary>
         /// <typeparam name="T">Entity type.</typeparam>
@@ -822,9 +850,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             using (var tr = AcadApp.StartTransaction())
             using (var view = AcadApp.Editor.GetCurrentView())
             {
-                double ratio = view.Width / view.Height;
-                double width = maxPoint.X - minPoint.X;
-                double height = maxPoint.Y - minPoint.Y;
+                var ratio = view.Width / view.Height;
+                var width = maxPoint.X - minPoint.X;
+                var height = maxPoint.Y - minPoint.Y;
                 if (width > (height * ratio))
                     height = width / ratio;
 
