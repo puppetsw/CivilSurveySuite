@@ -42,7 +42,7 @@
     <DataTemplate x:Key="ClosureToolTipContent">
         <StackPanel>
             <TextBlock Text="Closure Report" FontWeight="Bold"/>
-            <TextBlock> 
+            <TextBlock>
                 Creates a table with closure results of <LineBreak/>
                 the traverse.
             </TextBlock>
@@ -102,8 +102,20 @@
             <TextBlock Text="Display the traverse preview window."/>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="OpenTraverseToolTipContent">
+        <StackPanel>
+            <TextBlock Text="Preview" FontWeight="Bold"/>
+            <TextBlock Text="Opens a previously saved traverse."/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="SaveTraverseToolTipContent">
+        <StackPanel>
+            <TextBlock Text="Preview" FontWeight="Bold"/>
+            <TextBlock Text="Saves the current traverse to a file."/>
+        </StackPanel>
+    </DataTemplate>
 
-    
+
     <!--ToolTips for ConnectLineworkView-->
     <DataTemplate x:Key="OpenDocumentToolTipContent">
         <StackPanel>

@@ -427,6 +427,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="x">X value of point.</param>
         /// <param name="y">Y value of point.</param>
         /// <returns>System.Double.</returns>
+        //TODO: Add a out parameter that gives the amount/how far the calculated point is outside the surface.
         public static double FindElevationNearSurface(TinSurface surface, double x, double y)
         {
             FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
