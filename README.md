@@ -1,5 +1,14 @@
 # TODO
 
+## Things to do before 1.0.0.0
+* Finish ribbon and toolbar.
+* Add open/save icons to traverse windows.
+* Update Commands.md
+* Finish help file.
+
+## House-keeping
+* Fix up tests
+
 ### General
 * Error detection method.
 * Toolbar & Menu
