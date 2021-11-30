@@ -56,6 +56,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return Application.ShowModalWindow(view);
         }
 
+        public static void ShowModelessDialog<TView>() where TView : Window
+        {
+            var view = CreateWindow<TView>();
+            Application.ShowModelessWindow(view);
+        }
+
         private static TView CreateWindow<TView>() where TView : Window
         {
             return Container.GetInstance<TView>();

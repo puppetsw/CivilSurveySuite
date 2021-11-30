@@ -114,7 +114,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PointUtils.Inverse_Pick_Display();
         }
-        
+
         [CommandMethod("3DS", "_3DSInverseChOff", CommandFlags.Modal)]
         public static void InverseChainageOffset()
         {
@@ -215,7 +215,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public void ShowAngleCalculator()
         {
-            AcadService.ShowDialog<AngleCalculatorView>();
+            AcadService.ShowModelessDialog<AngleCalculatorView>();
         }
 
         [CommandMethod("3DS", "_3DSShowTraverseWindow", CommandFlags.Modal)]

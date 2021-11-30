@@ -29,7 +29,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             throw new NotSupportedException();
         }
 
-
+        /// <summary>
+        /// Prompts the user to select a <see cref="CogoPoint"/> and gets it's primary <see cref="PointGroup"/>.
+        /// </summary>
+        /// <returns>A <see cref="CivilPointGroup"/> object representing the <see cref="PointGroup"/>.</returns>
+        /// <exception cref="InvalidOperationException">the <see cref="ObjectId"/> did not
+        /// return a valid <see cref="CogoPoint"/></exception>
         public static CivilPointGroup SelectCivilPointGroup()
         {
             if (!EditorUtils.GetEntityOfType<CogoPoint>(out var objectId, "\n3DS> Select CogoPoint to obtain Point Group: "))
@@ -55,6 +60,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return pointGroup;
         }
 
+        /// <summary>
+        /// Gets a <see cref="PointGroup"/> by it's <see cref="ObjectId"/>."/>
+        /// </summary>
+        /// <param name="tr">The active transaction.</param>
+        /// <param name="pointGroupObjectId">The <see cref="ObjectId"/> of the <see cref="PointGroup"/>.</param>
+        /// <returns>A <see cref="PointGroup"/> object or null if not found.</returns>
+        /// <exception cref="ArgumentNullException">if the transaction is null or the ObjectId is null.</exception>
         public static PointGroup GetPointGroupByObjectId(Transaction tr, ObjectId pointGroupObjectId)
         {
             if (tr == null)
@@ -66,6 +78,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return tr.GetObject(pointGroupObjectId, OpenMode.ForRead) as PointGroup;
         }
 
+        /// <summary>
+        /// Gets a <see cref="PointGroup"/> by it's name.
+        /// </summary>
+        /// <param name="tr">The active transaction.</param>
+        /// <param name="groupName">The name of the point group.</param>
+        /// <returns>A <see cref="PointGroup"/> object if found, otherwise null.</returns>
+        /// <exception cref="ArgumentNullException">the transaction was null.</exception>
+        /// <exception cref="ArgumentException">the groupName was empty or null.</exception>
         public static PointGroup GetPointGroupByName(Transaction tr, string groupName)
         {
             if (tr == null)
@@ -86,6 +106,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return null;
         }
 
+        /// <summary>
+        /// Gets a string representing the <see cref="PointGroup"/>s point number range.
+        /// </summary>
+        /// <param name="tr">The active transaction.</param>
+        /// <param name="groupName">The name of the <see cref="PointGroup"/>.</param>
+        /// <returns>A string representing the point number range.</returns>
+        /// <exception cref="InvalidOperationException">the cogoPoint was null.</exception>
         public static string GroupRange(Transaction tr, string groupName)
         {
             var pointNumberList = new List<string>();
@@ -116,6 +143,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return StringHelpers.GetRangeString(pointNumberList);
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="PointGroup"/>s.
+        /// </summary>
+        /// <returns>A IEnumerable<PointGroup> of the PointGroups in the active drawing.</returns>
         public static IEnumerable<PointGroup> GetPointGroups()
         {
             var list = new List<PointGroup>();
@@ -132,6 +163,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
+        /// <summary>
+        /// Gets a list of <see cref="CivilPointGroup"/>s.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<CivilPointGroup> GetCivilPointGroups()
         {
             var list = new List<CivilPointGroup>();
@@ -147,6 +182,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
+        /// <summary>
+        /// Converts a <see cref="PointGorup"/> to a <see cref="CivilPointGroup"/>.
+        /// </summary>
+        /// <param name="pointGroup">The PointGroup to convert.</param>
+        /// <returns>A <see cref="CivilPointGroup"/> representing the PointGroup.</returns>
         public static CivilPointGroup ToCivilPointGroup(this PointGroup pointGroup)
         {
             return new CivilPointGroup
@@ -157,6 +197,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             };
         }
 
+        /// <summary>
+        /// Converts a list of PointGroups to a list of CivilPointGroups.
+        /// </summary>
+        /// <param name="pointGroups">The list of PointGroups.</param>
+        /// <returns>A list of CivilPointGroups.</returns>
         public static IEnumerable<CivilPointGroup> ToListOfCivilPointGroups(this IEnumerable<PointGroup> pointGroups)
         {
             return pointGroups.Select(pointGroup => pointGroup.ToCivilPointGroup()).ToList();

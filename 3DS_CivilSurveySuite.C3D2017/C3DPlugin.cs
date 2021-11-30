@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using _3DS_CivilSurveySuite.ACAD2017;
 using Autodesk.AutoCAD.Runtime;
 
@@ -16,7 +17,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public void Initialize()
         {
             AcadApp.Editor.WriteMessage($"\n3DS> Loading Civil Survey Suite for Civil 3D... {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
-            C3DService.Register();
+
+            try
+            {
+                C3DService.Register();
+            }
+            catch (InvalidOperationException e)
+            {
+                AcadApp.Editor.WriteMessage("\n3DS> Error Loading Civil Survey Suite for Civil 3D: " + e.Message);
+            }
 
             if (AcadApp.IsCivil3DRunning())
                 AcadApp.LoadCuiFile(_3DS_CUI_FILE);
