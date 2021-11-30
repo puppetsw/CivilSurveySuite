@@ -100,7 +100,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             if (EditorUtils.IsType(firstLineResult.ObjectId, typeof(Polyline)))
             {
-                var polyline = tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead) as Polyline;
+                var polyline = (Polyline)tr.GetObject(firstLineResult.ObjectId, OpenMode.ForRead);
                 var segmentId = PolylineUtils.GetPolylineSegment(polyline, firstLineResult);
                 var segment = polyline.GetLineSegment2dAt(segmentId);
                 line = new Line(segment.StartPoint.ToPoint3d(), segment.EndPoint.ToPoint3d());
