@@ -33,7 +33,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void Terminate()
         {
             Properties.Settings.Default.Save();
-            AcadApp.UnloadCuiFile(_3DS_CUI_FILE);
         }
     }
 }

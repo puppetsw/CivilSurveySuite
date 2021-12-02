@@ -33,7 +33,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public void Terminate()
         {
-            AcadApp.UnloadCuiFile(_3DS_CUI_FILE);
+            // Nothing to cleanup.
         }
     }
 }

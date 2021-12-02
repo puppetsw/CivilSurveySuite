@@ -68,8 +68,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void LoadCuiFile(string fileName)
         {
             // Is Cui file already loaded?
+            // If it is, we will unload so it can be reloaded.
             if (IsCuiFileLoaded(fileName))
-                return;
+            {
+                UnloadCuiFile(fileName);
+            }
 
             // Load the CUI file.
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
@@ -90,10 +93,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="fileName">Path to cui file.</param>
         public static void UnloadCuiFile(string fileName)
         {
-            // Is Cui file already unloaded?
-            if (!IsCuiFileLoaded(fileName))
-                return;
-
             // Unload the CUI file.
             var filePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + fileName;
             Application.UnloadPartialMenu(filePath);
