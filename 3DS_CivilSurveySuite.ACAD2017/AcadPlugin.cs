@@ -26,8 +26,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AcadApp.Editor.WriteMessage("\n3DS> Error Loading Civil Survey Suite for AutoCAD: " + e.Message);
             }
 
-            if (!AcadApp.IsCivil3DRunning())
-                AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+            // Had to disable this for now because of an issue with accoreconsole tests.
+            // if (!AcadApp.IsCivil3DRunning())
+            //     AcadApp.LoadCuiFile(_3DS_CUI_FILE);
         }
 
         public void Terminate()

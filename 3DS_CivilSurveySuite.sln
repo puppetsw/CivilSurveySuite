@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1A198AD-4A45-44E0-8703-49161569622A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteAcadTests", "3DS_CivilSurveySuiteAcadTests\3DS_CivilSurveySuiteAcadTests.csproj", "{4A45025B-3E94-4DB6-A656-432FFC73AE40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{9688C86C-F839-4B17-9336-638E110A15CF} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
 		{EDF782BB-52CC-45CF-9E62-9E06DD820B9E} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
 		{1C970487-72D0-4D4F-8297-29A52828B4D2} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
+		{4A45025B-3E94-4DB6-A656-432FFC73AE40} = {B1A198AD-4A45-44E0-8703-49161569622A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21AB6BAD-3251-4144-BB53-3E90D73A8B2D}
