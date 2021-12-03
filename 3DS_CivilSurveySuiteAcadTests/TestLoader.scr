@@ -1,5 +1,7 @@
+netload "C:\Program Files\Autodesk\AutoCAD 2017\C3D\aeccdbmgd.dll"
 netload "C:\Users\scott\source\repos\3DS_CivilSurveySuite\3DS_CivilSurveySuiteAcadTests\bin\Debug\Microsoft.Xaml.Behaviors.dll"
 netload "C:\Users\scott\source\repos\3DS_CivilSurveySuite\3DS_CivilSurveySuiteAcadTests\bin\Debug\3DS_CivilSurveySuite.ACAD2017.dll"
+netload "C:\Users\scott\source\repos\3DS_CivilSurveySuite\3DS_CivilSurveySuiteAcadTests\bin\Debug\3DS_CivilSurveySuite.C3D2017.dll"
 netload "C:\Users\scott\source\repos\3DS_CivilSurveySuite\3DS_CivilSurveySuiteAcadTests\bin\Debug\3DS_CivilSurveySuiteAcadTests.dll"
 RunTests
 
