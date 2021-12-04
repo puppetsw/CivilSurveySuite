@@ -1,11 +1,17 @@
 [OPTIONS]
+Auto Index=Yes
 Compatibility=1.1 or later
 Compiled file=helpproject.chm
 Contents file=Table of Contents.hhc
+Default Font=MS Sans Serif,8,0
+Default topic=Welcome.htm
 Display compile progress=No
-Index file=Index.hhk
 Language=0xc09 English (Australia)
+Title=3D Surveys Civil Survey Suite
 
+
+[FILES]
+design.css
 
 [INFOTYPES]
 

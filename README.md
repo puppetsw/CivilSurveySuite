@@ -7,6 +7,7 @@
 
 ## House-keeping
 * Fix up tests
+* Combine math commands into one with option.
 
 ### General
 * Error detection method.

@@ -5,6 +5,7 @@
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
 <OBJECT type="text/site properties">
+	<param name="FrameName" value="Welcome.htm">
 	<param name="Window Styles" value="0x800025">
 <param name="Font" value="MS Sans Serif,8,0">
 </OBJECT>
@@ -13,16 +14,247 @@
 		<param name="Name" value="Welcome">
 		<param name="Local" value="Welcome.htm">
 		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="AutoCAD Features">
+		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Palettes">
-			<param name="Local" value="Palettes.htm">
+			<param name="Name" value="Commands">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Traverse Palette">
-				<param name="Local" value="Traverse Palette.htm">
+				<param name="Name" value="Points">
 				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Bearing and Distance">
+					<param name="Local" value="Commands_ACAD\3DSPTBRGDST.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Bearing Distance and Slope">
+					<param name="Local" value="Commands_ACAD\3DSPTDISTSLOPE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Position at Slope">
+					<param name="Local" value="Commands_ACAD\3DSPTSLOPE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point Between Two Points at Offset">
+					<param name="Local" value="Commands_ACAD\3DSPTOFFSETBETWEENPTS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point Between Two Points at Distance">
+					<param name="Local" value="Commands_ACAD\3DSPTLINE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point Between Two Points">
+					<param name="Local" value="Commands_ACAD\3DSPTBETWEENPTS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Intersetion of a Bearing and Distance">
+					<param name="Local" value="Commands_ACAD\3DSPTINTBRD.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Intersection of Four Points">
+					<param name="Local" value="Commands_ACAD\3DSPTINTFOUR.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Intersection of Two Bearings">
+					<param name="Local" value="Commands_ACAD\3DSPTINTBRG.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Intersection of Two Distances">
+					<param name="Local" value="Commands_ACAD\3DSPTINTDIST.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Intersection of Two Lines">
+					<param name="Local" value="Commands_ACAD\3DSPTOFFSETLN.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point on Production">
+					<param name="Local" value="Commands_ACAD\3DSPtProd.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Text Location (Z Position)">
+					<param name="Local" value="Commands_ACAD\3DSPTLABELINS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Point at Text Location (Text)">
+					<param name="Local" value="Commands_ACAD\3DSPTLABELINSTEXT.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Text">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Add Prefix to Text">
+					<param name="Local" value="Commands_ACAD\3DSTXTPREFIX.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Add Suffix to Text">
+					<param name="Local" value="Commands_ACAD\3DSTXTSUFFIX.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Text to Uppercase">
+					<param name="Local" value="Commands_ACAD\3DSTXTUPPER.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Text to Lowercase">
+					<param name="Local" value="Commands_ACAD\3DSTXTLOWER.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Text to Sentence Case">
+					<param name="Local" value="Commands_ACAD\3DSTXTSENTENCE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Remove Alpha Characters">
+					<param name="Local" value="Commands_ACAD\3DSTXTRMVALPHA.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Text Math">
+					<param name="Local" value="Commands_ACAD\3DSTXTMATH.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Utilities">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Traverse (Command Line)">
+					<param name="Local" value="Commands_ACAD\3DSTRAVERSE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Inverse (Command Line)">
+					<param name="Local" value="Commands_ACAD\3DSINVERSE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Inverse (On-Screen)">
+					<param name="Local" value="Commands_ACAD\3DSINVERSEOS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Inverse (Chainage + Offset)">
+					<param name="Local" value="Commands_ACAD\3DSINVERSECHOFF.htm">
+					</OBJECT>
+			</UL>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tools">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Angle/Bearing Calculator">
+				<param name="Local" value="Commands_ACAD\3DSSHOWANGLECALCULATOR.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Traverse">
+				<param name="Local" value="Commands_ACAD\3DSSHOWTRAVERSEWINDOW.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Traverse Angle">
+				<param name="Local" value="Commands_ACAD\3DSSHOWTRAVERSEANGLEWINDOW.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Civil 3D Festures">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Commands">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Points">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Used Point Numbers">
+					<param name="Local" value="Commands_C3D\3DSCPTUSEDPTS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Set Next Point Number">
+					<param name="Local" value="Commands_C3D\3DSCPTSETNEXT.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Midpoint Between Polyline (at point)">
+					<param name="Local" value="Commands_C3D\3DSCPTMIDBETWEENPOLYS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Zoom to CogoPoint">
+					<param name="Local" value="Commands_C3D\3DSZOOMTOCPT.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Editor Window">
+					<param name="Local" value="Commands_C3D\3DSSHOWCOGOPOINTEDITOR.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Find and Replace Window">
+					<param name="Local" value="Commands_C3D\3DSSHOWCOGOPOINTFINDREPLACE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Connect Linework Window">
+					<param name="Local" value="Commands_C3D\3DSSHOWCONNECTLINEWORKWINDOW.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Surfaces">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Surface Elevation at Point">
+					<param name="Local" value="Commands_C3D\3DSSURFACEELATPT.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Surface Add Breaklines">
+					<param name="Local" value="Commands_C3D\3DSSURFACEADDBREAKLINES.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Surface Remove Breaklines">
+					<param name="Local" value="Commands_C3D\3DSSURFACEREMOVEBREAKLINES.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Surface Select CogoPoints Below or Above">
+					<param name="Local" value="Commands_C3D\3DSSURFACESELABOVEBELOW.htm">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Labels">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Move CogoPoint Labels">
+					<param name="Local" value="Commands_C3D\3DSCPTLABELSMOVE.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Reset CogoPoint Labels">
+					<param name="Local" value="Commands_C3D\3DSCPTLABELRESET.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Match CogoPoint Label Rotation">
+					<param name="Local" value="Commands_C3D\3DSCPTMATCHLBLROT.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Label Mask On">
+					<param name="Local" value="Commands_C3D\3DSLABELMASKON.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Label Mask Off">
+					<param name="Local" value="Commands_C3D\3DSLABELMASKOFF.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Labels Stack">
+					<param name="Local" value="Commands_C3D\3DSSTACKLABELS.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Raw Description to Uppercase">
+					<param name="Local" value="Commands_C3D\3DSRAWDESUPPER.htm">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="CogoPoint Description Format to Uppercase">
+					<param name="Local" value="Commands_C3D\3DSFULLDESUPPER.htm">
+					</OBJECT>
+			</UL>
 		</UL>
 	</UL>
 </UL>
