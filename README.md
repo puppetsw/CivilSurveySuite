@@ -3,7 +3,6 @@
 ## Things to do before 1.0.0.0
 * Finish ribbon and toolbar.
 * Update Commands.md
-* Finish help file.
 
 ## House-keeping
 * Fix up tests
