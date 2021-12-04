@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using _3DS_CivilSurveySuiteAcadTests;
 using Autodesk.AutoCAD.Runtime;
@@ -17,20 +19,21 @@ namespace _3DS_CivilSurveySuiteAcadTests
 
         public void Terminate()
         {
-            var directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (directoryPlugin == null)
                 return;
 
-            var directoryReportUnit = Path.Combine(directoryPlugin, @"ReportUnit");
+            string directoryReportUnit = Path.Combine(directoryPlugin, @"ReportUnit");
             Directory.CreateDirectory(directoryReportUnit);
-            var fileInputXml = Path.Combine(directoryReportUnit, @"Report-NUnit.xml");
-            var fileOutputHtml = Path.Combine(directoryReportUnit, @"Report-NUnit.html");
-            var generatorReportUnit = Path.Combine(directoryPlugin, @"ReportUnit", @"ReportUnit.exe");
-            //var generatorReportUnit = Path.Combine(directoryPlugin, @"Extent", @"extent.exe");
+            string fileInputXml = Path.Combine(directoryReportUnit, @"Report-NUnit.xml");
+            // var fileOutputHtml = Path.Combine(directoryReportUnit, @"Report-NUnit.html");
+            string fileOutputHtml = Path.Combine(directoryReportUnit, @"Report-NUnit");
+            //var generatorReportUnit = Path.Combine(directoryPlugin, @"ReportUnit", @"ReportUnit.exe");
+            string generatorReportUnit = Path.Combine(directoryPlugin, @"Extent", @"extent.exe");
 
             CreateHtmlReport(fileInputXml, fileOutputHtml, generatorReportUnit);
-            OpenHtmlReport(fileOutputHtml);
+            OpenHtmlReport(fileOutputHtml + "\\index.html");
         }
 
         /// <summary>
@@ -70,15 +73,11 @@ namespace _3DS_CivilSurveySuiteAcadTests
 
                 process.StartInfo.FileName = reportUnitPath;
 
-                var param = new StringBuilder();
-
-                // param.AppendFormat($" -l verbose ");
-                // param.AppendFormat($" -i \"{inputFile}\"");
-                // param.AppendFormat($" -o \"{outputFile}\"");
-
-                param.AppendFormat($" \"{inputFile}\"");
-                param.AppendFormat($" \"{outputFile}\"");
-                process.StartInfo.Arguments = param.ToString();
+                // var param = new StringBuilder();
+                // param.AppendFormat($" \"{inputFile}\"");
+                // param.AppendFormat($" \"{outputFile}\"");
+                // process.StartInfo.Arguments = param.ToString();
+                process.StartInfo.Arguments = $" -l verbose -i \"{inputFile}\" -o \"{outputFile}\"";
 
                 process.Start();
                 process.WaitForExit();

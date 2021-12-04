@@ -85,6 +85,7 @@
     <ItemGroup>
         <Compile Include="CogoPointTests.cs" />
         <Compile Include="LayerTests.cs" />
+        <Compile Include="LineTypeTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="TestBase.cs" />
         <Compile Include="TestPlugin.cs" />

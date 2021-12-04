@@ -23,8 +23,8 @@ namespace _3DS_CivilSurveySuiteAcadTests
             if (string.IsNullOrEmpty(drawingFile))
             {
                 defaultDrawing = true;
-                // Should this be executing assembly path instead?
-                var directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                string directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 drawingFile = Path.Combine(directoryPlugin, "TestDrawing.dwg");
             }
             else
@@ -61,7 +61,6 @@ namespace _3DS_CivilSurveySuiteAcadTests
                         catch (Exception e)
                         {
                             exception = e;
-
                             tr.Commit();
                             break;
                         }

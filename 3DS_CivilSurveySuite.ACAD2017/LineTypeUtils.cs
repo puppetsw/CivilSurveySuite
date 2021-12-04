@@ -4,7 +4,7 @@
 // prior written consent of the copyright owner.
 
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Runtime;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
@@ -17,14 +17,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// it will try to load it.
         /// </summary>
         /// <param name="lineTypeName">Name of the line type.</param>
-        /// <returns><c>true</c> if the linetype loaded successfully, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if the line type loaded successfully, <c>false</c> otherwise.</returns>
         public static bool LoadLineType(string lineTypeName)
         {
             try
             {
                 using (var tr = AcadApp.StartTransaction())
                 {
-                    LinetypeTable tbl = (LinetypeTable)tr.GetObject(AcadApp.ActiveDatabase.LinetypeTableId, OpenMode.ForRead);
+                    var tbl = (LinetypeTable)tr.GetObject(AcadApp.ActiveDatabase.LinetypeTableId, OpenMode.ForRead);
                     if (!tbl.Has(lineTypeName))
                     {
                         AcadApp.ActiveDatabase.LoadLineTypeFile(lineTypeName, ACAD_LINE_TYPE_FILE_NAME);
@@ -37,6 +37,33 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Checks if the given line type is loaded in the current <see cref="Database"/>.
+        /// </summary>
+        /// <param name="lineTypeName">Name of the line type.</param>
+        /// <returns><c>true</c> if the line type is loaded, otherwise <c>false</c>.</returns>
+        public static bool IsLineTypeLoaded(string lineTypeName)
+        {
+            var isLoaded = false;
+
+            try
+            {
+                using (var tr = AcadApp.StartTransaction())
+                {
+                    var tbl = (LinetypeTable)tr.GetObject(AcadApp.ActiveDatabase.LinetypeTableId, OpenMode.ForRead);
+                    isLoaded = tbl.Has(lineTypeName);
+
+                    tr.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                return isLoaded;
+            }
+
+            return isLoaded;
         }
     }
 }
