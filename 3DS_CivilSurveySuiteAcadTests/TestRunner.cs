@@ -13,16 +13,16 @@ namespace _3DS_CivilSurveySuiteAcadTests
         [CommandMethod("RunTests", CommandFlags.Session)]
         public static void RunTests()
         {
-            var directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string directoryPlugin = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (directoryPlugin == null)
                 return;
 
-            var directoryReportUnit = Path.Combine(directoryPlugin, @"ReportUnit");
+            string directoryReportUnit = Path.Combine(directoryPlugin, @"ReportUnit");
             Directory.CreateDirectory(directoryReportUnit);
-            var fileInputXml = Path.Combine(directoryReportUnit, @"Report-NUnit.xml");
+            string fileInputXml = Path.Combine(directoryReportUnit, @"TestResult.xml");
 
-            var nunitArgs = new List<string>
+            string[] nunitArgs = new List<string>
             {
                 "--trace=verbose"
                 ,"--result=" + fileInputXml

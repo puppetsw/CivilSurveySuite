@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using _3DS_CivilSurveySuiteAcadTests;
 using Autodesk.AutoCAD.Runtime;
 
@@ -26,7 +23,7 @@ namespace _3DS_CivilSurveySuiteAcadTests
 
             string directoryReportUnit = Path.Combine(directoryPlugin, @"ReportUnit");
             Directory.CreateDirectory(directoryReportUnit);
-            string fileInputXml = Path.Combine(directoryReportUnit, @"Report-NUnit.xml");
+            string fileInputXml = Path.Combine(directoryReportUnit, @"TestResult.xml");
             // var fileOutputHtml = Path.Combine(directoryReportUnit, @"Report-NUnit.html");
             string fileOutputHtml = Path.Combine(directoryReportUnit, @"Report-NUnit");
             //var generatorReportUnit = Path.Combine(directoryPlugin, @"ReportUnit", @"ReportUnit.exe");
