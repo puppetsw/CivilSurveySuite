@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -67,11 +68,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="Services\FolderBrowserDialogService.cs" />
     <Compile Include="Services\ICogoPointMoveLabelService.cs" />
     <Compile Include="Services\ICogoPointEditorService.cs" />
     <Compile Include="Services\ICogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IFolderBrowserDialogService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
     <Compile Include="Services\IOpenFileDialogService.cs" />
     <Compile Include="Services\ISaveFileDialogService.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="ViewModels\CogoPointSurfaceReportViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="Services\ICogoPointSurfaceReportService.cs" />
+    <Compile Include="ViewModels\ImageManagerViewModel.cs" />
     <Compile Include="ViewModels\SelectAlignmentViewModel.cs" />
     <Compile Include="ViewModels\SelectPointGroupViewModel.cs" />
     <Compile Include="ViewModels\SelectSurfaceViewModel.cs" />
@@ -113,6 +117,9 @@
     </Compile>
     <Compile Include="Views\ConnectLineworkView.xaml.cs">
       <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageManagerView.xaml.cs">
+      <DependentUpon>ImageManagerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectPointGroupView.xaml.cs">
       <DependentUpon>SelectPointGroupView.xaml</DependentUpon>
@@ -255,6 +262,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\ImageManagerView.xaml" />
     <Page Include="Views\SelectPointGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

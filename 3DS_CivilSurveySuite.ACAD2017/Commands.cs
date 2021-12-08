@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.UI.Views;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
@@ -134,6 +135,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Label_Location(PointUtils.CreatePoint, true);
         }
 
+
+        [CommandMethod("3DS", "_3DSInsertRaster", CommandFlags.Modal)]
+        public static void InsertRasterImg()
+        {
+            // RasterUtils.AttachRasterImage("D:\\Dropbox (3D Surveys)\\3D Surveys - PMS\\++ Contours Checkout\\01. Fieldwork Completed\\P210398 CFA Glen Osmond - Booked 3-12-21\\PHOTOS\\Photo 3-12-21, 2 57 30 pm.jpg", Point3d.Origin);
+            AcadService.ShowDialog<ImageManagerView>();
+        }
 
 
 

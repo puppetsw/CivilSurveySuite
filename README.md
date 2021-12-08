@@ -26,6 +26,7 @@
 
 ### Insert Pictures From Folder
 * Insert picture(s) tool
+* Show window that has a table view of photos. Allowing you to deselect and select photos.
 
 ### Point Reports
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 

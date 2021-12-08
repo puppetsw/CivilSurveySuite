@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AngleHelpers.cs" />
+    <Compile Include="FileHelpers.cs" />
     <Compile Include="MathHelpers.cs" />
     <Compile Include="PointHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

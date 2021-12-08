@@ -83,6 +83,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RasterUtils.cs" />
     <Compile Include="ResourceStrings.Designer.cs">
       <DependentUpon>ResourceStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>
