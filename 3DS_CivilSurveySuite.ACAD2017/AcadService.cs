@@ -26,6 +26,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<IProcessService, ProcessService>();
             Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
             Container.Register<IMessageBoxService, MessageBoxService>();
+            Container.Register<IRasterImageService, RasterImageService>();
 
             Container.Register<IOpenFileDialogService, OpenFileDialogService>();
             Container.Register<ISaveFileDialogService, SaveFileDialogService>();

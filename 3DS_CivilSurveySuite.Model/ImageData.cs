@@ -4,7 +4,10 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows.Media.Imaging;
 
 namespace _3DS_CivilSurveySuite.Model
@@ -12,24 +15,43 @@ namespace _3DS_CivilSurveySuite.Model
     /// <summary>
     /// Simple Image class to hold the image path and if it is selected.
     /// </summary>
-    public class ImageData
+    public class ImageData : INotifyPropertyChanged
     {
-        public string FilePath { get; set; }
+        private bool _isSelected;
+        public string FileName { get; }
 
-        public bool IsSelected { get; set; }
+        public string Name { get; }
 
-        public BitmapImage Image { get; private set; }
-
-        public ImageData(string filePath)
+        public bool IsSelected
         {
-            FilePath = filePath;
+            get => _isSelected;
+            [DebuggerStepThrough]
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BitmapFrame Image { get; }
+
+        public ImageData(string fileName)
+        {
+            FileName = fileName;
             IsSelected = false;
 
-            if (!File.Exists(FilePath))
+            if (!File.Exists(FileName))
                 throw new FileNotFoundException();
 
-            // Load BitmapImage from filepath
-            Image = new BitmapImage(new Uri(FilePath));
+            Name = Path.GetFileNameWithoutExtension(fileName);
+            Image = BitmapFrame.Create(new Uri(FileName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

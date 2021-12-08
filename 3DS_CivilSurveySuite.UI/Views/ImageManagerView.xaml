@@ -3,25 +3,119 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views"
+        xmlns:viewModels="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
+        xmlns:model="clr-namespace:_3DS_CivilSurveySuite.Model;assembly=3DS_CivilSurveySuite.Model"
         mc:Ignorable="d"
-        Title="ImageManagerView" Height="450" Width="800">
-    <Grid>
-        <ListView HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{Binding Images}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Image Source="{Binding Image}" Width="100" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" />
-                        <!-- <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" /> -->
+        Title="ImageManagerView" Height="450" Width="850"
+
+        d:DataContext="{viewModels:ImageManagerViewModel}">
+    <Window.Resources>
+
+        <!-- TODO -->
+        <!-- IMAGE SIZE -->
+        <!-- OFFSET AMOUNTS -->
+        <!-- TEXT IN MIDDLE OF SCREEN LIKE RIDER -->
+
+        <!-- Photo Template -->
+        <DataTemplate DataType="{x:Type model:ImageData}">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6">
+                <!-- Image Template -->
+                <Border Padding="4" Background="White" BorderBrush="#22000000" BorderThickness="1">
+                    <StackPanel Orientation="Vertical">
+                        <Image Source="{Binding Image.Thumbnail}" />
+                        <!-- <Label Content="{Binding Name}" /> -->
+                        <CheckBox IsChecked="{Binding IsSelected}"> Selected</CheckBox>
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <Button Height="23" Width="100" Command="{Binding LoadImagesCommand}">Load Images</Button>
+                </Border>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Main photo catalog view -->
+        <Style TargetType="{x:Type ListBox}" x:Key="PhotoListBoxStyle">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal"
+                                   ItemHeight="150"
+                                   ItemWidth="150"
+                                   VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for an individual generic item -->
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#445B6249" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- For metadata properties pane -->
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid>
+                            <ContentPresenter Margin="6" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Removes dotted rectangle focus -->
+        <Style TargetType="{x:Type ItemsControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                        <WrapPanel IsItemsHost="True" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ListBox
+                    IsSynchronizedWithCurrentItem="True"
+                    Style="{StaticResource PhotoListBoxStyle}"
+                    Margin="5"
+                    SelectionMode="Extended"
+                    ItemsSource="{Binding Images}"
+                    SelectedIndex="0"
+                    >
+                </ListBox>
+            </ScrollViewer>
+        </GroupBox>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button Command="{Binding SelectAllCommand}" Content="Select All" Margin="5" Height="25" Width="100"/>
+            <Button Command="{Binding SelectNoneCommand}" Content="Select None" Margin="5" Height="25" Width="100"/>
+            <Button Command="{Binding LoadImagesCommand}" Content="Open Folder" Margin="5" Height="25" Width="100"/>
+            <Button Command="{Binding InsertImagesCommand}" Content="Insert Images" Margin="5" Height="25" Width="100"/>
+        </StackPanel>
     </Grid>
+
 </Window>
