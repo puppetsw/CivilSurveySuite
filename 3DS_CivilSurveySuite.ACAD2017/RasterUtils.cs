@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 var imageCount = 1;
                 foreach (string fileName in fileNames)
                 {
-                    double x = position.X + imageWidth + padding;
+                    double x = imageCount > 1 ? position.X + imageWidth + padding : position.X;
                     double y = position.Y;
                     double z = position.Z;
 
@@ -121,12 +121,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     {
                         y -= imageHeight + padding;
                         x = startingPosition.X;
-                        position = startingPosition; // Reset the position.
                         imageCount = 0; // Reset to 0 because we increment at the end.
                     }
 
-                    AttachRasterImage(tr, fileName, position, imageWidth, imageHeight);
                     position = new Point3d(x, y, z);
+                    AttachRasterImage(tr, fileName, position, imageWidth, imageHeight);
                     imageCount++;
                 }
 
