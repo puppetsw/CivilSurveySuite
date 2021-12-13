@@ -59,12 +59,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="message">The message to display to the user.</param>
         /// <param name="basePoint">Optional base point parameter. If null, will prompt
         /// the user to select a base point.</param>
-        /// <param name="pickMessage"></param>
         /// <returns>Angle. Null if cancelled or empty.</returns>
         /// <remarks>Ignores AutoCADs ANGDIR, and ANGBASE variables. AutoCAD also
         /// returns the radians in a counter-clockwise direction. We need to use
         /// the AngleToClockwise extension method to correct this.</remarks>
-        public static bool GetAngle(out Angle angle, string message, Point3d basePoint, string pickMessage = "")
+        public static bool TryGetAngle(string message, Point3d basePoint, out Angle angle)
         {
             angle = null;
 
@@ -82,7 +81,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (pdoResult.StringResult != Keywords.PICK)
                         break;
 
-                    if (PickAngle(out angle, pickMessage, basePoint))
+                    if (TryPickAngle("\n3DS> Pick bearing on screen: ", basePoint, out angle))
                         break;
                 }
                 else if (pdoResult.Status == PromptStatus.OK)
@@ -108,7 +107,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <param name="useBasePoint">If true use the basepoint.</param>
         /// <param name="useAngleBase">Use drawing angle base in ACAD.</param>
         /// <returns></returns>
-        private static bool PickAngle(out Angle angle, string pickMessage, Point3d basePoint, bool useBasePoint = true, bool useAngleBase = false)
+        private static bool TryPickAngle(string pickMessage, Point3d basePoint, out Angle angle, bool useBasePoint = true, bool useAngleBase = false)
         {
             var pao = new PromptAngleOptions(pickMessage)
             {
@@ -186,12 +185,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the distance from the user input.
         /// </summary>
-        /// <param name="distance">A double containing the output distance.</param>
         /// <param name="message">The message to display to the user.</param>
-        /// <param name="basePoint">Optional base point parameter. If null, will prompt
-        /// the user to select a base point.</param>
+        /// <param name="basePoint">Optional base point parameter. If null, will prompt</param>
+        /// <param name="distance">A double containing the output distance. the user to select a base point.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool GetDistance(out double distance, string message, Point3d basePoint)
+        public static bool TryGetDistance(string message, Point3d basePoint, out double distance)
         {
             distance = double.NaN;
             var pdo = new PromptDistanceOptions(message)
@@ -216,10 +214,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the distance from the user input.
         /// </summary>
-        /// <param name="distance">A double containing the output distance.</param>
         /// <param name="message">The message to display to the user.</param>
+        /// <param name="distance">A double containing the output distance.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool GetDistance(out double distance, string message)
+        public static bool TryGetDistance(string message, out double distance)
         {
             distance = double.NaN;
 
@@ -243,13 +241,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a double value from user input.
         /// </summary>
-        /// <param name="value">The value.</param>
         /// <param name="message">The message.</param>
+        /// <param name="value">The value.</param>
         /// <param name="useDefaultValue">if set to <c>true</c> [use default value].</param>
         /// <param name="defaultValue">The default value.</param>
         /// <param name="allowZero"></param>
         /// <returns><c>true</c> if a double was successfully entered, <c>false</c> otherwise.</returns>
-        public static bool GetDouble(out double value, string message, bool useDefaultValue = false, double defaultValue = 0, bool allowZero = true)
+        public static bool TryGetDouble(string message, out double value, bool useDefaultValue = false, double defaultValue = 0, bool allowZero = true)
         {
             value = double.MinValue;
 
@@ -289,13 +287,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Gets the type of the entities of.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="objectIds">The object ids.</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
+        /// <param name="objectIds">The object ids.</param>
         /// <returns><c>true</c> if successfully got a selection, <c>false</c> otherwise.</returns>
-        public static bool GetSelectionOfType<T>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "") where T : Entity
+        public static bool TryGetSelectionOfType<T>(string addMessage, string removeMessage, out ObjectIdCollection objectIds) where T : Entity
         {
-            RXClass entityType = RXObject.GetClass(typeof(T));
+            var entityType = RXObject.GetClass(typeof(T));
 
             objectIds = new ObjectIdCollection();
 
@@ -321,21 +319,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Gets a selection of type T with option for keywords.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="objectIds">The object ids.</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
-        /// <param name="keyword"></param>
         /// <param name="keywords"></param>
         /// <param name="defaultKeyword"></param>
+        /// <param name="keyword"></param>
+        /// <param name="objectIds">The object ids.</param>
         /// <returns><c>true</c> if successfully got a selection, <c>false</c> otherwise.</returns>
-        public static bool GetSelectionOfType<T>(out ObjectIdCollection objectIds, string addMessage, string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
+        public static bool TryGetSelectionOfType<T>(string addMessage, string removeMessage, string[] keywords,
+            string defaultKeyword, out string keyword, out ObjectIdCollection objectIds)
         {
             var entityType = RXObject.GetClass(typeof(T));
             TypedValue[] typedValues = { new TypedValue((int)DxfCode.Start, entityType.DxfName) };
-            return GetSelection(out objectIds, typedValues, addMessage, removeMessage, out keyword, keywords, defaultKeyword);
+            return TryGetSelection(addMessage, removeMessage, typedValues, keywords, defaultKeyword, out keyword, out objectIds);
         }
 
-        public static bool GetSelectionOfType<T1, T2>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
+        public static bool TryGetSelectionOfType<T1, T2>(string addMessage, string removeMessage,
+            out ObjectIdCollection objectIds)
             where T1 : Entity where T2 : Entity
         {
             var entityType1 = RXObject.GetClass(typeof(T1));
@@ -348,10 +348,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 new TypedValue((int)DxfCode.Start, dxfNames),
             };
 
-            return GetSelection(out objectIds, typedValues, addMessage, removeMessage);
+            return TryGetSelection(addMessage, removeMessage, typedValues, out objectIds);
         }
 
-        public static bool GetSelectionOfType<T1, T2, T3>(out ObjectIdCollection objectIds, string addMessage, string removeMessage = "")
+        public static bool TryGetSelectionOfType<T1, T2, T3>(string addMessage, string removeMessage,
+            out ObjectIdCollection objectIds)
             where T1 : Entity where T2 : Entity where T3 : Entity
         {
             var entityType1 = RXObject.GetClass(typeof(T1));
@@ -365,7 +366,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 new TypedValue((int)DxfCode.Start, dxfNames),
             };
 
-            return GetSelection(out objectIds, typedValues, addMessage, removeMessage);
+            return TryGetSelection(addMessage, removeMessage, typedValues, out objectIds);
         }
 
         /// <summary>
@@ -375,7 +376,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <typeparam name="T">Type of <see cref="Entity"/></typeparam>
         /// <returns><c>true</c> if the selection was successful, otherwise <c>false</c>.</returns>
         /// <remarks>Will filter out any entities not of type T.</remarks>
-        public static bool GetImpliedSelectionOfType<T>(out ObjectIdCollection objectIds) where T : Entity
+        public static bool TryGetImpliedSelectionOfType<T>(out ObjectIdCollection objectIds) where T : Entity
         {
             var psr = AcadApp.Editor.SelectImplied();
             objectIds = new ObjectIdCollection();
@@ -400,15 +401,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Gets the an entity of type <see cref="T"/>.
         /// </summary>
         /// <typeparam name="T">Entity type.</typeparam>
-        /// <param name="objectId">The object identifier.</param>
         /// <param name="addMessage">The add message.</param>
-        /// <param name="removeMessage">The remove message.</param>
+        /// <param name="rejectMessage">The remove message.</param>
+        /// <param name="objectId">The object identifier.</param>
         /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
         /// <returns><c>True</c> if an entity was selected, <c>false</c> otherwise.</returns>
-        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, string removeMessage = "", bool exactMatch = false)
+        public static bool TryGetEntityOfType<T>(string addMessage, string rejectMessage, out ObjectId objectId, bool exactMatch = false)
         {
             var peo = new PromptEntityOptions(addMessage);
-            peo.SetRejectMessage(removeMessage);
+            peo.SetRejectMessage(rejectMessage);
 
             objectId = ObjectId.Null;
 
@@ -426,15 +427,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the an entity of type <see cref="T"/>.
         /// </summary>
-        /// <param name="objectId">The objectId of the selected entity.</param>
         /// <param name="addMessage">The message to display to the user when picking.</param>
         /// <param name="exactMatch">Set to true if you want the type to be an exact match.</param>
         /// <param name="keywords">List of keywords to display.</param>
-        /// <param name="selectedKeyword">Returns the selected keyword. Empty if none.</param>
         /// <param name="defaultKeyword">The default selected keyword in the command prompt.</param>
+        /// <param name="selectedKeyword">Returns the selected keyword. Empty if none.</param>
+        /// <param name="objectId">The objectId of the selected entity.</param>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <returns><c>True</c> if an entity or keyword was selected, <c>false</c> otherwise.</returns>
-        public static bool GetEntityOfType<T>(out ObjectId objectId, string addMessage, bool exactMatch, string[] keywords, out string selectedKeyword, string defaultKeyword)
+        public static bool TryGetEntityOfType<T>(string addMessage, bool exactMatch, string[] keywords, string defaultKeyword, out string selectedKeyword, out ObjectId objectId)
         {
             var peo = new PromptEntityOptions(addMessage);
             peo.SetRejectMessage("\n3DS> Invalid entity type.");
@@ -479,10 +480,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return false;
         }
 
-        public static bool GetEntityOfType<T>(out ObjectId objectId, out Point3d pickedPoint, string addMessage, string removeMessage = "", bool exactMatch = false)
+        public static bool TryGetEntityOfType<T>(string addMessage, string rejectMessage, out Point3d pickedPoint, out ObjectId objectId, bool exactMatch = false)
         {
             var peo = new PromptEntityOptions(addMessage);
-            peo.SetRejectMessage(removeMessage);
+            peo.SetRejectMessage(rejectMessage);
 
             objectId = ObjectId.Null;
             pickedPoint = Point3d.Origin;
@@ -502,15 +503,15 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
         /// </summary>
-        /// <param name="objectId">The object identifier.</param>
-        /// <param name="allowedClasses">The allowed classes.</param>
         /// <param name="addMessage">The add message.</param>
-        /// <param name="removeMessage">The remove message.</param>
+        /// <param name="rejectMessage">The remove message.</param>
+        /// <param name="allowedClasses">The allowed classes.</param>
+        /// <param name="objectId">The object identifier.</param>
         /// <returns><c>true</c> if got the <see cref="ObjectId"/> successfully, <c>false</c> otherwise.</returns>
-        public static bool GetEntity(out ObjectId objectId, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
+        public static bool TryGetEntity(string addMessage, string rejectMessage, IEnumerable<Type> allowedClasses, out ObjectId objectId)
         {
             var peo = new PromptEntityOptions(addMessage);
-            peo.SetRejectMessage(removeMessage);
+            peo.SetRejectMessage(rejectMessage);
 
             objectId = ObjectId.Null;
 
@@ -522,6 +523,36 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (entity.Status != PromptStatus.OK)
                 return false;
 
+            objectId = entity.ObjectId;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
+        /// </summary>
+        /// <param name="addMessage"></param>
+        /// <param name="rejectMessage"></param>
+        /// <param name="allowedClasses"></param>
+        /// <param name="pickedPoint"></param>
+        /// <param name="objectId"></param>
+        /// <returns></returns>
+        public static bool TryGetEntity(string addMessage, string rejectMessage, IEnumerable<Type> allowedClasses, out Point3d pickedPoint, out ObjectId objectId)
+        {
+            var peo = new PromptEntityOptions(addMessage);
+            peo.SetRejectMessage(rejectMessage);
+
+            objectId = ObjectId.Null;
+            pickedPoint = Point3d.Origin;
+
+            foreach (var type in allowedClasses)
+                peo.AddAllowedClass(type, true);
+
+            var entity = AcadApp.Editor.GetEntity(peo);
+
+            if (entity.Status != PromptStatus.OK)
+                return false;
+
+            pickedPoint = entity.PickedPoint;
             objectId = entity.ObjectId;
             return true;
         }
@@ -541,43 +572,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         }
 
         /// <summary>
-        /// Gets an entity's <see cref="ObjectId"/>. Selection is restricted by the <param name="allowedClasses">allowedClasses</param>
-        /// </summary>
-        /// <param name="objectId"></param>
-        /// <param name="pickedPoint"></param>
-        /// <param name="allowedClasses"></param>
-        /// <param name="addMessage"></param>
-        /// <param name="removeMessage"></param>
-        /// <returns></returns>
-        public static bool GetEntity(out ObjectId objectId, out Point3d pickedPoint, IEnumerable<Type> allowedClasses, string addMessage, string removeMessage = "")
-        {
-            var peo = new PromptEntityOptions(addMessage);
-            peo.SetRejectMessage(removeMessage);
-
-            objectId = ObjectId.Null;
-            pickedPoint = Point3d.Origin;
-
-            foreach (var type in allowedClasses)
-                peo.AddAllowedClass(type, true);
-
-            var entity = AcadApp.Editor.GetEntity(peo);
-
-            if (entity.Status != PromptStatus.OK)
-                return false;
-
-            pickedPoint = entity.PickedPoint;
-            objectId = entity.ObjectId;
-            return true;
-        }
-
-        /// <summary>
         /// Gets a selection set. Selection set uses <param name="typedValues">TypedValues[]</param>
         /// to determine the selection filter.
         /// </summary>
-        /// <param name="objectIds">List of <see cref="ObjectId"/> objects that the selection gets.</param>
-        /// <param name="typedValues">The typed values to filter by</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
+        /// <param name="typedValues">The typed values to filter by</param>
+        /// <param name="objectIds">List of <see cref="ObjectId"/> objects that the selection gets.</param>
         /// <returns><c>true</c> if selection set was successful, <c>false</c> otherwise.</returns>
         /// <remarks>
         /// <code>
@@ -585,7 +586,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// acTypValAr.SetValue(new TypedValue((int)DxfCode.Start, "CIRCLE"), 0);
         /// </code>
         /// </remarks>
-        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage, string removeMessage = "")
+        public static bool TryGetSelection(string addMessage, string removeMessage, TypedValue[] typedValues, out ObjectIdCollection objectIds)
         {
             objectIds = new ObjectIdCollection();
 
@@ -614,16 +615,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Gets a selection set. Selection set uses <param name="typedValues">TypedValues[]</param>
         /// to determine the selection filter.
         /// </summary>
-        /// <param name="objectIds">The objectids of the selected entities.</param>
-        /// <param name="typedValues">The typed values to filter by.</param>
         /// <param name="addMessage">The add message.</param>
         /// <param name="removeMessage">The remove message.</param>
-        /// <param name="keyword">The keyword.</param>
+        /// <param name="typedValues">The typed values to filter by.</param>
         /// <param name="keywords">The keywords.</param>
         /// <param name="defaultKeyword"></param>
+        /// <param name="keyword">The keyword.</param>
+        /// <param name="objectIds">The objectids of the selected entities.</param>
         /// <returns><c>true</c> if selection set was successful, <c>false</c> otherwise.</returns>
-        public static bool GetSelection(out ObjectIdCollection objectIds, TypedValue[] typedValues, string addMessage,
-            string removeMessage, out string keyword, string[] keywords, string defaultKeyword = "")
+        public static bool TryGetSelection(string addMessage, string removeMessage, TypedValue[] typedValues,
+            string[] keywords, string defaultKeyword, out string keyword, out ObjectIdCollection objectIds)
         {
             if (typedValues == null)
             {
@@ -701,12 +702,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a integer from user input.
         /// </summary>
-        /// <param name="input">The input.</param>
         /// <param name="message">The message.</param>
+        /// <param name="input">The input.</param>
         /// <param name="useDefaultValue"></param>
         /// <param name="defaultValue"></param>
         /// <returns><c>true</c> if a integer was input successfully, <c>false</c> otherwise.</returns>
-        public static bool GetInt(out int input, string message, bool useDefaultValue = false, int defaultValue = 0)
+        public static bool TryGetInt(string message, out int input, bool useDefaultValue = false, int defaultValue = 0)
         {
             input = int.MinValue;
 
@@ -734,10 +735,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the nested entity.
         /// </summary>
-        /// <param name="entityResult">The entity result.</param>
         /// <param name="message">The message.</param>
+        /// <param name="entityResult">The entity result.</param>
         /// <returns><c>true</c> if successfully got an entity, <c>false</c> otherwise.</returns>
-        public static bool GetNestedEntity(out PromptNestedEntityResult entityResult, string message)
+        public static bool TryGetNestedEntity(string message, out PromptNestedEntityResult entityResult)
         {
             var pneo = new PromptNestedEntityOptions(message) { AllowNone = false };
             entityResult = AcadApp.Editor.GetNestedEntity(pneo);
@@ -747,10 +748,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a base <see cref="Point3d"/> from user input.
         /// </summary>
-        /// <param name="basePoint">The base point output.</param>
         /// <param name="message">The message to display to the user in the command line.</param>
+        /// <param name="basePoint">The base point output.</param>
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
-        public static bool GetPoint(out Point3d basePoint, string message)
+        public static bool TryGetPoint(string message, out Point3d basePoint)
         {
             var ppo = new PromptPointOptions(message)
             {
@@ -770,10 +771,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a base <see cref="Point2d"/> from user input.
         /// </summary>
-        /// <param name="basePoint">The base point output.</param>
         /// <param name="message">The message to display to the user in the command line.</param>
+        /// <param name="basePoint">The base point output.</param>
         /// <returns><c>true</c> if base point successfully got, <c>false</c> otherwise.</returns>
-        public static bool GetPoint(out Point2d basePoint, string message)
+        public static bool TryGetPoint(string message, out Point2d basePoint)
         {
             var ppo = new PromptPointOptions(message);
             var ppr = AcadApp.Editor.GetPoint(ppo);
@@ -789,13 +790,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets a string from user input.
         /// </summary>
-        /// <param name="input">The typed input string.</param>
         /// <param name="message">The message to display to the user.</param>
+        /// <param name="input">The typed input string.</param>
         /// <param name="useDefaultValue">Whether or not to use the default value.</param>
         /// <param name="defaultValue">The default value to use.</param>
         /// <param name="allowSpaces">Whether or not to allow spaces as input.</param>
         /// <returns><c>True</c> if got a string successfully, <c>false</c> otherwise.</returns>
-        public static bool GetString(out string input, string message, bool useDefaultValue = false, string defaultValue = "", bool allowSpaces = false)
+        public static bool TryGetString(string message, out string input, bool useDefaultValue = false,
+            string defaultValue = "", bool allowSpaces = false)
         {
             input = string.Empty;
             var pso = new PromptStringOptions(message) { AllowSpaces = allowSpaces };

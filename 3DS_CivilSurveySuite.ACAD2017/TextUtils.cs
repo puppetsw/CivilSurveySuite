@@ -22,16 +22,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Creates a selection set with just TEXT and MTEXT entities.
         /// </summary>
         /// <param name="objectIds"><see cref="ObjectIdCollection"/> containing the selected entities.</param>
-        /// <param name="message">The selection message.</param>
         /// <returns>True if the selection was successful, otherwise false.</returns>
-        private static bool SelectText(out ObjectIdCollection objectIds, string message)
+        private static bool TrySelectText(out ObjectIdCollection objectIds)
         {
             var typedValue = new TypedValue[1];
             typedValue.SetValue(new TypedValue((int)DxfCode.Start, "TEXT,MTEXT"), 0);
 
             objectIds = new ObjectIdCollection();
 
-            if (!EditorUtils.GetSelection(out var selectedTextIds, typedValue, message))
+            if (!EditorUtils.TryGetSelection("\n3DS> Select text entities: ", "\n>3DS Remove text entities: ",
+                    typedValue, out var selectedTextIds))
                 return false;
 
             objectIds = selectedTextIds;
@@ -102,7 +102,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void RemoveAlphaCharactersFromText()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -134,10 +134,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void AddPrefixToText()
         {
-            if (!EditorUtils.GetString(out string prefixText, "\n3DS> Enter prefix text: ", allowSpaces: true))
+            if (!EditorUtils.TryGetString("\n3DS> Enter prefix text: ", out string prefixText, allowSpaces: true))
                 return;
 
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -163,10 +163,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void AddSuffixToText()
         {
-            if (!EditorUtils.GetString(out string suffixText, "\n3DS> Enter suffix text: "))
+            if (!EditorUtils.TryGetString("\n3DS> Enter suffix text: ", out string suffixText))
                 return;
 
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -194,7 +194,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void TextToUpper()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -220,7 +220,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void TextToLower()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -247,7 +247,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void TextToSentence()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -275,10 +275,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void AddNumberToText()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.GetDouble(out double addValue, "\n3DS> Enter amount to add to text: "))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to add to text: ", out double addValue))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -318,10 +318,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void SubtractNumberFromText()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.GetDouble(out double subtractValue, "\n3DS> Enter amount to subtract from text: "))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to subtract from text: ", out double subtractValue))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -361,10 +361,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void MultiplyTextByNumber()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.GetDouble(out double multiplyValue, "\n3DS> Enter value to multiply by text: "))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to multiply by text: ", out double multiplyValue))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -404,10 +404,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void DivideTextByNumber()
         {
-            if (!SelectText(out var objectIds, "\n3DS> Select text entities: "))
+            if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.GetDouble(out double divideValue, "\n3DS> Enter value to divide by text: "))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to divide by text: ", out double divideValue))
                 return;
 
             using (var tr = AcadApp.StartTransaction())

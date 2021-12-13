@@ -164,7 +164,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static CivilAlignment SelectCivilAlignment()
         {
-            if (!EditorUtils.GetEntityOfType<Alignment>(out var objectId, "\n3DS> Select Alignment: "))
+            if (!EditorUtils.TryGetEntityOfType<Alignment>("\n3DS> Select Alignment: ",
+                    "\n3DS> Select Alignmnet: ", out var objectId))
                 return null;
 
             CivilAlignment alignment;

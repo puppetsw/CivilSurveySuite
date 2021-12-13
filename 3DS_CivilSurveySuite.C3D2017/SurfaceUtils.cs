@@ -172,7 +172,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void GetSurfaceElevationAtPoint()
         {
-            if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick point: "))
+            if (!EditorUtils.TryGetPoint("\n3DS> Pick point: ", out Point3d pickedPoint))
                 return;
 
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
@@ -199,7 +199,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void AddBreaklineToSurface()
         {
-            if (!EditorUtils.GetSelectionOfType<Line, Polyline, Polyline3d>(out var objectIds, "\n3DS> Select breaklines to add: "))
+            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\n3DS> Select breaklines: ",
+                    "\n3DS> Remove breaklines: ", out var objectIds))
                 return;
 
             // Which surface?
@@ -244,7 +245,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void RemoveBreaklinesFromSurface()
         {
-            if (!EditorUtils.GetSelectionOfType<Line, Polyline, Polyline3d>(out var objectIds, "\n3DS> Select breaklines to remove: "))
+            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\n3DS> Select breaklines: ",
+                    "\n3DS> Remove breaklines: ", out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -476,7 +478,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 var pkr = AcadApp.Editor.GetKeywords(pko);
 
-                EditorUtils.GetDouble(out double tolerance, "\n3DS> Tolerance: ", true, 0.001);
+                EditorUtils.TryGetDouble("\n3DS> Tolerance: ", out double tolerance, true, 0.001);
 
                 if (pkr.Status != PromptStatus.OK && string.IsNullOrEmpty(pkr.StringResult))
                 {
@@ -519,14 +521,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static CivilSurface SelectCivilSurface()
         {
-            if (!EditorUtils.GetEntityOfType<TinSurface>(out var objectId, "\n3DS> Select Surface: "))
+            if (!EditorUtils.TryGetEntityOfType<TinSurface>("\n3DS> Select Surface: ",
+                    "\n3DS> Select Surface: ", out var objectId))
                 return null;
 
             CivilSurface surface;
 
             using (var tr = AcadApp.StartLockedTransaction())
             {
-                surface = SurfaceUtils.GetSurfaceByObjectId(tr, objectId).ToCivilSurface();
+                surface = GetSurfaceByObjectId(tr, objectId).ToCivilSurface();
                 tr.Commit();
             }
 

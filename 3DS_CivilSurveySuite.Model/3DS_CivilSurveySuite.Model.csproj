@@ -58,7 +58,6 @@
     <Compile Include="TraverseAngleObject.cs" />
     <Compile Include="TraverseObject.cs" />
     <Compile Include="Vector.cs" />
-    <Compile Include="ViewState.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

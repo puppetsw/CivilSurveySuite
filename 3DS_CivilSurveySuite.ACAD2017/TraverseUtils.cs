@@ -20,18 +20,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Select base point: ", out Point3d basePoint))
                     return;
 
                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
 
-                if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Bearing: ", basePoint))
+                if (!EditorUtils.TryGetAngle("\n3DS> Enter bearing: ", basePoint, out var angle))
                     return;
 
                 AcadApp.Editor.WriteMessage($"\n3DS> {angle}");
 
                 //TODO: Add feet/units conversion
-                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Distance: ", basePoint))
+                if (!EditorUtils.TryGetDistance("\n3DS> Distance: ", basePoint, out double distance))
                     return;
 
                 var pko = new PromptKeywordOptions("\n3DS> Continue? ") { AppendKeywordsToMessage = true };

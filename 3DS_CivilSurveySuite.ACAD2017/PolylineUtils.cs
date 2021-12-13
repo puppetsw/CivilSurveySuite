@@ -27,7 +27,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.GetEntityOfType<Curve>(out ObjectId firstObjectId, "\n3DS> Select first Polyline: "))
+                if (!EditorUtils.TryGetEntityOfType<Curve>("\n3DS> Select first Polyline: ",
+                        "\n3DS> Select a Polyline: ", out var firstObjectId))
                 {
                     tr.Commit();
                     return;
@@ -36,7 +37,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 var curve1 = (Curve)tr.GetObject(firstObjectId, OpenMode.ForRead);
                 graphics.DrawLine(curve1, TransientDrawingMode.Highlight);
 
-                if (!EditorUtils.GetEntityOfType<Curve>(out ObjectId secondObjectId, "\n3DS> Select second Polyline: "))
+                if (!EditorUtils.TryGetEntityOfType<Curve>("\n3DS> Select second Polyline: ",
+                        "\n3DS> Select a Polyline: ", out var secondObjectId))
                 {
                     tr.Commit();
                     return;
@@ -47,7 +49,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 do
                 {
-                    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick a point: "))
+                    if (!EditorUtils.TryGetPoint("\n3DS> Pick a point: ", out Point3d pickedPoint))
                         break;
 
                     var p1 = curve1.GetClosestPointTo(pickedPoint, true);

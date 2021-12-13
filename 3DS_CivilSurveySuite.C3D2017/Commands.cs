@@ -218,7 +218,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
         public static void Test()
         {
-            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var cgId, ""))
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("", "", out var cgId))
             {
                 return;
             }

@@ -63,7 +63,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
         {
             Utils.SetFocusToDwgView();
 
-            if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select base point: "))
+            if (!EditorUtils.TryGetPoint("\n3DS> Select base point: ", out Point3d basePoint))
                 return;
 
             AcadApp.Editor.WriteMessage($"\n3DS> Base point: X:{Math.Round(_basePoint.X, 4)}, Y:{Math.Round(_basePoint.Y, 4)}");

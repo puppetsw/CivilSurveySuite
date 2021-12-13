@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
             var cogoPointId = cogoPoints.Add(position, true);
 
-            EditorUtils.GetString(out string rawDescription, "\n3DS> Enter raw description: ");
+            EditorUtils.TryGetString("\n3DS> Enter raw description: ", out string rawDescription);
 
             var cogoPoint = tr.GetObject(cogoPointId, OpenMode.ForWrite) as CogoPoint;
 
@@ -103,9 +103,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void RawDescriptionToUpper()
         {
-            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
-                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
-                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: "))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: ", out pointIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -125,9 +125,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void DescriptionFormatToUpper()
         {
-            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
-                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
-                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: "))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: ", out pointIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -147,21 +147,20 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void LabelRotateMatch()
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds,
-                "\n3DS> Select points: ", "\n3DS> Remove points: "))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ", out var objectIds))
                 return;
 
-            if (!EditorUtils.GetEntity(out var perId, out var pickedPoint,
+            if (!EditorUtils.TryGetEntity("\n3DS> Select line or polyline: ", "\n3DS> Not a valid line or a polyline: ",
                 new[]
                 {
                     typeof(Line),
                     typeof(Polyline),
                     typeof(Polyline2d),
                     typeof(Polyline3d)
-                }, "\n3DS> Select line or polyline."))
+                }, out var pickedPoint, out var perId))
                 return;
 
-            var lineType = perId.ObjectClass.DxfName;
+            string lineType = perId.ObjectClass.DxfName;
             using (var tr = AcadApp.StartTransaction())
             {
                 double angle = 0;
@@ -233,9 +232,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
         public static void LabelResetSelection()
         {
-            if (!EditorUtils.GetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
-                !EditorUtils.GetSelectionOfType<CogoPoint>(out pointIds,
-                    "\n3DS> Select CogoPoints labels to reset: "))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select CogoPoint labels to reset: ", "\n3DS> Remove CogoPoint labels", out pointIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -261,7 +259,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="value">if set to <c>true</c> [value].</param>
         public static void LabelMaskToggle(bool value)
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to turn label mask(s) off: "))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select CogoPoints to turn label mask(s) off: ",
+                    "\n3DS> Remove CogoPoint labels", out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -287,7 +286,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void LabelStack()
         {
-            if (!EditorUtils.GetEntityOfType<CogoPoint>(out var entId, "\n3DS> Select first CogoPoint: ", "\n3DS> Remove CogoPoint: ", true))
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select first CogoPoint: ",
+                    "\n3DS> Remove CogoPoint: ", out var entId, true))
                 return;
 
             double labelOffset = 0;
@@ -313,8 +313,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
                 while (true)
                 {
-                    if (!EditorUtils.GetEntityOfType<CogoPoint>(out var objectId, "\n3DS> Select CogoPoint: ",
-                        "\n3DS> Remove CogoPoint: ", true))
+                    if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoint: ",
+                        "\n3DS> Remove CogoPoint: ", out var objectId, true))
                         break;
 
                     var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
@@ -348,21 +348,21 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void MarkerRotateMatch()
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds,
-                "\n3DS> Select points: ", "\n3DS> Remove points: "))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                "\n3DS> Select points: ", "\n3DS> Remove points: ", out var objectIds))
                 return;
 
-            if (!EditorUtils.GetEntity(out var perId, out var pickedPoint,
-                new[]
-                {
-                    typeof(Line),
-                    typeof(Polyline),
-                    typeof(Polyline2d),
-                    typeof(Polyline3d)
-                }, "\n3DS> Select line or polyline."))
+            if (!EditorUtils.TryGetEntity("\n3DS> Select line or polyline: ", "\n3DS> Not a valid line or a polyline: ",
+                    new[]
+                    {
+                        typeof(Line),
+                        typeof(Polyline),
+                        typeof(Polyline2d),
+                        typeof(Polyline3d)
+                    }, out var pickedPoint, out var perId))
                 return;
 
-            var lineType = perId.ObjectClass.DxfName;
+            string lineType = perId.ObjectClass.DxfName;
             using (var tr = AcadApp.StartTransaction())
             {
                 double angle = 0;
@@ -410,7 +410,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 {
                     var pt = (CogoPoint)id.GetObject(OpenMode.ForRead);
                     var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
-                    var textAngle = LabelUtils.GetFirstComponentAngle(style);
+                    double textAngle = LabelUtils.GetFirstComponentAngle(style);
 
                     AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
                     AcadApp.Editor.WriteMessage($"\n3DS> Rotating label to {angle} to match polyline segment");
@@ -475,7 +475,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
             // Where in the text do you want the linebreak?
             // Convert a text symbol to the new line? i.e. {NL}. NL for new line.
             // Check if the text has the lineBreakText key.
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoint: ", "\n3DS> Remove CogoPoints: "))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                    "\n3DS> Select CogoPoint: ", "\n3DS> Remove CogoPoints: ", out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -533,7 +534,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="deltaY">The Y amount to move.</param>
         public static void Move_CogoPoint_Labels(double deltaX, double deltaY)
         {
-            if (!EditorUtils.GetSelectionOfType<CogoPoint>(out var objectIds, "\n3DS> Select CogoPoints to move: "))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                    "\n3DS> Select CogoPoints to move: ", "\n3DS> Remove CogoPoints: ", out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -586,10 +588,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void Inverse_ByPointNumber()
         {
-            if (!EditorUtils.GetInt(out int firstPointNumber, "\n3DS> Enter first point number: "))
+            if (!EditorUtils.TryGetInt("\n3DS> Enter first point number: ", out int firstPointNumber))
                 return;
 
-            if (!EditorUtils.GetInt(out int secondPointNumber, "\n3DS> Enter second point number: "))
+            if (!EditorUtils.TryGetInt("\n3DS> Enter second point number: ", out int secondPointNumber))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -653,7 +655,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             using (var tr = AcadApp.StartTransaction())
             {
-                if (EditorUtils.GetInt(out int integer, "\n3DS> Set Number: ", true, GetNextPointNumber(tr)))
+                if (EditorUtils.TryGetInt("\n3DS> Set Number: ", out int integer, true, GetNextPointNumber(tr)))
                     C3DApp.ActiveDocument.Settings.GetSettings<SettingsCmdCreatePoints>().PointIdentity.NextPointNumber.Value = (uint)integer;
 
                 tr.Commit();
@@ -691,7 +693,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             {
                 var cogoPoints = C3DApp.ActiveDocument.CogoPoints;
 
-                if (!EditorUtils.GetInt(out int textInput, "\n3DS> Enter point number: "))
+                if (!EditorUtils.TryGetInt("\n3DS> Enter point number: ", out int textInput))
                     return;
 
                 CogoPoint zoomPt = null;

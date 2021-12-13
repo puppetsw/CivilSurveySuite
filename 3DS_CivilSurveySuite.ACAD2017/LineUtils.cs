@@ -85,7 +85,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static Line GetLineOrPolylineSegment(Transaction tr)
         {
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult firstLineResult, "\n3DS> Select Line or Polyline segment:"))
+            if (!EditorUtils.TryGetNestedEntity("\n3DS> Select Line or Polyline segment:", out var firstLineResult))
                 return null;
 
             if (!firstLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             endPoint = default;
 
-            if (!EditorUtils.GetNestedEntity(out PromptNestedEntityResult lineResult, "\n" + ResourceStrings.Select_Line_Or_Polyline))
+            if (!EditorUtils.TryGetNestedEntity("\n" + ResourceStrings.Select_Line_Or_Polyline, out var lineResult))
                 return null;
 
             if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
@@ -174,17 +174,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point on line: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point on line: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point on line: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point on line: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter leg distance: "))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter leg distance: ", out double distance))
                     return;
 
                 // Get angle and add 90° to it.

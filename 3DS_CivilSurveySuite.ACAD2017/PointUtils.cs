@@ -21,13 +21,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void Create_At_Angle_And_Distance(Action<Transaction, Point3d> createAction)
         {
-            if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Select a base point: "))
+            if (!EditorUtils.TryGetPoint("\n3DS> Select a base point: ", out Point3d basePoint))
                 return;
 
-            if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Enter bearing (Format: DDD.MMSS): ", basePoint, "\n3DS> Pick bearing on screen: "))
+            if (!EditorUtils.TryGetAngle("\n3DS> Enter bearing (Format: DDD.MMSS): ", basePoint, out var angle))
                 return;
 
-            if (!EditorUtils.GetDistance(out double dist, "\n3DS> Distance: ", basePoint))
+            if (!EditorUtils.TryGetDistance("\n3DS> Distance: ", basePoint, out double dist))
                 return;
 
             AcadApp.Editor.WriteMessage($"\n3DS> Bearing: {angle}");
@@ -92,22 +92,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d basePoint, "\n3DS> Pick starting point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick starting point: ", out Point3d basePoint))
                     return;
 
                 graphics.DrawX(basePoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetAngle(out Angle angle, "\n3DS> Enter angle: ", basePoint))
+                if (!EditorUtils.TryGetAngle("\n3DS> Enter angle: ", basePoint, out var angle))
                     return;
 
-                if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter distance: ", basePoint))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", basePoint, out double distance))
                     return;
 
                 var point = PointHelpers.AngleAndDistanceToPoint(angle, distance, basePoint.ToPoint());
                 graphics.DrawX(point.ToPoint3d(), Settings.GraphicsSize);
                 graphics.DrawLine(basePoint, point.ToPoint3d());
 
-                if (!EditorUtils.GetDouble(out double slope, "\n3DS> Enter slope (%): "))
+                if (!EditorUtils.TryGetDouble("\n3DS> Enter slope (%): ", out double slope))
                     return;
 
                 var newPoint = new Point(point.X, point.Y, basePoint.Z + distance * (slope / 100.0));
@@ -136,17 +136,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Base point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Base point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> New point location: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> New point location: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetDouble(out double slope, "\n3DS> Percent slope: ", allowZero: false))
+                if (!EditorUtils.TryGetDouble("\n3DS> Percent slope: ", out double slope, allowZero: false))
                     return;
 
                 double distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
@@ -167,22 +167,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d thirdPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d thirdPoint))
                     return;
 
                 graphics.DrawPlus(thirdPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d fourthPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d fourthPoint))
                     return;
 
                 graphics.DrawPlus(fourthPoint, Settings.GraphicsSize);
@@ -223,29 +223,29 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetAngle(out Angle firstAngle, "\n3DS> Enter first bearing: ", firstPoint))
+                if (!EditorUtils.TryGetAngle("\n3DS> Enter first bearing: ", firstPoint, out var firstAngle))
                     return;
 
                 var endPoint1 = PointHelpers.AngleAndDistanceToPoint(firstAngle, 1000, firstPoint.ToPoint());
                 graphics.DrawLine(firstPoint, endPoint1.ToPoint3d());
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetAngle(out Angle secondAngle, "\n3DS> Enter second bearing: ", secondPoint))
+                if (!EditorUtils.TryGetAngle("\n3DS> Enter second bearing: ", secondPoint, out var secondAngle))
                     return;
 
                 var endPoint2 = PointHelpers.AngleAndDistanceToPoint(secondAngle, 1000, secondPoint.ToPoint());
                 graphics.DrawLine(secondPoint, endPoint2.ToPoint3d());
 
-                var canIntersect = PointHelpers.AngleAngleIntersection(firstPoint.ToPoint(), firstAngle, secondPoint.ToPoint(), secondAngle, out Point intersectionPoint);
+                bool canIntersect = PointHelpers.AngleAngleIntersection(firstPoint.ToPoint(), firstAngle, secondPoint.ToPoint(), secondAngle, out var intersectionPoint);
 
                 if (!canIntersect)
                 {
@@ -281,22 +281,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetDistance(out double dist1, "\n3DS> Enter first distance: ", firstPoint))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter first distance: ", firstPoint, out double dist1))
                     return;
 
                 graphics.DrawCircle(firstPoint, dist1);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetDistance(out double dist2, "\n3DS> Enter second distance: ", secondPoint))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter second distance: ", secondPoint, out double dist2))
                     return;
 
                 graphics.DrawCircle(secondPoint, dist2);
@@ -314,7 +314,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
                 AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
 
-                if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick near desired intersection: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick near desired intersection: ", out Point3d pickedPoint))
                     return;
 
                 using (var tr = AcadApp.StartTransaction())
@@ -375,11 +375,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     graphics.DrawLine(secondLineToOffset, TransientDrawingMode.Highlight);
 
                     // Prompt for offset distance.
-                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance))
+                    if (!EditorUtils.TryGetDistance("\n" + ResourceStrings.Offset_Distance, out double dist))
                         return;
 
                     // Pick offset side.
-                    if (!EditorUtils.GetPoint(out Point3d offsetPoint, "\n" + ResourceStrings.Pick_Offset_Side))
+                    if (!EditorUtils.TryGetPoint("\n" + ResourceStrings.Pick_Offset_Side, out Point3d offsetPoint))
                         return;
 
                     Line firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
@@ -443,23 +443,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetAngle(out Angle angle1, "\n3DS> Enter angle: ", firstPoint))
+                if (!EditorUtils.TryGetAngle("\n3DS> Enter angle: ", firstPoint, out var angle1))
                     return;
 
                 var constructionPoint = PointHelpers.AngleAndDistanceToPoint(angle1, 32000, firstPoint.ToPoint());
                 graphics.DrawLine(firstPoint, constructionPoint.ToPoint3d());
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetDistance(out double dist, "\n3DS> Enter distance: ", secondPoint))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", secondPoint, out double dist))
                     return;
 
                 graphics.DrawCircle(secondPoint, dist);
@@ -477,7 +477,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
                 AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
 
-                if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick near desired intersection: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick near desired intersection: ", out Point3d pickedPoint))
                     return;
 
                 using (var tr = AcadApp.StartTransaction())
@@ -534,7 +534,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (basePoint == line.StartPoint)
                         angle = angle.Flip();
 
-                    if (!EditorUtils.GetDistance(out double dist, "\n" + ResourceStrings.Offset_Distance, basePoint))
+                    if (!EditorUtils.TryGetDistance("\n" + ResourceStrings.Offset_Distance, basePoint, out double dist))
                         return;
 
                     var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
@@ -599,7 +599,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static void Create_At_Label_Location(Action<Transaction, Point3d> createAction, bool useTextAsElevation = false)
         {
-            if (!EditorUtils.GetSelectionOfType<MText, DBText>(out var selectedTextIds, "\n3DS> Select text entities: "))
+            if (!EditorUtils.TryGetSelectionOfType<MText, DBText>("\n3DS> Select text entities: ",
+                    "\n3DS> Remove text entities: ", out var selectedTextIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -654,12 +655,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawX(secondPoint, Settings.GraphicsSize);
@@ -671,19 +672,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 {
                     using (var tr = AcadApp.StartTransaction())
                     {
-                        if (!EditorUtils.GetDistance(out double horizontalDist, "\n3DS> Enter distance along line: ", firstPoint))
+                        if (!EditorUtils.TryGetDistance("\n3DS> Enter distance along line: ", firstPoint, out double horizontalDist))
                             break;
 
                         var basePoint = PointHelpers.AngleAndDistanceToPoint(baseLine, horizontalDist, firstPoint.ToPoint());
 
-                        if (!EditorUtils.GetDistance(out double leftOffsetDist, "\n3DS> Enter left offset: ", basePoint.ToPoint3d()))
+                        if (!EditorUtils.TryGetDistance("\n3DS> Enter left offset: ", basePoint.ToPoint3d(), out double leftOffsetDist))
                             break;
 
                         var leftOffsetPt = PointHelpers.AngleAndDistanceToPoint(baseLine - 90, leftOffsetDist, basePoint);
                         graphics.DrawDot(leftOffsetPt.ToPoint3d(), Settings.GraphicsSize);
                         createAction(tr, leftOffsetPt.ToPoint3d());
 
-                        if (!EditorUtils.GetDistance(out double rightOffsetDist, "\n3DS> Enter right offset: ", basePoint.ToPoint3d()))
+                        if (!EditorUtils.TryGetDistance("\n3DS> Enter right offset: ", basePoint.ToPoint3d(), out double rightOffsetDist))
                             break;
 
                         var rightOffsetPt = PointHelpers.AngleAndDistanceToPoint(baseLine + 90, rightOffsetDist, basePoint);
@@ -725,12 +726,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> First point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> First point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Second point: ", out Point3d secondPoint))
                     return;
 
                 var deltaZ = secondPoint.Z - firstPoint.Z;
@@ -746,7 +747,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 do
                 {
-                    if (!EditorUtils.GetDouble(out double distance, "\n3DS> Enter distance: ", allowZero: false))
+                    if (!EditorUtils.TryGetDouble("\n3DS> Enter distance: ", out double distance, allowZero: false))
                         break;
 
                     var point = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
@@ -770,12 +771,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
@@ -802,7 +803,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                         write own event and handler. to pass points etc.
                         */
 
-                        if (!EditorUtils.GetDistance(out double distance, "\n3DS> Enter distance: ", firstPoint))
+                        if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", firstPoint, out double distance))
                             cancelled = true;
 
                         var newPoint = PointHelpers.AngleAndDistanceToPoint(angleBetweenPoints, distance, firstPoint.ToPoint());
@@ -850,14 +851,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             try
             {
                 // Pick first point.
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 // Highlight first point.
                 graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
                 // Pick second point.
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 Inverse(firstPoint, secondPoint);
@@ -882,7 +883,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             {
                 while (true)
                 {
-                    bool loopPick = EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: ");
+                    bool loopPick = EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint);
 
                     if (!loopPick)
                         break;
@@ -891,7 +892,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
                     // Pick second point.
-                    if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                    if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                         return;
 
                     var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
@@ -925,12 +926,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.GetPoint(out Point3d firstPoint, "\n3DS> Pick first point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.GetPoint(out Point3d secondPoint, "\n3DS> Pick second point: "))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
@@ -938,7 +939,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
                 do
                 {
-                    if (!EditorUtils.GetPoint(out Point3d pickedPoint, "\n3DS> Pick offset point: "))
+                    if (!EditorUtils.TryGetPoint("\n3DS> Pick offset point: ", out Point3d pickedPoint))
                         break;
 
                     var canIntersect = PointHelpers.PerpendicularIntersection(firstPoint.ToPoint(), secondPoint.ToPoint(), pickedPoint.ToPoint(), out Point intersectionPoint);
