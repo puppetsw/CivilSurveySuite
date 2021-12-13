@@ -9,6 +9,7 @@ namespace _3DS_CivilSurveySuite.UI.Services
 {
     public interface IRasterImageService
     {
-        void InsertRasterImage(IEnumerable<string> fileNames, double xOffset, double yOffset);
+        void InsertRasterImage(IEnumerable<string> fileNames, double imageWidth, double imageHeight,
+            double padding, int rowLimit);
     }
 }

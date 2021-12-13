@@ -15,5 +15,10 @@ namespace _3DS_CivilSurveySuite.UI.Views
             InitializeComponent();
             DataContext = viewModel;
         }
+
+        private void BtnInsertImage_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

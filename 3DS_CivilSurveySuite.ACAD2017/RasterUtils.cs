@@ -17,7 +17,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <remarks>
         /// https://adndevblog.typepad.com/autocad/2012/05/how-to-insert-a-rasterimage-using-the-net-api.html
         /// </remarks>
-        public static void AttachRasterImage(Transaction tr, string fileName, Point3d position, double imageWidth = 1.5)
+        public static void AttachRasterImage(Transaction tr, string fileName, Point3d position,
+            double imageWidth = 1.5, double imageHeight = 1)
         {
             const string recBase = "3DSIMG";
 
@@ -70,7 +71,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             // Prepare the orientation
             var uCorner = new Vector3d(imageWidth, 0, 0);
-            var vOnPlane = new Vector3d(0, 1, 0);
+            var vOnPlane = new Vector3d(0, imageHeight, 0);
             var coordinateSystem = new CoordinateSystem3d(position, uCorner, vOnPlane);
 
             image.Orientation = coordinateSystem;
@@ -92,8 +93,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             // warning the XRef palette
             RasterImage.EnableReactors(true);
             image.AssociateRasterDef(imageDef);
-
-
         }
 
         /// <summary>
@@ -101,18 +100,34 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         /// <param name="fileNames">List of file names to the images.</param>
         /// <param name="startingPosition">The starting position.</param>
-        /// <param name="xOffset">The X offset.</param>
-        /// <param name="yOffset">The Y offset.</param>
-        public static void AttachRasterImages(IEnumerable<string> fileNames, Point3d startingPosition, double xOffset, double yOffset)
+        /// <param name="imageWidth">The width of the image in the drawing.</param>
+        /// <param name="imageHeight">The height of the image in the drawing.</param>
+        /// <param name="padding">The padding/spacing between images.</param>
+        /// <param name="rowLimit">The limit before a new row is started.</param>
+        public static void AttachRasterImages(IEnumerable<string> fileNames, Point3d startingPosition,
+            double imageWidth, double imageHeight, double padding, int rowLimit = 5)
         {
-            const double imageWidth = 1.5;
             using (var tr = AcadApp.StartTransaction())
             {
                 var position = startingPosition;
+                var imageCount = 1;
                 foreach (string fileName in fileNames)
                 {
-                    AttachRasterImage(tr, fileName, position, imageWidth);
-                    position = new Point3d(position.X + imageWidth + xOffset, position.Y + yOffset, position.Z);
+                    double x = position.X + imageWidth + padding;
+                    double y = position.Y;
+                    double z = position.Z;
+
+                    if (imageCount == rowLimit)
+                    {
+                        y -= imageHeight + padding;
+                        x = startingPosition.X;
+                        position = startingPosition; // Reset the position.
+                        imageCount = 0; // Reset to 0 because we increment at the end.
+                    }
+
+                    AttachRasterImage(tr, fileName, position, imageWidth, imageHeight);
+                    position = new Point3d(x, y, z);
+                    imageCount++;
                 }
 
                 tr.Commit();

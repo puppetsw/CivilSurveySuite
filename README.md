@@ -16,6 +16,7 @@
 * Text Input Service
 * Copy raw description or full description to text entity
 * Link CogoPoint Labels (for moving)
+* Rename bool methods to Try, reorder out
 
 ### Setout Tool
 * Create block with point and text entities.
@@ -23,10 +24,6 @@
 
 ### Linework Connector
 * Linework tool to replace SmartDraft -- in progress
-
-### Insert Pictures From Folder
-* Insert picture(s) tool
-* Show window that has a table view of photos. Allowing you to deselect and select photos.
 
 ### Point Reports
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 

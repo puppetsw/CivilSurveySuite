@@ -53,6 +53,8 @@
     <Compile Include="Behaviors\TakeFocusAction.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\VisibilityToBoolean.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -86,6 +88,7 @@
     <Compile Include="Services\ITraverseService.cs" />
     <Compile Include="Services\OpenFileDialogService.cs" />
     <Compile Include="Services\SaveFileDialogService.cs" />
+    <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
@@ -295,7 +298,6 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\PointGroup.ico" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Icons\ZoomExtents.ico" />
   </ItemGroup>

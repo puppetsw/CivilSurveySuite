@@ -11,12 +11,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {
     public class RasterImageService : IRasterImageService
     {
-        public void InsertRasterImage(IEnumerable<string> fileNames, double xOffset, double yOffset)
+        public void InsertRasterImage(IEnumerable<string> fileNames, double imageWidth, double imageHeight,
+            double padding, int rowLimit)
         {
             if (!EditorUtils.GetPoint(out Point3d point, "\n3DS> Select starting point for raster image insertion "))
                 return;
 
-            RasterUtils.AttachRasterImages(fileNames, point, xOffset, yOffset);
+            RasterUtils.AttachRasterImages(fileNames, point, imageWidth, imageHeight, padding, rowLimit);
             AcadApp.Editor.UpdateScreen();
         }
     }

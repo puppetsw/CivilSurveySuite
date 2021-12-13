@@ -73,6 +73,7 @@
     <Compile Include="CogoPointMoveLabelViewModelTests.cs" />
     <Compile Include="CogoPointSurfaceReportViewModelTests.cs" />
     <Compile Include="DescriptionKeyTests.cs" />
+    <Compile Include="ImageManagerViewModelTests.cs" />
     <Compile Include="PointGroupSelectViewModelTests.cs" />
     <Compile Include="SelectAlignmentViewModelTests.cs" />
     <Compile Include="SurfaceSelectViewModelTests.cs" />
@@ -109,7 +110,11 @@
       <Name>3DS_CivilSurveySuite.UI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TestFiles\testimage.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="TestFiles\3DS_DescriptionKeys.xml">

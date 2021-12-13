@@ -18,6 +18,7 @@ namespace _3DS_CivilSurveySuite.Model
     public class ImageData : INotifyPropertyChanged
     {
         private bool _isSelected;
+
         public string FileName { get; }
 
         public string Name { get; }
@@ -35,6 +36,12 @@ namespace _3DS_CivilSurveySuite.Model
 
         public BitmapFrame Image { get; }
 
+        public double Width { get; }
+
+        public double Height { get; }
+
+        public double Ratio { get; }
+
         public ImageData(string fileName)
         {
             FileName = fileName;
@@ -45,6 +52,10 @@ namespace _3DS_CivilSurveySuite.Model
 
             Name = Path.GetFileNameWithoutExtension(fileName);
             Image = BitmapFrame.Create(new Uri(FileName));
+
+            Width = Image.PixelWidth;
+            Height = Image.PixelHeight;
+            Ratio = Height / Width;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
