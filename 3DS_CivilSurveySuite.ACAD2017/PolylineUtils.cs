@@ -97,31 +97,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         //FIXED: Make option to return readable angle (page-up like in Civil 3D). //Not an option.
         //FIXED: When polyline selected is the first segment, the angle is incorrect.
         //FIXED: Debug this and find out what's happening at start/end of polylines.
+        //FIXED: There is something weird happening with the distances to the polyline segments.
         public static double GetPolylineSegmentAngle(Polyline polyline, Point3d pickedPoint)
         {
             var segmentStart = 0;
-
-            Point3d closestPoint = polyline.GetClosestPointTo(pickedPoint, false);
-            double len = polyline.GetDistAtPoint(closestPoint);
+            var closestPoint = polyline.GetClosestPointTo(pickedPoint, false);
 
             for (var i = 1; i < polyline.NumberOfVertices - 1; i++)
             {
-                Point3d pt1 = polyline.GetPoint3dAt(i);
-                double l1 = polyline.GetDistAtPoint(pt1);
+                if (!polyline.OnSegmentAt(i, closestPoint.ToPoint2d(), 0))
+                    continue;
 
-                Point3d pt2 = polyline.GetPoint3dAt(i + 1);
-                double l2 = polyline.GetDistAtPoint(pt2);
-
-                if (len > l1 && len < l2)
-                {
-                    segmentStart = i;
-                    break;
-                }
+                // If the closest point is on the segment, then we're done.
+                segmentStart = i;
+                break;
             }
 
-            LineSegment2d segment = polyline.GetLineSegment2dAt(segmentStart);
+            var segment = polyline.GetLineSegment2dAt(segmentStart);
+            bool ordinaryAngle = MathHelpers.IsOrdinaryAngle(segment.StartPoint.ToPoint(), segment.EndPoint.ToPoint());
 
-            if (!MathHelpers.IsOrdinaryAngle(segment.StartPoint.ToPoint(), segment.EndPoint.ToPoint()))
+            if (!ordinaryAngle)
             {
                 // if it isn't an ordinary angle, we flip it.
                 return AngleHelpers.RadiansToAngle(segment.Direction.Angle).Flip().ToRadians();
