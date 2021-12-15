@@ -16,7 +16,6 @@
 * Text Input Service
 * Copy raw description or full description to text entity
 * Link CogoPoint Labels (for moving)
-* Rename bool methods to Try, reorder out
 
 ### Setout Tool
 * Create block with point and text entities.
