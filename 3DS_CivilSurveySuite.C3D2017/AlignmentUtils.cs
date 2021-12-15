@@ -68,22 +68,44 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return tr.GetObject(objectId, OpenMode.ForRead) as Alignment;
         }
 
-        public static CivilAlignment ToCivilAlignment(this Alignment surface)
+        /// <summary>
+        /// Converts a <see cref="Alignment"/> to a <see cref="CivilAlignment"/>.
+        /// </summary>
+        /// <param name="alignment">The alignment to convert.</param>
+        /// <returns>A <see cref="CivilAlignment"/> representing the <see cref="Alignment"/>.</returns>
+        public static CivilAlignment ToCivilAlignment(this Alignment alignment)
         {
             return new CivilAlignment
             {
-                ObjectId = surface.ObjectId.Handle.ToString(),
-                Name = surface.Name,
-                Description = surface.Description
+                ObjectId = alignment.ObjectId.Handle.ToString(),
+                Name = alignment.Name,
+                Description = alignment.Description,
+                StationStart = alignment.StartingStation,
+                StationEnd = alignment.EndingStation,
+                SiteName = alignment.SiteName
             };
         }
 
+        /// <summary>
+        /// Extension method that converts a IEnumerable of <see cref="Alignment"/> objects to a IEnumerable of
+        /// <see cref="CivilAlignment"/> objects.
+        /// </summary>
+        /// <param name="alignments">The IEnumerable of <see cref="Alignment"/>s to convert.</param>
+        /// <returns>A IEnumerable of <see cref="CivilAlignment"/>.</returns>
         public static IEnumerable<CivilAlignment> ToListOfCivilAlignments(this IEnumerable<Alignment> alignments)
         {
             return alignments.Select(alignment => alignment.ToCivilAlignment()).ToList();
         }
 
-        public static StationOffset GetStatoinOffset(Alignment alignment, double x, double y)
+        /// <summary>
+        /// Gets the station offset information from an alignment at the given x and y coordinates.
+        /// </summary>
+        /// <param name="alignment">The alignment.</param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns>A <see cref="StationOffset"/> object representing the alignment information.</returns>
+        /// <remarks><see cref="StationOffset"/> was used instead of a tuple as 4.5 doesn't have it inbuilt.</remarks>
+        public static StationOffset GetStationOffset(Alignment alignment, double x, double y)
         {
             double station = 0;
             double offset = 0;
@@ -91,7 +113,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return new StationOffset { Station = station, Offset = offset };
         }
 
-        public static StationOffset GetStatoinOffset(CivilAlignment civilAlignment, double x, double y)
+        /// <summary>
+        /// Gets the station offset information from an alignment at the given x and y coordinates.
+        /// </summary>
+        /// <param name="civilAlignment">The alignment.</param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <returns>A <see cref="StationOffset"/> object representing the alignment information.</returns>
+        /// <remarks><see cref="StationOffset"/> was used instead of a tuple as 4.5 doesn't have it inbuilt.</remarks>
+        public static StationOffset GetStationOffset(CivilAlignment civilAlignment, double x, double y)
         {
             double station = 0;
             double offset = 0;
@@ -113,24 +143,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return new StationOffset { Station = station, Offset = offset };
         }
 
-
-        public static double GetStationAtXY(Alignment alignment, double x, double y)
-        {
-            double station = 0;
-            double offset = 0;
-            alignment.StationOffset(x, y, ref station, ref offset);
-            return station;
-        }
-
-        public static double GetOffsetAtXY(Alignment alignment, double x, double y)
-        {
-            double station = 0;
-            double offset = 0;
-            alignment.StationOffset(x, y, ref station, ref offset);
-            return offset;
-        }
-
-
+        /// <summary>
+        /// Gets a IEnumerable of <see cref="Alignment"/> from the current document.
+        /// </summary>
+        /// <returns>A IEnumerable of <see cref="Alignment"/>.</returns>
         public static IEnumerable<Alignment> GetAlignments()
         {
             var list = new List<Alignment>();
@@ -146,7 +162,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
-
+        /// <summary>
+        /// Gets a IEnumerable of <see cref="CivilAlignment"/>s from the current drawing.
+        /// </summary>
+        /// <returns>A IEnumerable of <see cref="CivilAlignment"/>s representing the <see cref="Alignment"/>s.</returns>
         public static IEnumerable<CivilAlignment> GetCivilAlignments()
         {
             var list = new List<CivilAlignment>();
@@ -162,6 +181,31 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return list;
         }
 
+        /// <summary>
+        /// Gets alignments linked to a site.
+        /// </summary>
+        /// <param name="site">The name of the site to search against.</param>
+        /// <returns><see cref="IEnumerable{CivilAlignment}">IEnumerable&lt;CivilAlignment&gt;</see></returns>
+        public static IEnumerable<CivilAlignment> GetCivilAlignmentsInCivilSite(CivilSite site)
+        {
+            var list = new List<CivilAlignment>();
+            using (var tr = AcadApp.StartTransaction())
+            {
+                IEnumerable<CivilAlignment> alignments = GetCivilAlignments();
+
+                list.AddRange(site.Equals(CivilSite.NoneSite)
+                    ? alignments
+                    : alignments.Where(civilAlignment => civilAlignment.SiteName == site.Name));
+
+                tr.Commit();
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Prompts the user to select an alignment in the drawing space.
+        /// </summary>
+        /// <returns>A <see cref="CivilAlignment"/> representing the <see cref="Alignment"/>.</returns>
         public static CivilAlignment SelectCivilAlignment()
         {
             if (!EditorUtils.TryGetEntityOfType<Alignment>("\n3DS> Select Alignment: ",
@@ -178,8 +222,5 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return alignment;
         }
-
-
-
     }
 }
