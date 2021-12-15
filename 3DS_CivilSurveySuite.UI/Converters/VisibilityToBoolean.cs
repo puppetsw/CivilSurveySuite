@@ -18,32 +18,26 @@ namespace _3DS_CivilSurveySuite.UI.Converters
     /// </remarks>
     public class VisibilityToBoolean : IValueConverter
     {
-        private bool _inverted = false;
+        public bool Inverted { get; set; }
 
-        public bool Inverted
-        {
-            get { return _inverted; }
-            set { _inverted = value; }
-        }
-
-        private bool _not = false;
-
-        public bool Not
-        {
-            get { return _not; }
-            set { _not = value; }
-        }
+        public bool Not { get; set; }
 
         private object VisibilityToBool(object value)
         {
-            if (!(value is Visibility)) return DependencyProperty.UnsetValue;
-            return (((Visibility)value) == Visibility.Visible) ^ Not;
+            if (!(value is Visibility visibility))
+                return DependencyProperty.UnsetValue;
+
+            return (visibility == Visibility.Visible) ^ Not;
         }
 
         private object BoolToVisibility(object value)
         {
-            if (!(value is bool)) return DependencyProperty.UnsetValue;
-            return ((bool)value ^ Not) ? Visibility.Visible : Visibility.Collapsed;
+            if (!(value is bool b))
+                return DependencyProperty.UnsetValue;
+
+            return b ^ Not
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

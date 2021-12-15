@@ -147,7 +147,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Gets a list of <see cref="PointGroup"/>s.
         /// </summary>
-        /// <returns>A IEnumerable<PointGroup> of the PointGroups in the active drawing.</returns>
+        /// <returns>A IEnumerable of <see cref="PointGroup"/> of the PointGroups in the active drawing.</returns>
         public static IEnumerable<PointGroup> GetPointGroups()
         {
             var list = new List<PointGroup>();
@@ -184,7 +184,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Converts a <see cref="PointGorup"/> to a <see cref="CivilPointGroup"/>.
+        /// Converts a <see cref="PointGroup"/> to a <see cref="CivilPointGroup"/>.
         /// </summary>
         /// <param name="pointGroup">The PointGroup to convert.</param>
         /// <returns>A <see cref="CivilPointGroup"/> representing the PointGroup.</returns>
