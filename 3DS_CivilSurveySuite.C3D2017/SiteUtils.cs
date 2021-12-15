@@ -25,14 +25,14 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             if (string.IsNullOrEmpty(siteName))
                 throw new ArgumentException(nameof(siteName));
-            
+
             foreach (ObjectId siteId in C3DApp.ActiveDocument.GetSiteIds())
             {
                 var site = tr.GetObject(siteId, OpenMode.ForRead) as Site;
 
-                if (site == null) 
+                if (site == null)
                     continue;
-                
+
                 if (site.Name == siteName)
                     return site;
             }
@@ -41,13 +41,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Gets the site.
+        /// Gets the site by it's <see cref="ObjectId"/>.
         /// </summary>
-        /// <param name="tr">The tr.</param>
+        /// <param name="tr">The active transaction.</param>
         /// <param name="objectId">The object identifier.</param>
         /// <returns>Site.</returns>
-        /// <exception cref="ArgumentNullException">tr</exception>
-        /// <exception cref="ArgumentNullException">objectId</exception>
+        /// <exception cref="ArgumentNullException">is thrown if the <see cref="Transaction"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">is thrown if the <see cref="ObjectId"/> is null.</exception>
         public static Site GetSite(Transaction tr, ObjectId objectId)
         {
             if (tr == null)
@@ -58,7 +58,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return tr.GetObject(objectId, OpenMode.ForRead) as Site;
         }
-
 
         /// <summary>
         /// Converts to civilsite.
@@ -86,31 +85,24 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public static IEnumerable<CivilSite> GetCivilSites()
         {
             var sites = new List<CivilSite>();
+            // Add the None site.
+            sites.Add(CivilSite.NoneSite);
 
             using (var tr = AcadApp.StartTransaction())
             {
                 foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
                 {
                     var site = tr.GetObject(objectId, OpenMode.ForRead) as Site;
-                 
+
                     if (site == null)
                         continue;
-                    
-                    var civilSite = new CivilSite
-                    {
-                        Name = site.Name,
-                        Description = site.Description,
-                        ObjectId = objectId.Handle.ToString()
-                    };
 
-                    sites.Add(civilSite);
+                    sites.Add(site.ToCivilSite());
                 }
 
                 tr.Commit();
             }
             return sites;
         }
-
-
     }
 }

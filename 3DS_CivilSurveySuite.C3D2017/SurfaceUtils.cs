@@ -24,13 +24,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
         private const double TOLERANCE = 0.000000001;
 
         /// <summary>
-        /// Gets a <see cref="Surface"/> by name.
+        /// Gets a <see cref="TinSurface"/> by name.
         /// </summary>
         /// <param name="tr">The active transaction.</param>
         /// <param name="surfaceName">Name of the surface.</param>
-        /// <returns><see cref="TinSurface"/>.</returns>
-        /// <exception cref="ArgumentNullException">tr</exception>
-        /// <exception cref="ArgumentException">surfaceName</exception>
+        /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <c>surfaceName</c> is null or empty.</exception>
         public static TinSurface GetSurfaceByName(Transaction tr, string surfaceName)
         {
             if (tr == null)
@@ -58,12 +58,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
-        /// Gets a <see cref="Surface"/> by index.
+        /// Gets a <see cref="TinSurface"/> by index.
         /// </summary>
         /// <param name="tr">The active transaction.</param>
         /// <param name="index">The index of the surface</param>
-        /// <returns><see cref="TinSurface"/>.</returns>
-        /// <exception cref="ArgumentNullException">tr</exception>
+        /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> is null.</exception>
         public static TinSurface GetSurfaceByIndex(Transaction tr, int index)
         {
             if (tr == null)
@@ -78,11 +78,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Gets a <see cref="TinSurface"/> by it's <see cref="ObjectId"/>.
         /// </summary>
-        /// <param name="tr">The transaction.</param>
-        /// <param name="objectId">The object identifier.</param>
-        /// <returns>TinSurface.</returns>
-        /// <exception cref="ArgumentNullException">tr</exception>
-        /// <exception cref="ArgumentNullException">objectId</exception>
+        /// <param name="tr">The active transaction.</param>
+        /// <param name="objectId">The <see cref="ObjectId"/> of the <see cref="TinSurface"/>.</param>
+        /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> or <c>objectId</c> is null.</exception>
         public static TinSurface GetSurfaceByObjectId(Transaction tr, ObjectId objectId)
         {
             if (tr == null)
@@ -113,6 +112,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return surfaceNames;
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of <see cref="CivilSurface"/> from the active document.
+        /// </summary>
+        /// <returns>A IEnumerable of <see cref="CivilSurface"/>.</returns>
         public static IEnumerable<CivilSurface> GetCivilSurfaces()
         {
             var list = new List<CivilSurface>();
@@ -125,10 +128,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
                     list.Add(surface.ToCivilSurface());
                 }
-
                 tr.Commit();
             }
-
             return list;
         }
 
@@ -206,19 +207,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             // Which surface?
             using (var tr = AcadApp.StartTransaction())
             {
-                TinSurface surface;
                 var surfaces = C3DApp.ActiveDocument.GetSurfaceIds();
 
                 // Check if objects are in more than one surface?
-                if (surfaces.Count > 1)
-                {
-                    surface = C3DService.SelectSurface();
-                }
-                else
-                {
-                    // Get first surface.
-                    surface = GetSurfaceByIndex(tr, 0);
-                }
+                var surface = surfaces.Count > 1
+                    ? C3DService.SelectSurface()
+                    : GetSurfaceByIndex(tr, 0);
 
                 if (surface == null)
                     return;
@@ -251,11 +245,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             using (var tr = AcadApp.StartTransaction())
             {
-                TinSurface surface;
-
-                surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
+                var surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
                     ? C3DService.SelectSurface()
-                       : GetSurfaceByIndex(tr, 0);
+                    : GetSurfaceByIndex(tr, 0);
 
                 if (surface == null)
                     return;
@@ -316,8 +308,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             var result = new ObjectIdCollection();
 
-            object tinsurf = surf.AcadObject;
-            object breaklines = tinsurf.GetType().InvokeMember("Breaklines", BindingFlags.GetProperty, null, tinsurf, null);
+            object tinSurface = surf.AcadObject;
+            object breaklines = tinSurface.GetType().InvokeMember("Breaklines", BindingFlags.GetProperty, null, tinSurface, null);
             var breaklineCount = (int)breaklines.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, breaklines, null);
 
             var args = new object[1];
@@ -341,17 +333,17 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return result;
         }
 
+        /// <summary>
+        /// If there is more than one <see cref="TinSurface"/> in the active document, prompts the user to select one.
+        /// </summary>
+        /// <param name="tr">The active <see cref="Transaction"/>.</param>
+        /// <returns>A <see cref="TinSurface"/>.</returns>
+        /// <remarks>Uses the C3D SelectSurface service to prompt the user if required.</remarks>
         private static TinSurface SelectSurface(Transaction tr)
         {
-            TinSurface surface;
-            if (C3DApp.ActiveDocument.GetSurfaceIds().Count > 1)
-            {
-                surface = C3DService.SelectSurface();
-            }
-            else
-            {
-                surface = GetSurfaceByIndex(tr, 0);
-            }
+            var surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
+                ? C3DService.SelectSurface()
+                : GetSurfaceByIndex(tr, 0);
 
             return surface == null ? null : surface;
         }
@@ -368,14 +360,15 @@ namespace _3DS_CivilSurveySuite.C3D2017
             try // Check if point is in surface.
             {
                 edge = null;
-                var elevation = surface.FindElevationAtXY(point.X, point.Y);
+                double elevation = surface.FindElevationAtXY(point.X, point.Y);
                 calculatedPoint = new Point3d(point.X, point.Y, elevation);
                 return;
             }
             catch
             {
-                AcadApp.WriteMessage("\nPoint is not in surface bounds.");
-            } //Suppress error
+                // Suppress error
+                // Point is not in surface bounds
+            }
 
             var closestDistance = double.MaxValue;
             LineSegment2d closestEdge = null;
@@ -397,7 +390,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 if (d3 < distance)
                     distance = d3;
 
-                //UNDONE: !(distance < closestDistance)
                 if (distance >= closestDistance)
                     continue;
 
@@ -417,7 +409,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 throw new InvalidOperationException("closestEdge was null.");
 
             var p = closestEdge.GetClosestPointTo(point.ToPoint2d()).Point.ToPoint3d();
-            var el = surface.FindElevationAtXY(p.X, p.Y);
+            double el = surface.FindElevationAtXY(p.X, p.Y);
             calculatedPoint = new Point3d(p.X, p.Y, el);
             edge = closestEdge;
         }
@@ -429,10 +421,28 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="x">X value of point.</param>
         /// <param name="y">Y value of point.</param>
         /// <returns>System.Double.</returns>
-        //TODO: Add a out parameter that gives the amount/how far the calculated point is outside the surface.
         public static double FindElevationNearSurface(TinSurface surface, double x, double y)
         {
             FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
+            return calculatedPoint.Z;
+        }
+
+        /// <summary>
+        /// Finds the elevation of a point near or on a <see cref="TinSurface"/>.
+        /// </summary>
+        /// <param name="surface">The surface to find the elevation on.</param>
+        /// <param name="x">X value of point.</param>
+        /// <param name="y">Y value of point.</param>
+        /// <param name="dX">The delta X between the point and calculated point.</param>
+        /// <param name="dY">The delta Y between the point and calculated point.</param>
+        /// <returns>A double representing the elevation nearest the surface.</returns>
+        public static double FindElevationNearSurface(TinSurface surface, double x, double y, out double dX, out double dY)
+        {
+            FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
+
+            dX = x - calculatedPoint.X;
+            dY = y - calculatedPoint.Y;
+
             return calculatedPoint.Z;
         }
 
@@ -446,7 +456,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void PointElevationsFromSurface()
         {
-            // TODO: This will have to be a service.
+            // This will have to be a service.
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -519,6 +530,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
         }
 
+        /// <summary>
+        /// Selects a <see cref="CivilSurface"/> from the active document.
+        /// </summary>
+        /// <returns>A <see cref="CivilSurface"/>.</returns>
         public static CivilSurface SelectCivilSurface()
         {
             if (!EditorUtils.TryGetEntityOfType<TinSurface>("\n3DS> Select Surface: ",
@@ -536,17 +551,30 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return surface;
         }
 
+        /// <summary>
+        /// Extension method to convert a <see cref="TinSurface"/> to a <see cref="CivilSurface"/>.
+        /// </summary>
+        /// <param name="surface">The <see cref="TinSurface"/> to convert.</param>
+        /// <returns>A <see cref="CivilSurface"/>.</returns>
         public static CivilSurface ToCivilSurface(this TinSurface surface)
         {
             return new CivilSurface
             {
                 ObjectId = surface.ObjectId.Handle.ToString(),
                 Name = surface.Name,
-                Description = surface.Description
+                Description = surface.Description,
+                MinimumElevation = surface.GetGeneralProperties().MinimumElevation,
+                MaximumElevation = surface.GetGeneralProperties().MaximumElevation
             };
         }
 
-        public static TinSurface ToSurface(this CivilSurface surface, Transaction tr)
+        /// <summary>
+        /// Converts a <see cref="CivilSurface"/> to a <see cref="TinSurface"/>.
+        /// </summary>
+        /// <param name="surface">The <see cref="CivilSurface"/> to convert.</param>
+        /// <param name="tr">The active <see cref="Transaction"/>.</param>
+        /// <returns>A <see cref="TinSurface"/>.</returns>
+        public static TinSurface ToTinSurface(this CivilSurface surface, Transaction tr)
         {
             Handle h = new Handle(long.Parse(surface.ObjectId, NumberStyles.AllowHexSpecifier));
             AcadApp.ActiveDatabase.TryGetObjectId(h, out var id);//TryGetObjectId method

@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Model
@@ -17,7 +18,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public string ObjectId
         {
+            [DebuggerStepThrough]
             get => _objectId;
+            [DebuggerStepThrough]
             set
             {
                 _objectId = value;
@@ -27,7 +30,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public string Name
         {
+            [DebuggerStepThrough]
             get => _name;
+            [DebuggerStepThrough]
             set
             {
                 _name = value;
@@ -37,7 +42,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public string Description
         {
+            [DebuggerStepThrough]
             get => _description;
+            [DebuggerStepThrough]
             set
             {
                 _description = value;
@@ -47,7 +54,9 @@ namespace _3DS_CivilSurveySuite.Model
 
         public bool IsSelected
         {
+            [DebuggerStepThrough]
             get => _isSelected;
+            [DebuggerStepThrough]
             set
             {
                 _isSelected = value;
@@ -64,7 +73,8 @@ namespace _3DS_CivilSurveySuite.Model
         /// Raises this object's PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">The property that has a new value.</param>
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        [DebuggerStepThrough]
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

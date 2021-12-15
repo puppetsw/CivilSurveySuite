@@ -4,11 +4,39 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Diagnostics;
 
 namespace _3DS_CivilSurveySuite.Model
 {
     public sealed class CivilSurface : CivilObject, IEquatable<CivilSurface>
     {
+        private double _minimumElevation;
+        private double _maximumElevation;
+
+        public double MinimumElevation
+        {
+            [DebuggerStepThrough]
+            get => _minimumElevation;
+            [DebuggerStepThrough]
+            set
+            {
+                _minimumElevation = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double MaximumElevation
+        {
+            [DebuggerStepThrough]
+            get => _maximumElevation;
+            [DebuggerStepThrough]
+            set
+            {
+                _maximumElevation = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public bool Equals(CivilSurface other)
         {
             if (ReferenceEquals(null, other))

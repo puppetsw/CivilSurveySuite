@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Samples", "Other Samp
 		Solution Items\stringertopo.png = Solution Items\stringertopo.png
 		Solution Items\treeblockdefintion.png = Solution Items\treeblockdefintion.png
 		Solution Items\StringerTopo-GettingStarted.pdf = Solution Items\StringerTopo-GettingStarted.pdf
+		Solution Items\SP_DisplayPoints_Dialog_RtClick.png = Solution Items\SP_DisplayPoints_Dialog_RtClick.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}"

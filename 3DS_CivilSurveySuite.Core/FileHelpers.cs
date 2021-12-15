@@ -35,5 +35,26 @@ namespace _3DS_CivilSurveySuite.Core
             }
             return images;
         }
+
+        /// <summary>
+        /// Writes data to a file.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="overWrite"></param>
+        /// <param name="data"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void WriteFile(string fileName, bool overWrite, string data)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            if (File.Exists(fileName) && !overWrite)
+                return;
+
+            using (var writer = new StreamWriter(fileName))
+            {
+                writer.Write(data);
+            }
+        }
     }
 }

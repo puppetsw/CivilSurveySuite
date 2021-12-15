@@ -36,6 +36,10 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<ICogoPointSurfaceReportService, CogoPointSurfaceReportService>();
             Container.Register<ICogoPointReplaceDuplicateService, CogoPointReplaceDuplicateService>();
 
+            Container.Register<IOpenFileDialogService, OpenFileDialogService>();
+            Container.Register<ISaveFileDialogService, SaveFileDialogService>();
+            Container.Register<IFolderBrowserDialogService, FolderBrowserDialogService>();
+
             Container.Register<SelectSurfaceView>();
             Container.Register<SelectSurfaceViewModel>();
 

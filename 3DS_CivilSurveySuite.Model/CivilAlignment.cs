@@ -4,11 +4,52 @@
 // prior written consent of the copyright owner.
 
 using System;
+using System.Diagnostics;
 
 namespace _3DS_CivilSurveySuite.Model
 {
     public sealed class CivilAlignment : CivilObject, IEquatable<CivilAlignment>
     {
+        private double _stationStart;
+        private double _stationEnd;
+        private string _siteName;
+
+        public double StationStart
+        {
+            [DebuggerStepThrough]
+            get => _stationStart;
+            [DebuggerStepThrough]
+            set
+            {
+                _stationStart = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double StationEnd
+        {
+            [DebuggerStepThrough]
+            get => _stationEnd;
+            [DebuggerStepThrough]
+            set
+            {
+                _stationEnd = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string SiteName
+        {
+            [DebuggerStepThrough]
+            get => _siteName;
+            [DebuggerStepThrough]
+            set
+            {
+                _siteName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public bool Equals(CivilAlignment other)
         {
             if (ReferenceEquals(null, other))

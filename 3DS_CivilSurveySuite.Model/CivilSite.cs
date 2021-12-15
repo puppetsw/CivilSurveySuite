@@ -9,6 +9,8 @@ namespace _3DS_CivilSurveySuite.Model
 {
     public sealed class CivilSite : CivilObject, IEquatable<CivilSite>
     {
+        public static CivilSite NoneSite => new CivilSite { Name = "None" };
+
         public bool Equals(CivilSite other)
         {
             if (ReferenceEquals(null, other))
