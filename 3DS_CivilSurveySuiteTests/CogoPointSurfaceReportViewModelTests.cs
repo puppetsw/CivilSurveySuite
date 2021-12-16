@@ -15,6 +15,8 @@ namespace _3DS_CivilSurveySuiteTests
         private List<CivilSurface> _surfaces;
         private List<CivilAlignment> _alignments;
 
+        private const string TEST_FILE_NAME = "";
+
         [TestInitialize]
         public void Setup()
         {
@@ -51,28 +53,13 @@ namespace _3DS_CivilSurveySuiteTests
             reportService.Setup(m => m.SelectAlignment()).Returns(() => alignment);
             reportService.Setup(m => m.SelectPointGroup()).Returns(() => pointGroup);
 
-            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
+            var saveService = new Mock<ISaveFileDialogService>();
+            saveService.Setup(m => m.ShowDialog()).Returns(() => true);
+            saveService.Setup(m => m.FileName).Returns(TEST_FILE_NAME);
+
+            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object);
         }
 
-        [TestMethod]
-        public void SelectAlignmentCommand_Execute()
-        {
-            _viewModel.SelectAlignmentCommand.CanExecute(true);
-            _viewModel.SelectAlignmentCommand.Execute(null);
-
-            Assert.AreEqual("SelectedAlignment", _viewModel.SelectedAlignment.Name);
-        }
-
-        [TestMethod]
-        public void SelectAlignmentCommand_Execute_NullReturn()
-        {
-            var reportService = new Mock<ICogoPointSurfaceReportService>();
-            reportService.Setup(m => m.SelectAlignment()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
-
-            Assert.IsTrue(viewModel.SelectAlignmentCommand.CanExecute(true));
-            viewModel.SelectAlignmentCommand.Execute(null);
-        }
 
         [TestMethod]
         public void SelectSurfaceCommand_Execute()
@@ -88,7 +75,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
             reportService.Setup(m => m.SelectSurface()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
 
             Assert.IsTrue(viewModel.SelectSurfaceCommand.CanExecute(true));
             viewModel.SelectSurfaceCommand.Execute(null);
@@ -108,7 +95,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
             reportService.Setup(m => m.SelectPointGroup()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
 
             Assert.IsTrue(viewModel.SelectPointGroupCommand.CanExecute(true));
             viewModel.SelectPointGroupCommand.Execute(null);
@@ -118,7 +105,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_CalculatePointNearSurfaceEdge_StoresCorrectly()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
 
             viewModel.CalculatePointNearSurfaceEdge = true;
             Assert.IsTrue(viewModel.CalculatePointNearSurfaceEdge);
@@ -127,77 +114,6 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.IsFalse(viewModel.CalculatePointNearSurfaceEdge);
         }
 
-        [TestMethod]
-        public void SelectAllAlignmentCommand_Execute_A()
-        {
-            _viewModel.SelectAllAlignmentCommand.CanExecute(true);
-            _viewModel.SelectAllAlignmentCommand.Execute(null);
-
-            foreach (CivilAlignment alignment in _viewModel.Alignments)
-            {
-                Assert.IsTrue(alignment.IsSelected);
-            }
-        }
-
-        [TestMethod]
-        public void SelectAllAlignmentCommand_Execute_B()
-        {
-            _viewModel.SelectNoneAlignmentCommand.CanExecute(true);
-            _viewModel.SelectNoneAlignmentCommand.Execute(null);
-
-            foreach (CivilAlignment alignment in _viewModel.Alignments)
-            {
-                Assert.IsFalse(alignment.IsSelected);
-            }
-        }
-
-        [TestMethod]
-        public void SelectAllSurfaceCommand_Execute_A()
-        {
-            _viewModel.SelectAllSurfaceCommand.CanExecute(true);
-            _viewModel.SelectAllSurfaceCommand.Execute(null);
-
-            foreach (CivilSurface surface in _viewModel.Surfaces)
-            {
-                Assert.IsTrue(surface.IsSelected);
-            }
-        }
-
-        [TestMethod]
-        public void SelectAllSurfaceCommand_Execute_B()
-        {
-            _viewModel.SelectNoneSurfaceCommand.CanExecute(true);
-            _viewModel.SelectNoneSurfaceCommand.Execute(null);
-
-            foreach (CivilSurface surface in _viewModel.Surfaces)
-            {
-                Assert.IsFalse(surface.IsSelected);
-            }
-        }
-
-        [TestMethod]
-        public void SelectAllPointGroupCommand_Execute_A()
-        {
-            _viewModel.SelectAllPointGroupCommand.CanExecute(true);
-            _viewModel.SelectAllPointGroupCommand.Execute(null);
-
-            foreach (CivilPointGroup pointGroup in _viewModel.PointGroups)
-            {
-                Assert.IsTrue(pointGroup.IsSelected);
-            }
-        }
-
-        [TestMethod]
-        public void SelectAllPointGroupCommand_Execute_B()
-        {
-            _viewModel.SelectNonePointGroupCommand.CanExecute(true);
-            _viewModel.SelectNonePointGroupCommand.Execute(null);
-
-            foreach (CivilPointGroup pointGroup in _viewModel.PointGroups)
-            {
-                Assert.IsFalse(pointGroup.IsSelected);
-            }
-        }
 
         [TestMethod]
         public void CreateReportCommand_Execute()

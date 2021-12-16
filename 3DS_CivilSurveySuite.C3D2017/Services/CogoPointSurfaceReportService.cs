@@ -12,6 +12,16 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class CogoPointSurfaceReportService : ICogoPointSurfaceReportService
     {
+        public IEnumerable<CivilSite> GetSites()
+        {
+            return SiteUtils.GetCivilSites();
+        }
+
+        public IEnumerable<CivilAlignment> GetSiteAlignments(CivilSite site)
+        {
+            return AlignmentUtils.GetCivilAlignmentsInCivilSite(site);
+        }
+
         public IEnumerable<CivilAlignment> GetAlignments() => AlignmentUtils.GetCivilAlignments();
 
         public IEnumerable<CivilPointGroup> GetPointGroups() => PointGroupUtils.GetCivilPointGroups();
@@ -26,20 +36,22 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup pointGroup) => CogoPointUtils.GetCivilPointsFromPointGroup(pointGroup.Name);
 
-        public double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface, bool calculatePointNearSurfaceEdge)
+        public double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface, bool calculatePointNearSurfaceEdge, out double dX, out double dY)
         {
             double elevation;
+            dX = 0;
+            dY = 0;
             using (var tr = AcadApp.StartTransaction())
             {
                 if (calculatePointNearSurfaceEdge)
                 {
-                    elevation = SurfaceUtils.FindElevationNearSurface(civilSurface.ToSurface(tr), civilPoint.Easting, civilPoint.Northing);
+                    elevation = SurfaceUtils.FindElevationNearSurface(civilSurface.ToTinSurface(tr), civilPoint.Easting, civilPoint.Northing, out dX, out dY);
                 }
                 else
                 {
                     try
                     {
-                        elevation = civilSurface.ToSurface(tr).FindElevationAtXY(civilPoint.Easting, civilPoint.Northing);
+                        elevation = civilSurface.ToTinSurface(tr).FindElevationAtXY(civilPoint.Easting, civilPoint.Northing);
                     }
                     catch
                     {
@@ -54,7 +66,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public StationOffset GetStationOffsetAtCivilPoint(CivilPoint civilPoint, CivilAlignment civilAlignment)
         {
-            return AlignmentUtils.GetStatoinOffset(civilAlignment, civilPoint.Easting, civilPoint.Northing);
+            return AlignmentUtils.GetStationOffset(civilAlignment, civilPoint.Easting, civilPoint.Northing);
         }
 
     }

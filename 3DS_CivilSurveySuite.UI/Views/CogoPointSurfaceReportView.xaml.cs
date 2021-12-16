@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
@@ -18,6 +19,15 @@ namespace _3DS_CivilSurveySuite.UI.Views
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyType == typeof(double) &&
+                e.Column is DataGridTextColumn column)
+            {
+                column.Binding.StringFormat = "F3";
+            }
         }
     }
 }

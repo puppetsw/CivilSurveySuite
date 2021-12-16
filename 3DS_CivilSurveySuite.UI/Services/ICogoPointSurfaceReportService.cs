@@ -10,8 +10,12 @@ namespace _3DS_CivilSurveySuite.UI.Services
 {
     public interface ICogoPointSurfaceReportService
     {
+        IEnumerable<CivilSite> GetSites();
+
+        IEnumerable<CivilAlignment> GetSiteAlignments(CivilSite site);
+
         IEnumerable<CivilAlignment> GetAlignments();
-        
+
         IEnumerable<CivilPointGroup> GetPointGroups();
 
         IEnumerable<CivilSurface> GetSurfaces();
@@ -24,7 +28,8 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup pointGroup);
 
-        double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface, bool calculatePointNearSurfaceEdge);
+        double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface,
+            bool calculatePointNearSurfaceEdge, out double dX, out double dY);
 
         StationOffset GetStationOffsetAtCivilPoint(CivilPoint civilPoint, CivilAlignment civilAlignment);
     }
