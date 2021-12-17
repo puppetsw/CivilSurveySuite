@@ -22,6 +22,7 @@ namespace _3DS_CivilSurveySuite.Model
         private string _descriptionFormat = string.Empty;
         private string _objectIdHandle;
         private string _pointName = string.Empty;
+        private string _fullDescription = string.Empty;
 
         public uint PointNumber
         {
@@ -83,6 +84,16 @@ namespace _3DS_CivilSurveySuite.Model
             }
         }
 
+        public string FullDescription
+        {
+            get => _fullDescription;
+            set
+            {
+                _fullDescription = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public string ObjectId
         {
             get => _objectIdHandle;
@@ -131,6 +142,7 @@ namespace _3DS_CivilSurveySuite.Model
                    && _elevation.Equals(other._elevation)
                    && _rawDescription == other._rawDescription
                    && _descriptionFormat == other._descriptionFormat
+                   && _fullDescription == other._fullDescription
                    && _objectIdHandle == other._objectIdHandle
                    && _pointName == other._pointName;
         }
@@ -150,6 +162,7 @@ namespace _3DS_CivilSurveySuite.Model
                 hash = hash * 23 + Elevation.GetHashCode();
                 hash = hash * 23 + (RawDescription == null ? 0 : RawDescription.GetHashCode());
                 hash = hash * 23 + (DescriptionFormat == null ? 0 : DescriptionFormat.GetHashCode());
+                hash = hash * 23 + (FullDescription == null ? 0 : FullDescription.GetHashCode());
                 hash = hash * 23 + (ObjectId == null ? 0 : ObjectId.GetHashCode());
                 hash = hash * 23 + (PointName == null ? 0 : PointName.GetHashCode());
                 return hash;

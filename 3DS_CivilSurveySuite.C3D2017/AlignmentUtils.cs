@@ -121,25 +121,22 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="y">The y coordinate.</param>
         /// <returns>A <see cref="StationOffset"/> object representing the alignment information.</returns>
         /// <remarks><see cref="StationOffset"/> was used instead of a tuple as 4.5 doesn't have it inbuilt.</remarks>
-        public static StationOffset GetStationOffset(CivilAlignment civilAlignment, double x, double y)
+        public static StationOffset GetStationOffset(Transaction tr, CivilAlignment civilAlignment, double x, double y)
         {
             double station = 0;
             double offset = 0;
 
-            using (var tr = AcadApp.StartTransaction())
+            try
             {
-                try
-                {
-                    Alignment alignment = GetAlignmentByName(tr, civilAlignment.Name);
-                    alignment.StationOffset(x, y, ref station, ref offset);
-                }
-                catch
-                {
-                    station = -9999.999;
-                    offset = -9999.999;
-                }
-                tr.Commit();
+                Alignment alignment = GetAlignmentByName(tr, civilAlignment.Name);
+                alignment.StationOffset(x, y, ref station, ref offset);
             }
+            catch
+            {
+                station = -9999.999;
+                offset = -9999.999;
+            }
+
             return new StationOffset { Station = station, Offset = offset };
         }
 
