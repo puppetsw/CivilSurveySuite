@@ -4,6 +4,8 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.Model;
 
 namespace _3DS_CivilSurveySuite.UI.Services
@@ -26,11 +28,7 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         CivilSurface SelectSurface();
 
-        IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup pointGroup);
-
-        double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface,
-            bool calculatePointNearSurfaceEdge, out double dX, out double dY);
-
-        StationOffset GetStationOffsetAtCivilPoint(CivilPoint civilPoint, CivilAlignment civilAlignment);
+        Task<List<ReportObject>> GetReportData(CivilPointGroup pointGroup, CivilAlignment alignment,
+            CivilSurface surface, bool calculatePointNearSurfaceEdge);
     }
 }

@@ -9,6 +9,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.Core;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -20,7 +21,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private readonly ICogoPointSurfaceReportService _reportService;
         private readonly ISaveFileDialogService _saveFileService;
         private DataTable _reportDataTable;
-        private DataView _reportDataView;
         private CivilSurface _selectedCivilSurface;
         private CivilPointGroup _selectCivilPointGroup;
         private CivilAlignment _selectedCivilAlignment;
@@ -31,7 +31,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private bool _showInterpolatedAmount;
         private bool _showCutFillValues;
         private bool _invertCutFillValues;
-        private bool _sortByStationOffset;
 
         public bool CalculatePointNearSurfaceEdge
         {
@@ -39,8 +38,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _calculatePointNearSurfaceEdge = value;
-                ShowInterpolatedAmount = value;
-                GenerateReport();
+                if (!value)
+                    ShowInterpolatedAmount = false;
                 NotifyPropertyChanged();
             }
         }
@@ -51,7 +50,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _showInterpolatedAmount = value;
-                GenerateReport();
                 NotifyPropertyChanged();
             }
         }
@@ -63,7 +61,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             {
                 _showCutFillValues = value;
                 InvertCutFillValues = value;
-                GenerateReport();
                 NotifyPropertyChanged();
             }
         }
@@ -74,20 +71,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _invertCutFillValues = value;
-                GenerateReport();
                 NotifyPropertyChanged();
             }
         }
 
-        public bool SortByStationOffset
-        {
-            get => _sortByStationOffset;
-            set
-            {
-                _sortByStationOffset = value;
-                NotifyPropertyChanged();
-            }
-        }
+        private List<ReportObject> ReportData { get; set; }
 
         public ObservableCollection<CivilSite> Sites { get; }
 
@@ -103,8 +91,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _selectedCivilSurface = value;
-                GenerateReport();
-                SetSurfaceRange();
                 NotifyPropertyChanged();
             }
         }
@@ -115,7 +101,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _selectCivilPointGroup = value;
-                GenerateReport();
                 NotifyPropertyChanged();
             }
         }
@@ -126,8 +111,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set
             {
                 _selectedCivilAlignment = value;
-                GenerateReport();
-                SetStationRange();
                 NotifyPropertyChanged();
             }
         }
@@ -142,7 +125,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 _selectedSite = value;
                 // Update alignments
                 Alignments = new ObservableCollection<CivilAlignment>(_reportService.GetSiteAlignments(value));
-                GenerateReport();
+
                 NotifyPropertyChanged(nameof(Alignments));
                 NotifyPropertyChanged();
             }
@@ -182,27 +165,20 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public DataView ReportDataView
-        {
-            get => _reportDataView;
-            set
-            {
-                _reportDataView = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         public RelayCommand SelectPointGroupCommand => new RelayCommand(SelectPointGroup, () => true);
 
         public RelayCommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
 
-        public RelayCommand CreateReportCommand => new RelayCommand(GenerateReport, () => true);
+        public AsyncRelayCommand UpdateDataSourceCommand => new AsyncRelayCommand(UpdateReportData, () => true);
+
+        public AsyncRelayCommand UpdateDataTableCommand => new AsyncRelayCommand(UpdateDataTable, () => true);
 
         public RelayCommand StationOffsetSortCommand => new RelayCommand(StationOffsetSort, () => true);
 
         public RelayCommand WriteToFileCommand => new RelayCommand(WriteToFile, () => true);
 
-        public CogoPointSurfaceReportViewModel(ICogoPointSurfaceReportService cogoPointSurfaceReportService, ISaveFileDialogService saveFileDialogService)
+        public CogoPointSurfaceReportViewModel(ICogoPointSurfaceReportService cogoPointSurfaceReportService,
+            ISaveFileDialogService saveFileDialogService)
         {
             _reportService = cogoPointSurfaceReportService;
             _saveFileService = saveFileDialogService;
@@ -241,8 +217,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             SurfaceRange = $"{Math.Round(SelectedSurface.MinimumElevation, 3)} to {Math.Round(SelectedSurface.MaximumElevation, 3)}";
         }
 
-        private void GenerateColumnHeadings()
+        private Task<DataTable> CreateDataTable()
         {
+            var dt = new DataTable();
+
             // Generate default headings
             var id = new DataColumn("ID");
             var easting = new DataColumn("Easting");
@@ -258,11 +236,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             rawDes.DataType = typeof(string);
 
             // Add to datatable
-            ReportDataTable.Columns.Add(id);
-            ReportDataTable.Columns.Add(easting);
-            ReportDataTable.Columns.Add(northing);
-            ReportDataTable.Columns.Add(elevation);
-            ReportDataTable.Columns.Add(rawDes);
+            dt.Columns.Add(id);
+            dt.Columns.Add(easting);
+            dt.Columns.Add(northing);
+            dt.Columns.Add(elevation);
+            dt.Columns.Add(rawDes);
 
             // Add alignment
             if (SelectedAlignment != null)
@@ -273,8 +251,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 alignmentStation.DataType = typeof(double);
                 alignmentOffset.DataType = typeof(double);
 
-                ReportDataTable.Columns.Add(alignmentStation);
-                ReportDataTable.Columns.Add(alignmentOffset);
+                dt.Columns.Add(alignmentStation);
+                dt.Columns.Add(alignmentOffset);
             }
 
             // Add surface
@@ -282,7 +260,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             {
                 var surfaceColumn = new DataColumn(SelectedSurface.Name);
                 surfaceColumn.DataType = typeof(double);
-                ReportDataTable.Columns.Add(surfaceColumn);
+                dt.Columns.Add(surfaceColumn);
 
                 // Generate dX, dY headings if needed
                 if (ShowInterpolatedAmount)
@@ -291,110 +269,94 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                     var dYColumn = new DataColumn($"{SelectedSurface.Name} dY");
                     dXColumn.DataType = typeof(double);
                     dYColumn.DataType = typeof(double);
-                    ReportDataTable.Columns.Add(dXColumn);
-                    ReportDataTable.Columns.Add(dYColumn);
+                    dt.Columns.Add(dXColumn);
+                    dt.Columns.Add(dYColumn);
                 }
 
                 if (ShowCutFillValues)
                 {
                     var cutFillColumn = new DataColumn($"{SelectedSurface.Name} Cut Fill");
                     cutFillColumn.DataType = typeof(double);
-                    ReportDataTable.Columns.Add(cutFillColumn);
+                    dt.Columns.Add(cutFillColumn);
                 }
             }
+
+            return Task.FromResult(dt);
         }
 
-        private void GenerateReport()
+        private async Task<DataTable> PopulateDataTable(IEnumerable<ReportObject> data)
         {
-            // Clear and create new DataTable
-            ReportDataTable = null;
-            ReportDataTable = new DataTable();
+            var dt = await CreateDataTable().ConfigureAwait(false);
 
-            // Create headings
-            GenerateColumnHeadings();
-
-            if (SelectedPointGroup != null)
+            foreach (var reportObject in data)
             {
-                // Loop points in selected point groups
-                var cogoPointsAdded = new List<CivilPoint>();
+                var dataRow = dt.NewRow();
+                dataRow[0] = reportObject.PointNumber;
+                dataRow[1] = Math.Round(reportObject.Easting, 3);
+                dataRow[2] = Math.Round(reportObject.Northing, 3);
+                dataRow[3] = Math.Round(reportObject.PointElevation, 3);
+                dataRow[4] = reportObject.RawDescription;
 
-                // foreach point in the PointGroup
-                foreach (CivilPoint civilPoint in _reportService.GetPointsInPointGroup(SelectedPointGroup))
+                if (SelectedAlignment == null)
+                    continue;
+
+                var columnCount = 5;
+
+                dataRow[columnCount] = Math.Round(reportObject.StationOffset.Station, 2);
+                columnCount++;
+                dataRow[columnCount] = Math.Round(reportObject.StationOffset.Offset, 2);
+                SetStationRange();
+
+                if (SelectedSurface != null)
                 {
-                    // don't add duplicates.
-                    if (cogoPointsAdded.Contains(civilPoint))
-                        continue;
-
-                    // Add point to list to check if it's already been added.
-                    cogoPointsAdded.Add(civilPoint);
-
-                    var dataRow = ReportDataTable.NewRow();
-                    dataRow[0] = civilPoint.PointNumber;
-                    dataRow[1] = Math.Round(civilPoint.Easting, 3);
-                    dataRow[2] = Math.Round(civilPoint.Northing, 3);
-                    dataRow[3] = Math.Round(civilPoint.Elevation, 3);
-                    dataRow[4] = civilPoint.RawDescription;
-
-                    var columnCount = 5;
-
-                    GenerateAlignmentData(dataRow, civilPoint, ref columnCount);
-                    GenerateSurfaceData(dataRow, civilPoint, ref columnCount);
-
-                    ReportDataTable.Rows.Add(dataRow);
+                    columnCount++;
+                    dataRow[columnCount] = reportObject.SurfaceElevation;
+                    SetSurfaceRange();
                 }
+
+                if (ShowInterpolatedAmount)
+                {
+                    columnCount++;
+                    // add dX column
+                    dataRow[columnCount] = reportObject.CalculatedDeltaX;
+                    columnCount++;
+                    // add dY column
+                    dataRow[columnCount] = reportObject.CalculatedDeltaY;
+                }
+
+                if (ShowCutFillValues)
+                {
+                    columnCount++;
+                    // add cut/fill column
+                    // check for cut/fill invert
+                    double cutFill = InvertCutFillValues
+                        ? Math.Round(reportObject.CutFillInvert, 3)
+                        : Math.Round(reportObject.CutFill, 3);
+
+                    dataRow[columnCount] = cutFill;
+                }
+
+                dt.Rows.Add(dataRow);
             }
-            // Set the view property.
-            ReportDataView = ReportDataTable.DefaultView;
-            // Sort by station/offset
-            StationOffsetSort();
+
+            return dt;
         }
 
-        private void GenerateAlignmentData(DataRow dataRow, CivilPoint civilPoint, ref int columnCount)
+        private async Task UpdateDataTable()
         {
-            // Add alignment station and offset
+            ReportDataTable = await PopulateDataTable(ReportData).ConfigureAwait(false);
+        }
+
+        private async Task UpdateReportData()
+        {
             if (SelectedAlignment == null)
                 return;
 
-            var stationOffset = _reportService.GetStationOffsetAtCivilPoint(civilPoint, SelectedAlignment);
-
-            dataRow[columnCount] = Math.Round(stationOffset.Station, 2);
-            columnCount++;
-            dataRow[columnCount] = Math.Round(stationOffset.Offset, 2);
-        }
-
-        private void GenerateSurfaceData(DataRow dataRow, CivilPoint civilPoint, ref int columnCount)
-        {
-            // Add surface elevation
-            if (SelectedSurface == null)
+            if (SelectedPointGroup == null)
                 return;
 
-            var elevationAtSurface = Math.Round(_reportService.GetElevationAtCivilPoint(
-                civilPoint, SelectedSurface, CalculatePointNearSurfaceEdge, out double dX, out double dY), 3);
-
-            columnCount++;
-            dataRow[columnCount] = elevationAtSurface;
-
-            if (ShowInterpolatedAmount)
-            {
-                columnCount++;
-                // add dX column
-                dataRow[columnCount] = dX;
-                columnCount++;
-                // add dY column
-                dataRow[columnCount] = dY;
-            }
-
-            if (ShowCutFillValues)
-            {
-                columnCount++;
-                // add cut/fill column
-                // check for cut/fill invert
-                double cutFill = InvertCutFillValues
-                    ? Math.Round(elevationAtSurface - civilPoint.Elevation, 3)
-                    : Math.Round(civilPoint.Elevation - elevationAtSurface, 3);
-
-                dataRow[columnCount] = cutFill;
-            }
+            var data = await _reportService.GetReportData(SelectedPointGroup, SelectedAlignment, SelectedSurface, CalculatePointNearSurfaceEdge).ConfigureAwait(false);
+            ReportData = new List<ReportObject>(data);
         }
 
         private void StationOffsetSort()
@@ -403,7 +365,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 return;
 
             var sortString = $"{SelectedAlignment.Name} Chainage ASC, {SelectedAlignment.Name} Offset ASC";
-            ReportDataView.Sort = sortString;
+            ReportDataTable.DefaultView.Sort = sortString;
         }
 
         private void SelectPointGroup()
@@ -437,22 +399,21 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private string PrintTable()
         {
             StringBuilder sb = new StringBuilder();
-            ReportDataView.Table.AcceptChanges();
 
-            for (int i = 0; i < ReportDataView.Table.Columns.Count; i++)
+            for (int i = 0; i < ReportDataTable.Columns.Count; i++)
             {
-                sb.Append(ReportDataView.Table.Columns[i]);
-                if (i < ReportDataView.Table.Columns.Count - 1)
+                sb.Append(ReportDataTable.Columns[i]);
+                if (i < ReportDataTable.Columns.Count - 1)
                     sb.Append(',');
             }
             sb.AppendLine();
-            foreach (DataRow dr in ReportDataView.Table.Rows)
+            foreach (DataRow dr in ReportDataTable.Rows)
             {
-                for (int i = 0; i < ReportDataView.Table.Columns.Count; i++)
+                for (int i = 0; i < ReportDataTable.Columns.Count; i++)
                 {
                     sb.Append(dr[i]);
 
-                    if (i < ReportDataView.Table.Columns.Count - 1)
+                    if (i < ReportDataTable.Columns.Count - 1)
                         sb.Append(',');
                 }
                 sb.AppendLine();

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="CogoPoint Report" Height="450" Width="800" ResizeMode="CanResizeWithGrip"
         d:DataContext="{d:DesignInstance vm:CogoPointSurfaceReportViewModel}">
@@ -37,8 +38,8 @@
                 <Setter Property="AutoGenerateColumns" Value="True" />
                 <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BlueGridLine}" />
                 <Setter Property="VerticalGridLinesBrush" Value="{StaticResource RedGridLine}" />
-                <Setter Property="AlternationCount" Value="6"/>
-                <Setter Property="AlternatingRowBackground" Value="{StaticResource GreenBackground}"/>
+                <Setter Property="AlternationCount" Value="3"/>
+                <Setter Property="AlternatingRowBackground" Value="WhiteSmoke"/>
                 <Setter Property="Background" Value="{StaticResource YellowBackground}" />
                 <Setter Property="SelectionMode" Value="Extended" />
                 <Setter Property="EnableColumnVirtualization" Value="True" />
@@ -112,13 +113,14 @@
             <ComboBox Grid.Row="0" Grid.Column="1"
                       ItemsSource="{Binding Sites}"
                       SelectedItem="{Binding SelectedSite}"
-                      DisplayMemberPath="Name"/>
+                      DisplayMemberPath="Name" />
 
             <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource TextRightAlign}">Alignment:</TextBlock>
             <ComboBox Grid.Row="1" Grid.Column="1"
                       ItemsSource="{Binding Alignments}"
                       SelectedItem="{Binding SelectedAlignment}"
-                      DisplayMemberPath="Name" />
+                      DisplayMemberPath="Name">
+            </ComboBox>
 
             <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource TextSmallItalic}" Text="{Binding StationRange}" />
 
@@ -132,7 +134,16 @@
                 <ComboBox Grid.Column="0"
                           ItemsSource="{Binding PointGroups}"
                           SelectedItem="{Binding SelectedPointGroup}"
-                          DisplayMemberPath="Name" />
+                          DisplayMemberPath="Name">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                            <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+
+
                 <Button Grid.Column="1" Style="{StaticResource SelectButton}">
                     <Image Source="{StaticResource SelectObjectIcon}" />
                 </Button>
@@ -148,7 +159,14 @@
                 <ComboBox Grid.Column="0"
                           ItemsSource="{Binding Surfaces}"
                           SelectedItem="{Binding SelectedSurface}"
-                          DisplayMemberPath="Name" />
+                          DisplayMemberPath="Name">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                            <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
                 <Button Grid.Column="1" Style="{StaticResource SelectButton}" Command="{Binding SelectSurfaceCommand}">
                     <Image Source="{StaticResource SelectObjectIcon}" />
                 </Button>
@@ -168,22 +186,58 @@
             </Grid.RowDefinitions>
 
             <CheckBox Grid.Row="0" IsChecked="{Binding CalculatePointNearSurfaceEdge}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Unchecked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 Interpolate Edge Points
             </CheckBox>
 
             <CheckBox Grid.Row="1"
                       IsChecked="{Binding ShowInterpolatedAmount}"
                       IsEnabled="{Binding CalculatePointNearSurfaceEdge}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Unchecked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 Show Interpolated Point Amount
             </CheckBox>
 
             <CheckBox Grid.Row="2" IsChecked="{Binding ShowCutFillValues}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Unchecked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataSourceCommand}" />
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 Show Cut/Fill Values
             </CheckBox>
 
             <CheckBox Grid.Row="3"
                       IsChecked="{Binding InvertCutFillValues}"
                       IsEnabled="{Binding ShowCutFillValues}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="Unchecked">
+                        <i:InvokeCommandAction Command="{Binding UpdateDataTableCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 Invert Cut/Fill Values
             </CheckBox>
 
@@ -216,7 +270,7 @@
 
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                   Style="{StaticResource ReportView}"
-                  ItemsSource="{Binding ReportDataView}"
+                  ItemsSource="{Binding ReportDataTable.DefaultView, UpdateSourceTrigger=PropertyChanged}"
                   AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn"/>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"

@@ -3,7 +3,10 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Model;
 using _3DS_CivilSurveySuite.UI.Services;
@@ -34,40 +37,65 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public CivilSurface SelectSurface() => SurfaceUtils.SelectCivilSurface();
 
-        public IEnumerable<CivilPoint> GetPointsInPointGroup(CivilPointGroup pointGroup) => CogoPointUtils.GetCivilPointsFromPointGroup(pointGroup.Name);
-
-        public double GetElevationAtCivilPoint(CivilPoint civilPoint, CivilSurface civilSurface, bool calculatePointNearSurfaceEdge, out double dX, out double dY)
+        public Task<List<ReportObject>> GetReportData(CivilPointGroup pointGroup, CivilAlignment alignment,
+            CivilSurface surface, bool calculatePointNearSurfaceEdge)
         {
-            double elevation;
-            dX = 0;
-            dY = 0;
+            if (pointGroup == null)
+                throw new ArgumentNullException(nameof(pointGroup));
+
+            var reportObjects = new List<ReportObject>();
             using (var tr = AcadApp.StartTransaction())
             {
-                if (calculatePointNearSurfaceEdge)
-                {
-                    elevation = SurfaceUtils.FindElevationNearSurface(civilSurface.ToTinSurface(tr), civilPoint.Easting, civilPoint.Northing, out dX, out dY);
-                }
-                else
-                {
-                    try
-                    {
-                        elevation = civilSurface.ToTinSurface(tr).FindElevationAtXY(civilPoint.Easting, civilPoint.Northing);
-                    }
-                    catch
-                    {
-                        elevation = -9999.9999;
-                    }
-                }
+                var points = new List<CivilPoint>(CogoPointUtils.GetCivilPointsFromPointGroup(tr, pointGroup.Name));
 
+                foreach (var point in points)
+                {
+                    var reportObject = new ReportObject(point.PointNumber)
+                    {
+                        Easting = point.Easting,
+                        Northing = point.Northing,
+                        PointElevation = point.Elevation,
+                        RawDescription = point.RawDescription,
+                        FullDescription = point.FullDescription,
+                    };
+
+                    if (alignment != null)
+                    {
+                        reportObject.StationOffset = AlignmentUtils.GetStationOffset(tr, alignment,
+                            point.Easting, point.Northing);
+                    }
+
+                    if (surface != null)
+                    {
+                        double reportObjectCalculatedDeltaX = 0.0d;
+                        double reportObjectCalculatedDeltaY = 0.0d;
+
+                        if (calculatePointNearSurfaceEdge)
+                        {
+                            reportObject.SurfaceElevation = SurfaceUtils.FindElevationNearSurface(surface.ToTinSurface(tr),
+                                point.Easting, point.Northing, out reportObjectCalculatedDeltaX, out reportObjectCalculatedDeltaY);
+                        }
+                        else
+                        {
+                            try
+                            {
+                                reportObject.SurfaceElevation = surface.ToTinSurface(tr).FindElevationAtXY(point.Easting, point.Northing);
+                            }
+                            catch
+                            {
+                                reportObject.SurfaceElevation = -9999.999;
+                            }
+                        }
+
+                        reportObject.CalculatedDeltaX = reportObjectCalculatedDeltaX;
+                        reportObject.CalculatedDeltaY = reportObjectCalculatedDeltaY;
+                    }
+
+                    reportObjects.Add(reportObject);
+                }
                 tr.Commit();
             }
-            return elevation;
+            return Task.FromResult(reportObjects);
         }
-
-        public StationOffset GetStationOffsetAtCivilPoint(CivilPoint civilPoint, CivilAlignment civilAlignment)
-        {
-            return AlignmentUtils.GetStationOffset(civilAlignment, civilPoint.Easting, civilPoint.Northing);
-        }
-
     }
 }

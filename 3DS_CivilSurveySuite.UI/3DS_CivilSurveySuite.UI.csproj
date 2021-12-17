@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncRelayCommand.cs" />
     <Compile Include="Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Behaviors\TakeFocusAction.cs" />
