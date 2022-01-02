@@ -1,64 +1,39 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace _3DS_CivilSurveySuite.UI
 {
-    public class AsyncRelayCommand : ICommand
+    public sealed class AsyncRelayCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
-
-        private bool _isExecuting;
-        private readonly Func<Task> _execute;
+        private readonly Func<Task> _asyncExecute;
         private readonly Func<bool> _canExecute;
 
-        public AsyncRelayCommand(
-            Func<Task> execute,
-            Func<bool> canExecute = null)
+        public event EventHandler CanExecuteChanged
         {
-            _execute = execute;
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
+
+        public AsyncRelayCommand(Func<Task> asyncExecute, Func<bool> canExecute = null)
+        {
+            _asyncExecute = asyncExecute;
             _canExecute = canExecute;
         }
 
-        public bool CanExecute()
+        public bool CanExecute(object parameter)
         {
-            return !_isExecuting && (_canExecute?.Invoke() ?? true);
+            return _canExecute == null || _canExecute();
         }
 
-        public async Task ExecuteAsync()
-        {
-            if (CanExecute())
-            {
-                try
-                {
-                    _isExecuting = true;
-                    await _execute();
-                }
-                finally
-                {
-                    _isExecuting = false;
-                }
-            }
-
-            RaiseCanExecuteChanged();
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        #region Explicit implementations
-        bool ICommand.CanExecute(object parameter)
-        {
-            return CanExecute();
-        }
-
-        async void ICommand.Execute(object parameter)
+        public async void Execute(object parameter)
         {
             await ExecuteAsync();
         }
-        #endregion
+
+        private async Task ExecuteAsync()
+        {
+            await _asyncExecute();
+        }
     }
 }
