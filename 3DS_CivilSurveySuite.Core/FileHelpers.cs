@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace _3DS_CivilSurveySuite.Core
 {
@@ -17,7 +18,7 @@ namespace _3DS_CivilSurveySuite.Core
         /// <param name="path"></param>
         /// <param name="extensions"></param>
         /// <returns></returns>
-        public static IEnumerable<string> GetFiles(string path, IList<string> extensions)
+        public static IEnumerable<string> GetFiles(string path, IEnumerable<string> extensions)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException(nameof(path));
@@ -25,15 +26,9 @@ namespace _3DS_CivilSurveySuite.Core
             if (!Directory.Exists(path))
                 throw new DirectoryNotFoundException();
 
-            var images = new List<string>();
             string[] files = Directory.GetFiles(path);
 
-            foreach (string file in files)
-            {
-                if (extensions.Contains(Path.GetExtension(file)))
-                    images.Add(file);
-            }
-            return images;
+            return files.Where(file => extensions.Contains(Path.GetExtension(file))).ToList();
         }
 
         /// <summary>

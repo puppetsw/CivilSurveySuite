@@ -28,7 +28,7 @@ namespace _3DS_CivilSurveySuite.UI.Services
 
         CivilSurface SelectSurface();
 
-        Task<List<ReportObject>> GetReportData(CivilPointGroup pointGroup, CivilAlignment alignment,
+        Task<ObservableCollection<ReportObject>> GetReportData(CivilPointGroup pointGroup, CivilAlignment alignment,
             CivilSurface surface, bool calculatePointNearSurfaceEdge);
     }
 }

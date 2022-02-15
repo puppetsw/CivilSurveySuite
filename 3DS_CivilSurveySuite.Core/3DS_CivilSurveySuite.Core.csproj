@@ -41,6 +41,7 @@
     <Compile Include="MathHelpers.cs" />
     <Compile Include="PointHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IEditorService.cs" />
     <Compile Include="StringHelpers.cs" />
     <Compile Include="XmlHelper.cs" />
   </ItemGroup>
@@ -50,5 +51,6 @@
       <Name>3DS_CivilSurveySuite.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
