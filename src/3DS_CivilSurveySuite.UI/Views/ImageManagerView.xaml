@@ -1,0 +1,207 @@
+﻿<Window x:Class="_3DS_CivilSurveySuite.UI.Views.ImageManagerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.UI.Converters"
+        xmlns:validation="clr-namespace:_3DS_CivilSurveySuite.UI.Validation"
+        xmlns:models="clr-namespace:_3DS_CivilSurveySuite.UI.Models"
+        mc:Ignorable="d"
+        Title="Raster Image Manager" Height="400" Width="600">
+    <Window.Resources>
+        <converters:VisibilityToBoolean x:Key="VisibleIfTrue" Inverted="True" Not="False" />
+        <converters:VisibilityToBoolean x:Key="VisibleIfNotTrue" Inverted="True" Not="True" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+
+        <!-- Photo Template -->
+        <DataTemplate DataType="{x:Type models:ImageData}">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="6">
+                <!-- Image Template -->
+                <Border Padding="4" Background="White" BorderBrush="#22000000" BorderThickness="1">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Image Source="{Binding Image.Thumbnail}" />
+                            <CheckBox IsChecked="{Binding IsSelected}" Focusable="False" />
+                        </Grid>
+                        <Label Content="{Binding Name}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Main photo catalog view -->
+        <Style TargetType="{x:Type ListBox}" x:Key="PhotoListBoxStyle">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal"
+                                   ItemHeight="150"
+                                   ItemWidth="150"
+                                   VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for an individual generic item -->
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#445B6249" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- For metadata properties pane -->
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid>
+                            <ContentPresenter Margin="6" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Removes dotted rectangle focus -->
+        <!-- <Style TargetType="{x:Type ItemsControl}"> -->
+        <!--     <Setter Property="Template"> -->
+        <!--         <Setter.Value> -->
+        <!--             <ControlTemplate TargetType="{x:Type ItemsControl}"> -->
+        <!--                 <WrapPanel IsItemsHost="True" /> -->
+        <!--             </ControlTemplate> -->
+        <!--         </Setter.Value> -->
+        <!--     </Setter> -->
+        <!-- </Style> -->
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            <TabItem Header="Images">
+                <Grid>
+                    <TextBlock Grid.Row="0" Visibility="{Binding Path=HasImages, Converter={StaticResource VisibleIfNotTrue}}"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontSize="14" FontWeight="Bold" Foreground="Gray">
+                        Click Open Folder to Start
+                    </TextBlock>
+
+                    <GroupBox Grid.Row="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ListBox Visibility="{Binding Path=HasImages, Converter={StaticResource VisibleIfTrue}}"
+                                     IsSynchronizedWithCurrentItem="True"
+                                     Style="{StaticResource PhotoListBoxStyle}"
+                                     Margin="5"
+                                     SelectionMode="Extended"
+                                     ItemsSource="{Binding Images}"
+                                     SelectedIndex="0">
+                            </ListBox>
+                        </ScrollViewer>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition Width="250" />
+                       <ColumnDefinition />
+                   </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Image Width (Drawing Units)" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Width="100" Height="23">
+                        <TextBox.Text>
+                            <Binding Path="ImageWidth">
+                                <Binding.ValidationRules>
+                                    <validation:NumberValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Image Height (Drawing Units)" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <TextBox HorizontalAlignment="Left" HorizontalContentAlignment="Right" Width="100" Height="23"
+                                 IsEnabled="{Binding LockAspectRatio, Converter={StaticResource InverseBooleanConverter}}">
+                            <TextBox.Text>
+                                <Binding Path="ImageHeight">
+                                    <Binding.ValidationRules>
+                                        <validation:NumberValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Separator Width="5" Background="Transparent"/>
+                        <CheckBox IsChecked="{Binding LockAspectRatio}" VerticalContentAlignment="Center">Lock Aspect Ratio</CheckBox>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Number Per Row" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Width="100" Height="23">
+                        <TextBox.Text>
+                            <Binding Path="RowLimit">
+                                <Binding.ValidationRules>
+                                    <validation:NumberValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Spacing Between Images (Drawing Units)" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Width="100" Height="23">
+                        <TextBox.Text>
+                            <Binding Path="ImagePadding">
+                                <Binding.ValidationRules>
+                                    <validation:NumberValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="5">
+                <TextBlock><Hyperlink Command="{Binding SelectAllCommand}" IsEnabled="{Binding HasImages}">Select All</Hyperlink></TextBlock>
+                <Separator Width="5" Background="Transparent"/>
+                <TextBlock><Hyperlink Command="{Binding SelectNoneCommand}" IsEnabled="{Binding HasImages}">Select None</Hyperlink></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Click="BtnInsertImage_Click" Command="{Binding InsertImagesCommand}" IsEnabled="{Binding HasImages}" Content="Insert Images" Margin="5" Height="25" Width="100"/>
+                <Button Command="{Binding LoadImagesCommand}" Content="Open Folder" Margin="5" Height="25" Width="100"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

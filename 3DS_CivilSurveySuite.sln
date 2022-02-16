@@ -1,61 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", "3DS_CivilSurveySuite\3DS_CivilSurveySuite.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteTests", "3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.Model", "3DS_CivilSurveySuite.Model\3DS_CivilSurveySuite.Model.csproj", "{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.Core", "3DS_CivilSurveySuite.Core\3DS_CivilSurveySuite.Core.csproj", "{09C298C6-4485-4911-8AF1-2CD14CC99090}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.UI", "3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj", "{0431E86D-1A04-4F76-8AFC-193F84FA7965}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5A1D9E70-1267-4BFE-BE90-391E88DACEAE}"
-	ProjectSection(SolutionItems) = preProject
-		COMMANDS.md = COMMANDS.md
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.ACAD2017", "3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj", "{27174B74-79D3-4579-8AAE-D4EAECB04B3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.C3D2017", "3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj", "{6996AD26-737E-4A36-999B-FF6C051C1B2A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PConnect Sample", "PConnect Sample", "{9688C86C-F839-4B17-9336-638E110A15CF}"
-	ProjectSection(SolutionItems) = preProject
-		Solution Items\samepl4.png = Solution Items\samepl4.png
-		Solution Items\sample1.png = Solution Items\sample1.png
-		Solution Items\sample2.png = Solution Items\sample2.png
-		Solution Items\sample3.png = Solution Items\sample3.png
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ribbon Sample", "Ribbon Sample", "{EDF782BB-52CC-45CF-9E62-9E06DD820B9E}"
-	ProjectSection(SolutionItems) = preProject
-		Solution Items\Ribbon1.png = Solution Items\Ribbon1.png
-		Solution Items\Ribbon2.png = Solution Items\Ribbon2.png
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other Samples", "Other Samples", "{1C970487-72D0-4D4F-8297-29A52828B4D2}"
-	ProjectSection(SolutionItems) = preProject
-		Solution Items\Point-StringerSettings-768x360.png = Solution Items\Point-StringerSettings-768x360.png
-		Solution Items\Screenshot 2021-09-10 110359.png = Solution Items\Screenshot 2021-09-10 110359.png
-		Solution Items\Screenshot 2021-09-25 090717.png = Solution Items\Screenshot 2021-09-25 090717.png
-		Solution Items\StringerConnect-Raw-768x705.png = Solution Items\StringerConnect-Raw-768x705.png
-		Solution Items\stringertopo.png = Solution Items\stringertopo.png
-		Solution Items\treeblockdefintion.png = Solution Items\treeblockdefintion.png
-		Solution Items\StringerTopo-GettingStarted.pdf = Solution Items\StringerTopo-GettingStarted.pdf
-		Solution Items\SP_DisplayPoints_Dialog_RtClick.png = Solution Items\SP_DisplayPoints_Dialog_RtClick.png
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1A198AD-4A45-44E0-8703-49161569622A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteAcadTests", "3DS_CivilSurveySuiteAcadTests\3DS_CivilSurveySuiteAcadTests.csproj", "{4A45025B-3E94-4DB6-A656-432FFC73AE40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", "src\3DS_CivilSurveySuite\3DS_CivilSurveySuite.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteUITests", "3DS_CivilSurveySuiteUITests\3DS_CivilSurveySuiteUITests.csproj", "{68AF892D-C0E8-4E34-915B-8668F37CE9C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.ACAD2017", "src\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj", "{27174B74-79D3-4579-8AAE-D4EAECB04B3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.C3D2017", "src\3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj", "{6996AD26-737E-4A36-999B-FF6C051C1B2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.UI", "src\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj", "{0431E86D-1A04-4F76-8AFC-193F84FA7965}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3DS_CivilSurveySuiteTests", "tests\3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteAcadCoreTests", "tests\3DS_CivilSurveySuiteAcadCoreTests\3DS_CivilSurveySuiteAcadCoreTests.csproj", "{784168B4-94E9-40E4-807E-BC1FAA1B81A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,22 +29,6 @@ Global
 		{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09C298C6-4485-4911-8AF1-2CD14CC99090}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27174B74-79D3-4579-8AAE-D4EAECB04B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27174B74-79D3-4579-8AAE-D4EAECB04B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27174B74-79D3-4579-8AAE-D4EAECB04B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -91,31 +37,29 @@ Global
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A45025B-3E94-4DB6-A656-432FFC73AE40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68AF892D-C0E8-4E34-915B-8668F37CE9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68AF892D-C0E8-4E34-915B-8668F37CE9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68AF892D-C0E8-4E34-915B-8668F37CE9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68AF892D-C0E8-4E34-915B-8668F37CE9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0431E86D-1A04-4F76-8AFC-193F84FA7965}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{784168B4-94E9-40E4-807E-BC1FAA1B81A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{784168B4-94E9-40E4-807E-BC1FAA1B81A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{784168B4-94E9-40E4-807E-BC1FAA1B81A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{784168B4-94E9-40E4-807E-BC1FAA1B81A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
-		{B4B4DEEB-D614-4CEF-8E4C-C29543BC5C03} = {B1A198AD-4A45-44E0-8703-49161569622A}
-		{E6A561F5-2C4A-4CAD-B150-C11A1E58B0F1} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
-		{09C298C6-4485-4911-8AF1-2CD14CC99090} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
-		{0431E86D-1A04-4F76-8AFC-193F84FA7965} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
 		{27174B74-79D3-4579-8AAE-D4EAECB04B3C} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
 		{6996AD26-737E-4A36-999B-FF6C051C1B2A} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
-		{9688C86C-F839-4B17-9336-638E110A15CF} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
-		{EDF782BB-52CC-45CF-9E62-9E06DD820B9E} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
-		{1C970487-72D0-4D4F-8297-29A52828B4D2} = {5A1D9E70-1267-4BFE-BE90-391E88DACEAE}
-		{4A45025B-3E94-4DB6-A656-432FFC73AE40} = {B1A198AD-4A45-44E0-8703-49161569622A}
-		{68AF892D-C0E8-4E34-915B-8668F37CE9C9} = {B1A198AD-4A45-44E0-8703-49161569622A}
+		{0431E86D-1A04-4F76-8AFC-193F84FA7965} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
+		{A0E46C63-19D0-4E09-9D67-0E81AE344B5E} = {B1A198AD-4A45-44E0-8703-49161569622A}
+		{784168B4-94E9-40E4-807E-BC1FAA1B81A2} = {B1A198AD-4A45-44E0-8703-49161569622A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21AB6BAD-3251-4144-BB53-3E90D73A8B2D}

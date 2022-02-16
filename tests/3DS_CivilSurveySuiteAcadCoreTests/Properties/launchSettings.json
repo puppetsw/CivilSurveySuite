@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TestRunner": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\AutoCAD 2017\\accoreconsole.exe",
+      "commandLineArgs": "/s C:\\Users\\scott\\source\\repos\\3DS_CivilSurveySuite\\tests\\3DS_CivilSurveySuiteAcadCoreTests\\bin\\Debug\\net45\\TestLoader.scr",
+      "workingDirectory": "C:\\Users\\scott\\source\\repos\\3DS_CivilSurveySuite\\tests\\3DS_CivilSurveySuiteAcadCoreTests\\bin\\Debug\\net45"
+    }
+  }
+}
