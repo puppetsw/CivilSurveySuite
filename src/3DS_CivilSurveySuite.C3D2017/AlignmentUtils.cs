@@ -116,6 +116,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <summary>
         /// Gets the station offset information from an alignment at the given x and y coordinates.
         /// </summary>
+        /// <param name="tr">Active <see cref="Transaction"/>.</param>
         /// <param name="civilAlignment">The alignment.</param>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>

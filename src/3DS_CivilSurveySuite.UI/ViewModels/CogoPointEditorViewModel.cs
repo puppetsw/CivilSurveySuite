@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for CogoPointViewer.
     /// </summary>
-    public class CogoPointEditorViewModel : ViewModelBase
+    public class CogoPointEditorViewModel : ObservableObject
     {
         private readonly ICogoPointService _cogoPointService;
         private CivilPoint _selectedCivilPoint;

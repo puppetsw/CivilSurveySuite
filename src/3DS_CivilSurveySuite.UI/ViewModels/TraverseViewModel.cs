@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for TraverseView
     /// </summary>
-    public class TraverseViewModel : ViewModelBase
+    public class TraverseViewModel : ObservableObject
     {
         private string _closeBearing;
         private string _closeDistance;

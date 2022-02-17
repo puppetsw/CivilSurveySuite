@@ -41,7 +41,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 throw new ArgumentNullException(nameof(layerName));
             }
 
-            var layerTable = tr.GetObject(AcadApp.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
+            var layerTable = (LayerTable)tr.GetObject(AcadApp.ActiveDocument.Database.LayerTableId, OpenMode.ForRead);
 
             if (layerTable.Has(layerName))
             {

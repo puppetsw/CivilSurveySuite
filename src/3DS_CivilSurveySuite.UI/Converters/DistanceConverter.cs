@@ -16,10 +16,14 @@ namespace _3DS_CivilSurveySuite.UI.Converters
         {
             string distStr = (string)value;
 
+            if (distStr == null)
+            {
+                return string.Empty;
+            }
+
             if (distStr.Contains("+"))
             {
-                string[] splitDistance;
-                splitDistance = distStr.Split('+');
+                string[] splitDistance = distStr.Split('+');
                 double dist1 = StringHelpers.ExtractDoubleFromString(splitDistance[0]);
                 double dist2 = StringHelpers.ExtractDoubleFromString(splitDistance[1]);
 
@@ -27,8 +31,7 @@ namespace _3DS_CivilSurveySuite.UI.Converters
             }
             else if (distStr.Contains("-"))
             {
-                string[] splitDistance;
-                splitDistance = distStr.Split('-');
+                string[] splitDistance = distStr.Split('-');
                 double dist1 = StringHelpers.ExtractDoubleFromString(splitDistance[0]);
                 double dist2 = StringHelpers.ExtractDoubleFromString(splitDistance[1]);
 

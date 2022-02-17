@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for ImageManagerView.xaml
     /// </summary>
-    public class ImageManagerViewModel : ViewModelBase
+    public class ImageManagerViewModel : ObservableObject
     {
         private readonly IFolderBrowserDialogService _folderBrowserDialogService;
         private readonly IRasterImageService _rasterImageService;

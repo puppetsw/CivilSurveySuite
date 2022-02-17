@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteAcadTests
+namespace _3DS_CivilSurveySuiteAcadCoreTests
 {
     [TestFixture, Apartment(ApartmentState.STA)]
     public class CogoPointTests : TestBase

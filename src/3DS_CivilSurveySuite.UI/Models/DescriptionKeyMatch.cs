@@ -47,7 +47,7 @@ namespace _3DS_CivilSurveySuite.UI.Models
         }
 
         /// <summary>
-        /// Returns true if the CogoPoint's RawDescription is a match to the <see cref="Models.DescriptionKey.Models.DescriptionKey"/>
+        /// Returns true if the CogoPoint's RawDescription is a match to the <see cref="Models.DescriptionKey"/>
         /// </summary>
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>

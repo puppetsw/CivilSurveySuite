@@ -5,7 +5,7 @@
 
 using System.Windows.Forms;
 
-namespace _3DS_CivilSurveySuite.UI.Services
+namespace _3DS_CivilSurveySuite.UI.Services.Implementation
 {
     public class FolderBrowserDialogService : IFolderBrowserDialogService
     {

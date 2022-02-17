@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// This class will handle the replacement of tree CogoPoints allowing for
     /// duplication so tree spreads and trunks can be scaled correctly.
     /// </remarks>
-    public class CogoPointReplaceDuplicateViewModel : ViewModelBase
+    public class CogoPointReplaceDuplicateViewModel : ObservableObject
     {
         private readonly ICogoPointReplaceDuplicateService _cogoPointReplaceDuplicateService;
         private string _findCode;

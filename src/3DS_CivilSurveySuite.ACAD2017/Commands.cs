@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]

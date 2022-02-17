@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite.UI.ViewModels
+namespace _3DS_CivilSurveySuite.UI
 {
-    /// <summary>
-    /// A base class for the ViewModel classes.
-    /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
         /// <summary>
         /// Raised when a property on this object has a new value.
@@ -34,6 +32,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         /// support CallerMemberName.</param>
         /// <returns>True if the value was changed, false if the existing value matched the
         /// desired value.</returns>
+        [DebuggerStepThrough]
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (Equals(storage, value))

@@ -5,12 +5,11 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
-    public class SelectPointGroupViewModel : ViewModelBase
+    public class SelectPointGroupViewModel : ObservableObject
     {
         private ObservableCollection<CivilPointGroup> _pointGroups;
         private CivilPointGroup _selectedPointGroup;

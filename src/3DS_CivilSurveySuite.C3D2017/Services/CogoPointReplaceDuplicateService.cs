@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System;
-using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Services;
 using Autodesk.AutoCAD.DatabaseServices;

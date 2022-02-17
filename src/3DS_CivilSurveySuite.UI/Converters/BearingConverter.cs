@@ -16,6 +16,12 @@ namespace _3DS_CivilSurveySuite.UI.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string input = (string) value;
+
+            if (input == null)
+            {
+                return 0;
+            }
+
             char[] charArray = input.ToCharArray();
             charArray = Array.FindAll(charArray, (c => char.IsDigit(c) || c == '-' || c == '+' || c == '.'));
             var str = new string(charArray); //convert character array back to string

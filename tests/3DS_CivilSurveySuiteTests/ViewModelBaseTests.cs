@@ -1,4 +1,4 @@
-﻿using _3DS_CivilSurveySuite.UI.ViewModels;
+﻿using _3DS_CivilSurveySuite.UI;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests
@@ -27,7 +27,7 @@ namespace _3DS_CivilSurveySuiteTests
             Assert.AreEqual(expected, vm.TestProperty);
         }
 
-        private class TestViewModelBase : ViewModelBase
+        private class TestViewModelBase : ObservableObject
         {
             private string _testProperty;
 

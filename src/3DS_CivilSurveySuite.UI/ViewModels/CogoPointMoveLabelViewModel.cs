@@ -10,7 +10,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for CogoPointMoveLabelView
     /// </summary>
-    public class CogoPointMoveLabelViewModel : ViewModelBase
+    public class CogoPointMoveLabelViewModel : ObservableObject
     {
         private readonly ICogoPointService _cogoPointService;
         private double _deltaY;

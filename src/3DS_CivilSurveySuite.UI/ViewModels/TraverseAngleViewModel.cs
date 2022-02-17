@@ -15,7 +15,7 @@ using _3DS_CivilSurveySuite.UI.Services;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
-    public class TraverseAngleViewModel : ViewModelBase
+    public class TraverseAngleViewModel : ObservableObject
     {
         private string _closeBearing;
         private string _closeDistance;

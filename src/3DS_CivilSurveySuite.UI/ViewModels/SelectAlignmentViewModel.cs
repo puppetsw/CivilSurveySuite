@@ -9,7 +9,7 @@ using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
-    public class SelectAlignmentViewModel : ViewModelBase
+    public class SelectAlignmentViewModel : ObservableObject
     {
         private readonly ICivilSelectService _civilSelectService;
         private ObservableCollection<CivilAlignment> _alignments;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
@@ -44,7 +43,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public CivilPointGroup SelectPointGroup()
         {
-            throw new NotImplementedException();
+            return PointGroupUtils.SelectCivilPointGroup();
         }
     }
 }

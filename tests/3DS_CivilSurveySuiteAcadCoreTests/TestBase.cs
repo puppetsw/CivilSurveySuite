@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.AutoCAD.DatabaseServices;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteAcadTests
+namespace _3DS_CivilSurveySuiteAcadCoreTests
 {
     /// <summary>
     /// Base class for ACAD tests.

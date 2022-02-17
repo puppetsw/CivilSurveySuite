@@ -16,7 +16,7 @@ using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
-    public class CogoPointSurfaceReportViewModel : ViewModelBase
+    public class CogoPointSurfaceReportViewModel : ObservableObject
     {
         private readonly ICogoPointSurfaceReportService _reportService;
         private readonly ISaveFileDialogService _saveFileService;

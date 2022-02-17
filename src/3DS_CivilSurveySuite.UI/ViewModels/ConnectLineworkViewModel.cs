@@ -14,7 +14,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for ConnectLineworkView.xaml
     /// </summary>
-    public class ConnectLineworkViewModel : ViewModelBase
+    public class ConnectLineworkViewModel : ObservableObject
     {
         private readonly IConnectLineworkService _connectLineworkService;
         private ObservableCollection<DescriptionKey> _descriptionKeys;

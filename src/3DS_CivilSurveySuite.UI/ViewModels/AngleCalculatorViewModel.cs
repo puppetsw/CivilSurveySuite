@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for AngleCalculatorView.
     /// </summary>
-    public class AngleCalculatorViewModel : ViewModelBase
+    public class AngleCalculatorViewModel : ObservableObject
     {
         private string _display;
         private string _fullExpression;

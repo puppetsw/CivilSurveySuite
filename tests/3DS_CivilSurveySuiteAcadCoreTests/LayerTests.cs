@@ -3,7 +3,7 @@ using _3DS_CivilSurveySuite.ACAD2017;
 using Autodesk.AutoCAD.DatabaseServices;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteAcadTests
+namespace _3DS_CivilSurveySuiteAcadCoreTests
 {
     [TestFixture, Apartment(ApartmentState.STA)]
     public class LayerTests : TestBase

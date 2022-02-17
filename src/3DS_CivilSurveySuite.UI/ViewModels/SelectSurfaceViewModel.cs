@@ -12,9 +12,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// <summary>
     /// ViewModel for SurfaceSelectView.
     /// <br/>
-    /// Implements <see cref="ViewModelBase" />.
+    /// Implements <see cref="ObservableObject" />.
     /// </summary>
-    public class SelectSurfaceViewModel : ViewModelBase
+    public class SelectSurfaceViewModel : ObservableObject
     {
         private readonly ICivilSelectService _civilSelectService;
         private CivilSurface _selectedSurface;
