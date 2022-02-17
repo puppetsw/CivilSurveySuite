@@ -5,6 +5,7 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -185,10 +186,14 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             FoundCountString = $"{FoundCount} CogoPoints Found";
         }
 
-        public CogoPointReplaceDuplicateViewModel(ICogoPointReplaceDuplicateService cogoPointReplaceDuplicateService)
+        private readonly ICogoPointService _cogoPointService;
+
+        public CogoPointReplaceDuplicateViewModel(ICogoPointReplaceDuplicateService cogoPointReplaceDuplicateService, ICogoPointService cogoPointService)
         {
             _cogoPointReplaceDuplicateService = cogoPointReplaceDuplicateService;
-            Symbols = new ObservableCollection<string>(_cogoPointReplaceDuplicateService.GetCogoPointSymbols());
+            _cogoPointService = cogoPointService;
+
+            Symbols = new ObservableCollection<string>(cogoPointService.GetCogoPointSymbols());
 
             if (Symbols.Count > 0)
             {

@@ -39,17 +39,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         public string DuplicateSymbol { get; set; }
 
-        public IEnumerable<string> GetCogoPointSymbols()
-        {
-            List<string> symbols;
-            using (var tr = AcadApp.StartTransaction())
-            {
-                symbols = new List<string>(StyleUtils.GetCogoPointStylesNames(tr));
-                tr.Commit();
-            }
-            return symbols;
-        }
-
         public void Save()
         {
             //TODO: Save settings so the last used settings are remembered.

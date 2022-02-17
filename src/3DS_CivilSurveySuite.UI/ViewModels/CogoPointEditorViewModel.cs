@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// </summary>
     public class CogoPointEditorViewModel : ViewModelBase
     {
-        private readonly ICogoPointEditorService _cogoPointViewerService;
+        private readonly ICogoPointService _cogoPointService;
         private CivilPoint _selectedCivilPoint;
         private string _filterText;
 
@@ -85,10 +85,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand CopyDescriptionFormatCommand => new RelayCommand(CopyDescriptionFormat, () => MultipleSelected);
 
-        public CogoPointEditorViewModel(ICogoPointEditorService cogoPointViewerService)
+        public CogoPointEditorViewModel(ICogoPointService cogoPointService)
         {
-            _cogoPointViewerService = cogoPointViewerService;
-            CogoPoints = new ObservableCollection<CivilPoint>(_cogoPointViewerService.GetPoints());
+            _cogoPointService = cogoPointService;
+            CogoPoints = new ObservableCollection<CivilPoint>(_cogoPointService.GetPoints());
 
             ItemsView.Filter = o => Filter(o as CivilPoint);
         }
@@ -122,7 +122,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             if (SelectedItems == null)
                 return;
 
-            _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.RawDescription), SelectedItems[0].RawDescription);
+            _cogoPointService.UpdateSelected(SelectedItems, nameof(CivilPoint.RawDescription), SelectedItems[0].RawDescription);
         }
 
         private void CopyDescriptionFormat()
@@ -130,25 +130,25 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             if (SelectedItems == null)
                 return;
 
-            _cogoPointViewerService.UpdateSelected(SelectedItems, nameof(CivilPoint.DescriptionFormat), SelectedItems[0].DescriptionFormat);
+            _cogoPointService.UpdateSelected(SelectedItems, nameof(CivilPoint.DescriptionFormat), SelectedItems[0].DescriptionFormat);
         }
 
         private void Select()
         {
             if (SelectedItem != null)
-                _cogoPointViewerService.Select(SelectedItem);
+                _cogoPointService.Select(SelectedItem);
         }
 
         private void Update()
         {
             if (SelectedItem != null)
-                _cogoPointViewerService.Update(SelectedItem);
+                _cogoPointService.Update(SelectedItem);
         }
 
         private void ZoomToPoint()
         {
             if (SelectedItem != null)
-                _cogoPointViewerService.ZoomTo(SelectedItem);
+                _cogoPointService.ZoomTo(SelectedItem);
         }
 
     }

@@ -38,7 +38,5 @@ namespace _3DS_CivilSurveySuite.UI.Services
         void ReplaceDuplicate();
 
         void Find();
-
-        IEnumerable<string> GetCogoPointSymbols();
     }
 }

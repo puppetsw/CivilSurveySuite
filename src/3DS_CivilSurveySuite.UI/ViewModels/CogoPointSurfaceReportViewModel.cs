@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -19,6 +20,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private readonly ICogoPointSurfaceReportService _reportService;
         private readonly ISaveFileDialogService _saveFileService;
+        private readonly ICivilSelectService _civilSelectService;
         private CivilSurface _selectedCivilSurface;
         private CivilPointGroup _selectCivilPointGroup;
         private CivilAlignment _selectedCivilAlignment;
@@ -131,7 +133,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             {
                 _selectedSite = value;
                 // Update alignments
-                Alignments = new ObservableCollection<CivilAlignment>(_reportService.GetSiteAlignments(value));
+                Alignments = new ObservableCollection<CivilAlignment>(_civilSelectService.GetSiteAlignments(value));
 
                 NotifyPropertyChanged(nameof(Alignments));
                 NotifyPropertyChanged();
@@ -173,19 +175,20 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         // public ICommand WriteToFileCommand => new RelayCommand(WriteToFile, () => true);
 
         public CogoPointSurfaceReportViewModel(ICogoPointSurfaceReportService cogoPointSurfaceReportService,
-            ISaveFileDialogService saveFileDialogService)
+            ISaveFileDialogService saveFileDialogService, ICivilSelectService civilSelectService)
         {
             _reportService = cogoPointSurfaceReportService;
             _saveFileService = saveFileDialogService;
+            _civilSelectService = civilSelectService;
 
-            Sites = new ObservableCollection<CivilSite>(_reportService.GetSites());
+            Sites = new ObservableCollection<CivilSite>(_civilSelectService.GetSites());
 
             if (Sites.Count >= 1)
                 SelectedSite = Sites[0];
 
-            Alignments = new ObservableCollection<CivilAlignment>(_reportService.GetSiteAlignments(SelectedSite));
-            PointGroups = new ObservableCollection<CivilPointGroup>(_reportService.GetPointGroups());
-            Surfaces = new ObservableCollection<CivilSurface>(_reportService.GetSurfaces());
+            Alignments = new ObservableCollection<CivilAlignment>(_civilSelectService.GetSiteAlignments(SelectedSite));
+            PointGroups = new ObservableCollection<CivilPointGroup>(_civilSelectService.GetPointGroups());
+            Surfaces = new ObservableCollection<CivilSurface>(_civilSelectService.GetSurfaces());
             ReportData = new ObservableCollection<ReportObject>();
         }
 
@@ -246,7 +249,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectPointGroup()
         {
-            var pointGroup = _reportService.SelectPointGroup();
+            var pointGroup = _civilSelectService.SelectPointGroup();
             if (pointGroup == null)
                 return;
 
@@ -260,7 +263,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectSurface()
         {
-            var surface = _reportService.SelectSurface();
+            var surface = _civilSelectService.SelectSurface();
             if (surface == null)
                 return;
 

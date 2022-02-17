@@ -140,7 +140,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void InsertRasterImg()
         {
             // RasterUtils.AttachRasterImage("D:\\Dropbox (3D Surveys)\\3D Surveys - PMS\\++ Contours Checkout\\01. Fieldwork Completed\\P210398 CFA Glen Osmond - Booked 3-12-21\\PHOTOS\\Photo 3-12-21, 2 57 30 pm.jpg", Point3d.Origin);
-            AcadService.ShowDialog<ImageManagerView>();
+            AcadApp.ShowDialog<ImageManagerView>();
         }
 
 
@@ -223,19 +223,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public void ShowAngleCalculator()
         {
-            AcadService.ShowModelessDialog<AngleCalculatorView>();
+            AcadApp.ShowModelessDialog<AngleCalculatorView>();
         }
 
         [CommandMethod("3DS", "_3DSShowTraverseWindow", CommandFlags.Modal)]
         public void ShowTraversePalette()
         {
-            AcadService.ShowDialog<TraverseView>();
+            AcadApp.ShowDialog<TraverseView>();
         }
 
             [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
         public void ShowTraverseAngle()
         {
-            AcadService.ShowDialog<TraverseAngleView>();
+            AcadApp.ShowDialog<TraverseAngleView>();
         }
 
 

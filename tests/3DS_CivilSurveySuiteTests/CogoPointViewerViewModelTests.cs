@@ -2,6 +2,7 @@
 using System.Linq;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -11,12 +12,12 @@ namespace _3DS_CivilSurveySuiteTests
     [TestFixture]
     public class CogoPointViewerViewModelTests
     {
-        private Mock<ICogoPointEditorService> _mock;
+        private Mock<ICogoPointService> _mock;
 
         [SetUp]
         public void Setup()
         {
-            _mock = new Mock<ICogoPointEditorService>();
+            _mock = new Mock<ICogoPointService>();
             _mock.Setup(m => m.GetPoints()).Returns(() => new List<CivilPoint>
             {
                 new CivilPoint { RawDescription = "Scott" },

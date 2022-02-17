@@ -1,5 +1,5 @@
 ﻿using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -15,7 +15,7 @@ namespace _3DS_CivilSurveySuiteTests
             var pointGroup1 = new CivilPointGroup();
             var pointGroup2 = new CivilPointGroup();
 
-            var pointGroupSelectService = new Mock<ISelectPointGroupService>();
+            var pointGroupSelectService = new Mock<ICivilSelectService>();
             pointGroupSelectService.Setup(m => m.GetPointGroups()).Returns(() => new []{ pointGroup1, pointGroup2 });
 
             var vm = new SelectPointGroupViewModel(pointGroupSelectService.Object);

@@ -89,7 +89,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "_3DSCptLabelsMove", CommandFlags.Modal)]
         public static void CptMoveLabels()
         {
-            C3DService.ShowDialog<CogoPointMoveLabelView>();
+            C3DApp.ShowDialog<CogoPointMoveLabelView>();
         }
 
         [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
@@ -172,25 +172,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
         [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
         public static void ShowConnectLinework()
         {
-            C3DService.ShowDialog<ConnectLineworkView>();
+            C3DApp.ShowDialog<ConnectLineworkView>();
         }
 
         [CommandMethod("3DS", "3DSShowCogoPointEditor", CommandFlags.Modal)]
         public static void ShowCogoPointEditor()
         {
-            C3DService.ShowDialog<CogoPointEditorView>();
+            C3DApp.ShowDialog<CogoPointEditorView>();
         }
 
         [CommandMethod("3DS", "3DSShowCogoPointFindReplace", CommandFlags.Modal)]
         public static void ShowCogoFindReplace()
         {
-            C3DService.ShowDialog<CogoPointReplaceDuplicateView>();
+            C3DApp.ShowDialog<CogoPointReplaceDuplicateView>();
         }
 
         [CommandMethod("3DS", "3DSShowCogoPointReporter", CommandFlags.Modal)]
         public static void ShowCogoReporter()
         {
-            C3DService.ShowDialog<CogoPointSurfaceReportView>();
+            C3DApp.ShowDialog<CogoPointSurfaceReportView>();
         }
 
 

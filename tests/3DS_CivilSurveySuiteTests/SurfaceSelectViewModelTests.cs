@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -13,7 +13,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SurfaceNames_OnConstruct()
         {
-            var mock = new Mock<ISelectSurfaceService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface(),
@@ -28,7 +28,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void Set_SelectedSurfaceName_Property()
         {
-            var mock = new Mock<ISelectSurfaceService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
@@ -48,7 +48,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var selectableSurface = new CivilSurface { Name = "EG" };
 
-            var mock = new Mock<ISelectSurfaceService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "Test" },
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SelectSurfaceCommand_Execute_SurfaceExists()
         {
-            var mock = new Mock<ISelectSurfaceService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},
@@ -84,7 +84,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SelectSurfaceCommand_Execute_SelectionCancelled()
         {
-            var mock = new Mock<ISelectSurfaceService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetSurfaces()).Returns(() => new List<CivilSurface>
             {
                 new CivilSurface { Name = "EG"},

@@ -18,23 +18,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class CogoPointSurfaceReportService : ICogoPointSurfaceReportService
     {
-        public IEnumerable<CivilSite> GetSites() => SiteUtils.GetCivilSites();
-
-        public IEnumerable<CivilAlignment> GetSiteAlignments(CivilSite site) =>
-            AlignmentUtils.GetCivilAlignmentsInCivilSite(site);
-
-        public IEnumerable<CivilAlignment> GetAlignments() => AlignmentUtils.GetCivilAlignments();
-
-        public IEnumerable<CivilPointGroup> GetPointGroups() => PointGroupUtils.GetCivilPointGroups();
-
-        public IEnumerable<CivilSurface> GetSurfaces() => SurfaceUtils.GetCivilSurfaces();
-
-        public CivilAlignment SelectAlignment() => AlignmentUtils.SelectCivilAlignment();
-
-        public CivilPointGroup SelectPointGroup() => PointGroupUtils.SelectCivilPointGroup();
-
-        public CivilSurface SelectSurface() => SurfaceUtils.SelectCivilSurface();
-
         public Task<ObservableCollection<ReportObject>> GetReportData(CivilPointGroup pointGroup,
             CivilAlignment alignment, CivilSurface surface, bool calculatePointNearSurfaceEdge)
         {

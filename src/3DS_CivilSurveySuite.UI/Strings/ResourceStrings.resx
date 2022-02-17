@@ -117,22 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accept_Position" xml:space="preserve">
+  <data name="ACAD_AcceptPosition" xml:space="preserve">
     <value>3DS&gt; Accept position?</value>
   </data>
-  <data name="Offset_Distance" xml:space="preserve">
+  <data name="ACAD_Loading" xml:space="preserve">
+    <value>3DS&gt; Loading Civil Survey Suite for AutoCAD...</value>
+  </data>
+  <data name="ACAD_LoadingError" xml:space="preserve">
+    <value>3DS&gt; Error Loading Civil Survey Suite for AutoCAD:</value>
+  </data>
+  <data name="ACAD_OffsetDistance" xml:space="preserve">
     <value>3DS&gt; Offset distance:</value>
   </data>
-  <data name="Pick_Offset_Side" xml:space="preserve">
+  <data name="ACAD_PickOffsetSide" xml:space="preserve">
     <value>3DS&gt; Pick offset side:</value>
   </data>
-  <data name="Select_First_Line_Or_Polyline" xml:space="preserve">
+  <data name="ACAD_SelectFirstLineOrPolyline" xml:space="preserve">
     <value>3DS&gt; Select first line or polyline:</value>
   </data>
-  <data name="Select_Line_Or_Polyline" xml:space="preserve">
+  <data name="ACAD_SelectLineOrPolyline" xml:space="preserve">
     <value>3DS&gt; Select line or polyline:</value>
   </data>
-  <data name="Select_Second_Line_Or_Polyline" xml:space="preserve">
+  <data name="ACAD_SelectSecondLineOrPolyline" xml:space="preserve">
     <value>3DS&gt; Select second line or polyline:</value>
+  </data>
+  <data name="C3D_Loading" xml:space="preserve">
+    <value>3DS&gt; Loading Civil Survey Suite for Civil 3D...</value>
+  </data>
+  <data name="C3D_LoadingError" xml:space="preserve">
+    <value>3DS&gt; Error Loading Civil Survey Suite for Civil 3D:</value>
   </data>
 </root>

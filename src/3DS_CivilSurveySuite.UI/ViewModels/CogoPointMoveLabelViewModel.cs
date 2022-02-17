@@ -3,7 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// </summary>
     public class CogoPointMoveLabelViewModel : ViewModelBase
     {
-        private readonly ICogoPointMoveLabelService _cogoPointMoveLabelService;
+        private readonly ICogoPointService _cogoPointService;
         private double _deltaY;
         private double _deltaX;
 
@@ -33,12 +33,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void Move()
         {
-            _cogoPointMoveLabelService.MoveLabels(DeltaX, DeltaY);
+            _cogoPointService.MoveLabels(DeltaX, DeltaY);
         }
 
-        public CogoPointMoveLabelViewModel(ICogoPointMoveLabelService cogoPointMoveLabelService)
+        public CogoPointMoveLabelViewModel(ICogoPointService cogoPointService)
         {
-            _cogoPointMoveLabelService = cogoPointMoveLabelService;
+            _cogoPointService = cogoPointService;
         }
     }
 }

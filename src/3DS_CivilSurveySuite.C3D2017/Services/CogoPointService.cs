@@ -8,14 +8,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    public class CogoPointEditorService : ICogoPointEditorService
+    public class CogoPointService : ICogoPointService
     {
         private const double TOLERANCE = 0.000000001;
 
@@ -74,8 +74,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     cogoPoint.ApplyDescriptionKeys();
                     cogoPoint.DowngradeOpen();
                 }
+
                 tr.Commit();
             }
+
             AcadApp.Editor.Regen();
             AcadApp.Editor.UpdateScreen();
         }
@@ -121,6 +123,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                 tr.Commit();
             }
+
             return list;
         }
 
@@ -157,9 +160,26 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         private static CogoPoint GetCogoPoint(Transaction tr, CivilPoint civilPoint)
         {
             Handle h = new Handle(long.Parse(civilPoint.ObjectId, NumberStyles.AllowHexSpecifier));
-            AcadApp.ActiveDatabase.TryGetObjectId(h, out var id);//TryGetObjectId method
+            AcadApp.ActiveDatabase.TryGetObjectId(h, out var id); //TryGetObjectId method
 
             return tr.GetObject(id, OpenMode.ForRead) as CogoPoint;
+        }
+
+        public void MoveLabels(double x, double y)
+        {
+            CogoPointUtils.Move_CogoPoint_Labels(x, y);
+        }
+
+        public IEnumerable<string> GetCogoPointSymbols()
+        {
+            List<string> symbols;
+            using (var tr = AcadApp.StartTransaction())
+            {
+                symbols = new List<string>(StyleUtils.GetCogoPointStylesNames(tr));
+                tr.Commit();
+            }
+
+            return symbols;
         }
     }
 }

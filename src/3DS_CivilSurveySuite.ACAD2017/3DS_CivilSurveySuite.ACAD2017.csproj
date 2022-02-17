@@ -80,11 +80,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RasterUtils.cs" />
-    <Compile Include="ResourceStrings.Designer.cs">
-      <DependentUpon>ResourceStrings.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Services\MessageBoxService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Services\RasterImageService.cs" />
@@ -95,12 +90,10 @@
     <Compile Include="LayerUtils.cs" />
     <Compile Include="LineUtils.cs" />
     <Compile Include="LockedTransaction.cs" />
-    <Compile Include="AcadPlugin.cs" />
     <Compile Include="PointExtensions.cs" />
     <Compile Include="PointUtils.cs" />
     <Compile Include="PolylineUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AcadService.cs" />
     <Compile Include="SystemVariables.cs" />
     <Compile Include="TextUtils.cs" />
     <Compile Include="TransactionExtensions.cs" />
@@ -114,17 +107,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ResourceStrings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

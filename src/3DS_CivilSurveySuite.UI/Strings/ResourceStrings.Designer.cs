@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _3DS_CivilSurveySuite.ACAD2017 {
+namespace _3DS_CivilSurveySuite.UI.Strings {
     using System;
     
     
@@ -19,10 +19,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017 {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ResourceStrings {
+    internal class ResourceStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017 {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("_3DS_CivilSurveySuite.ACAD2017.ResourceStrings", typeof(ResourceStrings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("_3DS_CivilSurveySuite.UI.Strings.ResourceStrings", typeof(ResourceStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017 {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,54 +63,90 @@ namespace _3DS_CivilSurveySuite.ACAD2017 {
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Accept position?.
         /// </summary>
-        public static string Accept_Position {
+        internal static string ACAD_AcceptPosition {
             get {
-                return ResourceManager.GetString("Accept_Position", resourceCulture);
+                return ResourceManager.GetString("ACAD_AcceptPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Loading Civil Survey Suite for AutoCAD....
+        /// </summary>
+        internal static string ACAD_Loading {
+            get {
+                return ResourceManager.GetString("ACAD_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Error Loading Civil Survey Suite for AutoCAD:.
+        /// </summary>
+        internal static string ACAD_LoadingError {
+            get {
+                return ResourceManager.GetString("ACAD_LoadingError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Offset distance:.
         /// </summary>
-        public static string Offset_Distance {
+        internal static string ACAD_OffsetDistance {
             get {
-                return ResourceManager.GetString("Offset_Distance", resourceCulture);
+                return ResourceManager.GetString("ACAD_OffsetDistance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Pick offset side:.
         /// </summary>
-        public static string Pick_Offset_Side {
+        internal static string ACAD_PickOffsetSide {
             get {
-                return ResourceManager.GetString("Pick_Offset_Side", resourceCulture);
+                return ResourceManager.GetString("ACAD_PickOffsetSide", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Select first line or polyline:.
         /// </summary>
-        public static string Select_First_Line_Or_Polyline {
+        internal static string ACAD_SelectFirstLineOrPolyline {
             get {
-                return ResourceManager.GetString("Select_First_Line_Or_Polyline", resourceCulture);
+                return ResourceManager.GetString("ACAD_SelectFirstLineOrPolyline", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Select line or polyline:.
         /// </summary>
-        public static string Select_Line_Or_Polyline {
+        internal static string ACAD_SelectLineOrPolyline {
             get {
-                return ResourceManager.GetString("Select_Line_Or_Polyline", resourceCulture);
+                return ResourceManager.GetString("ACAD_SelectLineOrPolyline", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Select second line or polyline:.
         /// </summary>
-        public static string Select_Second_Line_Or_Polyline {
+        internal static string ACAD_SelectSecondLineOrPolyline {
             get {
-                return ResourceManager.GetString("Select_Second_Line_Or_Polyline", resourceCulture);
+                return ResourceManager.GetString("ACAD_SelectSecondLineOrPolyline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Loading Civil Survey Suite for Civil 3D....
+        /// </summary>
+        internal static string C3D_Loading {
+            get {
+                return ResourceManager.GetString("C3D_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Error Loading Civil Survey Suite for Civil 3D:.
+        /// </summary>
+        internal static string C3D_LoadingError {
+            get {
+                return ResourceManager.GetString("C3D_LoadingError", resourceCulture);
             }
         }
     }

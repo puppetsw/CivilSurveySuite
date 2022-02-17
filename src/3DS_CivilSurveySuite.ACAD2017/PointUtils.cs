@@ -375,18 +375,18 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     graphics.DrawLine(secondLineToOffset, TransientDrawingMode.Highlight);
 
                     // Prompt for offset distance.
-                    if (!EditorUtils.TryGetDistance("\n" + ResourceStrings.Offset_Distance, out double dist))
+                    if (!EditorUtils.TryGetDistance("\n" + ResourceHelpers.GetLocalisedString("ACAD_OffsetDistance"), out double dist))
                         return;
 
                     // Pick offset side.
-                    if (!EditorUtils.TryGetPoint("\n" + ResourceStrings.Pick_Offset_Side, out Point3d offsetPoint))
+                    if (!EditorUtils.TryGetPoint("\n" + ResourceHelpers.GetLocalisedString("ACAD_PickOffsetSide"), out Point3d offsetPoint))
                         return;
 
                     Line firstOffsetLine = LineUtils.Offset(firstLineToOffset, dist, offsetPoint);
                     Line secondOffsetLine = LineUtils.Offset(secondLineToOffset, dist, offsetPoint);
                     Point intersectionPoint = LineUtils.FindIntersectionPoint(firstOffsetLine, secondOffsetLine);
 
-                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
+                    var pko = new PromptKeywordOptions("\n" + ResourceHelpers.GetLocalisedString("ACAD_AcceptPosition")) { AppendKeywordsToMessage = true, AllowNone = true };
                     pko.Keywords.Add(Keywords.ACCEPT);
                     pko.Keywords.Add(Keywords.CANCEL);
                     pko.Keywords.Default = Keywords.ACCEPT;
@@ -534,10 +534,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     if (basePoint == line.StartPoint)
                         angle = angle.Flip();
 
-                    if (!EditorUtils.TryGetDistance("\n" + ResourceStrings.Offset_Distance, basePoint, out double dist))
+                    if (!EditorUtils.TryGetDistance("\n" + ResourceHelpers.GetLocalisedString("ACAD_OffsetDistance"), basePoint, out double dist))
                         return;
 
-                    var pko = new PromptKeywordOptions("\n" + ResourceStrings.Accept_Position) { AppendKeywordsToMessage = true, AllowNone = true };
+                    var pko = new PromptKeywordOptions("\n" + ResourceHelpers.GetLocalisedString("ACAD_AcceptPosition")) { AppendKeywordsToMessage = true, AllowNone = true };
                     pko.Keywords.Add(Keywords.ACCEPT);
                     pko.Keywords.Add(Keywords.CANCEL);
                     pko.Keywords.Add(Keywords.FLIP);

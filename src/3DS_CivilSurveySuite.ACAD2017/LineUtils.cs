@@ -113,7 +113,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             endPoint = default;
 
-            if (!EditorUtils.TryGetNestedEntity("\n" + ResourceStrings.Select_Line_Or_Polyline, out var lineResult))
+            if (!EditorUtils.TryGetNestedEntity("\n" + ResourceHelpers.GetLocalisedString("ACAD_SelectLineOrPolyline"), out var lineResult))
                 return null;
 
             if (!lineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))

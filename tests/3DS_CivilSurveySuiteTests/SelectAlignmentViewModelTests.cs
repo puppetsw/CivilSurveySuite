@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void AlignmentNames_OnConstruct()
         {
-            var mock = new Mock<ISelectAlignmentService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetAlignments()).Returns(() => new List<CivilAlignment>
             {
                 new CivilAlignment(),
@@ -33,7 +34,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void Set_SelectedAlignmentName_Property()
         {
-            var mock = new Mock<ISelectAlignmentService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetAlignments()).Returns(() => new List<CivilAlignment>
             {
                 new CivilAlignment() { Name = "EG"},
@@ -53,7 +54,7 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var selectableAlignment = new CivilAlignment() { Name = "EG" };
 
-            var mock = new Mock<ISelectAlignmentService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetAlignments()).Returns(() => new List<CivilAlignment>
             {
                 new CivilAlignment { Name = "Test" },
@@ -72,7 +73,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SelectAlignmentCommand_Execute_SurfaceExists()
         {
-            var mock = new Mock<ISelectAlignmentService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetAlignments()).Returns(() => new List<CivilAlignment>
             {
                 new CivilAlignment { Name = "EG"},
@@ -89,7 +90,7 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SelectAlignmentCommand_Execute_SelectionCancelled()
         {
-            var mock = new Mock<ISelectAlignmentService>();
+            var mock = new Mock<ICivilSelectService>();
             mock.Setup(m => m.GetAlignments()).Returns(() => new List<CivilAlignment>
             {
                 new CivilAlignment { Name = "EG"},

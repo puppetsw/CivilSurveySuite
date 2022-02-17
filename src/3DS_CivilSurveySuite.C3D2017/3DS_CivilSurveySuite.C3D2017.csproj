@@ -67,23 +67,18 @@
   <ItemGroup>
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
-    <Compile Include="C3DPlugin.cs" />
     <Compile Include="ProfileUtils.cs" />
-    <Compile Include="Services\CogoPointMoveLabelService.cs" />
     <Compile Include="CogoPointUtils.cs" />
-    <Compile Include="Services\CogoPointEditorService.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="CommandSettings.cs" />
     <Compile Include="LabelUtils.cs" />
+    <Compile Include="Services\CivilSelectService.cs" />
     <Compile Include="Services\CogoPointReplaceDuplicateService.cs" />
+    <Compile Include="Services\CogoPointService.cs" />
     <Compile Include="Services\CogoPointSurfaceReportService.cs" />
-    <Compile Include="Services\SelectAlignmentService.cs" />
-    <Compile Include="Services\SelectPointGroupService.cs" />
     <Compile Include="PointGroupUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="C3DService.cs" />
     <Compile Include="SiteUtils.cs" />
-    <Compile Include="Services\SelectSurfaceService.cs" />
     <Compile Include="StyleUtils.cs" />
     <Compile Include="SurfaceUtils.cs" />
     <Compile Include="Services\ConnectLineworkService.cs" />

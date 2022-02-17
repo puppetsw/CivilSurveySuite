@@ -5,13 +5,13 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
     public class SelectAlignmentViewModel : ViewModelBase
     {
-        private readonly ISelectAlignmentService _selectAlignmentService;
+        private readonly ICivilSelectService _civilSelectService;
         private ObservableCollection<CivilAlignment> _alignments;
         private CivilAlignment _selectedAlignment;
 
@@ -29,11 +29,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public RelayCommand SelectAlignmentCommand => new RelayCommand(SelectAlignment, () => true);
 
-        public SelectAlignmentViewModel(ISelectAlignmentService selectAlignmentService)
+        public SelectAlignmentViewModel(ICivilSelectService civilSelectService)
         {
-            _selectAlignmentService = selectAlignmentService;
+            _civilSelectService = civilSelectService;
 
-            Alignments = new ObservableCollection<CivilAlignment>(_selectAlignmentService.GetAlignments());
+            Alignments = new ObservableCollection<CivilAlignment>(_civilSelectService.GetAlignments());
 
             if (Alignments.Count > 0)
             {
@@ -43,7 +43,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectAlignment()
         {
-            var alignment = _selectAlignmentService?.SelectAlignment();
+            var alignment = _civilSelectService?.SelectAlignment();
 
             if (alignment == null)
                 return;

@@ -5,7 +5,7 @@
 
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -16,7 +16,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     /// </summary>
     public class SelectSurfaceViewModel : ViewModelBase
     {
-        private readonly ISelectSurfaceService _surfaceSelectService;
+        private readonly ICivilSelectService _civilSelectService;
         private CivilSurface _selectedSurface;
         private ObservableCollection<CivilSurface> _surfaces;
 
@@ -24,7 +24,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         {
             get => _surfaces;
             set => SetProperty(ref _surfaces, value);
-        }   
+        }
 
         public CivilSurface SelectedSurface
         {
@@ -36,11 +36,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void SelectSurface()
         {
-            var surface = _surfaceSelectService.SelectSurface();
+            var surface = _civilSelectService.SelectSurface();
 
             if (surface == null)
                 return;
-            
+
             if (Surfaces.Contains(surface))
             {
                 var index = Surfaces.IndexOf(surface);
@@ -48,10 +48,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        public SelectSurfaceViewModel(ISelectSurfaceService surfaceSelectService)
+        public SelectSurfaceViewModel(ICivilSelectService civilSelectService)
         {
-            _surfaceSelectService = surfaceSelectService;
-            Surfaces = new ObservableCollection<CivilSurface>(surfaceSelectService.GetSurfaces());
+            _civilSelectService = civilSelectService;
+            Surfaces = new ObservableCollection<CivilSurface>(_civilSelectService.GetSurfaces());
             if (Surfaces.Count > 0) //Force select of first surface
             {
                 SelectedSurface = Surfaces[0];

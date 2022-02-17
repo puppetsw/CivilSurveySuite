@@ -277,7 +277,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void ShowHelp() //TODO: Move help file string to resource or something.
         {
-            _processService?.Start(@"Resources\3DSCivilSurveySuite.chm");
+            _processService?.Start(@"3DSCivilSurveySuite.chm");
         }
 
         private void UpdateIndex()

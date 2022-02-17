@@ -6,12 +6,24 @@
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.UI.Models;
 
-namespace _3DS_CivilSurveySuite.UI.Services
+namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 {
-    public interface ISelectAlignmentService
+    public interface ICivilSelectService
     {
+        IEnumerable<CivilSite> GetSites();
+
         IEnumerable<CivilAlignment> GetAlignments();
 
         CivilAlignment SelectAlignment();
+
+        IEnumerable<CivilAlignment> GetSiteAlignments(CivilSite site);
+
+        IEnumerable<CivilSurface> GetSurfaces();
+
+        CivilSurface SelectSurface();
+
+        IEnumerable<CivilPointGroup> GetPointGroups();
+
+        CivilPointGroup SelectPointGroup();
     }
 }

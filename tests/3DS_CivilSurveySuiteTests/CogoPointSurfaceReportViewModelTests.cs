@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
@@ -46,18 +47,21 @@ namespace _3DS_CivilSurveySuiteTests
             var pointGroup = new CivilPointGroup { Name = "SelectedPointGroup" };
 
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            reportService.Setup(m => m.GetPointGroups()).Returns(() => _pointGroups);
-            reportService.Setup(m => m.GetAlignments()).Returns(() => _alignments);
-            reportService.Setup(m => m.GetSurfaces()).Returns(() => _surfaces);
-            reportService.Setup(m => m.SelectSurface()).Returns(() => surface);
-            reportService.Setup(m => m.SelectAlignment()).Returns(() => alignment);
-            reportService.Setup(m => m.SelectPointGroup()).Returns(() => pointGroup);
+
+            var selectService = new Mock<ICivilSelectService>();
+
+            selectService.Setup(m => m.GetPointGroups()).Returns(() => _pointGroups);
+            selectService.Setup(m => m.GetAlignments()).Returns(() => _alignments);
+            selectService.Setup(m => m.GetSurfaces()).Returns(() => _surfaces);
+            selectService.Setup(m => m.SelectSurface()).Returns(() => surface);
+            selectService.Setup(m => m.SelectAlignment()).Returns(() => alignment);
+            selectService.Setup(m => m.SelectPointGroup()).Returns(() => pointGroup);
 
             var saveService = new Mock<ISaveFileDialogService>();
             saveService.Setup(m => m.ShowDialog()).Returns(() => true);
             saveService.Setup(m => m.FileName).Returns(TEST_FILE_NAME);
 
-            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object);
+            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object, selectService.Object);
         }
 
 
@@ -74,8 +78,9 @@ namespace _3DS_CivilSurveySuiteTests
         public void SelectSurfaceCommand_Execute_NullReturn()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            reportService.Setup(m => m.SelectSurface()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
+            var selectService = new Mock<ICivilSelectService>();
+            selectService.Setup(m => m.SelectSurface()).Returns(() => null);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, selectService.Object);
 
             Assert.IsTrue(viewModel.SelectSurfaceCommand.CanExecute(true));
             viewModel.SelectSurfaceCommand.Execute(null);
@@ -94,8 +99,9 @@ namespace _3DS_CivilSurveySuiteTests
         public void SelectPointGroupCommand_Execute_NullReturn()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            reportService.Setup(m => m.SelectPointGroup()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
+            var selectService = new Mock<ICivilSelectService>();
+            selectService.Setup(m => m.SelectPointGroup()).Returns(() => null);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, selectService.Object);
 
             Assert.IsTrue(viewModel.SelectPointGroupCommand.CanExecute(true));
             viewModel.SelectPointGroupCommand.Execute(null);
@@ -105,7 +111,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_CalculatePointNearSurfaceEdge_StoresCorrectly()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, null);
 
             viewModel.CalculatePointNearSurfaceEdge = true;
             Assert.IsTrue(viewModel.CalculatePointNearSurfaceEdge);

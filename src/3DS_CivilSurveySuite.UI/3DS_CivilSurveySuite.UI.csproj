@@ -63,6 +63,7 @@
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\MathHelpers.cs" />
     <Compile Include="Helpers\PointHelpers.cs" />
+    <Compile Include="Helpers\ResourceHelpers.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\Angle.cs" />
@@ -89,39 +90,31 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="Services\FolderBrowserDialogService.cs" />
-    <Compile Include="Services\ICogoPointMoveLabelService.cs" />
-    <Compile Include="Services\ICogoPointEditorService.cs" />
+    <Compile Include="Services\Implementation\FolderBrowserDialogService.cs" />
     <Compile Include="Services\ICogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\IConnectLineworkService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFolderBrowserDialogService.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
+    <Compile Include="Services\Interfaces\ICivilSelectService.cs" />
+    <Compile Include="Services\Interfaces\ICogoPointService.cs" />
     <Compile Include="Services\IOpenFileDialogService.cs" />
     <Compile Include="Services\IRasterImageService.cs" />
     <Compile Include="Services\ISaveFileDialogService.cs" />
-    <Compile Include="Services\ISelectPointGroupService.cs" />
     <Compile Include="Services\IProcessService.cs" />
-    <Compile Include="Services\ISelectAlignmentService.cs" />
-    <Compile Include="Services\ISelectSurfaceService.cs" />
     <Compile Include="Services\ITraverseService.cs" />
-    <Compile Include="Services\OpenFileDialogService.cs" />
-    <Compile Include="Services\SaveFileDialogService.cs" />
-    <Compile Include="Strings\en-US\Resources.Designer.cs">
+    <Compile Include="Services\Implementation\OpenFileDialogService.cs" />
+    <Compile Include="Services\Implementation\SaveFileDialogService.cs" />
+    <Compile Include="Strings\ResourceStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>ResourceStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
@@ -175,20 +168,12 @@
     <Compile Include="Views\TraverseView.xaml.cs">
       <DependentUpon>TraverseView.xaml</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Strings\en-US\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\3DSCivilSurveySuite.chm">
+    <None Include="3DSCivilSurveySuite.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -340,5 +325,12 @@
     <Resource Include="Resources\Icons\Alignment.ico" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Strings\ResourceStrings.en-US.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

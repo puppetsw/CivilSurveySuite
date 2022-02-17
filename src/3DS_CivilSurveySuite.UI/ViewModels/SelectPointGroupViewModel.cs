@@ -6,6 +6,7 @@
 using System.Collections.ObjectModel;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {
@@ -26,9 +27,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             set => SetProperty(ref _selectedPointGroup, value);
         }
 
-        public SelectPointGroupViewModel(ISelectPointGroupService pointGroupSelectService)
+        public SelectPointGroupViewModel(ICivilSelectService civilSelectService)
         {
-            PointGroups = new ObservableCollection<CivilPointGroup>(pointGroupSelectService.GetPointGroups());
+            PointGroups = new ObservableCollection<CivilPointGroup>(civilSelectService.GetPointGroups());
 
             if (PointGroups.Count > 0)
             {
