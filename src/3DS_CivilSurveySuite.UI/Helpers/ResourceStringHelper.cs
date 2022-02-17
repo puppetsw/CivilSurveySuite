@@ -3,18 +3,21 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.Globalization;
-using _3DS_CivilSurveySuite.UI.Strings;
+using System;
+using System.Windows.Markup;
 
 namespace _3DS_CivilSurveySuite.UI.Helpers
 {
-    public static class ResourceHelpers
+    public sealed class ResourceString : MarkupExtension
     {
-        public static string GetLocalisedString(string name)
+        public string Name
         {
-            var resourceMgr = ResourceStrings.ResourceManager;
-            var str = resourceMgr.GetString(name);
-            return str;
+            get; set;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return ResourceHelpers.GetLocalisedString(Name);
         }
     }
 }

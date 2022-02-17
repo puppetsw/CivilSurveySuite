@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:helpers="clr-namespace:_3DS_CivilSurveySuite.UI.Helpers"
         mc:Ignorable="d"
         Title="CogoPoint Report" Height="450" Width="800" ResizeMode="CanResizeWithGrip"
         d:DataContext="{d:DesignInstance vm:CogoPointSurfaceReportViewModel}">
@@ -92,7 +93,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TextRightAlign}">Site:</TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TextRightAlign}" Text="{helpers:ResourceString Name=Site}"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
                       ItemsSource="{Binding Sites}"
                       SelectedItem="{Binding SelectedSite}"

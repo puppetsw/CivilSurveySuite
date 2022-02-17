@@ -61,6 +61,7 @@
     <Compile Include="Helpers\MathHelpers.cs" />
     <Compile Include="Helpers\PointHelpers.cs" />
     <Compile Include="Helpers\ResourceHelpers.cs" />
+    <Compile Include="Helpers\ResourceStringHelper.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\Angle.cs" />

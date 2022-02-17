@@ -171,8 +171,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 return;
             }
 
-            StationRange = $"{Math.Round(SelectedAlignment.StationStart, 2)} to " +
-                           $"{Math.Round(SelectedAlignment.StationEnd, 2)}";
+            StationRange = $"{Math.Round(SelectedAlignment.StationStart, 2)} - {Math.Round(SelectedAlignment.StationEnd, 2)}";
         }
 
         private void SetSurfaceRange()
@@ -183,8 +182,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 return;
             }
 
-            SurfaceRange = $"{Math.Round(SelectedSurface.MinimumElevation, 3)} to " +
-                           $"{Math.Round(SelectedSurface.MaximumElevation, 3)}";
+            SurfaceRange = $"{Math.Round(SelectedSurface.MinimumElevation, 3)} - {Math.Round(SelectedSurface.MaximumElevation, 3)}";
         }
 
         private async Task UpdateReportData()
