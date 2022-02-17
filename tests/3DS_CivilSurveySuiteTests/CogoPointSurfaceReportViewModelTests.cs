@@ -111,9 +111,11 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_CalculatePointNearSurfaceEdge_StoresCorrectly()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, null);
+            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, null)
+            {
+                CalculatePointNearSurfaceEdge = true
+            };
 
-            viewModel.CalculatePointNearSurfaceEdge = true;
             Assert.IsTrue(viewModel.CalculatePointNearSurfaceEdge);
 
             viewModel.CalculatePointNearSurfaceEdge = false;

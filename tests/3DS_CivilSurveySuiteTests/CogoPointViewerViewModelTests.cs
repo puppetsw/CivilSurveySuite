@@ -28,9 +28,10 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void SelectedCommand_Execute()
         {
-            var vm = new CogoPointEditorViewModel(_mock.Object);
-
-            vm.SelectedItem = new CivilPoint();
+            var vm = new CogoPointEditorViewModel(_mock.Object)
+            {
+                SelectedItem = new CivilPoint()
+            };
 
             Assert.IsTrue(vm.SelectCommand.CanExecute(true));
             vm.SelectCommand.Execute(null);
@@ -79,9 +80,10 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void UpdateCommand_Execute()
         {
-            var vm = new CogoPointEditorViewModel(_mock.Object);
-
-            vm.SelectedItem = new CivilPoint();
+            var vm = new CogoPointEditorViewModel(_mock.Object)
+            {
+                SelectedItem = new CivilPoint()
+            };
 
             Assert.IsTrue(vm.UpdateCommand.CanExecute(true));
             vm.UpdateCommand.Execute(null);
@@ -90,9 +92,10 @@ namespace _3DS_CivilSurveySuiteTests
         [Test]
         public void ZoomToCommand_Execute()
         {
-            var vm = new CogoPointEditorViewModel(_mock.Object);
-
-            vm.SelectedItem = new CivilPoint();
+            var vm = new CogoPointEditorViewModel(_mock.Object)
+            {
+                SelectedItem = new CivilPoint()
+            };
 
             Assert.IsTrue(vm.ZoomToCommand.CanExecute(true));
             vm.ZoomToCommand.Execute(null);

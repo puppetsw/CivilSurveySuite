@@ -345,7 +345,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 ? C3DApp.SelectSurface()
                 : GetSurfaceByIndex(tr, 0);
 
-            return surface == null ? null : surface;
+            return surface;
         }
 
         /// <summary>

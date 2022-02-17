@@ -16,16 +16,9 @@ namespace _3DS_CivilSurveySuite.UI
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public RelayCommand(Action<T> execute) : this(execute, null)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
         {
-        }
-
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
-        {
-            if (execute == null)
-                throw new ArgumentNullException(nameof(execute));
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 

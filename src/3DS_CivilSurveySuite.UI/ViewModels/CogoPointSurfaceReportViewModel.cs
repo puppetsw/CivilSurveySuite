@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.Models;
@@ -38,21 +37,18 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             get => _calculatePointNearSurfaceEdge;
             set
             {
-                _calculatePointNearSurfaceEdge = value;
+                SetProperty(ref _calculatePointNearSurfaceEdge, value);
                 if (!value)
+                {
                     ShowInterpolatedAmount = false;
-                NotifyPropertyChanged();
+                }
             }
         }
 
         public bool ShowInterpolatedAmount
         {
             get => _showInterpolatedAmount;
-            set
-            {
-                _showInterpolatedAmount = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _showInterpolatedAmount, value);
         }
 
         public bool ShowCutFillValues
@@ -60,30 +56,21 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             get => _showCutFillValues;
             set
             {
-                _showCutFillValues = value;
+                SetProperty(ref _showCutFillValues, value);
                 InvertCutFillValues = value;
-                NotifyPropertyChanged();
             }
         }
 
         public bool InvertCutFillValues
         {
             get => _invertCutFillValues;
-            set
-            {
-                _invertCutFillValues = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _invertCutFillValues, value);
         }
 
         public ObservableCollection<ReportObject> ReportData
         {
             get => _reportData;
-            set
-            {
-                _reportData = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _reportData, value);
         }
 
         public ObservableCollection<CivilSite> Sites { get; }
@@ -97,85 +84,60 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public CivilSurface SelectedSurface
         {
             get => _selectedCivilSurface;
-            set
-            {
-                _selectedCivilSurface = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _selectedCivilSurface, value);
         }
 
         public CivilPointGroup SelectedPointGroup
         {
             get => _selectCivilPointGroup;
-            set
-            {
-                _selectCivilPointGroup = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _selectCivilPointGroup, value);
         }
 
         public CivilAlignment SelectedAlignment
         {
             get => _selectedCivilAlignment;
-            set
-            {
-                _selectedCivilAlignment = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _selectedCivilAlignment, value);
         }
 
         public CivilSite SelectedSite
         {
-            [DebuggerStepThrough]
             get => _selectedSite;
-            [DebuggerStepThrough]
             set
             {
-                _selectedSite = value;
+                SetProperty(ref _selectedSite, value);
+
                 // Update alignments
                 Alignments = new ObservableCollection<CivilAlignment>(_civilSelectService.GetSiteAlignments(value));
-
                 NotifyPropertyChanged(nameof(Alignments));
-                NotifyPropertyChanged();
             }
         }
 
         public string StationRange
         {
-            [DebuggerStepThrough]
             get => _stationRange;
-            [DebuggerStepThrough]
-            set
-            {
-                _stationRange = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _stationRange, value);
         }
 
         public string SurfaceRange
         {
-            [DebuggerStepThrough]
             get => _surfaceRange;
-            [DebuggerStepThrough]
-            set
-            {
-                _surfaceRange = value;
-                NotifyPropertyChanged();
-            }
+            set => SetProperty(ref _surfaceRange, value);
         }
 
-        public ICommand SelectPointGroupCommand => new RelayCommand(SelectPointGroup, () => true);
+        public ICommand SelectPointGroupCommand { get; private set; }
 
-        public ICommand SelectSurfaceCommand => new RelayCommand(SelectSurface, () => true);
+        public ICommand SelectSurfaceCommand { get; private set; }
 
-        public ICommand UpdateDataSourceCommand => new AsyncRelayCommand(UpdateReportData);
+        public ICommand UpdateDataSourceCommand { get; private set; }
 
         // public ICommand StationOffsetSortCommand => new RelayCommand(StationOffsetSort, () => true);
         //
         // public ICommand WriteToFileCommand => new RelayCommand(WriteToFile, () => true);
 
-        public CogoPointSurfaceReportViewModel(ICogoPointSurfaceReportService cogoPointSurfaceReportService,
-            ISaveFileDialogService saveFileDialogService, ICivilSelectService civilSelectService)
+        public CogoPointSurfaceReportViewModel(
+            ICogoPointSurfaceReportService cogoPointSurfaceReportService,
+            ISaveFileDialogService saveFileDialogService,
+            ICivilSelectService civilSelectService)
         {
             _reportService = cogoPointSurfaceReportService;
             _saveFileService = saveFileDialogService;
@@ -190,6 +152,15 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             PointGroups = new ObservableCollection<CivilPointGroup>(_civilSelectService.GetPointGroups());
             Surfaces = new ObservableCollection<CivilSurface>(_civilSelectService.GetSurfaces());
             ReportData = new ObservableCollection<ReportObject>();
+
+            InitCommands();
+        }
+
+        private void InitCommands()
+        {
+            SelectPointGroupCommand = new RelayCommand(SelectPointGroup, () => true);
+            SelectSurfaceCommand = new RelayCommand(SelectSurface, () => true);
+            UpdateDataSourceCommand = new AsyncRelayCommand(UpdateReportData);
         }
 
         private void SetStationRange()

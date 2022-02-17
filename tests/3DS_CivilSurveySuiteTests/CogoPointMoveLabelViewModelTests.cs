@@ -12,9 +12,10 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_DeltaX_StoresCorrectly()
         {
             var moveLabelService = new Mock<ICogoPointService>();
-            var vm = new CogoPointMoveLabelViewModel(moveLabelService.Object);
-
-            vm.DeltaX = 100.00;
+            var vm = new CogoPointMoveLabelViewModel(moveLabelService.Object)
+            {
+                DeltaX = 100.00
+            };
 
             Assert.AreEqual(100.00, vm.DeltaX);
         }
@@ -23,9 +24,10 @@ namespace _3DS_CivilSurveySuiteTests
         public void Property_DeltaY_StoresCorrectly()
         {
             var moveLabelService = new Mock<ICogoPointService>();
-            var vm = new CogoPointMoveLabelViewModel(moveLabelService.Object);
-
-            vm.DeltaY = 100.00;
+            var vm = new CogoPointMoveLabelViewModel(moveLabelService.Object)
+            {
+                DeltaY = 100.00
+            };
 
             Assert.AreEqual(100.00, vm.DeltaY);
         }

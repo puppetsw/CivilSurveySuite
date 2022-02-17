@@ -11,8 +11,10 @@ namespace _3DS_CivilSurveySuiteTests
         {
             var value = "Test";
             var expected = "Test";
-            var vm = new TestViewModelBase();
-            vm.TestProperty = value;
+            var vm = new TestViewModelBase
+            {
+                TestProperty = value
+            };
             Assert.AreEqual(expected, vm.TestProperty);
         }
 
