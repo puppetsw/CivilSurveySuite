@@ -1,12 +1,7 @@
-﻿// ----------------------------------------------------------------------
-//  <copyright file="CogoPointSurfaceReportViewModel.cs" company="Scott Whitney">
-//      Author: Scott Whitney
-//      Copyright (c) Scott Whitney. All rights reserved.
-//  </copyright>
-// ----------------------------------------------------------------------
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.Models;
@@ -112,6 +107,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
+        public ObservableCollection<string> SurfaceNames { get; set; } = new ObservableCollection<string>();
+
         public string StationRange
         {
             get => _stationRange;
@@ -148,10 +145,10 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             if (Sites.Count >= 1)
                 SelectedSite = Sites[0];
 
-            Alignments = new ObservableCollection<CivilAlignment>(_civilSelectService.GetSiteAlignments(SelectedSite));
+            Alignments  = new ObservableCollection<CivilAlignment>(_civilSelectService.GetSiteAlignments(SelectedSite));
             PointGroups = new ObservableCollection<CivilPointGroup>(_civilSelectService.GetPointGroups());
-            Surfaces = new ObservableCollection<CivilSurface>(_civilSelectService.GetSurfaces());
-            ReportData = new ObservableCollection<ReportObject>();
+            Surfaces    = new ObservableCollection<CivilSurface>(_civilSelectService.GetSurfaces());
+            ReportData  = new ObservableCollection<ReportObject>();
 
             InitCommands();
         }
@@ -159,7 +156,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private void InitCommands()
         {
             SelectPointGroupCommand = new RelayCommand(SelectPointGroup, () => true);
-            SelectSurfaceCommand = new RelayCommand(SelectSurface, () => true);
+            SelectSurfaceCommand    = new RelayCommand(SelectSurface, () => true);
             UpdateDataSourceCommand = new AsyncRelayCommand(UpdateReportData);
         }
 
@@ -185,6 +182,51 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             SurfaceRange = $"{Math.Round(SelectedSurface.MinimumElevation, 3)} - {Math.Round(SelectedSurface.MaximumElevation, 3)}";
         }
 
+        private DataTable _dataTable;
+
+        public DataView DataView => _dataTable?.DefaultView;
+
+        private void BuildDataTableColumns()
+        {
+            _dataTable = new DataTable();
+
+            _dataTable.Columns.Add("Point Number", typeof(uint));
+            _dataTable.Columns.Add("Easting", typeof(double));
+            _dataTable.Columns.Add("Northing", typeof(double));
+            _dataTable.Columns.Add("Elevation", typeof(double));
+            _dataTable.Columns.Add("Raw Description", typeof(string));
+            _dataTable.Columns.Add("Chainage", typeof(double));
+            _dataTable.Columns.Add("Offset", typeof(double));
+
+            // Loop and add selected surfaces
+            _dataTable.Columns.Add(SelectedSurface.Name, typeof(double));
+        }
+
+        private void BuildDataTableRows()
+        {
+            foreach (ReportObject ro in ReportData)
+            {
+                var list = new List<object>
+                {
+                    ro.Point.PointNumber,
+                    ro.Easting,
+                    ro.Northing,
+                    ro.Point.Elevation,
+                    ro.Point.RawDescription,
+                    ro.Chainage,
+                    ro.Offset
+                };
+
+                foreach (ReportSurfaceObject surfaceObject in ro.SurfacePoints)
+                {
+                    list.Add(surfaceObject.Point.Elevation);
+                }
+
+                _dataTable.Rows.Add(list.ToArray());
+            }
+            NotifyPropertyChanged(nameof(DataView));
+        }
+
         private async Task UpdateReportData()
         {
             if (SelectedAlignment == null)
@@ -196,15 +238,24 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             if (SelectedSurface == null)
                 return;
 
-            var data = await _reportService.GetReportData(SelectedPointGroup, SelectedAlignment, SelectedSurface,
-                CalculatePointNearSurfaceEdge);
+            SurfaceNames.Clear();
+            foreach (CivilSurface surface in Surfaces)
+            {
+                SurfaceNames.Add(surface.Name);
+            }
 
-            // This seems to solve the UI locking up issue.
+            _reportService.Interpolate = CalculatePointNearSurfaceEdge;
+
+            var data = await _reportService.GetReportData(SelectedAlignment,
+                new List<CivilPointGroup> { SelectedPointGroup }, Surfaces);
+
             await Task.Run(() => ReportData = data);
 
             SetStationRange();
             SetSurfaceRange();
 
+            BuildDataTableColumns();
+            BuildDataTableRows();
         }
 
         // private void StationOffsetSort()

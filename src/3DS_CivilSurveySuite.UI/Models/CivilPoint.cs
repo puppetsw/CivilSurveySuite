@@ -168,5 +168,10 @@ namespace _3DS_CivilSurveySuite.UI.Models
                 return hash;
             }
         }
+
+        public CivilPoint Clone()
+        {
+            return (CivilPoint)MemberwiseClone();
+        }
     }
 }
