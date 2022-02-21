@@ -81,6 +81,7 @@
     <Compile Include="Models\ImageData.cs" />
     <Compile Include="Models\Point.cs" />
     <Compile Include="Models\ReportObject.cs" />
+    <Compile Include="Models\ReportSurfaceObject.cs" />
     <Compile Include="Models\StationOffset.cs" />
     <Compile Include="Models\TraverseAngleObject.cs" />
     <Compile Include="Models\TraverseObject.cs" />
@@ -333,5 +334,6 @@
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

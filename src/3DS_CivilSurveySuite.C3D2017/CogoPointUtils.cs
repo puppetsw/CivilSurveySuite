@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using _3DS_CivilSurveySuite.ACAD2017;
@@ -90,6 +91,13 @@ namespace _3DS_CivilSurveySuite.C3D2017
             foreach (uint pointNumber in pointGroup.GetPointNumbers())
             {
                 var cogoPoint = GetByPointNumber(tr, (int)pointNumber);
+
+                if (cogoPoint == null)
+                {
+                    Debug.WriteLine($"WARNING: Unable to get CogoPoint for point number: {pointNumber}");
+                    continue;
+                }
+
                 list.Add(cogoPoint.ToCivilPoint());
             }
             return list;
@@ -144,10 +152,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void LabelRotateMatch()
         {
-            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select points: ", "\n3DS> Remove points: ", out var objectIds))
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select points: ",
+                    "\n3DS> Remove points: ", out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetEntity("\n3DS> Select line or polyline: ", "\n3DS> Not a valid line or a polyline: ",
+            if (!EditorUtils.TryGetEntity("\n3DS> Select line or polyline: ",
+                    "\n3DS> Not a valid line or a polyline: ",
                 new[]
                 {
                     typeof(Line),

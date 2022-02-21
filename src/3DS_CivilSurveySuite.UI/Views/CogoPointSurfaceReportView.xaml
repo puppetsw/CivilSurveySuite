@@ -22,7 +22,7 @@
             </Style>
 
             <Style TargetType="{x:Type DataGrid}" x:Key="ReportView">
-                <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="AutoGenerateColumns" Value="True" />
                 <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BlueGridLine}" />
                 <Setter Property="VerticalGridLinesBrush" Value="{StaticResource RedGridLine}" />
                 <Setter Property="AlternationCount" Value="3"/>
@@ -66,7 +66,7 @@
     </Window.Resources>
 
 
-    <Grid ShowGridLines="False">
+    <Grid ShowGridLines="False" x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.5*" />
             <ColumnDefinition Width="Auto"/>
@@ -251,24 +251,10 @@
         </Grid>
 
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                  x:Name="DataGridRoot"
                   Style="{StaticResource ReportView}"
-                  ItemsSource="{Binding ReportData, UpdateSourceTrigger=PropertyChanged}"
-                  AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn">
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding PointNumber}"/>
-                <DataGridTextColumn Binding="{Binding Easting}"/>
-                <DataGridTextColumn Binding="{Binding Northing}"/>
-                <DataGridTextColumn Binding="{Binding PointElevation}"/>
-                <DataGridTextColumn Binding="{Binding RawDescription}"/>
-                <DataGridTextColumn Binding="{Binding SurfaceElevation}"/>
-            </DataGrid.Columns>
-
-        </DataGrid>
-
-
-
-        <!-- ItemsSource="{Binding ReportDataTable.DefaultView, UpdateSourceTrigger=PropertyChanged}" -->
+                  ItemsSource="{Binding DataView}"
+                  AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" />
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                     Margin="5" Orientation="Horizontal" HorizontalAlignment="Right">

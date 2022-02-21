@@ -364,7 +364,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 calculatedPoint = new Point3d(point.X, point.Y, elevation);
                 return;
             }
-            catch
+            catch (PointNotOnEntityException)
             {
                 // Suppress error
                 // Point is not in surface bounds
@@ -406,7 +406,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
 
             if (closestEdge == null)
+            {
                 throw new InvalidOperationException("closestEdge was null.");
+            }
 
             var p = closestEdge.GetClosestPointTo(point.ToPoint2d()).Point.ToPoint3d();
             double el = surface.FindElevationAtXY(p.X, p.Y);
