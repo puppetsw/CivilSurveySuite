@@ -1,69 +1,79 @@
-﻿// ------------------------------------------------------------------------------
-//  <copyright file="ReportObject.cs" company="Scott Whitney">
-//      Copyright (c) Scott Whitney.  All rights reserved.
-//  </copyright>
-// ------------------------------------------------------------------------------
+﻿// Copyright Scott Whitney. All Rights Reserved.
+// Reproduction or transmission in whole or in part, any form or by any
+// means, electronic, mechanical or otherwise, is prohibited without the
+// prior written consent of the copyright owner.
 
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace _3DS_CivilSurveySuite.UI.Models
 {
-    public class ReportObject
+    public sealed class ReportObject : ObservableObject
     {
-        public uint PointNumber { get; }
-        public double Easting { get; set; }
-        public double Northing { get; set; }
-        public double PointElevation { get; set; }
-        public string RawDescription { get; set; }
-        public string FullDescription { get; set; }
-        public double SurfaceElevation { get; set; }
-        public StationOffset StationOffset { get; set; }
+        private ObservableCollection<ReportSurfaceObject> _surfacePoints;
+        private ObservableCollection<CivilPointGroup> _pointGroups;
+        private StationOffset _stationOffset;
+        private CivilAlignment _alignment;
+        private CivilPoint _point;
 
-        public double CutFill => PointElevation - SurfaceElevation;
-
-        public double CutFillInvert => SurfaceElevation - PointElevation;
-
-
-        public List<SurfaceReportObject> SurfaceComparisons { get; set; }
-
-
-        public double CalculatedDeltaX { get; set; }
-
-        public double CalculatedDeltaY { get; set; }
-
-        public ReportObject(uint pointNumber)
+        public CivilPoint Point
         {
-            PointNumber = pointNumber;
-        }
-    }
-
-    public class SurfaceReportObject
-    {
-        private readonly double _surfaceDifference;
-
-        public bool InvertDifference { get; set; }
-
-        public double SurfaceElevation1 { get; }
-
-        public double SurfaceElevation2 { get; }
-
-        public double SurfaceDifference
-        {
-            get
-            {
-                if (InvertDifference)
-                {
-                    return -_surfaceDifference;
-                }
-                return _surfaceDifference;
-            }
+            get => _point;
+            set => SetProperty(ref _point, value);
         }
 
-        public SurfaceReportObject(double surface1, double surface2)
+        public CivilAlignment Alignment
         {
-            SurfaceElevation1 = surface1;
-            SurfaceElevation2 = surface2;
-            _surfaceDifference = surface1 - surface2;
+            get => _alignment;
+            set => SetProperty(ref _alignment, value);
+        }
+
+        public StationOffset StationOffset
+        {
+            get => _stationOffset;
+            set => SetProperty(ref _stationOffset, value);
+        }
+
+        public ObservableCollection<CivilPointGroup> PointGroups
+        {
+            get => _pointGroups;
+            set => SetProperty(ref _pointGroups, value);
+        }
+        public ObservableCollection<ReportSurfaceObject> SurfacePoints
+        {
+            get => _surfacePoints;
+            set => SetProperty(ref _surfacePoints, value);
+        }
+
+        public uint PointNumber => Point.PointNumber;
+
+        public double Easting => Point.Easting;
+
+        public double Northing => Point.Northing;
+
+        public double Elevation => Point.Elevation;
+
+        public string RawDescription => Point.RawDescription;
+
+        public double Chainage => StationOffset.Station;
+
+        public double Offset => StationOffset.Offset;
+
+        public string AlignmentName => Alignment.Name;
+
+        public ReportObject(CivilPoint civilPoint)
+        {
+            Point = civilPoint;
+            PointGroups = new ObservableCollection<CivilPointGroup>();
+            SurfacePoints = new ObservableCollection<ReportSurfaceObject>();
+
+            NotifyPropertyChanged(nameof(PointNumber));
+            NotifyPropertyChanged(nameof(Easting));
+            NotifyPropertyChanged(nameof(Northing));
+            NotifyPropertyChanged(nameof(Elevation));
+            NotifyPropertyChanged(nameof(RawDescription));
+            NotifyPropertyChanged(nameof(Chainage));
+            NotifyPropertyChanged(nameof(Offset));
+            NotifyPropertyChanged(nameof(AlignmentName));
         }
     }
 }
