@@ -51,10 +51,15 @@
     <Compile Include="Behaviors\SelectAllFocusBehavior.cs" />
     <Compile Include="Behaviors\SimpleCalculationTextBoxBehavior.cs" />
     <Compile Include="Behaviors\TakeFocusAction.cs" />
+    <Compile Include="Controls\CardControl.cs" />
+    <Compile Include="Controls\CardExpander.cs" />
     <Compile Include="Converters\BearingConverter.cs" />
     <Compile Include="Converters\DistanceConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\NullToBooleanConverter.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\VisibilityToBoolean.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
@@ -96,18 +101,18 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\Implementation\FolderBrowserDialogService.cs" />
-    <Compile Include="Services\ICogoPointReplaceDuplicateService.cs" />
-    <Compile Include="Services\IConnectLineworkService.cs" />
-    <Compile Include="Services\IDialogService.cs" />
-    <Compile Include="Services\IFolderBrowserDialogService.cs" />
-    <Compile Include="Services\IMessageBoxService.cs" />
+    <Compile Include="Services\Interfaces\ICogoPointReplaceDuplicateService.cs" />
+    <Compile Include="Services\Interfaces\IConnectLineworkService.cs" />
+    <Compile Include="Services\Interfaces\IDialogService.cs" />
+    <Compile Include="Services\Interfaces\IFolderBrowserDialogService.cs" />
+    <Compile Include="Services\Interfaces\IMessageBoxService.cs" />
     <Compile Include="Services\Interfaces\ICivilSelectService.cs" />
     <Compile Include="Services\Interfaces\ICogoPointService.cs" />
-    <Compile Include="Services\IOpenFileDialogService.cs" />
-    <Compile Include="Services\IRasterImageService.cs" />
-    <Compile Include="Services\ISaveFileDialogService.cs" />
-    <Compile Include="Services\IProcessService.cs" />
-    <Compile Include="Services\ITraverseService.cs" />
+    <Compile Include="Services\Interfaces\IOpenFileDialogService.cs" />
+    <Compile Include="Services\Interfaces\IRasterImageService.cs" />
+    <Compile Include="Services\Interfaces\ISaveFileDialogService.cs" />
+    <Compile Include="Services\Interfaces\IProcessService.cs" />
+    <Compile Include="Services\Interfaces\ITraverseService.cs" />
     <Compile Include="Services\Implementation\OpenFileDialogService.cs" />
     <Compile Include="Services\Implementation\SaveFileDialogService.cs" />
     <Compile Include="Strings\ResourceStrings.Designer.cs">
@@ -122,7 +127,7 @@
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
     <Compile Include="ViewModels\CogoPointSurfaceReportViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
-    <Compile Include="Services\ICogoPointSurfaceReportService.cs" />
+    <Compile Include="Services\Interfaces\ICogoPointSurfaceReportService.cs" />
     <Compile Include="ViewModels\ImageManagerViewModel.cs" />
     <Compile Include="ViewModels\SelectAlignmentViewModel.cs" />
     <Compile Include="ViewModels\SelectPointGroupViewModel.cs" />
@@ -177,6 +182,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\Brushes.xaml" />
+    <Page Include="Resources\Controls\CardControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Controls\CardExpander.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Converters.xaml" />
     <Page Include="Resources\CoreStyles.xaml" />
     <Page Include="Resources\DataTemplates.xaml" />

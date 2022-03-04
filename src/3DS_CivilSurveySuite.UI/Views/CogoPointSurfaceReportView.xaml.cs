@@ -29,10 +29,10 @@ namespace _3DS_CivilSurveySuite.UI.Views
                 dataGridBoundColumn.Binding = new Binding("[" + e.PropertyName + "]");
             }
 
-            if (e.PropertyType == typeof(double) && e.Column is DataGridTextColumn column)
-            {
-                column.Binding.StringFormat = "F3";
-            }
+            // if (e.PropertyType == typeof(double) && e.Column is DataGridTextColumn column)
+            // {
+            //     column.Binding.StringFormat = "F3";
+            // }
         }
     }
 }

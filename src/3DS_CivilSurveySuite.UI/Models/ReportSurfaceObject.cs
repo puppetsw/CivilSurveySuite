@@ -6,10 +6,15 @@
 
         public CivilPoint Point { get; }
 
-        public ReportSurfaceObject(CivilSurface surface, CivilPoint point)
+        public CivilPoint ComparisonPoint { get; }
+
+        public bool InvertCutFill { get; set; }
+
+        public ReportSurfaceObject(CivilSurface surface, CivilPoint point, CivilPoint comparisonPoint = null)
         {
             Surface = surface;
             Point = point;
+            ComparisonPoint = comparisonPoint;
         }
     }
 }
