@@ -17,22 +17,18 @@ namespace _3DS_CivilSurveySuite.UI.Views
             DataContext = viewModel;
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.PropertyName.Contains(".") && e.Column is DataGridBoundColumn dataGridBoundColumn)
             {
                 dataGridBoundColumn.Binding = new Binding("[" + e.PropertyName + "]");
             }
+        }
 
-            // if (e.PropertyType == typeof(double) && e.Column is DataGridTextColumn column)
-            // {
-            //     column.Binding.StringFormat = "F3";
-            // }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Set view to report table.
+            TabControl.SelectedIndex = 1;
         }
     }
 }
