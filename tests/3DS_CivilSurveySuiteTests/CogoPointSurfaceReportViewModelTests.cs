@@ -65,14 +65,6 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
 
-        [Test]
-        public void SelectSurfaceCommand_Execute()
-        {
-            _viewModel.SelectSurfaceCommand.CanExecute(true);
-            _viewModel.SelectSurfaceCommand.Execute(null);
-
-            Assert.AreEqual("SelectedSurface", _viewModel.SelectedSurface.Name);
-        }
 
         [Test]
         public void SelectSurfaceCommand_Execute_NullReturn()
@@ -87,15 +79,6 @@ namespace _3DS_CivilSurveySuiteTests
         }
 
         [Test]
-        public void SelectPointGroupCommand_Execute()
-        {
-            _viewModel.SelectPointGroupCommand.CanExecute(true);
-            _viewModel.SelectPointGroupCommand.Execute(null);
-
-            Assert.AreEqual("SelectedPointGroup", _viewModel.SelectedPointGroup.Name);
-        }
-
-        [Test]
         public void SelectPointGroupCommand_Execute_NullReturn()
         {
             var reportService = new Mock<ICogoPointSurfaceReportService>();
@@ -107,20 +90,7 @@ namespace _3DS_CivilSurveySuiteTests
             viewModel.SelectPointGroupCommand.Execute(null);
         }
 
-        [Test]
-        public void Property_CalculatePointNearSurfaceEdge_StoresCorrectly()
-        {
-            var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, null)
-            {
-                CalculatePointNearSurfaceEdge = true
-            };
 
-            Assert.IsTrue(viewModel.CalculatePointNearSurfaceEdge);
-
-            viewModel.CalculatePointNearSurfaceEdge = false;
-            Assert.IsFalse(viewModel.CalculatePointNearSurfaceEdge);
-        }
 
 
         [Test]

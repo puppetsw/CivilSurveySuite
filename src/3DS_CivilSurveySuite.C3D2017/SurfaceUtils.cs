@@ -355,7 +355,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="point">The picked point.</param>
         /// <param name="calculatedPoint">The calculated point.</param>
         /// <param name="edge"></param>
-        public static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
+        private static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
         {
             try // Check if point is in surface.
             {
@@ -446,6 +446,25 @@ namespace _3DS_CivilSurveySuite.C3D2017
             dY = y - calculatedPoint.Y;
 
             return calculatedPoint.Z;
+        }
+
+        /// <summary>
+        /// Finds the elevation on surface at a given position.
+        /// </summary>
+        /// <param name="surface">The surface.</param>
+        /// <param name="x">The x coordinate of the point.</param>
+        /// <param name="y">The y coordinate of the point.</param>
+        /// <returns>System.Double.</returns>
+        public static double FindElevationOnSurface(TinSurface surface, double x, double y)
+        {
+            try
+            {
+                return surface.FindElevationAtXY(x, y);
+            }
+            catch (PointNotOnEntityException)
+            {
+                return 0;
+            }
         }
 
         /// <summary>

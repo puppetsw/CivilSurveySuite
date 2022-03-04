@@ -1,102 +1,224 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
-using Autodesk.Civil;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using DataTable = System.Data.DataTable;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
     public class CogoPointSurfaceReportService : ICogoPointSurfaceReportService
     {
-        public bool Interpolate { get; set; }
-        public double MaximumInterpolationDistance { get; set; }
+        private readonly ICivilSelectService _civilSelectService;
 
-        public CogoPointSurfaceReportService()
+        public DataTable DataTable { get; private set; }
+
+        public ObservableCollection<ReportCivilSurfaceOptions> CivilSurfaceOptions { get; }
+            = new ObservableCollection<ReportCivilSurfaceOptions>();
+        public ObservableCollection<ReportCivilAlignmentOptions> CivilAlignmentOptions { get; }
+            = new ObservableCollection<ReportCivilAlignmentOptions>();
+        public ObservableCollection<ReportCivilPointGroupOptions> CivilPointGroupOptions { get; }
+            = new ObservableCollection<ReportCivilPointGroupOptions>();
+
+        public CogoPointSurfaceReportService(ICivilSelectService civilSelectService)
         {
-            // Set default maximum interpolation distance to half a meter.
-            MaximumInterpolationDistance = 0.5;
+            _civilSelectService = civilSelectService;
+
+            LoadPointGroups();
+            LoadAlignments();
+            LoadSurfaces();
         }
 
-        // ReSharper disable once CognitiveComplexity
-        public Task<ObservableCollection<ReportObject>> GetReportData(CivilAlignment alignment, IEnumerable<CivilPointGroup> pointGroups, IEnumerable<CivilSurface> surfaces)
+        private void LoadSurfaces()
         {
-            // null checks
-            if (pointGroups == null)
-            {
-                throw new ArgumentNullException(nameof(pointGroups));
-            }
+            var surfaces = _civilSelectService.GetSurfaces();
 
-            var reportObjects = new ObservableCollection<ReportObject>();
-
-            using (var tr = AcadApp.StartTransaction())
+            foreach (CivilSurface civilSurface in surfaces)
             {
-                foreach (CivilPointGroup civilPointGroup in pointGroups)
+                CivilSurfaceOptions.Add(new ReportCivilSurfaceOptions
                 {
-                    var points = new List<CivilPoint>(CogoPointUtils.GetCivilPointsFromPointGroup(tr, civilPointGroup.Name));
+                    CivilSurface = civilSurface,
+                    CivilSurfaceProperties = new CivilSurfaceProperties()
+                });
+            }
+        }
 
-                    foreach (CivilPoint civilPoint in points)
-                    {
-                        var reportObject = new ReportObject(civilPoint);
+        private void LoadAlignments()
+        {
+            var alignments = _civilSelectService.GetAlignments();
 
-                        // check if the point already exists in our collection.
-                        var compare = reportObjects.FirstOrDefault(p => p.Point.Equals(civilPoint));
-                        if (compare != null && compare.Point.Equals(civilPoint))
-                        {
-                            continue; // continue if it does.
-                        }
+            foreach (CivilAlignment civilAlignment in alignments)
+            {
+                CivilAlignmentOptions.Add(new ReportCivilAlignmentOptions
+                {
+                    CivilAlignment = civilAlignment,
+                    CivilAlignmentProperties = new CivilAlignmentProperties()
+                });
+            }
+        }
 
-                        if (alignment != null)
-                        {
-                            reportObject.StationOffset = AlignmentUtils.GetStationOffset(tr, alignment, civilPoint.Easting, civilPoint.Northing);
-                        }
+        private void LoadPointGroups()
+        {
+            var pointGroups = _civilSelectService.GetPointGroups();
 
-                        if (surfaces != null)
-                        {
-                            // ReSharper disable once PossibleMultipleEnumeration
-                            foreach (CivilSurface civilSurface in surfaces)
-                            {
-                                // reportObject.SurfacePoints.Add();
+            foreach (CivilPointGroup civilPointGroup in pointGroups)
+            {
+                CivilPointGroupOptions.Add(new ReportCivilPointGroupOptions
+                {
+                    CivilPointGroup = civilPointGroup,
+                    CivilPointGroupProperties = new CivilPointGroupProperties()
+                });
+            }
+        }
 
-                                if (Interpolate)
-                                {
-                                    // TODO: add out distances for interpolation amount
-                                    var interpolatedElevation = SurfaceUtils.FindElevationNearSurface(civilSurface.ToTinSurface(tr), civilPoint.Easting, civilPoint.Northing, out _, out _);
-                                    var newPoint = civilPoint.Clone();
-                                    newPoint.Elevation = interpolatedElevation;
-                                    reportObject.SurfacePoints.Add(new ReportSurfaceObject(civilSurface, newPoint));
+        public void GenerateReport()
+        {
+            BuildDataTableColumns();
+            BuildDataTableRows();
+        }
 
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        var elevation = civilSurface.ToTinSurface(tr).FindElevationAtXY(civilPoint.Easting, civilPoint.Northing);
-                                        var newPoint = civilPoint.Clone();
-                                        newPoint.Elevation = elevation;
-                                        //reportObject.SurfacePoints.Add(civilSurface, newPoint);
-                                        reportObject.SurfacePoints.Add(new ReportSurfaceObject(civilSurface, newPoint));
-                                    }
-                                    catch (PointNotOnEntityException)
-                                    {
-                                        // reportObject.SurfaceElevation = -9999.999;
-                                    }
-                                }
+        private void BuildDataTableColumns()
+        {
+            DataTable = new DataTable();
 
-                                //TODO: add calculation distance
-                            }
-                        }
-                        reportObjects.Add(reportObject);
-                    }
+            DataTable.Columns.Add("Point Number", typeof(uint));
+            DataTable.Columns.Add("Easting", typeof(double));
+            DataTable.Columns.Add("Northing", typeof(double));
+            DataTable.Columns.Add("Elevation", typeof(double));
+            DataTable.Columns.Add("Raw Description", typeof(string));
+
+            // Add alignment details.
+            foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
+            {
+                if (!alignmentOption.CivilAlignment.IsSelected)
+                {
+                    continue;
                 }
 
-                tr.Commit();
+                // Add alignment name column.
+                DataTable.Columns.Add($"{alignmentOption.CivilAlignment.Name} Chainage", typeof(double));
+
+                // Add offset column
+                DataTable.Columns.Add($"{alignmentOption.CivilAlignment.Name} Offset", typeof(double));
             }
 
-            return Task.FromResult(reportObjects);
+            // Loop and add selected surfaces.
+            foreach (ReportCivilSurfaceOptions option in CivilSurfaceOptions)
+            {
+                if (!option.CivilSurface.IsSelected)
+                {
+                    continue;
+                }
+
+                // Add surface elevation column.
+                DataTable.Columns.Add($"{option.CivilSurface.Name} Elevation", typeof(double));
+
+                // Add cut and fill column if it's enabled.
+                if (option.CivilSurfaceProperties.ShowCutFill)
+                {
+                    DataTable.Columns.Add($"{option.CivilSurface.Name} Cut Fill", typeof(double));
+                }
+            }
+        }
+
+        private void BuildDataTableRows()
+        {
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var pointList = new List<CivilPoint>();
+
+                foreach (ReportCivilPointGroupOptions pointGroupOption in CivilPointGroupOptions)
+                {
+                    if (!pointGroupOption.CivilPointGroup.IsSelected)
+                        continue;
+
+                    var rowData = new List<object>();
+
+                    var civilPoints = CogoPointUtils.GetCivilPointsFromPointGroup(
+                        tr,
+                        pointGroupOption.CivilPointGroup.Name);
+
+                    foreach (CivilPoint civilPoint in civilPoints)
+                    {
+                        if (!pointGroupOption.CivilPointGroupProperties.AllowDuplicates)
+                        {
+                            // check for duplicate point.
+                            if (pointList.Contains(civilPoint))
+                            {
+                                continue;
+                            }
+
+                            // Add point to duplicate list.
+                            pointList.Add(civilPoint);
+
+                            // add data to the row object.
+                            rowData.Add(civilPoint.PointNumber);
+                            rowData.Add(civilPoint.Easting);
+                            rowData.Add(civilPoint.Northing);
+                            rowData.Add(civilPoint.Elevation);
+                            rowData.Add(civilPoint.RawDescription);
+
+                            // add alignment data
+                            foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
+                            {
+                                if (!alignmentOption.CivilAlignment.IsSelected)
+                                {
+                                    continue;
+                                }
+
+                                var stationOffset = AlignmentUtils.GetStationOffset(
+                                    tr,
+                                    alignmentOption.CivilAlignment,
+                                    civilPoint.Easting,
+                                    civilPoint.Northing);
+
+                                //TODO: work out way to add rounding.
+                                rowData.Add(stationOffset.Station);
+                                rowData.Add(stationOffset.Offset);
+                            }
+
+                            // add surface data
+                            foreach (ReportCivilSurfaceOptions surfaceOption in CivilSurfaceOptions)
+                            {
+                                if (!surfaceOption.CivilSurface.IsSelected)
+                                {
+                                    continue;
+                                }
+
+                                // Add surface elevation (interpolate if we need to)
+                                double elevation = surfaceOption.CivilSurfaceProperties.InterpolateLevels ?
+                                    SurfaceUtils.FindElevationNearSurface(
+                                        surfaceOption.CivilSurface.ToTinSurface(tr),
+                                        civilPoint.Easting,
+                                        civilPoint.Northing) :
+                                    SurfaceUtils.FindElevationOnSurface(surfaceOption.CivilSurface.ToTinSurface(tr),
+                                        civilPoint.Easting,
+                                        civilPoint.Northing);
+
+                                rowData.Add(elevation);
+
+                                // Add cut and fill (invert if we need to)
+                                if (surfaceOption.CivilSurfaceProperties.ShowCutFill)
+                                {
+                                    double cutfill = surfaceOption.CivilSurfaceProperties.InvertCutFill ?
+                                        civilPoint.Elevation - elevation :
+                                        elevation - civilPoint.Elevation;
+
+                                    rowData.Add(cutfill);
+                                }
+                            }
+                        }
+                        // Add the row to the DataTable.
+                        DataTable.Rows.Add(rowData.ToArray());
+                        rowData.Clear(); // is clear faster than new?
+                    }
+                }
+                tr.Commit();
+            }
         }
     }
 }
