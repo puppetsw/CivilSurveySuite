@@ -13,15 +13,6 @@
 
     <Window.Resources>
         <ResourceDictionary>
-            <Style TargetType="{x:Type TextBlock}" x:Key="TextRightAlign">
-                <Setter Property="HorizontalAlignment" Value="Right" />
-                <Setter Property="Margin" Value="2, 2, 10, 2"></Setter>
-            </Style>
-
-            <Style TargetType="{x:Type TextBlock}" x:Key="TextSmallItalic">
-                <Setter Property="FontStyle" Value="Italic" />
-            </Style>
-
             <Style TargetType="{x:Type DataGrid}" x:Key="ReportView">
                 <Setter Property="AutoGenerateColumns" Value="True" />
                 <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BlueGridLine}" />
@@ -39,24 +30,6 @@
                 <Setter Property="CanUserDeleteRows" Value="False" />
             </Style>
 
-            <Style TargetType="{x:Type Button}" x:Key="SelectButton">
-                <Setter Property="Width" Value="22" />
-                <Setter Property="Height" Value="22" />
-                <Setter Property="Margin" Value="2" />
-            </Style>
-
-            <Style TargetType="{x:Type Button}" x:Key="StandardButton">
-                <Setter Property="Width" Value="70" />
-                <Setter Property="Height" Value="22" />
-                <Setter Property="Margin" Value="2" />
-            </Style>
-
-            <Style TargetType="{x:Type Button}" x:Key="MultiLineButton">
-                <Setter Property="Width" Value="70" />
-                <Setter Property="Height" Value="44" />
-                <Setter Property="Margin" Value="2" />
-            </Style>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Brushes.xaml" />
                 <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
@@ -68,7 +41,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <TabControl>
+    <TabControl x:Name="TabControl">
         <TabItem Header="Settings">
             <StackPanel>
                 <ListView x:Name="AlignmentList" ItemsSource="{Binding ReportService.CivilAlignmentOptions}">
@@ -90,6 +63,34 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding CivilAlignment.Name}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Round Chainage Values?">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding CivilAlignmentProperties.IsStationRounded}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Chainage decimal places">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CivilAlignmentProperties.StationDecimalPlaces}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <!-- <GridViewColumn Header="Round Chainage Values?"> -->
+                            <!--     <GridViewColumn.CellTemplate> -->
+                            <!--         <DataTemplate> -->
+                            <!--             <CheckBox IsChecked="{Binding CivilAlignmentProperties.IsOffsetRounded}"/> -->
+                            <!--         </DataTemplate> -->
+                            <!--     </GridViewColumn.CellTemplate> -->
+                            <!-- </GridViewColumn> -->
+                            <GridViewColumn Header="Offset decimal places">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CivilAlignmentProperties.OffsetDecimalPlaces}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -146,6 +147,13 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+                            <GridViewColumn Header="Decimal Places">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CivilSurfaceProperties.DecimalPlaces}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -178,10 +186,23 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
+                            <GridViewColumn Header="Decimal Places">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding CivilPointGroupProperties.DecimalPlaces}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Button Command="{Binding GenerateReportCommand}">
+                <CheckBox Content="Point Number" IsChecked="{Binding ReportService.ColumnProperties.ShowPointNumber}" />
+                <CheckBox Content="Easting" IsChecked="{Binding ReportService.ColumnProperties.ShowEasting}" />
+                <CheckBox Content="Northing" IsChecked="{Binding ReportService.ColumnProperties.ShowNorthing}" />
+                <CheckBox Content="Elevation" IsChecked="{Binding ReportService.ColumnProperties.ShowElevation}" />
+                <CheckBox Content="Raw Description" IsChecked="{Binding ReportService.ColumnProperties.ShowRawDescription}" />
+                <CheckBox Content="Full Description" IsChecked="{Binding ReportService.ColumnProperties.ShowFullDescription}" />
+                <Button Command="{Binding GenerateReportCommand}" Click="Button_Click">
                     <TextBlock Text="Generate Report" TextWrapping="Wrap" TextAlignment="Center"/>
                 </Button>
             </StackPanel>

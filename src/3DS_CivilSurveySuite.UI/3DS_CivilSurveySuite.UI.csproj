@@ -85,8 +85,8 @@
     <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="Models\ImageData.cs" />
     <Compile Include="Models\Point.cs" />
-    <Compile Include="Models\ReportObject.cs" />
-    <Compile Include="Models\ReportSurfaceObject.cs" />
+    <Compile Include="Models\ReportOptions.cs" />
+    <Compile Include="Models\ReportProperties.cs" />
     <Compile Include="Models\StationOffset.cs" />
     <Compile Include="Models\TraverseAngleObject.cs" />
     <Compile Include="Models\TraverseObject.cs" />

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+using System.Diagnostics;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.UI;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
@@ -11,11 +11,18 @@ using DataTable = System.Data.DataTable;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    public class CogoPointSurfaceReportService : ICogoPointSurfaceReportService
+    public class CogoPointSurfaceReportService : ObservableObject, ICogoPointSurfaceReportService
     {
         private readonly ICivilSelectService _civilSelectService;
+        private ColumnProperties _columnProperties;
 
         public DataTable DataTable { get; private set; }
+
+        public ColumnProperties ColumnProperties
+        {
+            get => _columnProperties;
+            private set => SetProperty(ref _columnProperties, value);
+        }
 
         public ObservableCollection<ReportCivilSurfaceOptions> CivilSurfaceOptions { get; }
             = new ObservableCollection<ReportCivilSurfaceOptions>();
@@ -27,6 +34,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         public CogoPointSurfaceReportService(ICivilSelectService civilSelectService)
         {
             _civilSelectService = civilSelectService;
+
+            ColumnProperties = new ColumnProperties();
 
             LoadPointGroups();
             LoadAlignments();
@@ -85,11 +94,36 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         {
             DataTable = new DataTable();
 
-            DataTable.Columns.Add("Point Number", typeof(uint));
-            DataTable.Columns.Add("Easting", typeof(double));
-            DataTable.Columns.Add("Northing", typeof(double));
-            DataTable.Columns.Add("Elevation", typeof(double));
-            DataTable.Columns.Add("Raw Description", typeof(string));
+            // Determine which columns to show.
+            if (ColumnProperties.ShowPointNumber)
+            {
+                DataTable.Columns.Add("Point Number", typeof(uint));
+            }
+
+            if (ColumnProperties.ShowEasting)
+            {
+                DataTable.Columns.Add("Easting", typeof(double));
+            }
+
+            if (ColumnProperties.ShowNorthing)
+            {
+                DataTable.Columns.Add("Northing", typeof(double));
+            }
+
+            if (ColumnProperties.ShowElevation)
+            {
+                DataTable.Columns.Add("Elevation", typeof(double));
+            }
+
+            if (ColumnProperties.ShowRawDescription)
+            {
+                DataTable.Columns.Add("Raw Description", typeof(string));
+            }
+
+            if (ColumnProperties.ShowFullDescription)
+            {
+                DataTable.Columns.Add("Full Description", typeof(string));
+            }
 
             // Add alignment details.
             foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
@@ -134,7 +168,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 foreach (ReportCivilPointGroupOptions pointGroupOption in CivilPointGroupOptions)
                 {
                     if (!pointGroupOption.CivilPointGroup.IsSelected)
+                    {
                         continue;
+                    }
 
                     var rowData = new List<object>();
 
@@ -149,6 +185,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             // check for duplicate point.
                             if (pointList.Contains(civilPoint))
                             {
+                                // Log duplicate point
+                                AcadApp.WriteMessage($"3DS> ReportService: Duplicate Point {civilPoint.PointNumber}");
+                                Debug.WriteLine($"3DS> ReportService: Duplicate Point {civilPoint.PointNumber}");
                                 continue;
                             }
 
@@ -156,11 +195,27 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             pointList.Add(civilPoint);
 
                             // add data to the row object.
-                            rowData.Add(civilPoint.PointNumber);
-                            rowData.Add(civilPoint.Easting);
-                            rowData.Add(civilPoint.Northing);
-                            rowData.Add(civilPoint.Elevation);
-                            rowData.Add(civilPoint.RawDescription);
+
+                            if (ColumnProperties.ShowPointNumber)
+                                rowData.Add(civilPoint.PointNumber);
+
+                            if (ColumnProperties.ShowEasting)
+                                rowData.Add(Math.Round(civilPoint.Easting,
+                                    pointGroupOption.CivilPointGroupProperties.DecimalPlaces));
+
+                            if (ColumnProperties.ShowNorthing)
+                                rowData.Add(Math.Round(civilPoint.Northing,
+                                    pointGroupOption.CivilPointGroupProperties.DecimalPlaces));
+
+                            if (ColumnProperties.ShowElevation)
+                                rowData.Add(Math.Round(civilPoint.Elevation,
+                                    pointGroupOption.CivilPointGroupProperties.DecimalPlaces));
+
+                            if (ColumnProperties.ShowRawDescription)
+                                rowData.Add(civilPoint.RawDescription);
+
+                            if (ColumnProperties.ShowFullDescription)
+                                rowData.Add(civilPoint.FullDescription);
 
                             // add alignment data
                             foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
@@ -176,9 +231,17 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     civilPoint.Easting,
                                     civilPoint.Northing);
 
-                                //TODO: work out way to add rounding.
-                                rowData.Add(stationOffset.Station);
-                                rowData.Add(stationOffset.Offset);
+                                // Round station and offset values.
+                                double station = Math.Round(
+                                    stationOffset.Station,
+                                    alignmentOption.CivilAlignmentProperties.StationDecimalPlaces);
+
+                                double offset = Math.Round(
+                                    stationOffset.Offset,
+                                    alignmentOption.CivilAlignmentProperties.OffsetDecimalPlaces);
+
+                                rowData.Add(station);
+                                rowData.Add(offset);
                             }
 
                             // add surface data
@@ -195,25 +258,28 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         surfaceOption.CivilSurface.ToTinSurface(tr),
                                         civilPoint.Easting,
                                         civilPoint.Northing) :
-                                    SurfaceUtils.FindElevationOnSurface(surfaceOption.CivilSurface.ToTinSurface(tr),
+                                    SurfaceUtils.FindElevationOnSurface(
+                                        surfaceOption.CivilSurface.ToTinSurface(tr),
                                         civilPoint.Easting,
                                         civilPoint.Northing);
 
-                                rowData.Add(elevation);
+                                rowData.Add(Math.Round(elevation, surfaceOption.CivilSurfaceProperties.DecimalPlaces));
 
                                 // Add cut and fill (invert if we need to)
                                 if (surfaceOption.CivilSurfaceProperties.ShowCutFill)
                                 {
-                                    double cutfill = surfaceOption.CivilSurfaceProperties.InvertCutFill ?
+                                    double cutAndFill = surfaceOption.CivilSurfaceProperties.InvertCutFill ?
                                         civilPoint.Elevation - elevation :
                                         elevation - civilPoint.Elevation;
 
-                                    rowData.Add(cutfill);
+                                    rowData.Add(Math.Round(cutAndFill,
+                                        surfaceOption.CivilSurfaceProperties.DecimalPlaces));
                                 }
                             }
                         }
                         // Add the row to the DataTable.
                         DataTable.Rows.Add(rowData.ToArray());
+
                         rowData.Clear(); // is clear faster than new?
                     }
                 }
