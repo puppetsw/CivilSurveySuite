@@ -4,7 +4,6 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.ObjectModel;
-using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels

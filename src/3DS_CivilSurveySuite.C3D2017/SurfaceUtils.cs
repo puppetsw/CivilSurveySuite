@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
@@ -353,6 +354,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="surface">The surface.</param>
         /// <param name="point">The picked point.</param>
+        /// from the given position (in meters).</param>
         /// <param name="calculatedPoint">The calculated point.</param>
         /// <param name="edge"></param>
         private static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
@@ -422,10 +424,17 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <param name="surface">The surface to find the elevation on.</param>
         /// <param name="x">X value of point.</param>
         /// <param name="y">Y value of point.</param>
+        /// <param name="maxInterpolateDistance"></param>
         /// <returns>System.Double.</returns>
-        public static double FindElevationNearSurface(TinSurface surface, double x, double y)
+        public static double FindElevationNearSurface(TinSurface surface, double x, double y, double maxInterpolateDistance = 0.0d)
         {
             FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
+
+            if (PointHelpers.GetDistanceBetweenPoints(new UI.Models.Point(x, y), calculatedPoint.ToPoint()) > maxInterpolateDistance)
+            {
+                return 0;
+            }
+
             return calculatedPoint.Z;
         }
 

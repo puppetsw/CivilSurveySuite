@@ -4,7 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Diagnostics;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {

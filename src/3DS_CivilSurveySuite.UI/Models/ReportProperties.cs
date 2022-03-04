@@ -3,7 +3,7 @@
     public class CivilSurfaceProperties : ObservableObject
     {
         private bool _interpolateLevels;
-        private double _interpolateMaximumDistance;
+        private double _interpolateMaximumDistance = 0.5;
         private bool _showCutFill;
         private bool _invertCutFill;
         private int _decimalPlaces = 3;

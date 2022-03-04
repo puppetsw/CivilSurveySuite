@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using _3DS_CivilSurveySuite.UI.Extensions;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views

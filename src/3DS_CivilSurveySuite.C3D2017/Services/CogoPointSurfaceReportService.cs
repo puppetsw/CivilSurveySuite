@@ -5,7 +5,6 @@ using System.Diagnostics;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using DataTable = System.Data.DataTable;
 
@@ -257,7 +256,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     SurfaceUtils.FindElevationNearSurface(
                                         surfaceOption.CivilSurface.ToTinSurface(tr),
                                         civilPoint.Easting,
-                                        civilPoint.Northing) :
+                                        civilPoint.Northing,
+                                        surfaceOption.CivilSurfaceProperties.InterpolateMaximumDistance) :
                                     SurfaceUtils.FindElevationOnSurface(
                                         surfaceOption.CivilSurface.ToTinSurface(tr),
                                         civilPoint.Easting,
