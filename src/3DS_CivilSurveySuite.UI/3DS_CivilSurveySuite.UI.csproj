@@ -341,11 +341,47 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Strings\ResourceStrings.af.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ar.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.bg.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ca.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.da-DK.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.da.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.de-DE.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.el.resx" />
     <EmbeddedResource Include="Strings\ResourceStrings.en-US.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.es-419.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.es-ES.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.fr-FR.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.he-IL.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.hi-IN.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.hr-HR.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.hu-HU.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.id-ID.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.it-IT.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ja-JP.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ka.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ko-KR.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.lv-LV.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.nb-NO.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.nl-NL.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.or-IN.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.pl-PL.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.pt-BR.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.pt-PT.resx" />
     <EmbeddedResource Include="Strings\ResourceStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Strings\ResourceStrings.ru-RU.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.sk-SK.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.sv-SE.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.ta.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.tr-TR.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.uk-UA.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.vi.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.zh-Hans-HK.resx" />
+    <EmbeddedResource Include="Strings\ResourceStrings.zh-Hant.resx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

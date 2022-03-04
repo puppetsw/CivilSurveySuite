@@ -149,5 +149,14 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
                 return ResourceManager.GetString("C3D_LoadingError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site.
+        /// </summary>
+        internal static string Site {
+            get {
+                return ResourceManager.GetString("Site", resourceCulture);
+            }
+        }
     }
 }

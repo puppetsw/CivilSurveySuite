@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ACAD_AcceptPosition" xml:space="preserve">
-    <value>3DS&gt; Accept position?</value>
+    <value>3DS&gt; 입장을 수락하시겠습니까?</value>
   </data>
   <data name="ACAD_Loading" xml:space="preserve">
-    <value>3DS&gt; Loading Civil Survey Suite for AutoCAD...</value>
+    <value>3DS&gt; AutoCAD용 Civil Survey Suite 로드 중...</value>
   </data>
   <data name="ACAD_LoadingError" xml:space="preserve">
-    <value>3DS&gt; Error Loading Civil Survey Suite for AutoCAD:</value>
+    <value>3DS&gt; AutoCAD용 Civil Survey Suite 로드 오류:</value>
   </data>
   <data name="ACAD_OffsetDistance" xml:space="preserve">
-    <value>3DS&gt; Offset distance:</value>
+    <value>3DS&gt; 오프셋 거리:</value>
   </data>
   <data name="ACAD_PickOffsetSide" xml:space="preserve">
-    <value>3DS&gt; Pick offset side:</value>
+    <value>3DS&gt; 오프셋 측면 선택:</value>
   </data>
   <data name="ACAD_SelectFirstLineOrPolyline" xml:space="preserve">
-    <value>3DS&gt; Select first line or polyline:</value>
+    <value>3DS&gt; 첫 번째 라인 또는 폴리라인 선택:</value>
   </data>
   <data name="ACAD_SelectLineOrPolyline" xml:space="preserve">
-    <value>3DS&gt; Select line or polyline:</value>
+    <value>3DS&gt; 라인 또는 폴리라인 선택:</value>
   </data>
   <data name="ACAD_SelectSecondLineOrPolyline" xml:space="preserve">
-    <value>3DS&gt; Select second line or polyline:</value>
+    <value>3DS&gt; 두 번째 라인 또는 폴리라인 선택:</value>
   </data>
   <data name="C3D_Loading" xml:space="preserve">
-    <value>3DS&gt; Loading Civil Survey Suite for Civil 3D...</value>
+    <value>3DS&gt; Civil 3D용 Civil Survey Suite 로드 중...</value>
   </data>
   <data name="C3D_LoadingError" xml:space="preserve">
-    <value>3DS&gt; Error Loading Civil Survey Suite for Civil 3D:</value>
+    <value>3DS&gt; Civil 3D용 Civil Survey Suite 로드 오류:</value>
   </data>
   <data name="Site" xml:space="preserve">
-    <value>Site</value>
+    <value>대지</value>
   </data>
 </root>
