@@ -147,4 +147,7 @@
   <data name="C3D_LoadingError" xml:space="preserve">
     <value>3DS&gt; Error Loading Civil Survey Suite for Civil 3D:</value>
   </data>
+  <data name="Site" xml:space="preserve">
+    <value>Site</value>
+  </data>
 </root>
