@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {

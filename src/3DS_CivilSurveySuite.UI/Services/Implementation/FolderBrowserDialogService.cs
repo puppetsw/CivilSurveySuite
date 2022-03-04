@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Windows.Forms;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.Services.Implementation
 {

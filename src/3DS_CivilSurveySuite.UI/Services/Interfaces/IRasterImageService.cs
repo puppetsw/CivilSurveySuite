@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-namespace _3DS_CivilSurveySuite.UI.Services
+namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 {
     public interface IRasterImageService
     {

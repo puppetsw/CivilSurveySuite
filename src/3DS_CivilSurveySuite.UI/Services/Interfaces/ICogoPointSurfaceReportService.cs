@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using _3DS_CivilSurveySuite.UI.Models;
 
-namespace _3DS_CivilSurveySuite.UI.Services
+namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 {
     public interface ICogoPointSurfaceReportService
     {

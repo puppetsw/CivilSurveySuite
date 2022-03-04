@@ -1,4 +1,4 @@
-﻿using _3DS_CivilSurveySuite.UI.Services;
+﻿using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using Autodesk.AutoCAD.ApplicationServices.Core;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services

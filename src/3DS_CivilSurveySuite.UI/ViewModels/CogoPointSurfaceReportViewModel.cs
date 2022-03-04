@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Windows.Input;
-using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels

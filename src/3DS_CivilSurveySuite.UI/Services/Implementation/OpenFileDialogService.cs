@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using Microsoft.Win32;
 
 namespace _3DS_CivilSurveySuite.UI.Services.Implementation

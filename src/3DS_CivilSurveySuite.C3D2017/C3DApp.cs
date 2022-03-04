@@ -9,7 +9,6 @@ using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.C3D2017.Services;
 using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
