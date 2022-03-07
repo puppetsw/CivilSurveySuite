@@ -148,6 +148,39 @@ namespace _3DS_CivilSurveySuite.C3D2017
         }
 
         /// <summary>
+        /// COMMAND: Select CogoPoints to scale the elevations by a given amount.
+        /// </summary>
+        public static void ScaleElevations()
+        {
+            // Use implied selection.
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var pointIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>(
+                    "\n3DS> Select CogoPoints: ", "\n3DS> Remove CogoPoints: ", out pointIds))
+                return;
+
+            if (!EditorUtils.TryGetDouble("\n3DS> Scale amount", out var scaleAmount, true, 1.0d, false))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId id in pointIds)
+                {
+                    var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
+
+                    pt.UpgradeOpen();
+
+                    var elevation = pt.Elevation;
+                    var scaledElevation = scaleAmount * elevation;
+                    pt.Elevation = scaledElevation;
+
+                    pt.DowngradeOpen();
+                }
+
+                tr.Commit();
+            }
+        }
+
+        /// <summary>
         /// Matches selected <see cref="CogoPoint"/>.LabelRotation to the selected line, polyline or 3d polyline.
         /// </summary>
         public static void LabelRotateMatch()
