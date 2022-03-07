@@ -140,6 +140,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.SetNextPointNumber();
         }
 
+        [CommandMethod("3DS", "_3DSCptScaleElevations", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        public static void CptScaleElevations()
+        {
+            CogoPointUtils.ScaleElevations();
+        }
+
 
         // Surfaces
         [CommandMethod("3DS", "_3DSSurfaceElAtPt", CommandFlags.Modal)]
