@@ -1,4 +1,9 @@
-﻿namespace _3DS_CivilSurveySuite.UI.Models
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
+using _3DS_CivilSurveySuite.UI.Helpers;
+
+namespace _3DS_CivilSurveySuite.UI.Models
 {
     public class CivilSurfaceProperties : ObservableObject
     {
@@ -89,49 +94,93 @@
         }
     }
 
+    public class ColumnHeader : ObservableObject
+    {
+        private string _headerText;
+        private bool _isVisible;
+        private ColumnType _columnType;
+
+        public string HeaderText
+        {
+            get => _headerText;
+            set => SetProperty(ref _headerText, value);
+        }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
+        }
+
+        public ColumnType ColumnType
+        {
+            get => _columnType;
+            set => SetProperty(ref _columnType, value);
+        }
+    }
+
+    public enum ColumnType
+    {
+        PointNumber,
+        Easting,
+        Northing,
+        Elevation,
+        RawDescription,
+        FullDescription,
+    }
+
     public class ColumnProperties : ObservableObject
     {
-        private bool _showPointNumber = true;
-        private bool _showEasting = true;
-        private bool _showNorthing = true;
-        private bool _showElevation = true;
-        private bool _showRawDescription = true;
-        private bool _showFullDescription = true;
+        private ObservableCollection<ColumnHeader> _headers;
 
-        public bool ShowPointNumber
+        public ObservableCollection<ColumnHeader> Headers
         {
-            get => _showPointNumber;
-            set => SetProperty(ref _showPointNumber, value);
+            get => _headers;
+            private set => SetProperty(ref _headers, value);
         }
 
-        public bool ShowEasting
+        public ColumnProperties()
         {
-            get => _showEasting;
-            set => SetProperty(ref _showEasting, value);
+            Headers = new ObservableCollection<ColumnHeader>();
+            LoadDefaultHeaders();
         }
 
-        public bool ShowNorthing
+        private void LoadDefaultHeaders()
         {
-            get => _showNorthing;
-            set => SetProperty(ref _showNorthing, value);
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("PointNumber"), IsVisible = true, ColumnType = ColumnType.PointNumber});
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("Easting"), IsVisible = true, ColumnType = ColumnType.Easting});
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("Northing"), IsVisible = true, ColumnType = ColumnType.Northing});
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("Elevation"), IsVisible = true, ColumnType = ColumnType.Elevation});
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("RawDescription"), IsVisible = true, ColumnType = ColumnType.RawDescription});
+            Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("FullDescription"), IsVisible = true, ColumnType = ColumnType.FullDescription});
         }
 
-        public bool ShowElevation
+        public void HeaderMoveUp(ColumnHeader header)
         {
-            get => _showElevation;
-            set => SetProperty(ref _showElevation, value);
+            if (Headers.Contains(header))
+            {
+                return;
+            }
+
+            var currentIndex = Headers.IndexOf(header);
+            if (currentIndex >= 1)
+            {
+                Headers.Move(currentIndex, currentIndex - 1);
+            }
         }
 
-        public bool ShowRawDescription
+        public void HeaderMoveDown(ColumnHeader header)
         {
-            get => _showRawDescription;
-            set => SetProperty(ref _showRawDescription, value);
-        }
+            if (Headers.Contains(header))
+            {
+                return;
+            }
 
-        public bool ShowFullDescription
-        {
-            get => _showFullDescription;
-            set => SetProperty(ref _showFullDescription, value);
+            var currentIndex = Headers.IndexOf(header);
+            if (currentIndex < Headers.Count)
+            {
+                Headers.Move(currentIndex, currentIndex + 1);
+            }
         }
     }
 }

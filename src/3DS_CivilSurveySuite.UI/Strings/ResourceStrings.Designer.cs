@@ -151,6 +151,60 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Easting.
+        /// </summary>
+        internal static string Easting {
+            get {
+                return ResourceManager.GetString("Easting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevatino.
+        /// </summary>
+        internal static string Elevation {
+            get {
+                return ResourceManager.GetString("Elevation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Description.
+        /// </summary>
+        internal static string FullDescription {
+            get {
+                return ResourceManager.GetString("FullDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Northing.
+        /// </summary>
+        internal static string Northing {
+            get {
+                return ResourceManager.GetString("Northing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Point Number.
+        /// </summary>
+        internal static string PointNumber {
+            get {
+                return ResourceManager.GetString("PointNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raw Description.
+        /// </summary>
+        internal static string RawDescription {
+            get {
+                return ResourceManager.GetString("RawDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site.
         /// </summary>
         internal static string Site {
