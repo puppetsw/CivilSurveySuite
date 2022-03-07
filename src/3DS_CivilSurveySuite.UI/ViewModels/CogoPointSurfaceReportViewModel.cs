@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 
@@ -9,12 +10,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public ICogoPointSurfaceReportService ReportService { get; }
         private readonly ISaveFileDialogService _saveFileService;
         private readonly ICivilSelectService _civilSelectService;
-
-        public ICommand SelectPointGroupCommand { get; private set; }
-
-        public ICommand SelectSurfaceCommand { get; private set; }
-
-        public ICommand StationOffsetSortCommand { get; private set; }
 
         public ICommand WriteToFileCommand { get; private set; }
 
@@ -34,15 +29,27 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void InitCommands()
         {
-            GenerateReportCommand    = new RelayCommand(UpdateReportData, () => true);
+            GenerateReportCommand = new AsyncRelayCommand(UpdateReportData);
+            WriteToFileCommand = new RelayCommand(WriteFileDialog, () => true);
+        }
+
+        private void WriteFileDialog()
+        {
+            //TODO: Implement.
+            _saveFileService.ShowDialog();
         }
 
         public DataView DataView => ReportService.DataTable?.DefaultView;
 
-        private void UpdateReportData()
+        private async Task UpdateReportData()
         {
-            ReportService.GenerateReport();
+            await Task.Run(() => ReportService.GenerateReport());
             NotifyPropertyChanged(nameof(DataView));
+        }
+
+        private void SortDataView()
+        {
+            //DataView.Sort = .Sort = "PN DESC, LS DESC"
         }
 
         // private string PrintTable()

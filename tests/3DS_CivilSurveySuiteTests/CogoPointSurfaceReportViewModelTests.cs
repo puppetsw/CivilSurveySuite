@@ -65,29 +65,6 @@ namespace _3DS_CivilSurveySuiteTests
 
 
 
-        [Test]
-        public void SelectSurfaceCommand_Execute_NullReturn()
-        {
-            var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var selectService = new Mock<ICivilSelectService>();
-            selectService.Setup(m => m.SelectSurface()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, selectService.Object);
-
-            Assert.IsTrue(viewModel.SelectSurfaceCommand.CanExecute(true));
-            viewModel.SelectSurfaceCommand.Execute(null);
-        }
-
-        [Test]
-        public void SelectPointGroupCommand_Execute_NullReturn()
-        {
-            var reportService = new Mock<ICogoPointSurfaceReportService>();
-            var selectService = new Mock<ICivilSelectService>();
-            selectService.Setup(m => m.SelectPointGroup()).Returns(() => null);
-            var viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, null, selectService.Object);
-
-            Assert.IsTrue(viewModel.SelectPointGroupCommand.CanExecute(true));
-            viewModel.SelectPointGroupCommand.Execute(null);
-        }
 
 
 

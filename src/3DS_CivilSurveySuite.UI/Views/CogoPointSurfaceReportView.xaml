@@ -24,8 +24,9 @@
                 <Setter Property="EnableColumnVirtualization" Value="True" />
                 <Setter Property="EnableRowVirtualization" Value="True" />
                 <Setter Property="RowHeight" Value="23" />
+
                 <Setter Property="CanUserReorderColumns" Value="False" />
-                <Setter Property="CanUserSortColumns" Value="False" />
+                <Setter Property="CanUserSortColumns" Value="True" />
                 <Setter Property="CanUserAddRows" Value="False" />
                 <Setter Property="CanUserDeleteRows" Value="False" />
             </Style>

@@ -23,6 +23,15 @@ namespace _3DS_CivilSurveySuite.UI.Views
             {
                 dataGridBoundColumn.Binding = new Binding("[" + e.PropertyName + "]");
             }
+
+            if (e.PropertyType == typeof(double))
+            {
+                DataGridTextColumn dataGridTextColumn = e.Column as DataGridTextColumn;
+                if (dataGridTextColumn != null)
+                {
+                    dataGridTextColumn.Binding.StringFormat = "N3";
+                }
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
