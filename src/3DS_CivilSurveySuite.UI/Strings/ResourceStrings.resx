@@ -147,17 +147,23 @@
   <data name="C3D_LoadingError" xml:space="preserve">
     <value>3DS&gt; Error Loading Civil Survey Suite for Civil 3D:</value>
   </data>
+  <data name="CutFill" xml:space="preserve">
+    <value>Cut Fill</value>
+  </data>
   <data name="Easting" xml:space="preserve">
     <value>Easting</value>
   </data>
   <data name="Elevation" xml:space="preserve">
-    <value>Elevatino</value>
+    <value>Elevation</value>
   </data>
   <data name="FullDescription" xml:space="preserve">
     <value>Full Description</value>
   </data>
   <data name="Northing" xml:space="preserve">
     <value>Northing</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset</value>
   </data>
   <data name="PointNumber" xml:space="preserve">
     <value>Point Number</value>
@@ -167,5 +173,8 @@
   </data>
   <data name="Site" xml:space="preserve">
     <value>Site</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Station</value>
   </data>
 </root>

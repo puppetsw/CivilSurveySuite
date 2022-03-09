@@ -151,6 +151,15 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cut Fill.
+        /// </summary>
+        internal static string CutFill {
+            get {
+                return ResourceManager.GetString("CutFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Easting.
         /// </summary>
         internal static string Easting {
@@ -160,7 +169,7 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Elevatino.
+        ///   Looks up a localized string similar to Elevation.
         /// </summary>
         internal static string Elevation {
             get {
@@ -183,6 +192,15 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         internal static string Northing {
             get {
                 return ResourceManager.GetString("Northing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset.
+        /// </summary>
+        internal static string Offset {
+            get {
+                return ResourceManager.GetString("Offset", resourceCulture);
             }
         }
         
@@ -210,6 +228,15 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         internal static string Site {
             get {
                 return ResourceManager.GetString("Site", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Station.
+        /// </summary>
+        internal static string Station {
+            get {
+                return ResourceManager.GetString("Station", resourceCulture);
             }
         }
     }

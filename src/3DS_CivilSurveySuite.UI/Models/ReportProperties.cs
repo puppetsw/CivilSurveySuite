@@ -74,6 +74,8 @@ namespace _3DS_CivilSurveySuite.UI.Models
             get => _offsetDecimalPlaces;
             set => SetProperty(ref _offsetDecimalPlaces, value);
         }
+
+        //TODO: Add station format property.
     }
 
     public class CivilPointGroupProperties : ObservableObject
@@ -99,6 +101,13 @@ namespace _3DS_CivilSurveySuite.UI.Models
         private string _headerText;
         private bool _isVisible;
         private ColumnType _columnType;
+        private string _key;
+
+        public string Key
+        {
+            get => _key;
+            set => SetProperty(ref _key, value);
+        }
 
         public string HeaderText
         {
@@ -127,6 +136,10 @@ namespace _3DS_CivilSurveySuite.UI.Models
         Elevation,
         RawDescription,
         FullDescription,
+        Station,
+        Offset,
+        SurfaceElevation,
+        SurfaceCutFill
     }
 
     public class ColumnProperties : ObservableObject
@@ -145,7 +158,7 @@ namespace _3DS_CivilSurveySuite.UI.Models
             LoadDefaultHeaders();
         }
 
-        private void LoadDefaultHeaders()
+        public void LoadDefaultHeaders()
         {
             Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("PointNumber"), IsVisible = true, ColumnType = ColumnType.PointNumber});
             Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("Easting"), IsVisible = true, ColumnType = ColumnType.Easting});

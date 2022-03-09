@@ -19,7 +19,9 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
         private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.PropertyName.Contains(".") && e.Column is DataGridBoundColumn dataGridBoundColumn)
+            if ((e.PropertyName.Contains(".") ||
+                 e.PropertyName.Contains("'\'")) &&
+                 e.Column is DataGridBoundColumn dataGridBoundColumn)
             {
                 dataGridBoundColumn.Binding = new Binding("[" + e.PropertyName + "]");
             }

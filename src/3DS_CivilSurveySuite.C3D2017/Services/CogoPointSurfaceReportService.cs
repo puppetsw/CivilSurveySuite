@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI;
+using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using DataTable = System.Data.DataTable;
@@ -109,50 +111,18 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     case ColumnType.Easting:
                     case ColumnType.Northing:
                     case ColumnType.Elevation:
+                    case ColumnType.Offset:
+                    case ColumnType.SurfaceElevation:
+                    case ColumnType.SurfaceCutFill:
                         DataTable.Columns.Add(columnHeader.HeaderText, typeof(double));
                         break;
                     case ColumnType.RawDescription:
                     case ColumnType.FullDescription:
+                    case ColumnType.Station:
                         DataTable.Columns.Add(columnHeader.HeaderText, typeof(string));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            // Add alignment details.
-            foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
-            {
-                if (!alignmentOption.CivilAlignment.IsSelected)
-                {
-                    continue;
-                }
-
-                // Add alignment name column.
-                DataTable.Columns.Add($"{alignmentOption.CivilAlignment.Name} Station", typeof(double));
-
-                // Add offset column
-                DataTable.Columns.Add($"{alignmentOption.CivilAlignment.Name} Offset", typeof(double));
-            }
-
-
-
-
-            // Loop and add selected surfaces.
-            foreach (ReportCivilSurfaceOptions option in CivilSurfaceOptions)
-            {
-                if (!option.CivilSurface.IsSelected)
-                {
-                    continue;
-                }
-
-                // Add surface elevation column.
-                DataTable.Columns.Add($"{option.CivilSurface.Name} Elevation", typeof(double));
-
-                // Add cut and fill column if it's enabled.
-                if (option.CivilSurfaceProperties.ShowCutFill)
-                {
-                    DataTable.Columns.Add($"{option.CivilSurface.Name} Cut Fill", typeof(double));
                 }
             }
         }
@@ -219,69 +189,99 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 case ColumnType.FullDescription:
                                     rowData.Add(civilPoint.FullDescription);
                                     break;
+                                case ColumnType.Station:
+                                {
+                                    var stationOption = CivilAlignmentOptions.FirstOrDefault(p =>
+                                        p.CivilAlignment.Name.Equals(columnHeader.Key) && p.CivilAlignment.IsSelected);
+
+                                    if (stationOption != null)
+                                    {
+                                        var stationOffset = AlignmentUtils.GetStationOffset(
+                                            tr,
+                                            stationOption.CivilAlignment,
+                                            civilPoint.Easting,
+                                            civilPoint.Northing);
+
+                                        double station = Math.Round(
+                                            stationOffset.Station,
+                                            stationOption.CivilAlignmentProperties.StationDecimalPlaces);
+
+                                        rowData.Add(station);
+                                    }
+                                    break;
+                                }
+                                case ColumnType.Offset:
+                                {
+                                    var offsetOption = CivilAlignmentOptions.FirstOrDefault(p =>
+                                        p.CivilAlignment.Name.Equals(columnHeader.Key) && p.CivilAlignment.IsSelected);
+
+                                    if (offsetOption != null)
+                                    {
+                                        var stationOffset = AlignmentUtils.GetStationOffset(
+                                            tr,
+                                            offsetOption.CivilAlignment,
+                                            civilPoint.Easting,
+                                            civilPoint.Northing);
+
+                                        double offset = Math.Round(
+                                            stationOffset.Offset,
+                                            offsetOption.CivilAlignmentProperties.OffsetDecimalPlaces);
+
+                                        rowData.Add(offset);
+                                    }
+
+                                    break;
+                                }
+                                case ColumnType.SurfaceElevation:
+                                {
+                                    var surfaceElOption = CivilSurfaceOptions.FirstOrDefault(
+                                        p => p.CivilSurface.Name.Equals(columnHeader.Key) && p.CivilSurface.IsSelected);
+
+                                    // Add surface elevation (interpolate if we need to)
+                                    double elevation = surfaceElOption.CivilSurfaceProperties.InterpolateLevels ?
+                                        SurfaceUtils.FindElevationNearSurface(
+                                            surfaceElOption.CivilSurface.ToTinSurface(tr),
+                                            civilPoint.Easting,
+                                            civilPoint.Northing,
+                                            surfaceElOption.CivilSurfaceProperties.InterpolateMaximumDistance) :
+                                        SurfaceUtils.FindElevationOnSurface(
+                                            surfaceElOption.CivilSurface.ToTinSurface(tr),
+                                            civilPoint.Easting,
+                                            civilPoint.Northing);
+
+                                    rowData.Add(Math.Round(elevation,
+                                        surfaceElOption.CivilSurfaceProperties.DecimalPlaces));
+
+                                    break;
+                                }
+                                case ColumnType.SurfaceCutFill:
+                                {
+                                    var surfaceElOption = CivilSurfaceOptions.FirstOrDefault(
+                                        p => p.CivilSurface.Name.Equals(columnHeader.Key) && p.CivilSurface.IsSelected);
+
+                                    // Add surface elevation (interpolate if we need to)
+                                    double elevation = surfaceElOption.CivilSurfaceProperties.InterpolateLevels ?
+                                        SurfaceUtils.FindElevationNearSurface(
+                                            surfaceElOption.CivilSurface.ToTinSurface(tr),
+                                            civilPoint.Easting,
+                                            civilPoint.Northing,
+                                            surfaceElOption.CivilSurfaceProperties.InterpolateMaximumDistance) :
+                                        SurfaceUtils.FindElevationOnSurface(
+                                            surfaceElOption.CivilSurface.ToTinSurface(tr),
+                                            civilPoint.Easting,
+                                            civilPoint.Northing);
+
+                                    double cutAndFill = surfaceElOption.CivilSurfaceProperties.InvertCutFill ?
+                                        civilPoint.Elevation - elevation :
+                                        elevation - civilPoint.Elevation;
+
+                                    rowData.Add(Math.Round(cutAndFill,
+                                        surfaceElOption.CivilSurfaceProperties.DecimalPlaces));
+
+                                    break;
+                                }
                                 default:
                                     throw new ArgumentOutOfRangeException();
-                            }
-                        }
-
-                        // add alignment data
-                        foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
-                        {
-                            if (!alignmentOption.CivilAlignment.IsSelected)
-                            {
-                                continue;
-                            }
-
-                            var stationOffset = AlignmentUtils.GetStationOffset(
-                                tr,
-                                alignmentOption.CivilAlignment,
-                                civilPoint.Easting,
-                                civilPoint.Northing);
-
-                            // Round station and offset values.
-                            double station = Math.Round(
-                                stationOffset.Station,
-                                alignmentOption.CivilAlignmentProperties.StationDecimalPlaces);
-
-                            double offset = Math.Round(
-                                stationOffset.Offset,
-                                alignmentOption.CivilAlignmentProperties.OffsetDecimalPlaces);
-
-                            rowData.Add(station);
-                            rowData.Add(offset);
-                        }
-
-                        // add surface data
-                        foreach (ReportCivilSurfaceOptions surfaceOption in CivilSurfaceOptions)
-                        {
-                            if (!surfaceOption.CivilSurface.IsSelected)
-                            {
-                                continue;
-                            }
-
-                            // Add surface elevation (interpolate if we need to)
-                            double elevation = surfaceOption.CivilSurfaceProperties.InterpolateLevels ?
-                                SurfaceUtils.FindElevationNearSurface(
-                                    surfaceOption.CivilSurface.ToTinSurface(tr),
-                                    civilPoint.Easting,
-                                    civilPoint.Northing,
-                                    surfaceOption.CivilSurfaceProperties.InterpolateMaximumDistance) :
-                                SurfaceUtils.FindElevationOnSurface(
-                                    surfaceOption.CivilSurface.ToTinSurface(tr),
-                                    civilPoint.Easting,
-                                    civilPoint.Northing);
-
-                            rowData.Add(Math.Round(elevation, surfaceOption.CivilSurfaceProperties.DecimalPlaces));
-
-                            // Add cut and fill (invert if we need to)
-                            if (surfaceOption.CivilSurfaceProperties.ShowCutFill)
-                            {
-                                double cutAndFill = surfaceOption.CivilSurfaceProperties.InvertCutFill ?
-                                    civilPoint.Elevation - elevation :
-                                    elevation - civilPoint.Elevation;
-
-                                rowData.Add(Math.Round(cutAndFill,
-                                    surfaceOption.CivilSurfaceProperties.DecimalPlaces));
                             }
                         }
 
@@ -292,6 +292,61 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     }
                 }
                 tr.Commit();
+            }
+        }
+
+        public void BuildColumnHeaders()
+        {
+            // Clear existing columns
+            ColumnProperties.Headers.Clear();
+            // Add default columns in.
+            ColumnProperties.LoadDefaultHeaders();
+
+            // Add alignment details.
+            foreach (ReportCivilAlignmentOptions alignmentOption in CivilAlignmentOptions)
+            {
+                if (!alignmentOption.CivilAlignment.IsSelected)
+                {
+                    continue;
+                }
+                // Add alignment name column.
+                ColumnProperties.Headers.Add(new ColumnHeader
+                {
+                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Station")}", IsVisible = true,
+                    ColumnType = ColumnType.Station, Key = alignmentOption.CivilAlignment.Name
+                });
+                // Add offset column
+                ColumnProperties.Headers.Add(new ColumnHeader
+                {
+                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Offset")}", IsVisible = true,
+                    ColumnType = ColumnType.Offset, Key = alignmentOption.CivilAlignment.Name
+                });
+            }
+
+            // Loop and add selected surfaces.
+            foreach (ReportCivilSurfaceOptions surfaceOption in CivilSurfaceOptions)
+            {
+                if (!surfaceOption.CivilSurface.IsSelected)
+                {
+                    continue;
+                }
+
+                // Add surface elevation column.
+                ColumnProperties.Headers.Add(new ColumnHeader
+                {
+                    HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("Elevation")}", IsVisible = true,
+                    ColumnType = ColumnType.SurfaceElevation, Key = surfaceOption.CivilSurface.Name
+                });
+
+                // Add cut and fill column if it's enabled.
+                if (surfaceOption.CivilSurfaceProperties.ShowCutFill)
+                {
+                    ColumnProperties.Headers.Add(new ColumnHeader
+                    {
+                        HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("CutFill")}", IsVisible = true,
+                        ColumnType = ColumnType.SurfaceCutFill, Key = surfaceOption.CivilSurface.Name
+                    });
+                }
             }
         }
     }

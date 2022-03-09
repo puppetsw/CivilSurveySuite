@@ -22,5 +22,7 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
         ObservableCollection<ReportCivilPointGroupOptions> CivilPointGroupOptions { get; }
 
         void GenerateReport();
+
+        void BuildColumnHeaders();
     }
 }
