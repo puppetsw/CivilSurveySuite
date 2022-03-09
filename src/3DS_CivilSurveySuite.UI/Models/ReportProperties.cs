@@ -80,14 +80,7 @@ namespace _3DS_CivilSurveySuite.UI.Models
 
     public class CivilPointGroupProperties : ObservableObject
     {
-        private bool _allowDuplicates;
         private int _decimalPlaces = 3;
-
-        public bool AllowDuplicates
-        {
-            get => _allowDuplicates;
-            set => SetProperty(ref _allowDuplicates, value);
-        }
 
         public int DecimalPlaces
         {
