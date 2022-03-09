@@ -16,8 +16,15 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
     {
         private readonly ICivilSelectService _civilSelectService;
         private ColumnProperties _columnProperties;
+        private bool _allowDuplicatePoints;
 
         public DataTable DataTable { get; private set; }
+
+        public bool AllowDuplicatePoints
+        {
+            get => _allowDuplicatePoints;
+            set => SetProperty(ref _allowDuplicatePoints, value);
+        }
 
         public ColumnProperties ColumnProperties
         {
@@ -148,7 +155,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                     foreach (CivilPoint civilPoint in civilPoints)
                     {
-                        if (!pointGroupOption.CivilPointGroupProperties.AllowDuplicates)
+                        if (!AllowDuplicatePoints)
                         {
                             // check for duplicate point.
                             if (pointList.Contains(civilPoint))

@@ -209,13 +209,6 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Allow duplicates?">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilPointGroupProperties.AllowDuplicates}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
                                 <GridViewColumn Header="Decimal Places">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -266,6 +259,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <CheckBox IsChecked="{Binding ReportService.AllowDuplicatePoints}" Content="Allow Duplicate Points"/>
 
                     <Button Command="{Binding GenerateReportCommand}" Click="Button_Click">
                         <TextBlock Text="Generate Report" TextWrapping="Wrap" TextAlignment="Center"/>

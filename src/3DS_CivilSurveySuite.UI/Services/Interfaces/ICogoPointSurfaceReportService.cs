@@ -15,6 +15,8 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 
         ColumnProperties ColumnProperties { get; }
 
+        bool AllowDuplicatePoints { get; }
+
         ObservableCollection<ReportCivilSurfaceOptions> CivilSurfaceOptions { get; }
 
         ObservableCollection<ReportCivilAlignmentOptions> CivilAlignmentOptions { get; }
