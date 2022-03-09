@@ -15,6 +15,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public ICommand GenerateReportCommand { get; private set; }
 
+        public ICommand GenerateColumnsCommand { get; private set; }
+
         public CogoPointSurfaceReportViewModel(
             ICogoPointSurfaceReportService cogoPointSurfaceReportService,
             ISaveFileDialogService saveFileDialogService,
@@ -31,6 +33,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         {
             GenerateReportCommand = new AsyncRelayCommand(UpdateReportData);
             WriteToFileCommand = new RelayCommand(WriteFileDialog, () => true);
+            GenerateColumnsCommand = new RelayCommand(ReportService.BuildColumnHeaders, () => true);
         }
 
         private void WriteFileDialog()
