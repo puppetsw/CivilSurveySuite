@@ -17,6 +17,8 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 
         bool AllowDuplicatePoints { get; }
 
+        DelimiterType Delimiter { get; }
+
         ObservableCollection<ReportCivilSurfaceOptions> CivilSurfaceOptions { get; }
 
         ObservableCollection<ReportCivilAlignmentOptions> CivilAlignmentOptions { get; }
@@ -26,5 +28,14 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
         void GenerateReport();
 
         void BuildColumnHeaders();
+
+        string WriteDataTable();
+    }
+
+    public enum DelimiterType
+    {
+        Comma,
+        Space,
+        Tab
     }
 }

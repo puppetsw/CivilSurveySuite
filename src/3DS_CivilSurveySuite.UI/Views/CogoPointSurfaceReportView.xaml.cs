@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 
 namespace _3DS_CivilSurveySuite.UI.Views
@@ -19,8 +20,12 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
         private void DataGrid_OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
+            // DataGrid doesn't allow special characters in the column names.
+            // Adding the character here will fix that issue.
             if ((e.PropertyName.Contains(".") ||
-                 e.PropertyName.Contains("'\'")) &&
+                 e.PropertyName.Contains("/") ||
+                 e.PropertyName.Contains("&")
+                 ) &&
                  e.Column is DataGridBoundColumn dataGridBoundColumn)
             {
                 dataGridBoundColumn.Binding = new Binding("[" + e.PropertyName + "]");
@@ -28,8 +33,7 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
             if (e.PropertyType == typeof(double))
             {
-                DataGridTextColumn dataGridTextColumn = e.Column as DataGridTextColumn;
-                if (dataGridTextColumn != null)
+                if (e.Column is DataGridTextColumn dataGridTextColumn)
                 {
                     dataGridTextColumn.Binding.StringFormat = "N3";
                 }
@@ -40,6 +44,12 @@ namespace _3DS_CivilSurveySuite.UI.Views
         {
             // Set view to report table.
             TabControl.SelectedIndex = 1;
+        }
+
+        private void SelectCurrentItem(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            ListViewItem item = (ListViewItem) sender;
+            item.IsSelected = true;
         }
     }
 }

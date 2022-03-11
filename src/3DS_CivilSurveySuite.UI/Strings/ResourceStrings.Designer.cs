@@ -151,7 +151,7 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cut Fill.
+        ///   Looks up a localized string similar to Cut/Fill.
         /// </summary>
         internal static string CutFill {
             get {
