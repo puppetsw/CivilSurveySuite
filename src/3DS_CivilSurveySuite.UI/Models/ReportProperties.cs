@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
 using _3DS_CivilSurveySuite.UI.Helpers;
 
 namespace _3DS_CivilSurveySuite.UI.Models
@@ -89,52 +87,6 @@ namespace _3DS_CivilSurveySuite.UI.Models
         }
     }
 
-    public class ColumnHeader : ObservableObject
-    {
-        private string _headerText;
-        private bool _isVisible;
-        private ColumnType _columnType;
-        private string _key;
-
-        public string Key
-        {
-            get => _key;
-            set => SetProperty(ref _key, value);
-        }
-
-        public string HeaderText
-        {
-            get => _headerText;
-            set => SetProperty(ref _headerText, value);
-        }
-
-        public bool IsVisible
-        {
-            get => _isVisible;
-            set => SetProperty(ref _isVisible, value);
-        }
-
-        public ColumnType ColumnType
-        {
-            get => _columnType;
-            set => SetProperty(ref _columnType, value);
-        }
-    }
-
-    public enum ColumnType
-    {
-        PointNumber,
-        Easting,
-        Northing,
-        Elevation,
-        RawDescription,
-        FullDescription,
-        Station,
-        Offset,
-        SurfaceElevation,
-        SurfaceCutFill
-    }
-
     public class ColumnProperties : ObservableObject
     {
         private ObservableCollection<ColumnHeader> _headers;
@@ -161,9 +113,9 @@ namespace _3DS_CivilSurveySuite.UI.Models
             Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("FullDescription"), IsVisible = true, ColumnType = ColumnType.FullDescription});
         }
 
-        public void HeaderMoveUp(ColumnHeader header)
+        public void MoveUp(ColumnHeader header)
         {
-            if (Headers.Contains(header))
+            if (!Headers.Contains(header))
             {
                 return;
             }
@@ -175,9 +127,9 @@ namespace _3DS_CivilSurveySuite.UI.Models
             }
         }
 
-        public void HeaderMoveDown(ColumnHeader header)
+        public void MoveDown(ColumnHeader header)
         {
-            if (Headers.Contains(header))
+            if (!Headers.Contains(header))
             {
                 return;
             }

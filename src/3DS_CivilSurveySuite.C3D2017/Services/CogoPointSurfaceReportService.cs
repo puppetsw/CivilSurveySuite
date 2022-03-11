@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI;
 using _3DS_CivilSurveySuite.UI.Helpers;
@@ -17,8 +18,15 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         private readonly ICivilSelectService _civilSelectService;
         private ColumnProperties _columnProperties;
         private bool _allowDuplicatePoints;
+        private DelimiterType _delimiter;
 
         public DataTable DataTable { get; private set; }
+
+        public DelimiterType Delimiter
+        {
+            get => _delimiter;
+            set => SetProperty(ref _delimiter, value);
+        }
 
         public bool AllowDuplicatePoints
         {
@@ -42,6 +50,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         public CogoPointSurfaceReportService(ICivilSelectService civilSelectService)
         {
             _civilSelectService = civilSelectService;
+
+            Delimiter = DelimiterType.Comma;
 
             ColumnProperties = new ColumnProperties();
 
@@ -118,6 +128,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     case ColumnType.Easting:
                     case ColumnType.Northing:
                     case ColumnType.Elevation:
+                    case ColumnType.Station:
                     case ColumnType.Offset:
                     case ColumnType.SurfaceElevation:
                     case ColumnType.SurfaceCutFill:
@@ -125,7 +136,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         break;
                     case ColumnType.RawDescription:
                     case ColumnType.FullDescription:
-                    case ColumnType.Station:
                         DataTable.Columns.Add(columnHeader.HeaderText, typeof(string));
                         break;
                     default:
@@ -319,13 +329,15 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 // Add alignment name column.
                 ColumnProperties.Headers.Add(new ColumnHeader
                 {
-                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Station")}", IsVisible = true,
+                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Station")}",
+                    IsVisible = true,
                     ColumnType = ColumnType.Station, Key = alignmentOption.CivilAlignment.Name
                 });
                 // Add offset column
                 ColumnProperties.Headers.Add(new ColumnHeader
                 {
-                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Offset")}", IsVisible = true,
+                    HeaderText = $"{alignmentOption.CivilAlignment.Name} {ResourceHelpers.GetLocalisedString("Offset")}",
+                    IsVisible = true,
                     ColumnType = ColumnType.Offset, Key = alignmentOption.CivilAlignment.Name
                 });
             }
@@ -341,7 +353,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 // Add surface elevation column.
                 ColumnProperties.Headers.Add(new ColumnHeader
                 {
-                    HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("Elevation")}", IsVisible = true,
+                    HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("Elevation")}",
+                    IsVisible = true,
                     ColumnType = ColumnType.SurfaceElevation, Key = surfaceOption.CivilSurface.Name
                 });
 
@@ -350,10 +363,59 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 {
                     ColumnProperties.Headers.Add(new ColumnHeader
                     {
-                        HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("CutFill")}", IsVisible = true,
+                        HeaderText = $"{surfaceOption.CivilSurface.Name} {ResourceHelpers.GetLocalisedString("CutFill")}",
+                        IsVisible = true,
                         ColumnType = ColumnType.SurfaceCutFill, Key = surfaceOption.CivilSurface.Name
                     });
                 }
+            }
+        }
+
+        public string WriteDataTable()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            // Write column headings.
+            for (int i = 0; i < DataTable.Columns.Count; i++)
+            {
+                sb.Append(DataTable.Columns[i]);
+                if (i < DataTable.Columns.Count - 1)
+                {
+                    sb.Append(SelectDelimiter());
+                }
+            }
+            sb.AppendLine();
+
+            // Write data
+            for (int i = 0; i < DataTable.Rows.Count; i++)
+            {
+                for (int j = 0; j < DataTable.Columns.Count; j++)
+                {
+                    sb.Append(DataTable.Rows[i][j]);
+
+                    if (j < DataTable.Columns.Count - 1)
+                    {
+                        sb.Append(SelectDelimiter());
+                    }
+                }
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
+        private char SelectDelimiter()
+        {
+            switch (Delimiter)
+            {
+                case DelimiterType.Comma:
+                    return ',';
+                case DelimiterType.Space:
+                    return ' ';
+                case DelimiterType.Tab:
+                    return '\t';
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

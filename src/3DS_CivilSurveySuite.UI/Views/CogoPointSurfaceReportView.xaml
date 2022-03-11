@@ -7,6 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:_3DS_CivilSurveySuite.UI.Models"
+        xmlns:userControl="clr-namespace:_3DS_CivilSurveySuite.UI.UserControl"
         mc:Ignorable="d"
         Title="CogoPoint Report" Height="450" Width="800" ResizeMode="CanResizeWithGrip"
         d:DataContext="{d:DesignInstance vm:CogoPointSurfaceReportViewModel}">
@@ -41,9 +42,9 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <ScrollViewer>
-        <TabControl x:Name="TabControl">
-            <TabItem Header="Settings">
+    <TabControl x:Name="TabControl">
+        <TabItem Header="Settings">
+            <ScrollViewer>
                 <StackPanel>
                     <ListView x:Name="AlignmentList" ItemsSource="{Binding ReportService.CivilAlignmentOptions}">
                         <ListView.Resources>
@@ -219,12 +220,15 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListView ItemsSource="{Binding ReportService.ColumnProperties.Headers}">
+                    <ListView ItemsSource="{Binding ReportService.ColumnProperties.Headers}"
+                              SelectedItem="{Binding SelectedColumnHeader}">
                         <ListView.Resources>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             </Style>
-                            <ObjectDataProvider x:Key="columnTypeEnum" MethodName="GetValues"
+
+                            <ObjectDataProvider x:Key="ColumnTypeEnum"
+                                                MethodName="GetValues"
                                                 ObjectType="{x:Type system:Enum}">
                                 <ObjectDataProvider.MethodParameters>
                                     <x:Type TypeName="models:ColumnType"/>
@@ -232,6 +236,11 @@
                             </ObjectDataProvider>
 
                         </ListView.Resources>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="IsSelected">
@@ -251,8 +260,26 @@
                                 <GridViewColumn Header="Column Type">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource columnTypeEnum}}"
+                                            <ComboBox ItemsSource="{Binding Source={StaticResource ColumnTypeEnum}}"
                                                       SelectedItem="{Binding ColumnType}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Move up">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Move Up"
+                                                    Command="{Binding Path=DataContext.MoveColumnUpCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding Path=DataContext.SelectedColumnHeader, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Move down">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Move Down"
+                                                    Command="{Binding Path=DataContext.MoveColumnDownCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding Path=DataContext.SelectedColumnHeader, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -261,20 +288,29 @@
                     </ListView>
                     <CheckBox IsChecked="{Binding ReportService.AllowDuplicatePoints}" Content="Allow Duplicate Points"/>
 
+                    <StackPanel>
+                        <userControl:SortControl Headers="{Binding ReportService.ColumnProperties.Headers}"
+                                                 SortColumnHeaders="{Binding SortingHeaders}"/>
+                    </StackPanel>
+
                     <Button Command="{Binding GenerateReportCommand}" Click="Button_Click">
                         <TextBlock Text="Generate Report" TextWrapping="Wrap" TextAlignment="Center"/>
                     </Button>
+                    <Button Command="{Binding WriteToFileCommand}">
+                        <TextBlock Text="Write File" TextWrapping="Wrap" TextAlignment="Center"/>
+                    </Button>
+
                 </StackPanel>
-            </TabItem>
-            <TabItem Header="Report">
-                <Grid ShowGridLines="False">
-                    <DataGrid x:Name="DataGridRoot"
-                              Style="{StaticResource ReportView}"
-                              ItemsSource="{Binding DataView}"
-                              AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" />
-                </Grid>
-            </TabItem>
-        </TabControl>
-    </ScrollViewer>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Report">
+            <Grid ShowGridLines="False">
+                <DataGrid x:Name="DataGridRoot"
+                          Style="{StaticResource ReportView}"
+                          ItemsSource="{Binding DataView}"
+                          AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn" />
+            </Grid>
+        </TabItem>
+    </TabControl>
 
 </Window>
