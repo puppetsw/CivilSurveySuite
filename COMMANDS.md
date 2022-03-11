@@ -83,6 +83,7 @@
 | 3DSCptSetNext | Sets the number of the next CogoPoint. |
 | 3DSCptSlope | Creates a point at a location with the calculated slope. |
 | 3DSCptMidBetweenPolys | Draws a CogoPoint at the mid point of two polylines given a location. |
+| 3DSCptScaleElevation | Scales the CogoPoints elevation by a given amount. |
 
 ## Surface
 | Command | Description |
