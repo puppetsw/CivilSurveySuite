@@ -60,7 +60,7 @@ namespace _3DS_CivilSurveySuiteTests
             saveService.Setup(m => m.ShowDialog()).Returns(() => true);
             saveService.Setup(m => m.FileName).Returns(TEST_FILE_NAME);
 
-            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object, selectService.Object);
+            _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object);
         }
 
 
