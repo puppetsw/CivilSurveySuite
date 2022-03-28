@@ -19,6 +19,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         private ColumnProperties _columnProperties;
         private bool _allowDuplicatePoints;
         private DelimiterType _delimiter;
+        private bool _outputHeaders;
 
         public DataTable DataTable { get; private set; }
 
@@ -38,6 +39,12 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         {
             get => _columnProperties;
             private set => SetProperty(ref _columnProperties, value);
+        }
+
+        public bool OutputHeaders
+        {
+            get => _outputHeaders;
+            set => SetProperty(ref _outputHeaders, value);
         }
 
         public ObservableCollection<ReportCivilSurfaceOptions> CivilSurfaceOptions { get; }

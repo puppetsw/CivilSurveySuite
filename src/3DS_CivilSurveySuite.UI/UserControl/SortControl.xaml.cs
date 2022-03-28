@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -66,6 +67,9 @@ namespace _3DS_CivilSurveySuite.UI.UserControl
                 {
                     if (!SelectedHeaders.Contains(sortOptionControl.SelectedHeader))
                     {
+                        if (sortOptionControl.SelectedHeader == null)
+                            throw new ArgumentNullException("Error");
+
                         SelectedHeaders.Add(sortOptionControl.SelectedHeader);
                         SortColumnHeaders.Add(sortOptionControl.SortColumnHeader);
                     }
