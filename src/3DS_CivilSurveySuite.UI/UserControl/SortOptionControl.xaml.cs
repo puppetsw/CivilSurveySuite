@@ -10,7 +10,8 @@ namespace _3DS_CivilSurveySuite.UI.UserControl
     public partial class SortOptionControl
     {
         public static readonly DependencyProperty SelectedHeaderProperty = DependencyProperty.Register(
-            "SelectedHeader", typeof(ColumnHeader), typeof(SortOptionControl), new PropertyMetadata(default(ColumnHeader)));
+            "SelectedHeader", typeof(ColumnHeader), typeof(SortOptionControl),
+            new PropertyMetadata(default(ColumnHeader)));
 
         public ColumnHeader SelectedHeader
         {
@@ -19,7 +20,8 @@ namespace _3DS_CivilSurveySuite.UI.UserControl
         }
 
         public static readonly DependencyProperty HeadersProperty = DependencyProperty.Register(
-            "Headers", typeof(IEnumerable<ColumnHeader>), typeof(SortOptionControl), new PropertyMetadata(default(IEnumerable<ColumnHeader>)));
+            "Headers", typeof(IEnumerable<ColumnHeader>), typeof(SortOptionControl),
+            new PropertyMetadata(default(IEnumerable<ColumnHeader>)));
 
         public IEnumerable<ColumnHeader> Headers
         {
@@ -28,7 +30,8 @@ namespace _3DS_CivilSurveySuite.UI.UserControl
         }
 
         public static readonly DependencyProperty SortDirectionProperty = DependencyProperty.Register(
-            "SortDirection", typeof(SortDirection), typeof(SortOptionControl), new PropertyMetadata(default(SortDirection)));
+            "SortDirection", typeof(SortDirection), typeof(SortOptionControl),
+            new PropertyMetadata(default(SortDirection)));
 
         public SortDirection SortDirection
         {

@@ -46,180 +46,152 @@
         <TabItem Header="Settings">
             <ScrollViewer>
                 <StackPanel>
-                    <ListView x:Name="AlignmentList" ItemsSource="{Binding ReportService.CivilAlignmentOptions}">
-                        <ListView.Resources>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="IsSelected">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilAlignment.IsSelected}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction
-                                                            Command="{Binding
+                    <ListBox x:Name="AlignmentListBox" ItemsSource="{Binding ReportService.CivilAlignmentOptions}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox IsChecked="{Binding CivilAlignment.IsSelected}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
                                                             RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                             Path=DataContext.GenerateColumnsCommand}"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </CheckBox>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Alignment">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding CivilAlignment.Name}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Round Chainage Values?">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilAlignmentProperties.IsStationRounded}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Chainage decimal places">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding CivilAlignmentProperties.StationDecimalPlaces}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Offset decimal places">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding CivilAlignmentProperties.OffsetDecimalPlaces}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListView x:Name="SurfaceList" ItemsSource="{Binding ReportService.CivilSurfaceOptions}">
-                        <ListView.Resources>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="IsSelected">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilSurface.IsSelected}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction
-                                                            Command="{Binding
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
                                                             RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                             Path=DataContext.GenerateColumnsCommand}"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </CheckBox>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Surface">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding CivilSurface.Name}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Interpolate?">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilSurfaceProperties.InterpolateLevels}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Max Interpolate Distance">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding CivilSurfaceProperties.InterpolateMaximumDistance}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Show Cut/Fill">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilSurfaceProperties.ShowCutFill}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction
-                                                            Command="{Binding
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </CheckBox>
+
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding CivilAlignment.Name}"/>
+
+                                    <TextBox Grid.Column="2"
+                                             Text="{Binding CivilAlignmentProperties.StationDecimalPlaces}"/>
+
+                                    <TextBox Grid.Column="3"
+                                             Text="{Binding CivilAlignmentProperties.OffsetDecimalPlaces}"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ListBox x:Name="SurfaceListBox" ItemsSource="{Binding ReportService.CivilSurfaceOptions}">
+                       <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox IsChecked="{Binding CivilSurface.IsSelected}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
                                                             RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                             Path=DataContext.GenerateColumnsCommand}"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </CheckBox>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Invert Cut/Fill">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilSurfaceProperties.InvertCutFill}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Decimal Places">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding CivilSurfaceProperties.DecimalPlaces}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListView x:Name="PointGroupList" ItemsSource="{Binding ReportService.CivilPointGroupOptions}">
-                        <ListView.Resources>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="IsSelected">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding CivilPointGroup.IsSelected}">
-                                                <i:Interaction.Triggers>
-                                                    <i:EventTrigger EventName="Checked">
-                                                        <i:InvokeCommandAction
-                                                            Command="{Binding
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
                                                             RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                             Path=DataContext.GenerateColumnsCommand}"/>
-                                                    </i:EventTrigger>
-                                                </i:Interaction.Triggers>
-                                            </CheckBox>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Point Group">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding CivilPointGroup.Name}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Decimal Places">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding CivilPointGroupProperties.DecimalPlaces}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </CheckBox>
+
+                                    <TextBlock Grid.Column="1"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding CivilSurface.Name}"/>
+
+                                    <CheckBox Grid.Column="2" IsChecked="{Binding CivilSurfaceProperties.InterpolateLevels}" />
+
+                                    <TextBox Grid.Column="3" Text="{Binding CivilSurfaceProperties.InterpolateMaximumDistance}"/>
+
+                                    <CheckBox Grid.Column="4" IsChecked="{Binding CivilSurfaceProperties.ShowCutFill}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
+                                                            RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                                                            Path=DataContext.GenerateColumnsCommand}"/>
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
+                                                            RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                                                            Path=DataContext.GenerateColumnsCommand}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </CheckBox>
+
+                                    <CheckBox Grid.Column="5" IsChecked="{Binding CivilSurfaceProperties.InvertCutFill}"/>
+
+                                    <TextBox Grid.Column="6" Text="{Binding CivilSurfaceProperties.DecimalPlaces}"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ListBox x:Name="PointGroupListBox" ItemsSource="{Binding ReportService.CivilPointGroupOptions}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox IsChecked="{Binding CivilPointGroup.IsSelected}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
+                                                            RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                                                            Path=DataContext.GenerateColumnsCommand}"/>
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <i:InvokeCommandAction
+                                                    Command="{Binding
+                                                            RelativeSource={RelativeSource AncestorType={x:Type Window}},
+                                                            Path=DataContext.GenerateColumnsCommand}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </CheckBox>
+
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding CivilPointGroup.Name}"/>
+
+                                    <TextBox Grid.Column="2" Text="{Binding CivilPointGroupProperties.DecimalPlaces}"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+
+
                     <ListView ItemsSource="{Binding ReportService.ColumnProperties.Headers}"
                               SelectedItem="{Binding SelectedColumnHeader}">
                         <ListView.Resources>
