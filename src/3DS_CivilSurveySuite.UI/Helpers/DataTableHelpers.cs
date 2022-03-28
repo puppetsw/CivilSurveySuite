@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.UI.Helpers
         /// <param name="writeHeaders">Should column headers be written to string.</param>
         /// <param name="delimiter">The delimiter to use.</param>
         /// <returns>System.String.</returns>
-        public static string ToCsv(this DataView dataView, bool writeHeaders = false, char delimiter = ',')
+        public static string ToCsv(this DataView dataView, bool writeHeaders = false, string delimiter = ",")
         {
             DataTable dt = dataView.ToTable();
 

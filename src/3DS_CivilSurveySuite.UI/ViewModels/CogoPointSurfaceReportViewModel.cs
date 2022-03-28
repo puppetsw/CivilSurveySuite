@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using _3DS_CivilSurveySuite.UI.Extensions;
 using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Models;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
@@ -64,13 +65,28 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 return;
             }
 
-            //var data = ReportService.WriteDataTable();
-            //TODO: Add way to select delimiter.
-            var data = DataView.ToCsv();
+            //TODO: Add way to select delimiter. Select from savedialog.
+            var data = DataView.ToCsv(
+                writeHeaders:ReportService.OutputHeaders,
+                delimiter: ReportService.Delimiter.ToName());
+
             var fileName = _saveFileService.FileName;
 
             FileHelpers.WriteFile(fileName, true, data);
         }
+
+        // private string GetDelimiter(string fileName)
+        // {
+        //     var extension = Path.GetExtension(fileName);
+        //
+        //     switch (extension)
+        //     {
+        //         case ".csv":
+        //             break;
+        //         case ".txt":
+        //             break;
+        //     }
+        // }
 
         public DataView DataView => ReportService.DataTable?.DefaultView;
 
@@ -81,7 +97,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             GenerateSortString();
         }
 
-        //TODO: Should I move this to the sort control?
         private void GenerateSortString()
         {
             // Build a sorting string.
