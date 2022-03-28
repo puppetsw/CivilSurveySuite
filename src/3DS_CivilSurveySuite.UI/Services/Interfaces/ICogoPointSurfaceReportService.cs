@@ -15,7 +15,9 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
 
         ColumnProperties ColumnProperties { get; }
 
-        bool AllowDuplicatePoints { get; }
+        bool AllowDuplicatePoints { get; set; }
+
+        bool OutputHeaders { get; set; }
 
         DelimiterType Delimiter { get; }
 
@@ -30,12 +32,5 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
         void BuildColumnHeaders();
 
         string WriteDataTable();
-    }
-
-    public enum DelimiterType
-    {
-        Comma,
-        Space,
-        Tab
     }
 }
