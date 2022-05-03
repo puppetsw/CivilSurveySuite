@@ -112,33 +112,5 @@ namespace _3DS_CivilSurveySuite.UI.Models
             Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("RawDescription"), IsVisible = true, ColumnType = ColumnType.RawDescription});
             Headers.Add(new ColumnHeader { HeaderText = ResourceHelpers.GetLocalisedString("FullDescription"), IsVisible = true, ColumnType = ColumnType.FullDescription});
         }
-
-        public void MoveUp(ColumnHeader header)
-        {
-            if (!Headers.Contains(header))
-            {
-                return;
-            }
-
-            var currentIndex = Headers.IndexOf(header);
-            if (currentIndex >= 1)
-            {
-                Headers.Move(currentIndex, currentIndex - 1);
-            }
-        }
-
-        public void MoveDown(ColumnHeader header)
-        {
-            if (!Headers.Contains(header))
-            {
-                return;
-            }
-
-            var currentIndex = Headers.IndexOf(header);
-            if (currentIndex < Headers.Count)
-            {
-                Headers.Move(currentIndex, currentIndex + 1);
-            }
-        }
     }
 }
