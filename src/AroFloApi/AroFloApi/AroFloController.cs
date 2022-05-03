@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using AroFloApi.Helpers;
 
 namespace AroFloApi
 {
@@ -19,39 +20,72 @@ namespace AroFloApi
         private const string P_ENCODE = "cTdod3FkODFlNnI0TGVk";
         private const string ORG_ENCODE = "JSc6TyBQLFAgCg==";
 
-        private int CurrentPage { get; set; } = 1; // Start at page one.
+        private int CurrentPage { get; set; } = 1;
 
         private const string AROFLO_API_URL = "https://api.aroflo.com/";
 
-        internal async Task<List<T>> GetAroFloObjectsAsync<TZone, T>(string requestString, CancellationToken cancellationToken = default)
-            where TZone : ZoneResult<T>
-            where T : AroFloObject
+        // TODO: Improve zoning request strings to make them more safe and filters.
+        internal AroFloController() { }
+
+        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(Zones zone, CancellationToken cancellationToken = default)
+            where TZone : ZoneResult<TObject>
+            where TObject : AroFloObject
         {
-            // CONNECTION IS REFUSED IF SECURITY IS NOT SET TO TLS12 for .NET 4.5...
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            string zoneRequest = $"zone={zone.GetDescription()}&page=";
+            return await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+        }
 
-            // BASE URL
-            var url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
+        /// <summary>
+        /// Get an <see cref="AroFloObject"/> from the AroFlo API.
+        /// </summary>
+        /// <typeparam name="TZone">The <see cref="ZoneResult{T}"/> object.</typeparam>
+        /// <typeparam name="TObject">The <see cref="AroFloObject"/> associated with the TZone.</typeparam>
+        /// <param name="requestString">The request string. eg. zone=projects&page=</param>
+        /// <param name="cancellationToken">The cancellation token that can be used by other objects or threads to
+        /// receive notice of cancellation.</param>
+        /// <remarks>
+        /// Leave the page number off the request as the method will automatically get the next page of objects
+        /// if required.
+        /// </remarks>
+        /// <returns>A Task&lt;List`1&gt; representing the asynchronous operation.</returns>
+        private async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(string requestString,
+            CancellationToken cancellationToken = default)
+            where TZone : ZoneResult<TObject>
+            where TObject : AroFloObject
+        {
+            var list = new List<TObject>();
 
-            var list = new List<T>();
-
-            var responseData = await SendAroFloRequestAsync(url, requestString, cancellationToken);
-            var aroFloObject = await Deserialize<TZone, T>(responseData);
-
-            list.AddRange(aroFloObject.ZoneResponse.GetResults());
-
-            do
+            try
             {
-                CurrentPage++;
+                // CONNECTION IS REFUSED IF SECURITY IS NOT SET TO TLS12 for .NET 4.5...
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
+                // BASE URL
+                var url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
 
-                var nextPage = await SendAroFloRequestAsync(url, requestString, cancellationToken);
-                aroFloObject = await Deserialize<TZone, T>(nextPage);
+
+                var responseData = await SendAroFloRequestAsync(url, requestString, cancellationToken);
+                var aroFloObject = await Deserialize<TZone, TObject>(responseData);
 
                 list.AddRange(aroFloObject.ZoneResponse.GetResults());
 
-            } while (aroFloObject.ZoneResponse.IsMorePages);
+                do
+                {
+                    CurrentPage++;
+
+                    url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
+
+                    var nextPage = await SendAroFloRequestAsync(url, requestString, cancellationToken);
+                    aroFloObject = await Deserialize<TZone, TObject>(nextPage);
+
+                    list.AddRange(aroFloObject.ZoneResponse.GetResults());
+
+                } while (aroFloObject.ZoneResponse.IsMorePages);
+            }
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine($"GET task was cancelled.");
+            }
 
             return list;
         }

@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace AroFloApi
 {
-    public class ProjectZoneResult : ZoneResult<Project>
+    public sealed class ProjectZoneResult : ZoneResult<Project>
     {
         [XmlArrayItem("project")]
         [XmlArray("projects")]
