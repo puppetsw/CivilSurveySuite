@@ -67,6 +67,34 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
             LoadSurfaces();
         }
 
+        public void MoveUp(ColumnHeader header)
+        {
+            if (!ColumnProperties.Headers.Contains(header))
+            {
+                return;
+            }
+
+            var currentIndex = ColumnProperties.Headers.IndexOf(header);
+            if (currentIndex >= 1)
+            {
+                ColumnProperties.Headers.Move(currentIndex, currentIndex - 1);
+            }
+        }
+
+        public void MoveDown(ColumnHeader header)
+        {
+            if (!ColumnProperties.Headers.Contains(header))
+            {
+                return;
+            }
+
+            var currentIndex = ColumnProperties.Headers.IndexOf(header);
+            if (currentIndex < ColumnProperties.Headers.Count)
+            {
+                ColumnProperties.Headers.Move(currentIndex, currentIndex + 1);
+            }
+        }
+
         private void LoadSurfaces()
         {
             var surfaces = _civilSelectService.GetSurfaces();

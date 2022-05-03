@@ -46,6 +46,8 @@ namespace _3DS_CivilSurveySuiteTests
             var pointGroup = new CivilPointGroup { Name = "SelectedPointGroup" };
 
             var reportService = new Mock<ICogoPointSurfaceReportService>();
+            reportService.Setup(m => m.MoveDown(null));
+            reportService.Setup(m => m.MoveUp(null));
 
             var selectService = new Mock<ICivilSelectService>();
 
@@ -63,17 +65,11 @@ namespace _3DS_CivilSurveySuiteTests
             _viewModel = new CogoPointSurfaceReportViewModel(reportService.Object, saveService.Object);
         }
 
-
-
-
-
-
-
         [Test]
-        public void CreateReportCommand_Execute()
+        public void GenerateReportCommand_Execute()
         {
-            //Assert.IsTrue(_viewModel.CreateReportCommand.CanExecute(true));
-            //_viewModel.CreateReportCommand.Execute(null);
+            Assert.IsTrue(_viewModel.GenerateReportCommand.CanExecute(true));
+            _viewModel.GenerateReportCommand.Execute(null);
         }
     }
 }

@@ -32,5 +32,9 @@ namespace _3DS_CivilSurveySuite.UI.Services.Interfaces
         void BuildColumnHeaders();
 
         string WriteDataTable();
+
+        void MoveUp(ColumnHeader columnHeader);
+
+        void MoveDown(ColumnHeader columnHeader);
     }
 }
