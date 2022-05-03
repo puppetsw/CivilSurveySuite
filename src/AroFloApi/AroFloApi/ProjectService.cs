@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +12,7 @@ namespace AroFloApi
         public async Task<List<Project>> GetProjects(CancellationToken cancellationToken = default)
         {
             var aroFloController = new AroFloController();
-            var projects = await aroFloController.GetAroFloObjectsAsync<ProjectZoneResult, Project>("zone=projects&page=", cancellationToken);
+            var projects = await aroFloController.GetAroFloObjectsAsync<ProjectZoneResult, Project>(Zones.Projects, cancellationToken);
             return projects;
         }
 
@@ -40,6 +42,13 @@ namespace AroFloApi
         {
             var projects = await GetProjects(cancellationToken);
             var project = projects.FirstOrDefault(p => p.ProjectNumber.Equals(number.ToUpperInvariant()));
+
+            var properties = typeof(Project).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                Console.WriteLine($"{property.Name}: {property.GetValue(project)}");
+            }
+
             return project;
         }
     }
