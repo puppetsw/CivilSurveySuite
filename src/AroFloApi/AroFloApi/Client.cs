@@ -2,7 +2,7 @@
 
 namespace AroFloApi
 {
-    public class Client
+    public class Client : AroFloObject
     {
         [XmlElement("orgid")]
         public string Id { get; set; }

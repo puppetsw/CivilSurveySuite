@@ -12,7 +12,7 @@ namespace AroFloApi
         public async Task<List<Project>> GetProjects(CancellationToken cancellationToken = default)
         {
             var aroFloController = new AroFloController();
-            var projects = await aroFloController.GetAroFloObjectsAsync<ProjectZoneResult, Project>(Zones.Projects, cancellationToken);
+            var projects = await aroFloController.GetAroFloObjectsAsync<ProjectZoneResult, Project>(cancellationToken);
             return projects;
         }
 

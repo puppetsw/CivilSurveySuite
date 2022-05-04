@@ -15,22 +15,39 @@ namespace AroFloApi
 {
     internal class AroFloController
     {
+        private const string AROFLO_API_URL = "https://api.aroflo.com/";
         private const string SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
         private const string U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
         private const string P_ENCODE = "cTdod3FkODFlNnI0TGVk";
         private const string ORG_ENCODE = "JSc6TyBQLFAgCg==";
 
-        private int CurrentPage { get; set; } = 1;
-
-        private const string AROFLO_API_URL = "https://api.aroflo.com/";
+        private int _currentPage = 1;
 
         // TODO: Improve zoning request strings to make them more safe and filters.
         internal AroFloController() { }
 
-        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(Zones zone, CancellationToken cancellationToken = default)
+        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(CancellationToken cancellationToken = default)
             where TZone : ZoneResult<TObject>
             where TObject : AroFloObject
         {
+            Zones zone = Zones.None;
+
+            if (typeof(TZone) == typeof(ProjectZoneResult) &&
+                typeof(TObject) == typeof(Project))
+            {
+                zone = Zones.Projects;
+            }
+            else if (typeof(TZone) == typeof(LocationZoneResult) &&
+                     typeof(TObject) == typeof(Location))
+            {
+                zone = Zones.Locations;
+            }
+
+            if (zone == Zones.None)
+            {
+                throw new InvalidOperationException("Zone was not set.");
+            }
+
             string zoneRequest = $"zone={zone.GetDescription()}&page=";
             return await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
         }
@@ -58,11 +75,11 @@ namespace AroFloApi
             try
             {
                 // CONNECTION IS REFUSED IF SECURITY IS NOT SET TO TLS12 for .NET 4.5...
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                // https://stackoverflow.com/questions/28286086/default-securityprotocol-in-net-4-5
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                 // BASE URL
-                var url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
-
+                var url = new Uri($"{AROFLO_API_URL}?{requestString}{_currentPage}");
 
                 var responseData = await SendAroFloRequestAsync(url, requestString, cancellationToken);
                 var aroFloObject = await Deserialize<TZone, TObject>(responseData);
@@ -71,9 +88,9 @@ namespace AroFloApi
 
                 do
                 {
-                    CurrentPage++;
+                    _currentPage++;
 
-                    url = new Uri($"{AROFLO_API_URL}?{requestString}{CurrentPage}");
+                    url = new Uri($"{AROFLO_API_URL}?{requestString}{_currentPage}");
 
                     var nextPage = await SendAroFloRequestAsync(url, requestString, cancellationToken);
                     aroFloObject = await Deserialize<TZone, TObject>(nextPage);
@@ -96,7 +113,7 @@ namespace AroFloApi
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, uri))
                 {
-                    AddHeaders(request, requestString, CurrentPage);
+                    AddHeaders(request, requestString, _currentPage);
 
                     Console.WriteLine($"Creating connection: {uri}");
 
