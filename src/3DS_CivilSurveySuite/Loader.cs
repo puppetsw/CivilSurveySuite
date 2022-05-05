@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite
         public void Initialize()
         {
             // Load supporting DLLs.
-            string[] supportDlls = { "Microsoft.Xaml.Behaviors" };
+            string[] supportDlls = { "Microsoft.Xaml.Behaviors", "System.Data.SQLite" };
 
             foreach (string dll in supportDlls)
             {

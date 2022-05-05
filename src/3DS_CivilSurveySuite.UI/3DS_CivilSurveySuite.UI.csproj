@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
+    <Compile Include="ViewModels\AroFlo\AroFloProjectViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
@@ -374,6 +375,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AroFloApi\AroFloApi\AroFloApi.csproj">
+      <Project>{75b56ed2-46df-49b9-aea7-5f355ac52dfe}</Project>
+      <Name>AroFloApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GMapControl\GMapControl\GMapControl.csproj">
+      <Project>{5d8e34f5-4083-4313-a116-d822de81297f}</Project>
+      <Name>GMapControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

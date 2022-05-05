@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using _3DS_CivilSurveySuite.UI.ViewModels.AroFlo;
 
 namespace _3DS_CivilSurveySuite.UI.Views.AroFlo
 {
@@ -19,9 +8,11 @@ namespace _3DS_CivilSurveySuite.UI.Views.AroFlo
     /// </summary>
     public partial class AroFloProjectView : Window
     {
-        public AroFloProjectView()
+        public AroFloProjectView(AroFloProjectViewModel viewModel)
         {
             InitializeComponent();
+
+            DataContext = viewModel;
         }
     }
 }
