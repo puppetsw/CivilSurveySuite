@@ -16,9 +16,9 @@ namespace GMapControl
         Popup Popup;
         Label Label;
         GMapMarker Marker;
-        MapControl MainWindow;
+        MapWindow MainWindow;
 
-        public CustomMarkerRed(MapControl window, GMapMarker marker, string title)
+        public CustomMarkerRed(MapWindow window, GMapMarker marker, string title)
         {
             InitializeComponent();
 
