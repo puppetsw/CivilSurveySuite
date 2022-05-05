@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using AroFloApi;
 using GMap.NET.MapProviders;
+using GMap.NET.WindowsPresentation;
 
 namespace GMap.NET
 {
@@ -16,18 +18,33 @@ namespace GMap.NET
 
             GoogleMapProvider.Instance.ApiKey = "AIzaSyBmSh5fIQb4pD8ywwCNdmzIIkX0na7V0mQ";
 
-            MainMap.MapProvider = GMapProviders.OpenStreetMap;
+            MainMap.MapProvider = GMapProviders.GoogleMap;
 
             UpdateMapPosition();
         }
 
         private async Task UpdateMapPosition()
         {
-            ILocationService locationService = new LocationService();
-            var location = await locationService.GetLocationAsync("JSYqKyBSXFggCg==", default);
-
-            MainMap.Position = new PointLatLng(location.Latitude, location.Longitude);
-            MainMap.Zoom = 100;
+            // CancellationTokenSource cts = new CancellationTokenSource();
+            // cts.CancelAfter(TimeSpan.FromSeconds(15));
+            // IProjectService projectService = new ProjectService();
+            // var project = await projectService.GetProjectAsync("834", cts.Token);
+            //
+            // ILocationService locationService = new LocationService();
+            // var location = await locationService.GetLocationAsync(project.Location.LocationId, cts.Token);
+            //
+            // MainMap.Position = new PointLatLng(location.Latitude, location.Longitude);
+            //
+            // var currentMarker = new GMapMarker(MainMap.Position);
+            // {
+            //     currentMarker.Shape = new CustomMarkerRed(this, currentMarker, $"{location.LocationName}");
+            //     currentMarker.Offset = new Point(-15, -15);
+            //     currentMarker.ZIndex = int.MaxValue;
+            //     MainMap.Markers.Add(currentMarker);
+            // }
+            //
+            //
+            // MainMap.Zoom = 16;
         }
     }
 }
