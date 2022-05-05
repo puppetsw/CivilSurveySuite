@@ -10,7 +10,7 @@
     <Grid>
         <GroupBox Name="MapGroup" Header="gmap" VerticalContentAlignment="Stretch"
                   HorizontalContentAlignment="Stretch">
-            <windowsPresentation:GMapControl x:Name="MainMap" Zoom="13" MaxZoom="24" MinZoom="1" />
+            <windowsPresentation:GMapControl x:Name="MainMap" Zoom="1" MaxZoom="24" MinZoom="1" Position="{Binding Position}" />
         </GroupBox>
     </Grid>
 </Window>

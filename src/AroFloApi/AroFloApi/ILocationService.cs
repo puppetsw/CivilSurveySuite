@@ -5,6 +5,6 @@ namespace AroFloApi
 {
     public interface ILocationService
     {
-        Task<Location> GetLocationAsync(string locationId, CancellationToken cancellationToken);
+        Task<Location> GetLocationAsync(string locationId, CancellationToken cancellationToken = default);
     }
 }

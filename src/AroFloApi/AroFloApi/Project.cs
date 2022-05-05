@@ -14,10 +14,10 @@ namespace AroFloApi
         public Location Location { get; set; }
 
         [XmlElement("projectid")]
-        public string Id { get; set; }
+        public string ProjectId { get; set; }
 
         [XmlElement("projectnumber")]
-        public string ProjectNumber { get; set; }
+        public int ProjectNumber { get; set; }
 
         [XmlElement("projectname")]
         public string ProjectName { get; set; }

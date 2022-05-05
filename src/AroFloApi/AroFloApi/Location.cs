@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace AroFloApi
 {
@@ -29,10 +31,28 @@ namespace AroFloApi
         public string Suburb { get; set; }
 
         [XmlElement("archived")]
+        [Obsolete("Use the IsArchived property.", false)]
+        [Browsable(false)]
         public string ArchivedString { get; set; }
 
+#pragma warning disable CS0618
         [XmlIgnore]
-        public bool IsArchived => !ArchivedString.ToLower().Equals("false");
+        public bool IsArchived
+        {
+            get
+            {
+                switch (ArchivedString.ToLower())
+                {
+                    case "false":
+                        return false;
+                    case "true":
+                        return true;
+                    default:
+                        throw new InvalidOperationException("ArchivedString was invalid.");
+                }
+            }
+        }
+#pragma warning restore CS0618
 
         [XmlElement("address")]
         public string Address { get; set; }
