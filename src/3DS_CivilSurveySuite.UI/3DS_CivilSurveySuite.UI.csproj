@@ -381,9 +381,9 @@
       <Project>{75b56ed2-46df-49b9-aea7-5f355ac52dfe}</Project>
       <Name>AroFloApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GMapControl\GMapControl\GMapControl.csproj">
-      <Project>{5d8e34f5-4083-4313-a116-d822de81297f}</Project>
-      <Name>GMapControl</Name>
+    <ProjectReference Include="..\MapControl\MapControl\MapControl.csproj">
+      <Project>{9059bceb-976d-4fc7-af8e-d15eda6b9f31}</Project>
+      <Name>MapControl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

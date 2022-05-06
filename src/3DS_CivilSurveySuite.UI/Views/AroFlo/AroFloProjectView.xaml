@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views.AroFlo"
-        xmlns:gMapControl="clr-namespace:GMapControl;assembly=GMapControl"
+        xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl"
         mc:Ignorable="d"
         Title="AroFloProjectView" Height="450" Width="800">
     <Grid>
@@ -52,7 +52,7 @@
             <TextBox Height="150" IsReadOnly="True" Text="{Binding Description}" TextWrapping="Wrap" />
         </StackPanel>
 
-        <gMapControl:MapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Zoom="1" MaxZoom="24" MinZoom="1" Position="{Binding Position}"/>
+        <mapControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Position}"/>
 
     </Grid>
 </Window>
