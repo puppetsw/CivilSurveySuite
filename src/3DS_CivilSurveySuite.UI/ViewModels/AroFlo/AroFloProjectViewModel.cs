@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using AroFloApi;
-using GMapControl;
+using MapControl;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 {
@@ -10,7 +10,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
         private string _description;
         private string _client;
         private string _location;
-        private LatLong _position;
+        private Position _position;
         private int _projectNumber;
 
         public string Description
@@ -31,7 +31,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             set => SetProperty(ref _location, value);
         }
 
-        public LatLong Position
+        public Position Position
         {
             get => _position;
             set => SetProperty(ref _position, value);
@@ -67,7 +67,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             }
 
             var location = await locationService.GetLocationAsync(project.Location.LocationId);
-            Position = new LatLong { Latitude = location.Latitude, Longitude = location.Longitude };
+            Position = new Position { Latitude = location.Latitude, Longitude = location.Longitude };
             Location = project.Location.LocationName;
             Client = project.Client.Name;
             Description = project.Description;
