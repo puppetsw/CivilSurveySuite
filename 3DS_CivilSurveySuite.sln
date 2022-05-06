@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AroFloApi", "src\AroFloApi\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuiteAroFloTests", "tests\3DS_CivilSurveySuiteAroFloTests\3DS_CivilSurveySuiteAroFloTests\3DS_CivilSurveySuiteAroFloTests.csproj", "{9433C624-7243-41C2-AF67-71E6248E5DCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapControl", "src\MapControl\MapControl\MapControl.csproj", "{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{9433C624-7243-41C2-AF67-71E6248E5DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9433C624-7243-41C2-AF67-71E6248E5DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9433C624-7243-41C2-AF67-71E6248E5DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{784168B4-94E9-40E4-807E-BC1FAA1B81A2} = {B1A198AD-4A45-44E0-8703-49161569622A}
 		{75B56ED2-46DF-49B9-AEA7-5F355AC52DFE} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
 		{9433C624-7243-41C2-AF67-71E6248E5DCF} = {B1A198AD-4A45-44E0-8703-49161569622A}
+		{9059BCEB-976D-4FC7-AF8E-D15EDA6B9F31} = {2F79AD13-E23E-4E4F-A65C-CFBAC783FEB9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {21AB6BAD-3251-4144-BB53-3E90D73A8B2D}
