@@ -1,6 +1,6 @@
-﻿namespace GMapControl
+﻿namespace MapControl
 {
-    public class LatLong
+    public class Position
     {
         public double Latitude { get; set; }
 
