@@ -49,8 +49,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         private void InitCommands()
         {
             GenerateReportCommand  = new AsyncRelayCommand(UpdateReportData);
-            WriteToFileCommand     = new RelayCommand(WriteFile);
-            GenerateColumnsCommand = new RelayCommand(ReportService.BuildColumnHeaders);
+            WriteToFileCommand     = new RelayCommand(WriteFile, () => true);
+            GenerateColumnsCommand = new RelayCommand(ReportService.BuildColumnHeaders, () => true);
             MoveColumnUpCommand    = new RelayCommand<ColumnHeader>(ReportService.MoveUp);
             MoveColumnDownCommand  = new RelayCommand<ColumnHeader>(ReportService.MoveDown);
         }

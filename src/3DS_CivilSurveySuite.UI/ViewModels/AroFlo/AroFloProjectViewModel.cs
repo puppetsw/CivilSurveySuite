@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using _3DS_CivilSurveySuite.UI.Helpers;
 using AroFloApi;
 using MapControl;
 
@@ -12,6 +14,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
         private string _location;
         private Position _position;
         private int _projectNumber;
+        private bool _isBusy;
 
         public string Description
         {
@@ -43,6 +46,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             set => SetProperty(ref _projectNumber, value);
         }
 
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         public ICommand FindJobCommand { get; private set; }
 
         public AroFloProjectViewModel()
@@ -57,20 +66,34 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 
         private async Task GetJob()
         {
-            var projectService = new ProjectService();
-            var locationService = new LocationService();
-            var project = await projectService.GetProjectAsync(ProjectNumber);
-
-            if (project == null)
+            try
             {
-                return;
+                IsBusy = true;
+                var projectService = new ProjectService();
+                var locationService = new LocationService();
+                var project = await projectService.GetProjectAsync(ProjectNumber);
+
+                if (project == null)
+                {
+                    return;
+                }
+
+                var location = await locationService.GetLocationAsync(project.Location.LocationId);
+                Position = new Position { Latitude = location.Latitude, Longitude = location.Longitude };
+                Location = project.Location.LocationName;
+                Client = project.Client.Name;
+                Description = project.Description;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                IsBusy = false;
             }
 
-            var location = await locationService.GetLocationAsync(project.Location.LocationId);
-            Position = new Position { Latitude = location.Latitude, Longitude = location.Longitude };
-            Location = project.Location.LocationName;
-            Client = project.Client.Name;
-            Description = project.Description;
         }
     }
 }

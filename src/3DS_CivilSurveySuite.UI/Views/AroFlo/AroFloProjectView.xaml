@@ -7,7 +7,26 @@
         xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl"
         mc:Ignorable="d"
         Title="AroFloProjectView" Height="450" Width="800">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                    <Setter Property="Cursor" Value="Wait" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                        <Setter Property="IsHitTestVisible" Value="False" /> <!-- Ensures wait cursor is active everywhere in the window -->
+                        <Setter Property="IsEnabled" Value="False" /> <!-- Makes everything appear disabled -->
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -15,6 +34,7 @@
                     <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
                     <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
                     <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/CoreStyles.xaml" />
+                    <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Converters.xaml" />
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
@@ -52,7 +72,7 @@
             <TextBox Height="150" IsReadOnly="True" Text="{Binding Description}" TextWrapping="Wrap" />
         </StackPanel>
 
-        <mapControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Position}"/>
+        <mapControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Path=Position, Mode=TwoWay}"/>
 
     </Grid>
 </Window>
