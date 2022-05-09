@@ -8,13 +8,14 @@
     <OutputType>library</OutputType>
     <RootNamespace>_3DS_CivilSurveySuite.UI</RootNamespace>
     <AssemblyName>3DS_CivilSurveySuite.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <Deterministic>true</Deterministic>
     <LangVersion>7.3</LangVersion>
     <Nullable>disable</Nullable>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -133,6 +134,7 @@
     </Compile>
     <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
+    <Compile Include="ViewModels\AroFlo\AroFloProjectViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
@@ -150,6 +152,9 @@
     <Compile Include="ViewState.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AroFlo\AroFloProjectView.xaml.cs">
+      <DependentUpon>AroFloProjectView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CogoPointMoveLabelView.xaml.cs">
       <DependentUpon>CogoPointMoveLabelView.xaml</DependentUpon>
@@ -297,6 +302,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AroFlo\AroFloProjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CogoPointMoveLabelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -366,6 +375,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AroFloApi\AroFloApi\AroFloApi.csproj">
+      <Project>{75b56ed2-46df-49b9-aea7-5f355ac52dfe}</Project>
+      <Name>AroFloApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapControl\MapControl\MapControl.csproj">
+      <Project>{9059bceb-976d-4fc7-af8e-d15eda6b9f31}</Project>
+      <Name>MapControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,7 +12,9 @@ using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
+using _3DS_CivilSurveySuite.UI.ViewModels.AroFlo;
 using _3DS_CivilSurveySuite.UI.Views;
+using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -89,15 +91,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<ISaveFileDialogService, SaveFileDialogService>();
             Container.Register<IFolderBrowserDialogService, FolderBrowserDialogService>();
 
-            // Views and ViewModels
+            // Views
             Container.Register<AngleCalculatorView>();
-            Container.Register<AngleCalculatorViewModel>();
-            Container.Register<TraverseAngleView>();
-            Container.Register<TraverseAngleViewModel>();
-            Container.Register<TraverseView>();
-            Container.Register<TraverseViewModel>();
+            Container.Register<AroFloProjectView>();
             Container.Register<ImageManagerView>();
+            Container.Register<TraverseAngleView>();
+            Container.Register<TraverseView>();
+
+            // ViewModels
+            Container.Register<AngleCalculatorViewModel>();
+            Container.Register<AroFloProjectViewModel>();
             Container.Register<ImageManagerViewModel>();
+            Container.Register<TraverseViewModel>();
+            Container.Register<TraverseAngleViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
         }
