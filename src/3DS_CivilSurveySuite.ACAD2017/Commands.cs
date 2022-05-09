@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using _3DS_CivilSurveySuite.UI.Views;
+using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
@@ -231,12 +232,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.ShowDialog<TraverseView>();
         }
 
-            [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSShowTraverseAngleWindow", CommandFlags.Modal)]
         public void ShowTraverseAngle()
         {
             AcadApp.ShowDialog<TraverseAngleView>();
         }
 
+        [CommandMethod("3DS", "_3DSAroFloProjectWindow", CommandFlags.Modal)]
+        public void ShowAroFloProjectWindow()
+        {
+            AcadApp.ShowDialog<AroFloProjectView>();
+        }
 
     }
 }
