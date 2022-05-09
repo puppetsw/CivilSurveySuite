@@ -11,7 +11,7 @@ namespace AroFloApi
         where TAroFloObject : AroFloObject
     {
         [XmlElement("status")]
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         [XmlElement("statusmessage")]
         public string StatusMessage { get; set; }
