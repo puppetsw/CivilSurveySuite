@@ -19,6 +19,8 @@ namespace AroFloApi
         public async Task<List<Project>> GetOpenProjectsAsync(CancellationToken cancellationToken = default)
         {
             var projects = await GetProjectsAsync(cancellationToken);
+            //var controller = new AroFloController();
+            //return await controller.GetAroFloObjectsAsync<ProjectZoneResult, Project>(Fields.Status, "open", cancellationToken);
             var list = projects.Where(project => project.Status == "open").ToList();
             return list;
         }
@@ -40,8 +42,8 @@ namespace AroFloApi
 
         public async Task<Project> GetProjectAsync(int number, CancellationToken cancellationToken = default)
         {
-            var projects = await GetProjectsAsync(cancellationToken);
-            var project = projects?.FirstOrDefault(p => p.ProjectNumber.Equals(number));
+            var controller = new AroFloController();
+            var project = await controller.GetAroFloObject<ProjectZoneResult, Project>(Fields.ProjectNumber, number.ToString(), cancellationToken);
 
             if (project == null)
             {

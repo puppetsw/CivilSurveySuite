@@ -41,6 +41,11 @@ namespace AroFloApi
         {
             get
             {
+                if (string.IsNullOrEmpty(ArchivedString))
+                {
+                    return false;
+                }
+
                 switch (ArchivedString.ToLower())
                 {
                     case "false":

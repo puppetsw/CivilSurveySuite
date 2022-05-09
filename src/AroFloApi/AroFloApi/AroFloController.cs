@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using AroFloApi.Exceptions;
 using AroFloApi.Helpers;
 
 namespace AroFloApi
@@ -23,8 +25,70 @@ namespace AroFloApi
 
         private int _currentPage = 1;
 
-        // TODO: Improve zoning request strings to make them more safe and filters.
-        internal AroFloController() { }
+        internal async Task<TObject> GetAroFloObject<TZone, TObject>(Fields field, string value, CancellationToken cancellationToken = default)
+            where TZone : ZoneResult<TObject>
+            where TObject : AroFloObject
+        {
+            // convert field and value into where string
+            // where=and|status|=|pending& zone=Invoices&page=1
+            // build filter string.
+            // where content has to be URI encoded
+            var filterString = $"where={Uri.EscapeDataString($"and|{field.GetDescription()}|=|{value}")}";
+
+            Zones zone = Zones.None;
+
+            if (typeof(TZone) == typeof(ProjectZoneResult) &&
+                typeof(TObject) == typeof(Project))
+            {
+                zone = Zones.Projects;
+            }
+            else if (typeof(TZone) == typeof(LocationZoneResult) &&
+                     typeof(TObject) == typeof(Location))
+            {
+                zone = Zones.Locations;
+            }
+
+            if (zone == Zones.None)
+            {
+                throw new InvalidOperationException("Zone was not set.");
+            }
+
+            // add filter string to request.
+            string zoneRequest = $"{filterString}&zone={zone.GetDescription()}&page=";
+            var result = await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+
+            // return the first only?
+            return result?.FirstOrDefault();
+        }
+
+        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(Fields field, string value, CancellationToken cancellationToken = default)
+            where TZone : ZoneResult<TObject>
+            where TObject : AroFloObject
+        {
+            var filterString = $"where={Uri.EscapeDataString($"and|{field.GetDescription()}|=|{value}")}";
+            Zones zone = Zones.None;
+
+            if (typeof(TZone) == typeof(ProjectZoneResult) &&
+                typeof(TObject) == typeof(Project))
+            {
+                zone = Zones.Projects;
+            }
+            else if (typeof(TZone) == typeof(LocationZoneResult) &&
+                     typeof(TObject) == typeof(Location))
+            {
+                zone = Zones.Locations;
+            }
+
+            if (zone == Zones.None)
+            {
+                throw new InvalidOperationException("Zone was not set.");
+            }
+
+            // add filter string to request.
+            string zoneRequest = $"{filterString}&zone={zone.GetDescription()}&page=";
+            var result = await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+            return result;
+        }
 
         internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(CancellationToken cancellationToken = default)
             where TZone : ZoneResult<TObject>
@@ -83,6 +147,38 @@ namespace AroFloApi
 
                 var responseData = await SendAroFloRequestAsync(url, requestString, cancellationToken);
                 var aroFloObject = await Deserialize<TZone, TObject>(responseData);
+
+                switch (aroFloObject.Status)
+                {
+                    case Status.AuthenticationFailed:
+                        throw new AuthenticationException();
+                    case Status.LoginOk:
+                        break;
+                    case Status.LoginFailedInvalidRequestString:
+                        throw new LoginFailedException();
+                    case Status.LoginFailedInvalidUsernamePassword:
+                        throw new LoginFailedException();
+                    case Status.LoginFailedPermissionDenied:
+                        throw new LoginFailedException();
+                    case Status.LoginFailedPermissionDeniedNoApiAccess:
+                        throw new LoginFailedException();
+                    case Status.InvalidRequestMethod:
+                        throw new InvalidRequestException();
+                    case Status.ExceededRateLimit:
+                        throw new RateLimitException();
+                    case Status.ExceededRateLimitDaily:
+                        throw new RateLimitException();
+                    case Status.ExceededSizeLimit:
+                        throw new SizeLimitException();
+                    case Status.LoginFailedPermissionDeniedLegacy:
+                        throw new LoginFailedException();
+                    case Status.LoginFailedPermissionDeniedApiDisabled:
+                        throw new LoginFailedException();
+                    case Status.TooManyRequests:
+                        throw new TooManyRequestsException();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
                 list.AddRange(aroFloObject.ZoneResponse.GetResults());
 
