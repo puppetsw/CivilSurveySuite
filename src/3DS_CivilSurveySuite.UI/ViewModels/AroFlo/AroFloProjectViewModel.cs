@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using _3DS_CivilSurveySuite.UI.Helpers;
+using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using AroFloApi;
 using MapControl;
 
@@ -9,6 +9,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 {
     public class AroFloProjectViewModel : ObservableObject
     {
+        private readonly IMessageBoxService _messageBoxService;
         private string _description;
         private string _client;
         private string _location;
@@ -54,8 +55,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 
         public ICommand FindJobCommand { get; private set; }
 
-        public AroFloProjectViewModel()
+        public AroFloProjectViewModel(IMessageBoxService messageBoxService)
         {
+            _messageBoxService = messageBoxService;
             InitCommands();
         }
 
@@ -75,6 +77,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 
                 if (project == null)
                 {
+                    _messageBoxService.ShowAlert($"Unable to find job. {ProjectNumber}");
                     return;
                 }
 

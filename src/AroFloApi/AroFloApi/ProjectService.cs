@@ -41,7 +41,12 @@ namespace AroFloApi
         public async Task<Project> GetProjectAsync(int number, CancellationToken cancellationToken = default)
         {
             var projects = await GetProjectsAsync(cancellationToken);
-            var project = projects.FirstOrDefault(p => p.ProjectNumber.Equals(number));
+            var project = projects?.FirstOrDefault(p => p.ProjectNumber.Equals(number));
+
+            if (project == null)
+            {
+                return null;
+            }
 
             var properties = typeof(Project).GetProperties();
             foreach (PropertyInfo property in properties)

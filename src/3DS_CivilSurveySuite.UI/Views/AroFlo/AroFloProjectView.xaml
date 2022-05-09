@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views.AroFlo"
         xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl"
         mc:Ignorable="d"
-        Title="AroFloProjectView" Height="450" Width="800">
+        Title="Project Search" Height="450" Width="800">
     <Window.Style>
         <Style TargetType="Window">
             <Style.Triggers>
@@ -16,7 +16,7 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Grid>
+    <Grid Margin="4,0,4,0">
         <Grid.Style>
             <Style TargetType="Grid">
                 <Style.Triggers>
@@ -51,25 +51,25 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0">
+        <StackPanel Grid.Column="0" Grid.Row="0" >
             <TextBlock Text="Job Number" />
-            <TextBox Text="{Binding ProjectNumber}" />
-            <Button Content="Find Job" Width="120" Command="{Binding FindJobCommand}" />
+            <TextBox Margin="0,8,0,0" Text="{Binding ProjectNumber}" />
+            <Button Margin="0,8,0,0" Content="Find Job" Width="120" Command="{Binding FindJobCommand}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,8,0,0">
             <TextBlock Text="Client" />
-            <TextBox Text="{Binding Client}" />
+            <TextBox Margin="0,8,0,0" Text="{Binding Client}" />
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="2">
+        <StackPanel Grid.Column="0" Grid.Row="2" Margin="0,8,0,0">
             <TextBlock Text="Location" />
-            <TextBox Text="{Binding Location}"/>
+            <TextBox Margin="0,8,0,0" Text="{Binding Location}"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="3">
+        <StackPanel Grid.Column="0" Grid.Row="3" Margin="0,8,0,0">
             <TextBlock Text="Description" />
-            <TextBox Height="150" IsReadOnly="True" Text="{Binding Description}" TextWrapping="Wrap" />
+            <TextBox Margin="0,8,0,0" Height="150" IsReadOnly="True" Text="{Binding Description}" TextWrapping="Wrap" />
         </StackPanel>
 
         <mapControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Path=Position, Mode=TwoWay}"/>
