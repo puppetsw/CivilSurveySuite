@@ -49,7 +49,15 @@
     <Compile Include="AroFloController.cs" />
     <Compile Include="AroFloObject.cs" />
     <Compile Include="AroFloResponse.cs" />
+    <Compile Include="Exceptions\TooManyRequestsException.cs" />
+    <Compile Include="Exceptions\SizeLimitException.cs" />
+    <Compile Include="Exceptions\RateLimitException.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Exceptions\InvalidRequestException.cs" />
+    <Compile Include="Exceptions\LoginFailedException.cs" />
+    <Compile Include="Exceptions\AuthenticationException.cs" />
+    <Compile Include="Fields.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="ILocationService.cs" />
     <Compile Include="IProjectService.cs" />
