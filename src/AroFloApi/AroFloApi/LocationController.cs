@@ -6,7 +6,7 @@ using AroFloApi.Responses;
 
 namespace AroFloApi
 {
-    public class LocationService
+    public class LocationController
     {
         public async Task<Location> GetLocationAsync(string locationId, CancellationToken cancellationToken = default)
         {

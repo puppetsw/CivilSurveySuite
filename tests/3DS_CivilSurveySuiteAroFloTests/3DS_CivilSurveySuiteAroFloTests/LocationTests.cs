@@ -19,7 +19,7 @@ namespace _3DS_CivilSurveySuiteAroFloTests
         [Test]
         public async Task GetLocationTest()
         {
-            var locationService = new LocationService();
+            var locationService = new LocationController();
             var location = await locationService.GetLocationAsync("JSYqKyBSXFggCg==").ConfigureAwait(false);
             Assert.AreEqual(-34.7293199477, location.Latitude);
             Assert.AreEqual(138.580861384, location.Longitude);
