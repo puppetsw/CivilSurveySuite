@@ -12,6 +12,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class Commands
     {
+        // DEBUG
+        [CommandMethod("3DS", "_3DSShowDebug", CommandFlags.Modal)]
+        public static void ShowDebug()
+        {
+            AcadApp.Logger.ShowLog();
+        }
+
         // Points
         [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public static void PtProdDist()

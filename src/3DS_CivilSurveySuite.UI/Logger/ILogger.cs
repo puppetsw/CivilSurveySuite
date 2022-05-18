@@ -13,5 +13,6 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         void Error(string error, [CallerMemberName] string caller = "");
         void Error(Exception ex, string error = "", [CallerMemberName] string caller = "");
         void UnhandledError(Exception ex, string error = "", [CallerMemberName] string caller = "");
+        void ShowLog();
     }
 }

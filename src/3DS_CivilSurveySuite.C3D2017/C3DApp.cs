@@ -43,6 +43,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         public void Initialize()
         {
             AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
+            AcadApp.Logger.Info($"{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
 
             try
             {
@@ -51,6 +52,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
             catch (InvalidOperationException e)
             {
                 AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_LoadingError")} {e.Message}");
+                AcadApp.Logger.Error(e, ResourceHelpers.GetLocalisedString("C3D_LoadingError"));
             }
 
             //HACK: Removed because of coreconsole tests
@@ -97,16 +99,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
             Container.Register<CogoPointReplaceDuplicateViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
+            AcadApp.Logger.Info("Civil3D Services registered successfully.");
         }
 
         public static bool? ShowDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
+            AcadApp.Logger.Info($"Creating instance of {typeof(TView)}");
             return Application.ShowModalWindow(view);
         }
 
         private static Window CreateWindow<TView>() where TView : Window
         {
+            AcadApp.Logger.Info($"Creating instance of {typeof(TView)}");
             return Container.GetInstance<TView>();
         }
 
