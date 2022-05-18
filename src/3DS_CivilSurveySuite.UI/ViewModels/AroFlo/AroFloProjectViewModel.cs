@@ -59,6 +59,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
         {
             _messageBoxService = messageBoxService;
             InitCommands();
+            AroFloSetup();
         }
 
         private void InitCommands()
@@ -66,12 +67,20 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             FindJobCommand = new AsyncRelayCommand(GetJob);
         }
 
+        private static void AroFloSetup()
+        {
+            AroFloConfiguration.SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
+            AroFloConfiguration.U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
+            AroFloConfiguration.P_ENCODE = "cTdod3FkODFlNnI0TGVk";
+            AroFloConfiguration.ORG_ENCODE = "JSc6TyBQLFAgCg==";
+        }
+
         private async Task GetJob()
         {
             try
             {
                 IsBusy = true;
-                var projectService = new ProjectService();
+                var projectService = new ProjectController();
                 var locationService = new LocationService();
                 var project = await projectService.GetProjectAsync(ProjectNumber);
 

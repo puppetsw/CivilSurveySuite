@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace AroFloApi
+namespace AroFloApi.Models
 {
     public class Location : AroFloObject
     {
