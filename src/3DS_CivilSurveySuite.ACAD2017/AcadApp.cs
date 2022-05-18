@@ -56,20 +56,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static Editor Editor => ActiveDocument.Editor;
 
-        public ILogger Logger { get; private set; }
+        // Don't use the logger as a service, need it right away.
+        public static ILogger Logger { get; } = new Logger(new LogWriter());
 
         public void Initialize()
         {
             Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
+            Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
 
             try
             {
                 RegisterServices();
-                Logger = Container.GetInstance<ILogger>();
             }
             catch (InvalidOperationException e)
             {
                 Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_LoadingError")} {e.Message}");
+                Logger.Error(e, ResourceHelpers.GetLocalisedString("ACAD_LoadingError"));
             }
 
             // HACK: Had to disable this for now because of an issue with accoreconsole tests.
@@ -84,10 +86,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private static void RegisterServices()
         {
-            // Logger
-            Container.Register<ILogWriter, LogWriter>();
-            Container.Register<ILogger, Logger>();
-
             // ACAD Services
             Container.Register<IProcessService, ProcessService>();
             Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
@@ -114,22 +112,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<TraverseAngleViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
+            Logger.Info("ACAD Services registered successfully.");
         }
 
         public static bool? ShowDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
+            Logger.Info($"Creating instance of {typeof(TView)}");
             return Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModalWindow(view);
         }
 
         public static void ShowModelessDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
+            Logger.Info($"Creating instance of {typeof(TView)}");
             Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
         }
 
         private static TView CreateWindow<TView>() where TView : Window
         {
+            Logger.Info($"Creating instance of {typeof(TView)}");
             return Container.GetInstance<TView>();
         }
 
