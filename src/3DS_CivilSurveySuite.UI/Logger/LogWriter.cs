@@ -64,12 +64,17 @@ namespace _3DS_CivilSurveySuite.UI.Logger
                     return;
                 }
 
-                byte[] buffer = Encoding.UTF8.GetBytes(text);
+                byte[] buffer = Encoding.UTF8.GetBytes("\n" + text);
                 SetFilePointer(fileHandle, 0, IntPtr.Zero, SeekOrigin.End);
                 WriteFile(fileHandle, buffer, (uint)buffer.Length, out var dBytesWritten, IntPtr.Zero);
 
                 Debug.WriteLine($"Logged event: {text}");
             }
+        }
+
+        public string GetCurrentFileName()
+        {
+            return _logFileName;
         }
     }
 }
