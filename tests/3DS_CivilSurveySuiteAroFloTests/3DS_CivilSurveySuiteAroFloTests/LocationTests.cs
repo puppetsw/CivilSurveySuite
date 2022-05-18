@@ -7,10 +7,19 @@ namespace _3DS_CivilSurveySuiteAroFloTests
     [TestFixture]
     public class LocationTests
     {
+        [SetUp]
+        public void AroFloConfiguration()
+        {
+            AroFloApi.AroFloConfiguration.SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
+            AroFloApi.AroFloConfiguration.U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
+            AroFloApi.AroFloConfiguration.P_ENCODE = "cTdod3FkODFlNnI0TGVk";
+            AroFloApi.AroFloConfiguration.ORG_ENCODE = "JSc6TyBQLFAgCg==";
+        }
+
         [Test]
         public async Task GetLocationTest()
         {
-            ILocationService locationService = new LocationService();
+            var locationService = new LocationService();
             var location = await locationService.GetLocationAsync("JSYqKyBSXFggCg==").ConfigureAwait(false);
             Assert.AreEqual(-34.7293199477, location.Latitude);
             Assert.AreEqual(138.580861384, location.Longitude);

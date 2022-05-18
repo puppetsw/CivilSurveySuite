@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace AroFloApi
+namespace AroFloApi.Enums
 {
     public enum Status
     {

@@ -1,13 +1,12 @@
 ﻿using System.Xml.Serialization;
+using AroFloApi.Enums;
+using AroFloApi.Models;
 
-namespace AroFloApi
+namespace AroFloApi.Responses
 {
-    /// <summary>AroFloResponse class</summary>
-    /// <typeparam name="TZoneResult">The type of the t zone result.</typeparam>
-    /// <typeparam name="TAroFloObject">The type of the t aro flo object.</typeparam>
     [XmlRoot("imsapi")]
     public class AroFloResponse<TZoneResult, TAroFloObject>
-        where TZoneResult : ZoneResult<TAroFloObject>
+        where TZoneResult : ZoneResponse<TAroFloObject>
         where TAroFloObject : AroFloObject
     {
         [XmlElement("status")]
