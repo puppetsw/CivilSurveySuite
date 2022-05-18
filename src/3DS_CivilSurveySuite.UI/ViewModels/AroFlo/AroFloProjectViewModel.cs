@@ -81,7 +81,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             {
                 IsBusy = true;
                 var projectService = new ProjectController();
-                var locationService = new LocationService();
+                var locationService = new LocationController();
                 var project = await projectService.GetProjectAsync(ProjectNumber);
 
                 if (project == null)
