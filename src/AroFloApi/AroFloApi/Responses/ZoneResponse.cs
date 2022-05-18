@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using AroFloApi.Enums;
+using AroFloApi.Models;
 
-namespace AroFloApi
+namespace AroFloApi.Responses
 {
-    public abstract class ZoneResult<T> where T : AroFloObject
+    public abstract class ZoneResponse<T> where T : AroFloObject
     {
         [XmlElement("maxpageresults")]
         public int MaxPageResults { get; set; }
@@ -23,7 +25,6 @@ namespace AroFloApi
         [XmlIgnore]
         public bool IsMorePages => CurrentPageResults == MaxPageResults;
 
-        public abstract IEnumerable<T> GetResults();
-
+        public abstract IEnumerable<T> GetContent();
     }
 }

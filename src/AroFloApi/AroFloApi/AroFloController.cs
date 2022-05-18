@@ -10,24 +10,32 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using AroFloApi.Enums;
 using AroFloApi.Exceptions;
 using AroFloApi.Helpers;
+using AroFloApi.Models;
+using AroFloApi.Responses;
 
 namespace AroFloApi
 {
     internal class AroFloController
     {
-        private const string AROFLO_API_URL = "https://api.aroflo.com/";
-        private const string SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
-        private const string U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
-        private const string P_ENCODE = "cTdod3FkODFlNnI0TGVk";
-        private const string ORG_ENCODE = "JSc6TyBQLFAgCg==";
+        private readonly Dictionary<Type, Zone> _zones;
 
         private int _currentPage = 1;
 
-        internal async Task<TObject> GetAroFloObject<TZone, TObject>(Fields field, string value, CancellationToken cancellationToken = default)
-            where TZone : ZoneResult<TObject>
-            where TObject : AroFloObject
+        public AroFloController()
+        {
+            _zones = new Dictionary<Type, Zone>
+            {
+                { typeof(ProjectZoneResponse), Zone.Projects },
+                { typeof(LocationZoneResponse), Zone.Locations }
+            };
+        }
+
+        internal async Task<TObjectType> GetAroFloObject<TZoneResponse, TObjectType>(Fields field, string value, CancellationToken cancellationToken = default)
+            where TZoneResponse : ZoneResponse<TObjectType>
+            where TObjectType : AroFloObject
         {
             // convert field and value into where string
             // where=and|status|=|pending& zone=Invoices&page=1
@@ -35,106 +43,42 @@ namespace AroFloApi
             // where content has to be URI encoded
             var filterString = $"where={Uri.EscapeDataString($"and|{field.GetDescription()}|=|{value}")}";
 
-            Zones zone = Zones.None;
-
-            if (typeof(TZone) == typeof(ProjectZoneResult) &&
-                typeof(TObject) == typeof(Project))
-            {
-                zone = Zones.Projects;
-            }
-            else if (typeof(TZone) == typeof(LocationZoneResult) &&
-                     typeof(TObject) == typeof(Location))
-            {
-                zone = Zones.Locations;
-            }
-
-            if (zone == Zones.None)
-            {
-                throw new InvalidOperationException("Zone was not set.");
-            }
-
             // add filter string to request.
-            string zoneRequest = $"{filterString}&zone={zone.GetDescription()}&page=";
-            var result = await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+            string zoneRequest = $"{filterString}&zone={GetZoneFromResponseType(typeof(TZoneResponse)).GetDescription()}&page=";
+            var result = await GetAroFloObjectsAsync<TZoneResponse, TObjectType>(zoneRequest, cancellationToken);
 
             // return the first only?
             return result?.FirstOrDefault();
         }
 
-        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(Fields field, string value, CancellationToken cancellationToken = default)
-            where TZone : ZoneResult<TObject>
-            where TObject : AroFloObject
+        internal async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(Fields field, string value, CancellationToken cancellationToken = default)
+            where TZoneResponse : ZoneResponse<TObjectType>
+            where TObjectType : AroFloObject
         {
             var filterString = $"where={Uri.EscapeDataString($"and|{field.GetDescription()}|=|{value}")}";
-            Zones zone = Zones.None;
-
-            if (typeof(TZone) == typeof(ProjectZoneResult) &&
-                typeof(TObject) == typeof(Project))
-            {
-                zone = Zones.Projects;
-            }
-            else if (typeof(TZone) == typeof(LocationZoneResult) &&
-                     typeof(TObject) == typeof(Location))
-            {
-                zone = Zones.Locations;
-            }
-
-            if (zone == Zones.None)
-            {
-                throw new InvalidOperationException("Zone was not set.");
-            }
 
             // add filter string to request.
-            string zoneRequest = $"{filterString}&zone={zone.GetDescription()}&page=";
-            var result = await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+            string zoneRequest = $"{filterString}&zone={GetZoneFromResponseType(typeof(TZoneResponse)).GetDescription()}&page=";
+            var result = await GetAroFloObjectsAsync<TZoneResponse, TObjectType>(zoneRequest, cancellationToken);
             return result;
         }
 
-        internal async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(CancellationToken cancellationToken = default)
-            where TZone : ZoneResult<TObject>
-            where TObject : AroFloObject
+        internal async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(CancellationToken cancellationToken = default)
+            where TZoneResponse : ZoneResponse<TObjectType>
+            where TObjectType : AroFloObject
         {
-            Zones zone = Zones.None;
-
-            if (typeof(TZone) == typeof(ProjectZoneResult) &&
-                typeof(TObject) == typeof(Project))
-            {
-                zone = Zones.Projects;
-            }
-            else if (typeof(TZone) == typeof(LocationZoneResult) &&
-                     typeof(TObject) == typeof(Location))
-            {
-                zone = Zones.Locations;
-            }
-
-            if (zone == Zones.None)
-            {
-                throw new InvalidOperationException("Zone was not set.");
-            }
-
-            string zoneRequest = $"zone={zone.GetDescription()}&page=";
-            return await GetAroFloObjectsAsync<TZone, TObject>(zoneRequest, cancellationToken);
+            string zoneRequest = $"zone={GetZoneFromResponseType(typeof(TZoneResponse)).GetDescription()}&page=";
+            return await GetAroFloObjectsAsync<TZoneResponse, TObjectType>(zoneRequest, cancellationToken);
         }
 
-        /// <summary>
-        /// Get an <see cref="AroFloObject"/> from the AroFlo API.
-        /// </summary>
-        /// <typeparam name="TZone">The <see cref="ZoneResult{T}"/> object.</typeparam>
-        /// <typeparam name="TObject">The <see cref="AroFloObject"/> associated with the TZone.</typeparam>
-        /// <param name="requestString">The request string. eg. zone=projects&page=</param>
-        /// <param name="cancellationToken">The cancellation token that can be used by other objects or threads to
-        /// receive notice of cancellation.</param>
-        /// <remarks>
-        /// Leave the page number off the request as the method will automatically get the next page of objects
-        /// if required.
-        /// </remarks>
-        /// <returns>A Task&lt;List`1&gt; representing the asynchronous operation.</returns>
-        private async Task<List<TObject>> GetAroFloObjectsAsync<TZone, TObject>(string requestString,
+        private async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(string requestString,
             CancellationToken cancellationToken = default)
-            where TZone : ZoneResult<TObject>
-            where TObject : AroFloObject
+            where TZoneResponse : ZoneResponse<TObjectType>
+            where TObjectType : AroFloObject
         {
-            var list = new List<TObject>();
+            VerifyConfiguration();
+
+            var list = new List<TObjectType>();
 
             try
             {
@@ -143,10 +87,10 @@ namespace AroFloApi
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                 // BASE URL
-                var url = new Uri($"{AROFLO_API_URL}?{requestString}{_currentPage}");
+                var url = new Uri($"{AroFloConfiguration.AROFLO_API_URL}?{requestString}{_currentPage}");
 
                 var responseData = await SendAroFloRequestAsync(url, requestString, cancellationToken);
-                var aroFloObject = await Deserialize<TZone, TObject>(responseData);
+                var aroFloObject = Deserialize<TZoneResponse, TObjectType>(responseData);
 
                 switch (aroFloObject.Status)
                 {
@@ -180,18 +124,18 @@ namespace AroFloApi
                         throw new ArgumentOutOfRangeException();
                 }
 
-                list.AddRange(aroFloObject.ZoneResponse.GetResults());
+                list.AddRange(aroFloObject.ZoneResponse.GetContent());
 
                 do
                 {
                     _currentPage++;
 
-                    url = new Uri($"{AROFLO_API_URL}?{requestString}{_currentPage}");
+                    url = new Uri($"{AroFloConfiguration.AROFLO_API_URL}?{requestString}{_currentPage}");
 
                     var nextPage = await SendAroFloRequestAsync(url, requestString, cancellationToken);
-                    aroFloObject = await Deserialize<TZone, TObject>(nextPage);
+                    aroFloObject = Deserialize<TZoneResponse, TObjectType>(nextPage);
 
-                    list.AddRange(aroFloObject.ZoneResponse.GetResults());
+                    list.AddRange(aroFloObject.ZoneResponse.GetContent());
 
                 } while (aroFloObject.ZoneResponse.IsMorePages);
             }
@@ -201,6 +145,26 @@ namespace AroFloApi
             }
 
             return list;
+        }
+
+        private Zone GetZoneFromResponseType(Type responseType)
+        {
+            return _zones[responseType];
+        }
+
+        private static void VerifyConfiguration()
+        {
+            if (string.IsNullOrEmpty(AroFloConfiguration.SECRET_KEY))
+                throw new InvalidOperationException();
+
+            if (string.IsNullOrEmpty(AroFloConfiguration.U_ENCODE))
+                throw new InvalidOperationException();
+
+            if (string.IsNullOrEmpty(AroFloConfiguration.P_ENCODE))
+                throw new InvalidOperationException();
+
+            if (string.IsNullOrEmpty(AroFloConfiguration.ORG_ENCODE))
+                throw new InvalidOperationException();
         }
 
         private async Task<string> SendAroFloRequestAsync(Uri uri, string requestString, CancellationToken cancellationToken = default)
@@ -232,16 +196,15 @@ namespace AroFloApi
             }
         }
 
-        private static Task<AroFloResponse<TZoneResult, TAroFloObject>> Deserialize<TZoneResult, TAroFloObject>(string aroFloObject)
-            where TZoneResult : ZoneResult<TAroFloObject>
-            where TAroFloObject : AroFloObject
+        private static AroFloResponse<TZoneResult, TObjectType> Deserialize<TZoneResult, TObjectType>(string aroFloObject)
+            where TZoneResult : ZoneResponse<TObjectType>
+            where TObjectType : AroFloObject
         {
-            var xml = new XmlSerializer(typeof(AroFloResponse<TZoneResult, TAroFloObject>));
+            var xml = new XmlSerializer(typeof(AroFloResponse<TZoneResult, TObjectType>));
 
             using (var reader = new StringReader(aroFloObject))
             {
-                var response = (AroFloResponse<TZoneResult, TAroFloObject>)xml.Deserialize(reader);
-                return Task.FromResult(response);
+                return (AroFloResponse<TZoneResult, TObjectType>)xml.Deserialize(reader);
             }
         }
 
@@ -255,9 +218,9 @@ namespace AroFloApi
 
             // AUTHORIZATION
             var authString = new StringBuilder();
-            authString.Append($"uencoded={Uri.EscapeDataString(U_ENCODE)}");
-            authString.Append($"&pencoded={Uri.EscapeDataString(P_ENCODE)}");
-            authString.Append($"&orgEncoded={Uri.EscapeDataString(ORG_ENCODE)}");
+            authString.Append($"uencoded={Uri.EscapeDataString(AroFloConfiguration.U_ENCODE)}");
+            authString.Append($"&pencoded={Uri.EscapeDataString(AroFloConfiguration.P_ENCODE)}");
+            authString.Append($"&orgEncoded={Uri.EscapeDataString(AroFloConfiguration.ORG_ENCODE)}");
             var authorization = authString.ToString();
 
             // Create the payload for hashing
@@ -276,7 +239,7 @@ namespace AroFloApi
             Console.WriteLine($"Header payload: {payload}");
 
             // HASH
-            var hash = GetHash(payload, SECRET_KEY);
+            var hash = GetHash(payload, AroFloConfiguration.SECRET_KEY);
 
             requestMessage.Headers.Add("Authentication", $"HMAC {hash}");
             // ADD WITHOUT VALIDATION
