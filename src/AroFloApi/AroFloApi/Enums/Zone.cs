@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel;
 
-namespace AroFloApi
+namespace AroFloApi.Enums
 {
     /// <summary>
     /// AroFlo Zones
     /// </summary>
-    internal enum Zones
+    public enum Zone
     {
-        None = 0,
         [Description("projects")]
         Projects,
+
         [Description("locations")]
         Locations
     }

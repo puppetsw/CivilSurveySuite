@@ -1,4 +1,4 @@
-﻿namespace AroFloApi
+﻿namespace AroFloApi.Models
 {
     /// <summary>
     /// Base class for AroFlo objects.
