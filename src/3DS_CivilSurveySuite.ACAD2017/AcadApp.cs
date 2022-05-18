@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Windows;
 using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.UI.Helpers;
+using _3DS_CivilSurveySuite.UI.Logger;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
 using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
@@ -55,6 +56,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static Editor Editor => ActiveDocument.Editor;
 
+        public ILogger Logger { get; private set; }
+
         public void Initialize()
         {
             Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
@@ -62,6 +65,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             try
             {
                 RegisterServices();
+                Logger = Container.GetInstance<ILogger>();
             }
             catch (InvalidOperationException e)
             {
@@ -80,6 +84,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         private static void RegisterServices()
         {
+            // Logger
+            Container.Register<ILogWriter, LogWriter>();
+            Container.Register<ILogger, Logger>();
+
             // ACAD Services
             Container.Register<IProcessService, ProcessService>();
             Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
