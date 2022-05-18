@@ -15,6 +15,8 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         public Logger(ILogWriter writer)
         {
             _writer = writer;
+            // write blank line
+            writer.WriteLineToLog(" \n");
         }
 
         public void Info(string info, [CallerMemberName] string caller = "")
@@ -34,12 +36,30 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         public void UnhandledError(Exception ex, string error = "", [CallerMemberName] string caller = "")
             => LogSync(type: "ERROR", caller: caller, message: $"{error}\n\t{ex}");
 
+        public void ShowLog()
+        {
+            var fileName = _writer.GetCurrentFileName();
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return;
+            }
+
+            // Let system choose application to start
+            Process.Start(fileName);
+
+            // Wait a little to give application time to open
+            Thread.Sleep(2000);
+        }
+
+        private static string FormatMessage(string type, string caller, string message) =>
+            $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff} | {type} | {caller} | {message}";
+
         private void LogSync(string type, string caller, string message)
         {
             _semaphoreSlim.Wait();
             try
             {
-                _writer.WriteLineToLog($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff} | {type} | {caller} | {message}");
+                _writer.WriteLineToLog(FormatMessage(type, caller, message));
             }
             catch (Exception e)
             {
@@ -56,7 +76,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
             await _semaphoreSlim.WaitAsync();
             try
             {
-                await _writer.WriteLineToLogAsync($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}|{type}|{caller}|{message}");
+                await _writer.WriteLineToLogAsync(FormatMessage(type, caller, message));
             }
             catch (IOException e) when (e.GetType() != typeof(FileNotFoundException))
             {

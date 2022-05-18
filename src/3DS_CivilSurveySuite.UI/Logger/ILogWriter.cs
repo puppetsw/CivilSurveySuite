@@ -7,5 +7,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         Task WriteLineToLogAsync(string text);
 
         void WriteLineToLog(string text);
+
+        string GetCurrentFileName();
     }
 }
