@@ -71,6 +71,10 @@
     <Compile Include="Helpers\ResourceStringHelper.cs" />
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\ILogWriter.cs" />
+    <Compile Include="Logger\Logger.cs" />
+    <Compile Include="Logger\LogWriter.cs" />
     <Compile Include="Models\Angle.cs" />
     <Compile Include="Models\AngleDistance.cs" />
     <Compile Include="Models\AngleReferenceDirection.cs" />
