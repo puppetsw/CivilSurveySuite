@@ -6,12 +6,12 @@ using AroFloApi.Responses;
 
 namespace AroFloApi
 {
-    public class LocationController
+    public static class LocationController
     {
-        public async Task<Location> GetLocationAsync(string locationId, CancellationToken cancellationToken = default)
+        public static async Task<Location> GetLocationAsync(string locationId, CancellationToken cancellationToken = default)
         {
             var aroFloController = new AroFloController();
-            return await aroFloController.GetAroFloObject<LocationZoneResponse, Location>(Fields.LocationId, locationId, cancellationToken);
+            return await aroFloController.GetAroFloObject<LocationZoneResponse, Location>(Field.LocationId, locationId, cancellationToken);
         }
     }
 }
