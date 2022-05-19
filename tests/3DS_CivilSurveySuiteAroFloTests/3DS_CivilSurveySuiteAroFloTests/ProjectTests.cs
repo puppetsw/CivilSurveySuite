@@ -12,19 +12,18 @@ namespace _3DS_CivilSurveySuiteAroFloTests
     public class ProjectTests
     {
         [SetUp]
-        public void AroFloConfiguration()
+        public void TestSetup()
         {
-            AroFloApi.AroFloConfiguration.SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
-            AroFloApi.AroFloConfiguration.U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
-            AroFloApi.AroFloConfiguration.P_ENCODE = "cTdod3FkODFlNnI0TGVk";
-            AroFloApi.AroFloConfiguration.ORG_ENCODE = "JSc6TyBQLFAgCg==";
+            AroFloConfiguration.SECRET_KEY = "RHIzTUFiUlJhSUpPenNQaFA2WHBzcGMzYXJlM1RxMCtDVW5uNkRKdnhITzI1S0krNW4vM0NZdk45SnlnNFFTaG1wcnB0WXBlRGMzNlFYeDEwVE9Wbmc9PQ==";
+            AroFloConfiguration.U_ENCODE = "PjZPQjtBSEM7RihdOjI6JDJMKlwgJiohQ0AxTVw4Klg9Jzk6NDUpWiwK";
+            AroFloConfiguration.P_ENCODE = "cTdod3FkODFlNnI0TGVk";
+            AroFloConfiguration.ORG_ENCODE = "JSc6TyBQLFAgCg==";
         }
 
         [Test]
         public async Task GetAllProjects()
         {
-            var projects = new ProjectController();
-            var p = await projects.GetProjectsAsync();
+            var p = await ProjectController.GetProjectsAsync();
 
             Assert.IsTrue(p.Count > 1);
         }
@@ -32,18 +31,16 @@ namespace _3DS_CivilSurveySuiteAroFloTests
         [Test]
         public async Task GetAllProjects_Cancel_After_1_Seconds()
         {
-            var projects = new ProjectController();
             var cancelToken = new CancellationTokenSource();
             cancelToken.CancelAfter(TimeSpan.FromMilliseconds(1));
-            var p = await projects.GetProjectsAsync(cancelToken.Token);
+            var p = await ProjectController.GetProjectsAsync(cancelToken.Token);
             Assert.IsTrue(p.Count == 0);
         }
 
         [Test]
         public async Task GetOpenProjects()
         {
-            var projects = new ProjectController();
-            var p = await projects.GetOpenProjectsAsync();
+            var p = await ProjectController.GetOpenProjectsAsync();
 
             foreach (Project project in p.Where(project => project.Status != "open"))
             {
@@ -54,8 +51,7 @@ namespace _3DS_CivilSurveySuiteAroFloTests
         [Test]
         public async Task GetClosedProjects()
         {
-            var projects = new ProjectController();
-            var p = await projects.GetClosedProjectsAsync();
+            var p = await ProjectController.GetClosedProjectsAsync();
 
             foreach (Project project in p.Where(project => project.Status != "closed"))
             {
@@ -66,10 +62,17 @@ namespace _3DS_CivilSurveySuiteAroFloTests
         [Test]
         public async Task GetProjectByNumberTest()
         {
-            var projects = new ProjectController();
-            var p = await projects.GetProjectAsync(834);
+            var p = await ProjectController.GetProjectAsync(834);
 
             Assert.AreEqual(834, p.ProjectNumber);
+        }
+
+        [Test]
+        public async Task SearchProjectsTest()
+        {
+            var p = await ProjectController.GetProjectsByProjectNameAsync("PN911 Kurralta Park");
+
+            Assert.IsTrue(p.Count > 0);
         }
     }
 }

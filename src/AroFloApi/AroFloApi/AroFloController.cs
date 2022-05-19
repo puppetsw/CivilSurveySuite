@@ -33,7 +33,7 @@ namespace AroFloApi
             };
         }
 
-        internal async Task<TObjectType> GetAroFloObject<TZoneResponse, TObjectType>(Fields field, string value, CancellationToken cancellationToken = default)
+        internal async Task<TObjectType> GetAroFloObject<TZoneResponse, TObjectType>(Field field, string value, CancellationToken cancellationToken = default)
             where TZoneResponse : ZoneResponse<TObjectType>
             where TObjectType : AroFloObject
         {
@@ -51,7 +51,7 @@ namespace AroFloApi
             return result?.FirstOrDefault();
         }
 
-        internal async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(Fields field, string value, CancellationToken cancellationToken = default)
+        internal async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(Field field, string value, CancellationToken cancellationToken = default)
             where TZoneResponse : ZoneResponse<TObjectType>
             where TObjectType : AroFloObject
         {
@@ -72,7 +72,7 @@ namespace AroFloApi
         }
 
         private async Task<List<TObjectType>> GetAroFloObjectsAsync<TZoneResponse, TObjectType>(string requestString,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default, bool firstPageOnly = false)
             where TZoneResponse : ZoneResponse<TObjectType>
             where TObjectType : AroFloObject
         {
@@ -137,7 +137,7 @@ namespace AroFloApi
 
                     list.AddRange(aroFloObject.ZoneResponse.GetContent());
 
-                } while (aroFloObject.ZoneResponse.IsMorePages);
+                } while (aroFloObject.ZoneResponse.IsMorePages && !firstPageOnly);
             }
             catch (TaskCanceledException)
             {
