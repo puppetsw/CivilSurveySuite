@@ -80,9 +80,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             try
             {
                 IsBusy = true;
-                var projectService = new ProjectController();
-                var locationService = new LocationController();
-                var project = await projectService.GetProjectAsync(ProjectNumber);
+                var project = await ProjectController.GetProjectAsync(ProjectNumber);
 
                 if (project == null)
                 {
@@ -90,7 +88,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
                     return;
                 }
 
-                var location = await locationService.GetLocationAsync(project.Location.LocationId);
+                var location = await LocationController.GetLocationAsync(project.Location.LocationId);
                 Position = new Position { Latitude = location.Latitude, Longitude = location.Longitude };
                 Location = project.Location.LocationName;
                 Client = project.Client.Name;
