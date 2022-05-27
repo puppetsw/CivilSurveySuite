@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcadApp.cs" />
+    <Compile Include="BlockUtils.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
@@ -82,6 +83,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="RasterUtils.cs" />
+    <Compile Include="Services\BlockService.cs" />
     <Compile Include="Services\MessageBoxService.cs" />
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Services\RasterImageService.cs" />
