@@ -441,5 +441,50 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 tr.Commit();
             }
         }
+
+        /// <summary>
+        /// Rounds text to the desired decimal place.
+        /// </summary>
+        public static void RoundTextDecimalPlaces()
+        {
+            if (!TrySelectText(out var objectIds))
+                return;
+
+            if (!EditorUtils.TryGetInt("\n3DS> Enter number of decimal places: ", out int decimalPlaces))
+                return;
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                foreach (ObjectId objectId in objectIds)
+                {
+                    var textEnt = tr.GetObject(objectId, OpenMode.ForRead) as Entity;
+
+                    if (textEnt == null)
+                    {
+                        throw new InvalidOperationException("textEnd was null.");
+                    }
+
+                    string text = GetText(textEnt);
+
+                    if (text.IsNumeric())
+                    {
+                        textEnt.UpgradeOpen();
+                        double mathValue = Math.Round(Convert.ToDouble(text), decimalPlaces);
+                        UpdateText(textEnt, mathValue.ToString("F" + decimalPlaces, CultureInfo.InvariantCulture));
+                        textEnt.DowngradeOpen();
+                    }
+                    else
+                    {
+                        var entExtent = textEnt.GeometricExtents;
+                        double midpointX = Math.Round((entExtent.MaxPoint.X+entExtent.MinPoint.X)/2, SystemVariables.LUPREC);
+                        double midpointY = Math.Round((entExtent.MaxPoint.Y+entExtent.MinPoint.Y)/2, SystemVariables.LUPREC);
+
+                        // ignoring text at...
+                        AcadApp.WriteMessage($"Ignoring text at X:{midpointX} Y:{midpointY}. Not a number.");
+                    }
+                }
+                tr.Commit();
+            }
+        }
     }
 }

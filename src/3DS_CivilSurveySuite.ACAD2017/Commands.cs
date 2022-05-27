@@ -221,8 +221,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             TextUtils.DivideTextByNumber();
         }
 
-
-
+        [CommandMethod("3DS", "_3DSTxtRound", CommandFlags.Modal)]
+        public static void TextRound()
+        {
+            TextUtils.RoundTextDecimalPlaces();
+        }
 
 
 
