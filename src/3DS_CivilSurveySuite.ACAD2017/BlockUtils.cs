@@ -1,0 +1,113 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using _3DS_CivilSurveySuite.UI.Models;
+using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
+
+namespace _3DS_CivilSurveySuite.ACAD2017
+{
+    public static class BlockUtils
+    {
+        public static IEnumerable<BlockReference> GetBlockReferences(this BlockTableRecord btr, OpenMode mode = OpenMode.ForRead, bool directOnly = true)
+        {
+            if (btr == null)
+            {
+                throw new ArgumentNullException(nameof(btr));
+            }
+
+            var tr = btr.Database.TransactionManager.TopTransaction;
+            if (tr == null)
+            {
+                throw new InvalidOperationException("No transaction");
+            }
+
+            var ids = btr.GetBlockReferenceIds(directOnly, true);
+            int cnt = ids.Count;
+            for (int i = 0; i < cnt; i++)
+            {
+                yield return (BlockReference)tr.GetObject(ids[i], mode, false, false);
+            }
+
+            if (btr.IsDynamicBlock)
+            {
+                var blockIds = btr.GetAnonymousBlockIds();
+                cnt = blockIds.Count;
+                for (int i = 0; i < cnt; i++)
+                {
+                    var btr2 = (BlockTableRecord)tr.GetObject(blockIds[i], OpenMode.ForRead, false, false);
+                    ids = btr2.GetBlockReferenceIds(directOnly, true);
+                    int cnt2 = ids.Count;
+                    for (int j = 0; j < cnt2; j++)
+                    {
+                        yield return (BlockReference)tr.GetObject(ids[j], mode, false, false);
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<AcadBlock> GetBlocks()
+        {
+            var list = new List<AcadBlock>();
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var bt = (BlockTable)tr.GetObject(AcadApp.ActiveDatabase.BlockTableId, OpenMode.ForRead);
+
+                foreach (ObjectId objectId in bt)
+                {
+                    var btr = (BlockTableRecord)objectId.GetObject(OpenMode.ForRead);
+
+                    if (btr.IsLayout)
+                    {
+                        continue;
+                    }
+
+                    var attributes = GetBlockAttributeTags(btr.Name);
+                    list.Add(new AcadBlock
+                    {
+                        ObjectId = objectId.ToString(),
+                        Name = btr.Name,
+                        Attributes = new ObservableCollection<AcadBlockAttribute>(attributes)
+                    });
+                }
+
+
+                tr.Commit();
+            }
+
+            return list;
+        }
+
+        public static AcadBlock GetBlockByName(string blockName)
+        {
+            throw new NotSupportedException();
+        }
+
+        private static IEnumerable<AcadBlockAttribute> GetBlockAttributeTags(string blockName)
+        {
+            var result = new List<AcadBlockAttribute>();
+            var db = HostApplicationServices.WorkingDatabase;
+            var attDefClass = RXObject.GetClass(typeof(AttributeDefinition));
+
+            using (var tr = new OpenCloseTransaction())
+            {
+                var bt = (BlockTable)tr.GetObject(db.BlockTableId, OpenMode.ForRead);
+                var btr = (BlockTableRecord)tr.GetObject(bt[blockName], OpenMode.ForRead);
+
+                if (btr.HasAttributeDefinitions)
+                {
+                    foreach (ObjectId id in btr)
+                    {
+                        if (id.ObjectClass == attDefClass)
+                        {
+                            var attDef = (AttributeDefinition)tr.GetObject(id, OpenMode.ForRead);
+                            result.Add(new AcadBlockAttribute { Tag = attDef.Tag });
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+    }
+}

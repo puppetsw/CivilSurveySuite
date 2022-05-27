@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Windows.Documents;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.Runtime;
@@ -17,6 +18,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public static void ShowDebug()
         {
             AcadApp.Logger.ShowLog();
+        }
+
+        [CommandMethod("3DS", "_3DSGetBlock", CommandFlags.Modal)]
+        public static void Test()
+        {
+            var blocks = BlockUtils.GetBlocks();
+            //var blockAttributes = BlockUtils.GetBlockAttributeTags("3DS_TitleBlock_A3_Portrait");
+        }
+
+        [CommandMethod("3DS", "_3DSFillBlock", CommandFlags.Modal)]
+        public static void Test2()
+        {
+            AcadApp.ShowDialog<AroFloToBlockView>();
         }
 
         // Points
