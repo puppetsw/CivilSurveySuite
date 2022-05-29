@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcadApp.cs" />
+    <Compile Include="AroFloUtils.cs" />
     <Compile Include="BlockUtils.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
@@ -108,6 +109,10 @@
     <ProjectReference Include="..\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj">
       <Project>{0431e86d-1a04-4f76-8afc-193f84fa7965}</Project>
       <Name>3DS_CivilSurveySuite.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AroFloApi\AroFloApi\AroFloApi.csproj">
+      <Project>{75b56ed2-46df-49b9-aea7-5f355ac52dfe}</Project>
+      <Name>AroFloApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
