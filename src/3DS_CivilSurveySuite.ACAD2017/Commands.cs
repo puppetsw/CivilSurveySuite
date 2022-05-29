@@ -19,6 +19,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Logger.ShowLog();
         }
 
+        // UNDONE: Still being worked on. Back burner for now.
+        // [CommandMethod("3DS", "_3DSShowFillBlock", CommandFlags.Modal)]
+        // public static void ShowFillBlockForm()
+        // {
+        //     AcadApp.ShowDialog<AroFloToBlockView>();
+        // }
+
+        #region Point Commands
         // Points
         [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public static void PtProdDist()
@@ -91,9 +99,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PointUtils.Create_At_Distance_Between_Points(PointUtils.CreatePoint);
         }
+        #endregion
 
-
-
+        #region Line Commands
 
         // Lines
         [CommandMethod("3DS", "_3DSLnDrawLeg", CommandFlags.Modal)]
@@ -107,10 +115,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PolylineUtils.MidPointBetweenPolylines(PointUtils.CreatePoint);
         }
+        #endregion
 
-
-
+        #region Utilities
         // Utils
+        [CommandMethod("3DS", "_3DSFillTitleBlock", CommandFlags.Modal)]
+        public static void ProjectDetailsTitleBlock()
+        {
+            AroFloUtils.ProjectDetailsTo3DSTitleBlock();
+        }
+
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]
         public static void Inverse()
         {
@@ -146,11 +160,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSInsertRaster", CommandFlags.Modal)]
         public static void InsertRasterImg()
         {
-            // RasterUtils.AttachRasterImage("D:\\Dropbox (3D Surveys)\\3D Surveys - PMS\\++ Contours Checkout\\01. Fieldwork Completed\\P210398 CFA Glen Osmond - Booked 3-12-21\\PHOTOS\\Photo 3-12-21, 2 57 30 pm.jpg", Point3d.Origin);
             AcadApp.ShowDialog<ImageManagerView>();
         }
-
-
 
 
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
@@ -158,7 +169,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             TraverseUtils.Traverse();
         }
+        #endregion
 
+        #region Text Commands
 
         // Text commands
         [CommandMethod("3DS", "_3DSTxtUpper", CommandFlags.Modal)]
@@ -220,16 +233,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             TextUtils.DivideTextByNumber();
         }
-
+      
         [CommandMethod("3DS", "_3DSTxtRound", CommandFlags.Modal)]
         public static void TextRound()
         {
             TextUtils.RoundTextDecimalPlaces();
         }
 
+        #endregion
 
+        #region Palettes/Windows
 
-        // Palettes/Windows
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public void ShowAngleCalculator()
         {
@@ -254,5 +268,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.ShowDialog<AroFloProjectView>();
         }
 
+        #endregion
     }
 }

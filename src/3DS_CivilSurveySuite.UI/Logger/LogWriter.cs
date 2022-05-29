@@ -68,7 +68,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
                 SetFilePointer(fileHandle, 0, IntPtr.Zero, SeekOrigin.End);
                 WriteFile(fileHandle, buffer, (uint)buffer.Length, out var dBytesWritten, IntPtr.Zero);
 
-                Debug.WriteLine($"Logged event: {text}");
+                //Debug.WriteLine($"Logged event: {text}");
             }
         }
 
