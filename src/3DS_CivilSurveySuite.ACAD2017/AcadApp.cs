@@ -91,6 +91,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
             Container.Register<IMessageBoxService, MessageBoxService>();
             Container.Register<IRasterImageService, RasterImageService>();
+            Container.Register<IBlockService, BlockService>();
 
             // Dialog Services
             Container.Register<IOpenFileDialogService, OpenFileDialogService>();
@@ -103,6 +104,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<ImageManagerView>();
             Container.Register<TraverseAngleView>();
             Container.Register<TraverseView>();
+            Container.Register<AroFloToBlockView>();
 
             // ViewModels
             Container.Register<AngleCalculatorViewModel>();
@@ -110,6 +112,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Container.Register<ImageManagerViewModel>();
             Container.Register<TraverseViewModel>();
             Container.Register<TraverseAngleViewModel>();
+            Container.Register<AroFloToBlockViewModel>();
 
             Container.Verify(VerificationOption.VerifyAndDiagnose);
             Logger.Info("ACAD Services registered successfully.");

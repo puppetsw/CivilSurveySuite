@@ -36,7 +36,7 @@ namespace _3DS_CivilSurveySuite.UI
 
     public class RelayCommand : RelayCommand<object>
     {
-        public RelayCommand(Action execute) : this(execute, null)
+        public RelayCommand(Action execute) : this(execute, () => true)
         {
         }
 
