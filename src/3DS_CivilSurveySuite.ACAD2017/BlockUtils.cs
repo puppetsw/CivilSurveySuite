@@ -84,6 +84,74 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             throw new NotSupportedException();
         }
 
+        public static string GetBlockName(Transaction tr, ObjectId blockId)
+        {
+            BlockReference blockRef = (BlockReference)tr.GetObject(blockId, OpenMode.ForRead);
+            BlockTableRecord block;
+
+            if (blockRef.IsDynamicBlock)
+            {
+                //get the real dynamic block name.
+                block = tr.GetObject(blockRef.DynamicBlockTableRecord, OpenMode.ForRead) as BlockTableRecord;
+            }
+            else
+            {
+                block = tr.GetObject(blockRef.BlockTableRecord, OpenMode.ForRead) as BlockTableRecord;
+            }
+
+            return block != null ? block.Name : string.Empty;
+        }
+
+        public static string GetBlockName(Transaction tr, BlockReference blockRef)
+        {
+            BlockTableRecord block;
+
+            if (blockRef.IsDynamicBlock)
+            {
+                //get the real dynamic block name.
+                block = tr.GetObject(blockRef.DynamicBlockTableRecord, OpenMode.ForRead) as BlockTableRecord;
+            }
+            else
+            {
+                block = tr.GetObject(blockRef.BlockTableRecord, OpenMode.ForRead) as BlockTableRecord;
+            }
+
+            return block != null ? block.Name : string.Empty;
+        }
+
+        public static bool TryUpdateBlockAttribute(Transaction tr, ObjectId blockId, string attributeName, string attributeValue)
+        {
+            BlockReference blockRef = (BlockReference)tr.GetObject(blockId, OpenMode.ForRead);
+            BlockTableRecord block = (BlockTableRecord)tr.GetObject(blockRef.BlockTableRecord, OpenMode.ForRead);
+
+            if (!block.HasAttributeDefinitions)
+            {
+                return false;
+            }
+
+            foreach (ObjectId id in blockRef.AttributeCollection)
+            {
+                DBObject obj = tr.GetObject(id, OpenMode.ForRead);
+                var ar = obj as AttributeReference;
+
+                if (ar == null)
+                {
+                    continue;
+                }
+
+                if (ar.Tag != attributeName)
+                {
+                    continue;
+                }
+
+                ar.UpgradeOpen();
+                ar.TextString = attributeValue;
+                ar.DowngradeOpen();
+                return true;
+            }
+
+            return false;
+        }
         private static IEnumerable<AcadBlockAttribute> GetBlockAttributeTags(string blockName)
         {
             var result = new List<AcadBlockAttribute>();

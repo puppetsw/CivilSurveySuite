@@ -3,7 +3,6 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System.Windows.Documents;
 using _3DS_CivilSurveySuite.UI.Views;
 using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.Runtime;
@@ -20,19 +19,19 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Logger.ShowLog();
         }
 
-        [CommandMethod("3DS", "_3DSGetBlock", CommandFlags.Modal)]
-        public static void Test()
-        {
-            var blocks = BlockUtils.GetBlocks();
-            //var blockAttributes = BlockUtils.GetBlockAttributeTags("3DS_TitleBlock_A3_Portrait");
-        }
-
-        [CommandMethod("3DS", "_3DSFillBlock", CommandFlags.Modal)]
+        [CommandMethod("3DS", "_3DSShowFillBlock", CommandFlags.Modal)]
         public static void Test2()
         {
             AcadApp.ShowDialog<AroFloToBlockView>();
         }
 
+        [CommandMethod("3DS", "_3DSFillTitleBlock", CommandFlags.Modal)]
+        public static void Test3()
+        {
+            AroFloUtils.ProjectDetailsTo3DSTitleBlock();
+        }
+
+        #region Point Commands
         // Points
         [CommandMethod("3DS", "_3DSPtProdDist", CommandFlags.Modal)]
         public static void PtProdDist()
@@ -105,9 +104,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PointUtils.Create_At_Distance_Between_Points(PointUtils.CreatePoint);
         }
+        #endregion
 
-
-
+        #region Line Commands
 
         // Lines
         [CommandMethod("3DS", "_3DSLnDrawLeg", CommandFlags.Modal)]
@@ -121,9 +120,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             PolylineUtils.MidPointBetweenPolylines(PointUtils.CreatePoint);
         }
+        #endregion
 
-
-
+        #region Utilities
         // Utils
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]
         public static void Inverse()
@@ -160,11 +159,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSInsertRaster", CommandFlags.Modal)]
         public static void InsertRasterImg()
         {
-            // RasterUtils.AttachRasterImage("D:\\Dropbox (3D Surveys)\\3D Surveys - PMS\\++ Contours Checkout\\01. Fieldwork Completed\\P210398 CFA Glen Osmond - Booked 3-12-21\\PHOTOS\\Photo 3-12-21, 2 57 30 pm.jpg", Point3d.Origin);
             AcadApp.ShowDialog<ImageManagerView>();
         }
-
-
 
 
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
@@ -172,7 +168,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             TraverseUtils.Traverse();
         }
+        #endregion
 
+        #region Text Commands
 
         // Text commands
         [CommandMethod("3DS", "_3DSTxtUpper", CommandFlags.Modal)]
@@ -235,10 +233,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             TextUtils.DivideTextByNumber();
         }
 
+        #endregion
 
-
-
-
+        #region Palettes/Windows
 
         // Palettes/Windows
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
@@ -265,5 +262,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.ShowDialog<AroFloProjectView>();
         }
 
+        #endregion
     }
 }
