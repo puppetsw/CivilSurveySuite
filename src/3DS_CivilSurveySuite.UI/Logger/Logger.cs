@@ -52,7 +52,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         }
 
         private static string FormatMessage(string type, string caller, string message) =>
-            $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff} | {type} | {caller} | {message}";
+            $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.ffff}] [{type}] [{caller}] [{message}]";
 
         private void LogSync(string type, string caller, string message)
         {
