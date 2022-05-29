@@ -19,17 +19,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Logger.ShowLog();
         }
 
-        [CommandMethod("3DS", "_3DSShowFillBlock", CommandFlags.Modal)]
-        public static void Test2()
-        {
-            AcadApp.ShowDialog<AroFloToBlockView>();
-        }
-
-        [CommandMethod("3DS", "_3DSFillTitleBlock", CommandFlags.Modal)]
-        public static void Test3()
-        {
-            AroFloUtils.ProjectDetailsTo3DSTitleBlock();
-        }
+        // UNDONE: Still being worked on. Back burner for now.
+        // [CommandMethod("3DS", "_3DSShowFillBlock", CommandFlags.Modal)]
+        // public static void ShowFillBlockForm()
+        // {
+        //     AcadApp.ShowDialog<AroFloToBlockView>();
+        // }
 
         #region Point Commands
         // Points
@@ -124,6 +119,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         #region Utilities
         // Utils
+        [CommandMethod("3DS", "_3DSFillTitleBlock", CommandFlags.Modal)]
+        public static void ProjectDetailsTitleBlock()
+        {
+            AroFloUtils.ProjectDetailsTo3DSTitleBlock();
+        }
+
         [CommandMethod("3DS", "_3DSInverse", CommandFlags.Modal)]
         public static void Inverse()
         {
