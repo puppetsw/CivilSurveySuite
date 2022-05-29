@@ -15,8 +15,6 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         public Logger(ILogWriter writer)
         {
             _writer = writer;
-            // write blank line
-            writer.WriteLineToLog(" \n");
         }
 
         public void Info(string info, [CallerMemberName] string caller = "")
