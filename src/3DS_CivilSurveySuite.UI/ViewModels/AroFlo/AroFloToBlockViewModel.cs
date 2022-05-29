@@ -8,6 +8,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
     public class AroFloToBlockViewModel : ObservableObject
     {
         private readonly IBlockService _blockService;
+        private readonly IMessageBoxService _messageBoxService;
         private ObservableCollection<AcadBlock> _blocks;
         private string _projectNumberTag;
         private string _addressTag;
@@ -48,9 +49,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
         public ICommand LoadBlocksCommand { get; private set; }
 
         public ICommand OkCommand { get; private set; }
-        public AroFloToBlockViewModel(IBlockService blockService)
+
+        public AroFloToBlockViewModel(IBlockService blockService, IMessageBoxService messageBoxService)
         {
             _blockService = blockService;
+            _messageBoxService = messageBoxService;
 
             InitCommands();
         }

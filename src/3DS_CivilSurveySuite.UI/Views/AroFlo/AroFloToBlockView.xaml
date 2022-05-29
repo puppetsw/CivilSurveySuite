@@ -7,8 +7,8 @@
     xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views.AroFlo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="AroFloToBlockView"
-    Width="800"
-    Height="450"
+    Width="600"
+    Height="350"
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -26,9 +26,10 @@
             <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.LoadBlocksCommand}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
-    <Grid>
+    <Grid Margin="8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -40,7 +41,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="1">
+        <GridSplitter
+            Grid.RowSpan="6"
+            Grid.Column="1"
+            HorizontalAlignment="Stretch" />
+
+        <StackPanel Grid.Row="0" Grid.Column="2">
             <Label Content="Block:" />
             <ComboBox
                 DisplayMemberPath="Name"
@@ -63,7 +69,7 @@
             </Grid>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel Grid.Row="1" Grid.Column="2">
             <Label Content="Tag:" />
             <ComboBox
                 DisplayMemberPath="Tag"
@@ -76,7 +82,7 @@
             <TextBox />
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="1">
+        <StackPanel Grid.Row="2" Grid.Column="2">
             <Label Content="Tag:" />
             <ComboBox
                 DisplayMemberPath="Tag"
@@ -104,7 +110,7 @@
             </StackPanel>
         </Grid>
 
-        <StackPanel Grid.Row="3" Grid.Column="1">
+        <StackPanel Grid.Row="3" Grid.Column="2">
             <Label Content="Tag:" />
             <ComboBox
                 DisplayMemberPath="Tag"
@@ -112,12 +118,25 @@
                 SelectedItem="{Binding SuburbStatePostcodeTag}" />
         </StackPanel>
 
-        <Button
+        <StackPanel
             Grid.Row="5"
             Grid.Column="0"
-            Width="100"
-            Height="25"
-            Content="OK" />
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5"
+                Content="OK" />
+
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5"
+                Content="Cancel" />
+        </StackPanel>
 
     </Grid>
 </Window>
