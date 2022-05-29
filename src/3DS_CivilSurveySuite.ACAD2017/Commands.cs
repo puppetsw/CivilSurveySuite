@@ -233,12 +233,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             TextUtils.DivideTextByNumber();
         }
+      
+        [CommandMethod("3DS", "_3DSTxtRound", CommandFlags.Modal)]
+        public static void TextRound()
+        {
+            TextUtils.RoundTextDecimalPlaces();
+        }
 
         #endregion
 
         #region Palettes/Windows
 
-        // Palettes/Windows
         [CommandMethod("3DS", "_3DSShowAngleCalculator", CommandFlags.Modal)]
         public void ShowAngleCalculator()
         {
