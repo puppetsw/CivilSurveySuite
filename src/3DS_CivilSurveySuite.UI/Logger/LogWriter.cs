@@ -18,7 +18,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         private readonly string _logFileName;
         private const string LogName = "debug.log";
 
-        [DllImport("kernel32.dll", SetLastError = true, CharSet=CharSet.Auto)]
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern SafeFileHandle CreateFile(string lpFileName, uint dwDesiredAccess, FileShare dwShareMode,
             [Optional] IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes,
             [Optional] IntPtr hTemplateFile);
@@ -45,14 +45,13 @@ namespace _3DS_CivilSurveySuite.UI.Logger
         public async Task WriteLineToLogAsync(string text)
         {
             await Task.Run(() => WriteLineToLog(text));
-            Debug.WriteLine($"Logged event: {text}");
         }
 
         public void WriteLineToLog(string text)
         {
             if (string.IsNullOrEmpty(_logFileName))
             {
-                throw new ArgumentNullException(nameof(_logFileName), "Log file was null or empty.");
+                throw new ArgumentNullException(nameof(_logFileName), @"Log file was null or empty.");
             }
 
             using (SafeFileHandle fileHandle = CreateFile(_logFileName, GENERIC_WRITE, FileShare.Read, IntPtr.Zero,
@@ -68,7 +67,7 @@ namespace _3DS_CivilSurveySuite.UI.Logger
                 SetFilePointer(fileHandle, 0, IntPtr.Zero, SeekOrigin.End);
                 WriteFile(fileHandle, buffer, (uint)buffer.Length, out var dBytesWritten, IntPtr.Zero);
 
-                //Debug.WriteLine($"Logged event: {text}");
+                Debug.WriteLine($"Logged event: {text}");
             }
         }
 
