@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.Views.AroFlo"
-        xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl"
+        xmlns:userControl="clr-namespace:_3DS_CivilSurveySuite.UI.UserControl"
         mc:Ignorable="d"
         Title="Project Search" Height="450" Width="800">
     <Window.Style>
@@ -72,7 +72,7 @@
             <TextBox Margin="0,8,0,0" Height="150" IsReadOnly="True" Text="{Binding Description}" TextWrapping="Wrap" />
         </StackPanel>
 
-        <mapControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Path=Position, Mode=TwoWay}"/>
+        <userControl:BingMapControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="10" x:Name="MainMap" Position="{Binding Path=Position, Mode=TwoWay}"/>
 
     </Grid>
 </Window>

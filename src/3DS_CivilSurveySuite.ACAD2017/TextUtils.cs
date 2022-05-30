@@ -5,7 +5,7 @@
 
 using System;
 using System.Globalization;
-using _3DS_CivilSurveySuite.UI.Helpers;
+using _3DS_CivilSurveySuite.Shared.Helpers;
 using Autodesk.AutoCAD.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.ACAD2017

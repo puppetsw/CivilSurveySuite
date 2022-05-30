@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
-using AroFloApi.Enums;
 using AroFloApi.Models;
 
 namespace AroFloApi.Responses

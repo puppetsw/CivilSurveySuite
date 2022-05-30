@@ -1,4 +1,4 @@
-﻿using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+﻿using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;

@@ -1,4 +1,4 @@
-﻿using _3DS_CivilSurveySuite.UI.Models;
+﻿using _3DS_CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests

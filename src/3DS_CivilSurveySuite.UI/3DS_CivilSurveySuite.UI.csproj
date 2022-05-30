@@ -62,45 +62,13 @@
     <Compile Include="Converters\VisibilityToBoolean.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
-    <Compile Include="Helpers\AngleHelpers.cs" />
-    <Compile Include="Helpers\DataTableHelpers.cs" />
-    <Compile Include="Helpers\FileHelpers.cs" />
-    <Compile Include="Helpers\MathHelpers.cs" />
-    <Compile Include="Helpers\PointHelpers.cs" />
     <Compile Include="Helpers\ResourceHelpers.cs" />
     <Compile Include="Helpers\ResourceStringHelper.cs" />
-    <Compile Include="Helpers\StringHelpers.cs" />
-    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\ILogWriter.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\LogWriter.cs" />
-    <Compile Include="Models\AcadBlock.cs" />
-    <Compile Include="Models\Angle.cs" />
-    <Compile Include="Models\AngleDistance.cs" />
-    <Compile Include="Models\AngleReferenceDirection.cs" />
-    <Compile Include="Models\AngleRotationDirection.cs" />
-    <Compile Include="Models\Bounds.cs" />
-    <Compile Include="Models\CivilAlignment.cs" />
-    <Compile Include="Models\CivilObject.cs" />
-    <Compile Include="Models\CivilPoint.cs" />
-    <Compile Include="Models\CivilPointGroup.cs" />
-    <Compile Include="Models\CivilProfile.cs" />
-    <Compile Include="Models\CivilSite.cs" />
-    <Compile Include="Models\CivilSurface.cs" />
-    <Compile Include="Models\ColumnHeader.cs" />
-    <Compile Include="Models\ColumnType.cs" />
-    <Compile Include="Models\DescriptionKey.cs" />
-    <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="Models\ImageData.cs" />
-    <Compile Include="Models\Point.cs" />
-    <Compile Include="Models\ReportOptions.cs" />
-    <Compile Include="Models\ReportProperties.cs" />
-    <Compile Include="Models\SortColumnHeader.cs" />
-    <Compile Include="Models\StationOffset.cs" />
-    <Compile Include="Models\TraverseAngleObject.cs" />
-    <Compile Include="Models\TraverseObject.cs" />
-    <Compile Include="Models\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,26 +79,15 @@
     </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Services\Implementation\FolderBrowserDialogService.cs" />
-    <Compile Include="Models\DelimiterType.cs" />
-    <Compile Include="Services\Interfaces\IBlockService.cs" />
-    <Compile Include="Services\Interfaces\ICogoPointReplaceDuplicateService.cs" />
-    <Compile Include="Services\Interfaces\IConnectLineworkService.cs" />
-    <Compile Include="Services\Interfaces\IDialogService.cs" />
-    <Compile Include="Services\Interfaces\IFolderBrowserDialogService.cs" />
-    <Compile Include="Services\Interfaces\IMessageBoxService.cs" />
-    <Compile Include="Services\Interfaces\ICivilSelectService.cs" />
-    <Compile Include="Services\Interfaces\ICogoPointService.cs" />
-    <Compile Include="Services\Interfaces\IOpenFileDialogService.cs" />
-    <Compile Include="Services\Interfaces\IRasterImageService.cs" />
-    <Compile Include="Services\Interfaces\ISaveFileDialogService.cs" />
-    <Compile Include="Services\Interfaces\IProcessService.cs" />
-    <Compile Include="Services\Interfaces\ITraverseService.cs" />
     <Compile Include="Services\Implementation\OpenFileDialogService.cs" />
     <Compile Include="Services\Implementation\SaveFileDialogService.cs" />
     <Compile Include="Strings\ResourceStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BingMapControl.xaml.cs">
+      <DependentUpon>BingMapControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControl\SortControl.xaml.cs">
       <DependentUpon>SortControl.xaml</DependentUpon>
@@ -147,15 +104,12 @@
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
     <Compile Include="ViewModels\CogoPointSurfaceReportViewModel.cs" />
     <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
-    <Compile Include="Services\Interfaces\ICogoPointSurfaceReportService.cs" />
     <Compile Include="ViewModels\ImageManagerViewModel.cs" />
     <Compile Include="ViewModels\SelectAlignmentViewModel.cs" />
     <Compile Include="ViewModels\SelectPointGroupViewModel.cs" />
     <Compile Include="ViewModels\SelectSurfaceViewModel.cs" />
-    <Compile Include="Models\SortDirection.cs" />
     <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
-    <Compile Include="ObservableObject.cs" />
     <Compile Include="ViewState.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
@@ -300,6 +254,10 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UserControl\BingMapControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControl\SortControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -379,6 +337,9 @@
     <Resource Include="Resources\Icons\Alignment.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Maps.MapControl.WPF">
+      <Version>1.0.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
       <Version>1.1.31</Version>
     </PackageReference>
@@ -391,13 +352,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Shared\3DS_CivilSurveySuite.Shared.csproj">
+      <Project>{0a9643c4-a65b-4d1c-820a-bec5a3b1a8f7}</Project>
+      <Name>3DS_CivilSurveySuite.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AroFloApi\AroFloApi\AroFloApi.csproj">
       <Project>{75b56ed2-46df-49b9-aea7-5f355ac52dfe}</Project>
       <Name>AroFloApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MapControl\MapControl\MapControl.csproj">
-      <Project>{9059bceb-976d-4fc7-af8e-d15eda6b9f31}</Project>
-      <Name>MapControl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
