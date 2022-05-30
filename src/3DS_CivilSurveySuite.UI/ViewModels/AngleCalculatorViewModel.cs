@@ -5,7 +5,7 @@
 
 using System.Diagnostics;
 using System.Globalization;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Models;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {

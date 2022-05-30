@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests

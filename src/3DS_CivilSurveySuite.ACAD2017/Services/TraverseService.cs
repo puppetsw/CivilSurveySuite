@@ -5,13 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
-using Point = _3DS_CivilSurveySuite.UI.Models.Point;
+using Point = _3DS_CivilSurveySuite.Shared.Models.Point;
 
 namespace _3DS_CivilSurveySuite.ACAD2017.Services
 {
