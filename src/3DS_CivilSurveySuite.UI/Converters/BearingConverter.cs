@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 
 namespace _3DS_CivilSurveySuite.UI.Converters
 {

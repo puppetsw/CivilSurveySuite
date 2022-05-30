@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using _3DS_CivilSurveySuite.Shared.Models;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using AroFloApi;
-using MapControl;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 {
@@ -13,7 +13,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
         private string _description;
         private string _client;
         private string _location;
-        private Position _position;
+        private GpsPosition _position;
         private int _projectNumber;
         private bool _isBusy;
 
@@ -35,7 +35,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
             set => SetProperty(ref _location, value);
         }
 
-        public Position Position
+        public GpsPosition Position
         {
             get => _position;
             set => SetProperty(ref _position, value);
@@ -89,7 +89,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
                 }
 
                 var location = await LocationController.GetLocationAsync(project.Location.LocationId);
-                Position = new Position { Latitude = location.Latitude, Longitude = location.Longitude };
+                Position = new GpsPosition { Latitude = location.Latitude, Longitude = location.Longitude };
                 Location = project.Location.LocationName;
                 Client = project.Client.Name;
                 Description = project.Description;

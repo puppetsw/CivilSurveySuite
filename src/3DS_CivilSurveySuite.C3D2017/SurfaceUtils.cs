@@ -8,14 +8,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
+using Point = _3DS_CivilSurveySuite.Shared.Models.Point;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -430,7 +431,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
 
-            if (PointHelpers.GetDistanceBetweenPoints(new UI.Models.Point(x, y), calculatedPoint.ToPoint()) > maxInterpolateDistance)
+            if (PointHelpers.GetDistanceBetweenPoints(new Point(x, y), calculatedPoint.ToPoint()) > maxInterpolateDistance)
             {
                 return 0;
             }

@@ -9,8 +9,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
@@ -362,7 +362,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
                     if (cogoPoint == null)
                         throw new InvalidOperationException("cogoPoint was null.");
 
-                    // There seems to be a bug with setting the label location of a dragged label.
+                    // There seems to be an issue with setting the label location of a dragged label.
                     // So we reset the label first, before we change it and use the deltaX and deltaY
                     // to calculate the offset back to the point below the first text.
                     cogoPoint.ResetLabelLocation();

@@ -90,6 +90,10 @@
       <Project>{27174b74-79d3-4579-8aae-d4eaecb04b3c}</Project>
       <Name>3DS_CivilSurveySuite.ACAD2017</Name>
     </ProjectReference>
+    <ProjectReference Include="..\3DS_CivilSurveySuite.Shared\3DS_CivilSurveySuite.Shared.csproj">
+      <Project>{0a9643c4-a65b-4d1c-820a-bec5a3b1a8f7}</Project>
+      <Name>3DS_CivilSurveySuite.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj">
       <Project>{0431e86d-1a04-4f76-8afc-193f84fa7965}</Project>
       <Name>3DS_CivilSurveySuite.UI</Name>

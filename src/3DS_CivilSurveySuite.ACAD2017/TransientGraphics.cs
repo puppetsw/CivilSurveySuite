@@ -5,8 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.Colors;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;

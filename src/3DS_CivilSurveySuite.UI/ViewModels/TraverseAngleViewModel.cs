@@ -9,9 +9,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels
 {

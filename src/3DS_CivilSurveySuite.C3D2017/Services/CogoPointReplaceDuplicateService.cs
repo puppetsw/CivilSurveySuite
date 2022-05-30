@@ -5,7 +5,7 @@
 
 using System;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
