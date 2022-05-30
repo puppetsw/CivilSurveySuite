@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
+using _3DS_CivilSurveySuite.Shared.Models;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.ViewModels.AroFlo
 {

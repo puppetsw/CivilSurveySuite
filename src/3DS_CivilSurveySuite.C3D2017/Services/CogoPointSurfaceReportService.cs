@@ -5,10 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using _3DS_CivilSurveySuite.ACAD2017;
-using _3DS_CivilSurveySuite.UI;
+using _3DS_CivilSurveySuite.Shared.Models;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Models;
-using _3DS_CivilSurveySuite.UI.Services.Interfaces;
 using DataTable = System.Data.DataTable;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
