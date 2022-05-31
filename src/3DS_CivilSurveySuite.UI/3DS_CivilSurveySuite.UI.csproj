@@ -84,9 +84,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\BingMapControl.xaml.cs">
-      <DependentUpon>BingMapControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControl\SortControl.xaml.cs">
       <DependentUpon>SortControl.xaml</DependentUpon>
     </Compile>
@@ -244,10 +241,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl\BingMapControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UserControl\SortControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -319,9 +312,6 @@
     <Resource Include="Resources\Icons\Alignment.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Maps.MapControl.WPF">
-      <Version>1.0.0.3</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
       <Version>1.1.31</Version>
     </PackageReference>
