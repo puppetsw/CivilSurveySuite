@@ -64,8 +64,6 @@
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\ResourceHelpers.cs" />
     <Compile Include="Helpers\ResourceStringHelper.cs" />
-    <Compile Include="Logger\ILogger.cs" />
-    <Compile Include="Logger\ILogWriter.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\LogWriter.cs" />
     <Compile Include="Models\ImageData.cs" />
@@ -97,8 +95,6 @@
     </Compile>
     <Compile Include="Validation\NumberValidationRule.cs" />
     <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
-    <Compile Include="ViewModels\AroFlo\AroFloProjectViewModel.cs" />
-    <Compile Include="ViewModels\AroFlo\AroFloToBlockViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
@@ -113,12 +109,6 @@
     <Compile Include="ViewState.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AroFlo\AroFloProjectView.xaml.cs">
-      <DependentUpon>AroFloProjectView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AroFlo\AroFloToBlockView.xaml.cs">
-      <DependentUpon>AroFloToBlockView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CogoPointMoveLabelView.xaml.cs">
       <DependentUpon>CogoPointMoveLabelView.xaml</DependentUpon>
@@ -269,14 +259,6 @@
     <Page Include="Views\AngleCalculatorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AroFlo\AroFloProjectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AroFlo\AroFloToBlockView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CogoPointMoveLabelView.xaml">
       <SubType>Designer</SubType>

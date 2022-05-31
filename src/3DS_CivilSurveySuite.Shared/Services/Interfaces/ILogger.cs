@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace _3DS_CivilSurveySuite.UI.Logger
+namespace _3DS_CivilSurveySuite.Shared.Services.Interfaces
 {
     public interface ILogger
     {

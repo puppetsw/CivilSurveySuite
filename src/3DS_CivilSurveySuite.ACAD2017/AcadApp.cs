@@ -13,9 +13,7 @@ using _3DS_CivilSurveySuite.UI.Helpers;
 using _3DS_CivilSurveySuite.UI.Logger;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
 using _3DS_CivilSurveySuite.UI.ViewModels;
-using _3DS_CivilSurveySuite.UI.ViewModels.AroFlo;
 using _3DS_CivilSurveySuite.UI.Views;
-using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -33,8 +31,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     public sealed class AcadApp : IExtensionApplication
     {
         private const string _3DS_CUI_FILE = "3DS_CSS_ACAD.cuix";
-
-        private static Container Container { get; } = new Container();
 
         /// <summary>
         /// Gets the <see cref="DocumentManager"/>.
@@ -56,17 +52,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// </summary>
         public static Editor Editor => ActiveDocument.Editor;
 
-        // Don't use the logger as a service, need it right away.
-        public static ILogger Logger { get; } = new Logger(new LogWriter());
+        public static ILogger Logger { get; private set; }
 
         public void Initialize()
         {
-            Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
-            Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
-
             try
             {
-                RegisterServices();
+                Ioc.RegisterServices();
+                Logger = Ioc.Default.GetInstance<ILogger>();
+                Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
+                Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
+                Logger.Info("ACAD Services registered successfully.");
             }
             catch (InvalidOperationException e)
             {
@@ -84,58 +80,42 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Properties.Settings.Default.Save();
         }
 
-        private static void RegisterServices()
-        {
-            // ACAD Services
-            Container.Register<IProcessService, ProcessService>();
-            Container.Register<ITraverseService, TraverseService>(Lifestyle.Singleton);
-            Container.Register<IMessageBoxService, MessageBoxService>();
-            Container.Register<IRasterImageService, RasterImageService>();
-            Container.Register<IBlockService, BlockService>();
-
-            // Dialog Services
-            Container.Register<IOpenFileDialogService, OpenFileDialogService>();
-            Container.Register<ISaveFileDialogService, SaveFileDialogService>();
-            Container.Register<IFolderBrowserDialogService, FolderBrowserDialogService>();
-
-            // Views
-            Container.Register<AngleCalculatorView>();
-            Container.Register<AroFloProjectView>();
-            Container.Register<ImageManagerView>();
-            Container.Register<TraverseAngleView>();
-            Container.Register<TraverseView>();
-            Container.Register<AroFloToBlockView>();
-
-            // ViewModels
-            Container.Register<AngleCalculatorViewModel>();
-            Container.Register<AroFloProjectViewModel>();
-            Container.Register<ImageManagerViewModel>();
-            Container.Register<TraverseViewModel>();
-            Container.Register<TraverseAngleViewModel>();
-            Container.Register<AroFloToBlockViewModel>();
-
-            Container.Verify(VerificationOption.VerifyAndDiagnose);
-            Logger.Info("ACAD Services registered successfully.");
-        }
-
-        public static bool? ShowDialog<TView>() where TView : Window
+        public static void ShowDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
-            Logger.Info($"Creating instance of {typeof(TView)}");
-            return Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModalWindow(view);
+            Logger.Info($"New instance of {typeof(TView)} requested");
+
+            try
+            {
+                Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModalWindow(view);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, e.Message);
+                throw;
+            }
         }
 
         public static void ShowModelessDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
-            Logger.Info($"Creating instance of {typeof(TView)}");
-            Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+            Logger.Info($"New instance of {typeof(TView)} requested");
+
+            try
+            {
+                Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, e.Message);
+                throw;
+            }
         }
 
         private static TView CreateWindow<TView>() where TView : Window
         {
-            Logger.Info($"Creating instance of {typeof(TView)}");
-            return Container.GetInstance<TView>();
+            Logger.Info($"New instance of {typeof(TView)} requested");
+            return Ioc.Default.GetInstance<TView>();
         }
 
         /// <summary>
@@ -144,6 +124,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns>Transaction.</returns>
         public static Transaction StartTransaction()
         {
+            Logger.Info("Transaction Started");
             return ActiveDocument.TransactionManager.StartTransaction();
         }
 
@@ -153,6 +134,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <returns>Transaction.</returns>
         public static Transaction StartLockedTransaction()
         {
+            Logger.Info("Locked Transaction Started");
             return ActiveDocument.TransactionManager.StartLockedTransaction();
         }
 
@@ -175,6 +157,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             // If it is, we will unload so it can be reloaded.
             if (IsCuiFileLoaded(fileName))
             {
+                Logger.Info($"CUI file {fileName} already loaded. Unloading...");
                 UnloadCuiFile(fileName);
             }
 
@@ -184,10 +167,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (!File.Exists(filePath))
             {
                 Editor.WriteMessage($"\n3DS> Could not find CUI file: {filePath}");
+                Logger.Info($"Could not find CUI file: {filePath}");
                 return;
             }
 
             Editor.WriteMessage("\n");
+            Logger.Info($"Loading CUI file: {filePath}");
             Autodesk.AutoCAD.ApplicationServices.Application.LoadPartialMenu(filePath);
         }
 

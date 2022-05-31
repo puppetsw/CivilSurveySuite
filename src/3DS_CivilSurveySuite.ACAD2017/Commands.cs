@@ -3,8 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Views;
-using _3DS_CivilSurveySuite.UI.Views.AroFlo;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
@@ -16,15 +16,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSShowDebug", CommandFlags.Modal)]
         public static void ShowDebug()
         {
-            AcadApp.Logger.ShowLog();
+            ILogger logger = Ioc.Default.GetInstance<ILogger>();
+            logger.ShowLog();
         }
-
-        // UNDONE: Still being worked on. Back burner for now.
-        // [CommandMethod("3DS", "_3DSShowFillBlock", CommandFlags.Modal)]
-        // public static void ShowFillBlockForm()
-        // {
-        //     AcadApp.ShowDialog<AroFloToBlockView>();
-        // }
 
         #region Point Commands
         // Points
@@ -233,7 +227,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             TextUtils.DivideTextByNumber();
         }
-      
+
         [CommandMethod("3DS", "_3DSTxtRound", CommandFlags.Modal)]
         public static void TextRound()
         {
@@ -260,12 +254,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void ShowTraverseAngle()
         {
             AcadApp.ShowDialog<TraverseAngleView>();
-        }
-
-        [CommandMethod("3DS", "_3DSAroFloProjectWindow", CommandFlags.Modal)]
-        public void ShowAroFloProjectWindow()
-        {
-            AcadApp.ShowDialog<AroFloProjectView>();
         }
 
         #endregion

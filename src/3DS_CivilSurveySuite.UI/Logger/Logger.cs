@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.UI.Logger
 {
