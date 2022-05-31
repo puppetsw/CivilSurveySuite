@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Microsoft.Win32.SafeHandles;
 
 namespace _3DS_CivilSurveySuite.UI.Logger
