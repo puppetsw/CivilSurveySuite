@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
@@ -18,6 +19,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             ILogger logger = Ioc.Default.GetInstance<ILogger>();
             logger.ShowLog();
+        }
+
+        // TODO: Cleanup
+        [CommandMethod("3DS", "_3DSShowInputWindow", CommandFlags.Modal)]
+        public static void ShowInputWindow()
+        {
+            var result = AcadApp.ShowInputDialog(new InputServiceOptions("Override Text", "Enter text to override with.", "OK"));
+            AcadApp.WriteMessage($"\nGOT: {result}");
         }
 
         #region Point Commands
