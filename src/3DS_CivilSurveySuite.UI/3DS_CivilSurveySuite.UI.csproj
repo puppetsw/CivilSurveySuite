@@ -134,6 +134,9 @@
     <Compile Include="Views\SelectSurfaceView.xaml.cs">
       <DependentUpon>SelectSurfaceView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InputDialogView.xaml.cs">
+      <DependentUpon>InputDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TraverseAngleView.xaml.cs">
       <DependentUpon>TraverseAngleView.xaml</DependentUpon>
     </Compile>
@@ -283,6 +286,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SelectSurfaceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InputDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

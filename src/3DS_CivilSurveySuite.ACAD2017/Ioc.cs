@@ -35,6 +35,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Default.Register<ImageManagerView>();
             Default.Register<TraverseAngleView>();
             Default.Register<TraverseView>();
+            // Input dialog view.
+            Default.Register<InputDialogView>();
 
             // ViewModels
             Default.Register<AngleCalculatorViewModel>();

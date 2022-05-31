@@ -86,9 +86,11 @@
     <Compile Include="Services\Interfaces\IConnectLineworkService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="Services\Interfaces\IFolderBrowserDialogService.cs" />
+    <Compile Include="Services\Interfaces\IInputDialogService.cs" />
     <Compile Include="Services\Interfaces\ILogger.cs" />
     <Compile Include="Services\Interfaces\ILogWriter.cs" />
     <Compile Include="Services\Interfaces\IMessageBoxService.cs" />
+    <Compile Include="Models\InputServiceOptions.cs" />
     <Compile Include="Services\Interfaces\IOpenFileDialogService.cs" />
     <Compile Include="Services\Interfaces\IProcessService.cs" />
     <Compile Include="Services\Interfaces\IRasterImageService.cs" />

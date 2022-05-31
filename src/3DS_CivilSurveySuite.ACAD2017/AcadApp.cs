@@ -6,20 +6,18 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using _3DS_CivilSurveySuite.ACAD2017.Services;
+using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Helpers;
-using _3DS_CivilSurveySuite.UI.Logger;
-using _3DS_CivilSurveySuite.UI.Services.Implementation;
-using _3DS_CivilSurveySuite.UI.ViewModels;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.Customization;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
-using SimpleInjector;
+using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -35,7 +33,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// <summary>
         /// Gets the <see cref="DocumentManager"/>.
         /// </summary>
-        public static DocumentCollection DocumentManager => Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager;
+        public static DocumentCollection DocumentManager => Application.DocumentManager;
 
         /// <summary>
         /// Gets the active <see cref="Document"/> object.
@@ -87,7 +85,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             try
             {
-                Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModalWindow(view);
+                Application.ShowModalWindow(view);
             }
             catch (Exception e)
             {
@@ -103,7 +101,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             try
             {
-                Autodesk.AutoCAD.ApplicationServices.Core.Application.ShowModelessWindow(view);
+                Application.ShowModelessWindow(view);
             }
             catch (Exception e)
             {
@@ -118,13 +116,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return Ioc.Default.GetInstance<TView>();
         }
 
+        public static string ShowInputDialog(InputServiceOptions inputServiceOptions)
+        {
+            var window = CreateWindow<InputDialogView>();
+            var dialog = (IInputDialogService)window;
+            dialog.AssignOptions(inputServiceOptions);
+            var showDialog = Application.ShowModalWindow(window);
+
+            return showDialog != true ? string.Empty : dialog.ResultString;
+        }
+
         /// <summary>
         /// Starts a transaction.
         /// </summary>
         /// <returns>Transaction.</returns>
-        public static Transaction StartTransaction()
+        public static Transaction StartTransaction([CallerMemberName] string caller = "")
         {
-            Logger.Info("Transaction Started");
+            Logger.Info($"Transaction started from: {caller}");
             return ActiveDocument.TransactionManager.StartTransaction();
         }
 
@@ -132,9 +140,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         /// Starts a locked transaction.
         /// </summary>
         /// <returns>Transaction.</returns>
-        public static Transaction StartLockedTransaction()
+        public static Transaction StartLockedTransaction([CallerMemberName] string caller = "")
         {
-            Logger.Info("Locked Transaction Started");
+            Logger.Info($"Locked transaction started from: {caller}");
             return ActiveDocument.TransactionManager.StartLockedTransaction();
         }
 
