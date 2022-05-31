@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using AroFloApi;
 using Autodesk.AutoCAD.DatabaseServices;
 
@@ -14,6 +15,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AroFloConfiguration.ORG_ENCODE = "JSc6TyBQLFAgCg==";
         }
 
+        private static ILogger Logger { get; } = Ioc.Default.GetInstance<ILogger>();
+
         public static async void ProjectDetailsTo3DSTitleBlock()
         {
             // valid title blocks
@@ -28,7 +31,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             using (var tr = AcadApp.StartLockedTransaction())
             {
-                if (!EditorUtils.TryGetEntityOfType<BlockReference>("\n3DS> Select a title block.", "\n3DS> Select a block reference.", out var blockId, true))
+                if (!EditorUtils.TryGetEntityOfType<BlockReference>("\n3DS> Select a title block.",
+                        "\n3DS> Select a block reference.", out var blockId, true))
                 {
                     return;
                 }
@@ -38,7 +42,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (!validTitleBlocks.Contains(blockName))
                 {
                     AcadApp.Editor.WriteMessage("\n3DS> Please select a valid 3D Surveys title block.");
-                    AcadApp.Logger.Warn("User selected an invalid title block.");
+                    Logger.Warn("User selected an invalid title block.");
                     tr.Commit();
                     return;
                 }
@@ -54,7 +58,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 if (project == null)
                 {
                     AcadApp.Editor.WriteMessage("\n3DS> Unable to find project number.");
-                    AcadApp.Logger.Warn("User entered an invalid project number.");
+                    Logger.Warn("User entered an invalid project number.");
                     tr.Commit();
                     return;
                 }
