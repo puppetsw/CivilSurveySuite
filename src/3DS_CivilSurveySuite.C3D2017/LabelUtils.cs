@@ -5,7 +5,10 @@
 
 using System;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -165,6 +168,66 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
 
             return Convert.ToInt32(maxWidth);
+        }
+
+        /// <summary>
+        /// Gets the first component of type T in the LabelStyle.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="style">The LabelStyle.</param>
+        /// <param name="componentType">Matching LabelStyleComponentType</param>
+        /// <returns>ObjectId</returns>
+        public static ObjectId GetFirstComponentIdOfLabelStyle<T>(LabelStyle style, LabelStyleComponentType componentType)
+            where T : LabelStyleComponent
+        {
+            foreach (ObjectId componentId in style.GetComponents(componentType))
+            {
+                var component = componentId.GetObject(OpenMode.ForRead) as T;
+
+                if (component == null)
+                {
+                    throw new InvalidOperationException("component was null.");
+                }
+
+                if (component.GetType() == typeof(T))
+                {
+                    return component.ObjectId;
+                }
+            }
+
+            return ObjectId.Null;
+        }
+
+        /// <summary>
+        /// Command to override Text of a CogoPoint LabelStyle.
+        /// </summary>
+        public static void OverrideTextLabel()
+        {
+
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoints label to override: ",
+                    "\n3DS> Please select CogoPoints only.", out var objectId))
+            {
+                return;
+            }
+
+            var overrideText = AcadApp.ShowInputDialog(new InputServiceOptions("Override Text", "Please enter the overriding text:", "OK"));
+
+            if (string.IsNullOrEmpty(overrideText))
+            {
+                return;
+            }
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
+                var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                var component = GetFirstComponentIdOfLabelStyle<LabelStyleTextComponent>(labelStyle, LabelStyleComponentType.Text);
+
+                cogoPoint.UpgradeOpen();
+                cogoPoint.SetLabelTextComponentOverride(component, overrideText);
+                cogoPoint.DowngradeOpen();
+                tr.Commit();
+            }
         }
     }
 }
