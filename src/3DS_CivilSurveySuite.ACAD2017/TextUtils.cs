@@ -5,8 +5,10 @@
 
 using System;
 using System.Globalization;
+using System.Windows.Media.Media3D;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
@@ -485,6 +487,28 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 }
                 tr.Commit();
             }
+        }
+
+        /// <summary>
+        /// Creates a MText entity at the specified location.
+        /// </summary>
+        /// <param name="tr">Action transaction.</param>
+        /// <param name="location">The location to insert the text at.</param>
+        /// <param name="textString">The contents of the MText entity.</param>
+        /// <param name="textHeight">The height of the text. Defaults to 0.4 units.</param>
+        public static void CreateText(Transaction tr, Point3d location, string textString, double textHeight = 0.4)
+        {
+            var bt = (BlockTable)tr.GetObject(AcadApp.ActiveDatabase.BlockTableId, OpenMode.ForRead);
+            var btr = (BlockTableRecord)tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+            var text = new MText();
+            text.SetDatabaseDefaults();
+            text.Location = location;
+            text.Height = textHeight;
+            text.Contents = textString;
+            text.Attachment = AttachmentPoint.BottomLeft;
+            btr.AppendEntity(text);
+            tr.AddNewlyCreatedDBObject(text, true);
         }
     }
 }

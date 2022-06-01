@@ -163,7 +163,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private void InsertImages()
         {
-            // Bit of a hack getting the first image ratio.
             _rasterImageService.InsertRasterImage(GetSelectedImages(), ImageWidth, ImageHeight, ImagePadding, RowLimit);
         }
 
