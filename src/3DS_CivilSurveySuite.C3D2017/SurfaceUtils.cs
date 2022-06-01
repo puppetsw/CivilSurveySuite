@@ -355,7 +355,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         /// <param name="surface">The surface.</param>
         /// <param name="point">The picked point.</param>
-        /// from the given position (in meters).</param>
         /// <param name="calculatedPoint">The calculated point.</param>
         /// <param name="edge"></param>
         private static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
