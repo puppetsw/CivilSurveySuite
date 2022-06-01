@@ -12,7 +12,6 @@
 * Error detection method.
 * Toolbar & Menu
 * Settings
-* Copy raw description or full description to text entity
 * Link CogoPoint Labels (for moving)
 
 ### Setout Tool
