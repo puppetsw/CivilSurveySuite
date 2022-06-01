@@ -7,7 +7,6 @@ using System;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 
@@ -203,7 +202,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         public static void OverrideTextLabel()
         {
-
             if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoints label to override: ",
                     "\n3DS> Please select CogoPoints only.", out var objectId))
             {
@@ -219,8 +217,8 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             using (var tr = AcadApp.StartTransaction())
             {
-                var cogoPoint = tr.GetObject(objectId, OpenMode.ForRead) as CogoPoint;
-                var labelStyle = tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead) as LabelStyle;
+                var cogoPoint = (CogoPoint)tr.GetObject(objectId, OpenMode.ForRead);
+                var labelStyle = (LabelStyle)tr.GetObject(cogoPoint.LabelStyleId, OpenMode.ForRead);
                 var component = GetFirstComponentIdOfLabelStyle<LabelStyleTextComponent>(labelStyle, LabelStyleComponentType.Text);
 
                 cogoPoint.UpgradeOpen();
