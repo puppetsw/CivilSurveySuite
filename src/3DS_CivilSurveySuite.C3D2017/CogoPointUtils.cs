@@ -796,5 +796,35 @@ namespace _3DS_CivilSurveySuite.C3D2017
             }
             return list;
         }
+
+        public static void FullDescriptionToTextEntity()
+        {
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoint: ", "\n3DS> Please select CogoPoints only.", out var objectId))
+            {
+                return;
+            }
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint = (CogoPoint)tr.GetObject(objectId, OpenMode.ForRead);
+                TextUtils.CreateText(tr, cogoPoint.Location, cogoPoint.FullDescription);
+                tr.Commit();
+            }
+        }
+
+        public static void RawDescriptionToTextEntity()
+        {
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoint: ", "\n3DS> Please select CogoPoints only.", out var objectId))
+            {
+                return;
+            }
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var cogoPoint = (CogoPoint)tr.GetObject(objectId, OpenMode.ForRead);
+                TextUtils.CreateText(tr, cogoPoint.Location, cogoPoint.RawDescription);
+                tr.Commit();
+            }
+        }
     }
 }

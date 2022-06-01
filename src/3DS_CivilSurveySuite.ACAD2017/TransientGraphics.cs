@@ -36,7 +36,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     /// }
     /// </code>
     /// </example>
-    public class TransientGraphics : IDisposable
+    public sealed class TransientGraphics : IDisposable
     {
         private readonly DBObjectCollection _graphics;
 
@@ -124,12 +124,28 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public void DrawSquare(Point3d position, double squareSize)
         {
-            throw new NotImplementedException(); //TODO: Write method
+            var topLeft = new Point3d(position.X - squareSize / 2, position.Y - squareSize / 2, 0);
+            var topRight = new Point3d(topLeft.X + squareSize, topLeft.Y, 0);
+            var bottomRight = new Point3d(topRight.X, topRight.Y + squareSize, 0);
+            var bottomLeft = new Point3d(bottomRight.X - squareSize, bottomRight.Y, 0);
+
+            DrawLine(topLeft, topRight);
+            DrawLine(topRight, bottomRight);
+            DrawLine(bottomRight, bottomLeft);
+            DrawLine(bottomLeft, topLeft);
         }
 
         public void DrawRectangle(Point3d position, double width, double height)
         {
-            throw new NotImplementedException(); //TODO: Write method
+            var topLeft = new Point3d(position.X - width / 2, position.Y - height / 2, 0);
+            var topRight = new Point3d(topLeft.X + width, topLeft.Y, 0);
+            var bottomRight = new Point3d(topRight.X, topRight.Y + height, 0);
+            var bottomLeft = new Point3d(bottomRight.X - width, bottomRight.Y, 0);
+
+            DrawLine(topLeft, topRight);
+            DrawLine(topRight, bottomRight);
+            DrawLine(bottomRight, bottomLeft);
+            DrawLine(bottomLeft, topLeft);
         }
 
         public void DrawCircle(Point3d position, double circleSize = 0.5)
@@ -310,10 +326,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void ClearGraphics()
         {
             if (_graphics == null)
+            {
                 return;
+            }
 
-            if (_graphics?.Count < 0)
+            if (_graphics.Count < 0)
+            {
                 return;
+            }
 
             var tm = TransientManager.CurrentTransientManager;
             var intCol = new IntegerCollection();
@@ -326,10 +346,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             AcadApp.Editor.UpdateScreen();
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposing)
+            {
                 return;
+            }
 
             ClearGraphics();
             _graphics?.Dispose();
@@ -338,7 +360,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

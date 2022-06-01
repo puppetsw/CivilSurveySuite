@@ -144,6 +144,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             CogoPointUtils.ScaleElevations();
         }
+
+        [CommandMethod("3DS", "_3DSCptFullDescriptionToText", CommandFlags.Modal)]
+        public static void CptFullDescriptionToText()
+        {
+            CogoPointUtils.FullDescriptionToTextEntity();
+        }
+
+        [CommandMethod("3DS", "_3DSCptRawDescriptionToText", CommandFlags.Modal)]
+        public static void CptRawDescriptionToText()
+        {
+            CogoPointUtils.RawDescriptionToTextEntity();
+        }
+
         #endregion
 
         #region Surfaces
