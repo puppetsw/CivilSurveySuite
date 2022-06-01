@@ -5,25 +5,14 @@
 
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Views;
-using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
-using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class Commands
     {
-        [CommandMethod("3DS", "_3DSTextOverride", CommandFlags.Modal)]
-        public static void Test1()
-        {
-            LabelUtils.OverrideTextLabel();
-        }
-
-
-
-
-
+        #region CogoPoints
         [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
         public static void CptBrgDist()
         {
@@ -155,8 +144,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             CogoPointUtils.ScaleElevations();
         }
+        #endregion
 
-
+        #region Surfaces
         // Surfaces
         [CommandMethod("3DS", "_3DSSurfaceElAtPt", CommandFlags.Modal)]
         public static void SurfaceElevationAtPoint()
@@ -182,7 +172,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             SurfaceUtils.SelectPointsAboveOrBelowSurface();
         }
+        #endregion
 
+        #region Palettes
 
         // Palettes
         [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
@@ -209,7 +201,9 @@ namespace _3DS_CivilSurveySuite.C3D2017
             C3DApp.ShowDialog<CogoPointSurfaceReportView>();
         }
 
+        #endregion
 
+        #region Labels
 
         // Labels
         [CommandMethod("3DS", "3DSLabelMaskOff", CommandFlags.Modal)]
@@ -236,28 +230,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
             CogoPointUtils.LabelStack();
         }
 
-
-        // Testing Command
-        [CommandMethod("3DS", "3DSTest", CommandFlags.Modal)]
-        public static void Test()
+        [CommandMethod("3DS", "_3DSLabelOverride", CommandFlags.Modal)]
+        public static void OverrideText()
         {
-            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("", "", out var cgId))
-            {
-                return;
-            }
-
-            using (var tr = AcadApp.StartTransaction())
-            {
-                var cogoPoint = (CogoPoint)tr.GetObject(cgId, OpenMode.ForRead);
-
-                var udp = CogoPointUtils.GetUDP("PointId");
-                AcadApp.Editor.WriteMessage($"\n3DS> UDP: {cogoPoint.GetUDPValue(udp)}");
-
-                tr.Commit();
-            }
-
-
-
+            LabelUtils.OverrideTextLabel();
         }
+
+        #endregion
     }
 }

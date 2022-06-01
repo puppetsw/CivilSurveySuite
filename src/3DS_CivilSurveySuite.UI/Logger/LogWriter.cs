@@ -40,7 +40,14 @@ namespace _3DS_CivilSurveySuite.UI.Logger
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             var directory = Path.GetDirectoryName(path);
-            _logFileName = Path.Combine(directory, LogName);
+            if (directory != null)
+            {
+                _logFileName = Path.Combine(directory, LogName);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(directory));
+            }
         }
 
         public async Task WriteLineToLogAsync(string text)

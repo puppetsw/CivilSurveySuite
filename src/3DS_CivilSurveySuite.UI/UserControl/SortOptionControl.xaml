@@ -1,45 +1,53 @@
-﻿<UserControl x:Class="_3DS_CivilSurveySuite.UI.UserControl.SortOptionControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.UserControl"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:models="clr-namespace:_3DS_CivilSurveySuite.UI.Models"
-             mc:Ignorable="d"
-             d:DesignHeight="25" d:DesignWidth="100" MinHeight="25" MinWidth="250">
+﻿<UserControl
+    x:Class="_3DS_CivilSurveySuite.UI.UserControl.SortOptionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:_3DS_CivilSurveySuite.UI.UserControl"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:_3DS_CivilSurveySuite.Shared.Models;assembly=3DS_CivilSurveySuite.Shared"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    MinWidth="250"
+    MinHeight="25"
+    d:DesignHeight="25"
+    d:DesignWidth="100"
+    mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
         <Grid.Resources>
-            <ObjectDataProvider x:Key="SortDirectionEnum" MethodName="GetValues"
-                                ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider
+                x:Key="SortDirectionEnum"
+                MethodName="GetValues"
+                ObjectType="{x:Type system:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="models:SortDirection"/>
+                    <x:Type TypeName="models:SortDirection" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
         </Grid.Resources>
-        <TextBlock Grid.Column="0"
-                   Text="Sort by"
-                   VerticalAlignment="Center"
-                   Margin="0,0,5,0" />
-        <ComboBox x:Name="ComboBox"
-                  Grid.Column="1"
-                  Margin="0,0,5,0"
-                  Width="150"
-                  Height="23"
-                  HorizontalAlignment="Right"
-                  ItemsSource="{Binding Headers}"
-                  SelectedItem="{Binding SelectedHeader}"
-                  DisplayMemberPath="HeaderText"/>
-        <ComboBox x:Name="SortDirectionComboBox"
-                  Grid.Column="2"
-                  Height="23"
-                  ItemsSource="{Binding Source={StaticResource SortDirectionEnum}}"
-                  SelectedItem="{Binding SortDirection}">
-        </ComboBox>
+        <TextBlock
+            Grid.Column="0"
+            Margin="0,0,5,0"
+            VerticalAlignment="Center"
+            Text="Sort by" />
+        <ComboBox
+            x:Name="ComboBox"
+            Grid.Column="1"
+            Width="150"
+            Height="23"
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            DisplayMemberPath="HeaderText"
+            ItemsSource="{Binding Headers}"
+            SelectedItem="{Binding SelectedHeader}" />
+        <ComboBox
+            x:Name="SortDirectionComboBox"
+            Grid.Column="2"
+            Height="23"
+            ItemsSource="{Binding Source={StaticResource SortDirectionEnum}}"
+            SelectedItem="{Binding SortDirection}" />
     </Grid>
 </UserControl>
