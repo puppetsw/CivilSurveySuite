@@ -7,6 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="350"
     Height="130"
+    MinWidth="350"
+    MinHeight="130"
+    MaxHeight="130"
+    ResizeMode="CanResizeWithGrip"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -29,9 +34,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="InputMessageText" />
+        <TextBlock x:Name="InputMessageText" Margin="0,0,0,3" />
 
-        <TextBox x:Name="InputText" Grid.Row="1" />
+        <TextBox
+            x:Name="InputText"
+            Grid.Row="1"
+            TabIndex="0" />
 
         <StackPanel
             Grid.Row="2"
@@ -40,11 +48,13 @@
             <Button
                 x:Name="PrimaryButton"
                 Margin="0,0,5,0"
-                Click="PrimaryButton_OnClick" />
+                Click="PrimaryButton_OnClick"
+                IsDefault="True" />
             <Button
                 x:Name="SecondaryButton"
                 Click="SecondaryButton_Click"
-                Content="Cancel" />
+                Content="Cancel"
+                IsCancel="True" />
         </StackPanel>
 
     </Grid>

@@ -14,6 +14,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class Commands
     {
+        [CommandMethod("3DS", "_3DSTextOverride", CommandFlags.Modal)]
+        public static void Test1()
+        {
+            LabelUtils.OverrideTextLabel();
+        }
+
+
+
+
+
         [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
         public static void CptBrgDist()
         {

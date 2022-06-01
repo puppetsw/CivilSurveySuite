@@ -12,6 +12,8 @@ namespace _3DS_CivilSurveySuite.UI.Views
         public InputDialogView()
         {
             InitializeComponent();
+
+            InputText.Focus();
         }
 
         private void PrimaryButton_OnClick(object sender, RoutedEventArgs e)
