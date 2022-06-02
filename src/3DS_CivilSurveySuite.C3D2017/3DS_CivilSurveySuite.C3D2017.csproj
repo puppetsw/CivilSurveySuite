@@ -75,6 +75,7 @@
     <Compile Include="Commands.cs" />
     <Compile Include="CommandSettings.cs" />
     <Compile Include="LabelUtils.cs" />
+    <Compile Include="SelectionUtils.cs" />
     <Compile Include="Services\CivilSelectService.cs" />
     <Compile Include="Services\CogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\CogoPointService.cs" />
