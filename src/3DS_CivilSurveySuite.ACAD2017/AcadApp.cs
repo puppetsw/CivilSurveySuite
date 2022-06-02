@@ -69,8 +69,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
 
             // HACK: Had to disable this for now because of an issue with accoreconsole tests.
-            // if (!AcadApp.IsCivil3DRunning())
-            //     AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+            if (!IsCivil3DRunning())
+            {
+                LoadCuiFile(_3DS_CUI_FILE);
+            }
         }
 
         public void Terminate()
