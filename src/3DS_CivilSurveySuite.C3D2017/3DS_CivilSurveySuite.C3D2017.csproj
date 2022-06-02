@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
+    <Compile Include="Ioc.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="CogoPointUtils.cs" />
     <Compile Include="Commands.cs" />
