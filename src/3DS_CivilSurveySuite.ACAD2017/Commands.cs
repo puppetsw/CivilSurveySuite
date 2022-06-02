@@ -3,6 +3,7 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Diagnostics;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
@@ -18,6 +19,13 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         {
             ILogger logger = Ioc.Default.GetInstance<ILogger>();
             logger.ShowLog();
+        }
+
+        // HELP
+        [CommandMethod("3DS", "_3DSShowHelp", CommandFlags.Modal)]
+        public static void ShowHelp()
+        {
+            Process.Start("3DSCivilSurveySuite.chm");
         }
 
         #region Point Commands

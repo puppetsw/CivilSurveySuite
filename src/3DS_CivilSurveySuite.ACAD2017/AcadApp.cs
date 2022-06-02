@@ -28,7 +28,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     /// </summary>
     public sealed class AcadApp : IExtensionApplication
     {
-        private const string _3DS_CUI_FILE = "3DS_CSS_ACAD.cuix";
+        private const string ACAD_TOOLBAR_FILE = "3DS_CSS_ACAD.cuix";
 
         /// <summary>
         /// Gets the <see cref="DocumentManager"/>.
@@ -68,11 +68,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 Logger.Error(e, ResourceHelpers.GetLocalisedString("ACAD_LoadingError"));
             }
 
-            // HACK: Had to disable this for now because of an issue with accoreconsole tests.
-            if (!IsCivil3DRunning())
-            {
-                LoadCuiFile(_3DS_CUI_FILE);
-            }
+            LoadCuiFile(ACAD_TOOLBAR_FILE);
         }
 
         public void Terminate()
