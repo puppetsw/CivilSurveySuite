@@ -45,6 +45,7 @@
 | 3DSTxtMathSub | If text is numeric, subtract a number from it. |
 | 3DSTxtMathMultiply | If text is numeric, multiply it by a number. |
 | 3DSTxtMathDiv | If text is numeric, divide it by a number. |
+| 3DSTxtRound | Rounds text numbers to a specified decimal place. |
 
 ## Dialogs
 | Command | Description |
@@ -53,6 +54,10 @@
 | 3DSShowTraverseWindow | Shows the traverse utility window. |
 | 3DSShowAngleTraverseWindow | Shows the angle traverse utility. |
 
+## Other
+| Command | Description |
+| 3DSShowDebug | Shows the debug logs. |
+| 3DSShowHelp | Shows the help file. |
 
 # Civil 3D Commands
 
@@ -84,6 +89,8 @@
 | 3DSCptSlope | Creates a point at a location with the calculated slope. |
 | 3DSCptMidBetweenPolys | Draws a CogoPoint at the mid point of two polylines given a location. |
 | 3DSCptScaleElevation | Scales the CogoPoints elevation by a given amount. |
+| 3DSCptFullDescriptionToText | Copys the CogoPoints full description and creates a text entity. |
+| 3DSCptRawDescriptionToText | Copys the CogoPoints raw description and creates a text entity. |
 
 ## Surface
 | Command | Description |
@@ -107,3 +114,5 @@
 | 3DSLabelMaskOff | Turns the label mask off for a selected label on a CogoPoint. |
 | 3DSLabelMaskOn | Turns the label mask on for a selected label on a CogoPoint. |
 | 3DSLabelLineBreak | Converts {} into a line break inside a CogoPoint description format. |
+| 3DSLabelStack | Stacks CogoPoint Labels ontop of each other. |
+| 3DSLabelOverride | Asks for user input to override the CogoPoint Label. |
