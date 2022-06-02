@@ -82,7 +82,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static void ShowDialog<TView>() where TView : Window
         {
-            var view = CreateWindow<TView>();
+            var view = Ioc.GetRequiredView<TView>();
             Logger.Info($"New instance of {typeof(TView)} requested");
 
             try
@@ -98,7 +98,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static void ShowModelessDialog<TView>() where TView : Window
         {
-            var view = CreateWindow<TView>();
+            var view = Ioc.GetRequiredView<TView>();
             Logger.Info($"New instance of {typeof(TView)} requested");
 
             try
@@ -112,15 +112,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             }
         }
 
-        private static TView CreateWindow<TView>() where TView : Window
-        {
-            Logger.Info($"New instance of {typeof(TView)} requested");
-            return Ioc.Default.GetInstance<TView>();
-        }
-
         public static string ShowInputDialog(InputServiceOptions inputServiceOptions)
         {
-            var window = CreateWindow<InputDialogView>();
+            var window = Ioc.GetRequiredView<InputDialogView>();
             var dialog = (IInputDialogService)window;
             dialog.AssignOptions(inputServiceOptions);
             var showDialog = Application.ShowModalWindow(window);
