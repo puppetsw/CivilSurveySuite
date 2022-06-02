@@ -1,4 +1,5 @@
-﻿using _3DS_CivilSurveySuite.ACAD2017.Services;
+﻿using System.Windows;
+using _3DS_CivilSurveySuite.ACAD2017.Services;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Logger;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
@@ -8,6 +9,9 @@ using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
+    /// <summary>
+    /// AutoCAD IOC Container.
+    /// </summary>
     public static class Ioc
     {
         public static Container Default { get; } = new Container();
@@ -45,6 +49,12 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             Default.Register<TraverseAngleViewModel>();
 
             Default.Verify(VerificationOption.VerifyAndDiagnose);
+        }
+
+        public static TView GetRequiredView<TView>() where TView : Window
+        {
+            AcadApp.Logger?.Info($"New instance of {typeof(TView)} requested");
+            return Default.GetInstance<TView>();
         }
     }
 }

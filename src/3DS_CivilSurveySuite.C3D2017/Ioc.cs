@@ -1,4 +1,6 @@
-﻿using _3DS_CivilSurveySuite.ACAD2017;
+﻿using System;
+using System.Windows;
+using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.C3D2017.Services;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Services.Implementation;
@@ -8,6 +10,9 @@ using SimpleInjector;
 
 namespace _3DS_CivilSurveySuite.C3D2017
 {
+    /// <summary>
+    /// Civil 3D IOC Container
+    /// </summary>
     public static class Ioc
     {
         public static Container Default { get; } = new Container();
@@ -47,6 +52,12 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             Default.Verify(VerificationOption.VerifyAndDiagnose);
             AcadApp.Logger.Info("Civil3D Services registered successfully.");
+        }
+
+        public static Window GetRequiredView<TView>() where TView : Window
+        {
+            AcadApp.Logger.Info($"Creating instance of {typeof(TView)}");
+            return Default.GetInstance<TView>();
         }
     }
 }
