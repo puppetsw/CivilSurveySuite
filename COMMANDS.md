@@ -56,6 +56,7 @@
 
 ## Other
 | Command | Description |
+| --- | ----------- |
 | 3DSShowDebug | Shows the debug logs. |
 | 3DSShowHelp | Shows the help file. |
 
