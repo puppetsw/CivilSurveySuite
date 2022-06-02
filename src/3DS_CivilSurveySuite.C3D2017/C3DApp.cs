@@ -34,8 +34,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// </summary>
         private const string _3DS_CUI_FILE = "3DS_CSS_ACAD.cuix";
 
-        private static Container Container { get; } = new Container();
-
         public static CivilDocument ActiveDocument => CivilApplication.ActiveDocument;
 
         public static bool IsCivil3D() => SystemObjects.DynamicLinker.GetLoadedModules().Contains("AecBase.dbx".ToLower());
@@ -45,9 +43,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
             AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
             AcadApp.Logger.Info($"{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
 
+            // Check if ACAD is loaded.
+
             try
             {
-                RegisterServices();
+                Ioc.RegisterServices();
             }
             catch (InvalidOperationException e)
             {
@@ -55,9 +55,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 AcadApp.Logger.Error(e, ResourceHelpers.GetLocalisedString("C3D_LoadingError"));
             }
 
-            //HACK: Removed because of coreconsole tests
-            // if (AcadApp.IsCivil3DRunning())
-            //     AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+            if (AcadApp.IsCivil3DRunning())
+            {
+                //TODO: Load the Civil 3D toolbar.
+                //AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+            }
         }
 
         public void Terminate()
@@ -65,54 +67,17 @@ namespace _3DS_CivilSurveySuite.C3D2017
             // Nothing to cleanup.
         }
 
-        private static void RegisterServices()
-        {
-            // CIVIL SERVICES
-            Container.Register<ICivilSelectService, CivilSelectService>();
-            Container.Register<ICogoPointService, CogoPointService>();
-
-            Container.Register<IConnectLineworkService, ConnectLineworkService>();
-            Container.Register<ICogoPointSurfaceReportService, CogoPointSurfaceReportService>();
-            Container.Register<ICogoPointReplaceDuplicateService, CogoPointReplaceDuplicateService>();
-
-            // DIALOGS
-            Container.Register<IOpenFileDialogService, OpenFileDialogService>();
-            Container.Register<ISaveFileDialogService, SaveFileDialogService>();
-            Container.Register<IFolderBrowserDialogService, FolderBrowserDialogService>();
-
-            // VIEWS AND VIEWMODELS
-            Container.Register<SelectSurfaceView>();
-            Container.Register<SelectSurfaceViewModel>();
-            Container.Register<SelectPointGroupView>();
-            Container.Register<SelectPointGroupViewModel>();
-            Container.Register<SelectAlignmentView>();
-            Container.Register<SelectAlignmentViewModel>();
-            Container.Register<CogoPointMoveLabelView>();
-            Container.Register<CogoPointMoveLabelViewModel>();
-            Container.Register<ConnectLineworkView>();
-            Container.Register<ConnectLineworkViewModel>();
-            Container.Register<CogoPointEditorView>();
-            Container.Register<CogoPointEditorViewModel>();
-            Container.Register<CogoPointSurfaceReportView>();
-            Container.Register<CogoPointSurfaceReportViewModel>();
-            Container.Register<CogoPointReplaceDuplicateView>();
-            Container.Register<CogoPointReplaceDuplicateViewModel>();
-
-            Container.Verify(VerificationOption.VerifyAndDiagnose);
-            AcadApp.Logger.Info("Civil3D Services registered successfully.");
-        }
-
-        public static bool? ShowDialog<TView>() where TView : Window
+        public static void ShowDialog<TView>() where TView : Window
         {
             var view = CreateWindow<TView>();
             AcadApp.Logger.Info($"Creating instance of {typeof(TView)}");
-            return Application.ShowModalWindow(view);
+            Application.ShowModalWindow(view);
         }
 
         private static Window CreateWindow<TView>() where TView : Window
         {
             AcadApp.Logger.Info($"Creating instance of {typeof(TView)}");
-            return Container.GetInstance<TView>();
+            return Ioc.Default.GetInstance<TView>();
         }
 
         /// <summary>
