@@ -61,14 +61,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
                 Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
                 Logger.Info("ACAD Services registered successfully.");
+
+#if !DEBUG
+                // If Civil 3D is running we will load the civil ribbon and menu only.
+                if (!IsCivil3DRunning())
+                {
+                    LoadCuiFile(ACAD_TOOLBAR_FILE);
+                }
+#else
+                LoadCuiFile(ACAD_TOOLBAR_FILE);
+#endif
+
             }
             catch (InvalidOperationException e)
             {
                 Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_LoadingError")} {e.Message}");
                 Logger.Error(e, ResourceHelpers.GetLocalisedString("ACAD_LoadingError"));
             }
-
-            LoadCuiFile(ACAD_TOOLBAR_FILE);
         }
 
         public void Terminate()
@@ -195,7 +204,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var cs = new CustomizationSection(mainCuiFile);
             foreach (var file in cs.PartialCuiFiles)
             {
-                if (Path.GetFileName(file) == fileName)
+                if (string.Equals(Path.GetFileName(file), fileName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
