@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\DistanceUnit.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />
     <Compile Include="Helpers\DataTableHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Services\Interfaces\ICogoPointReplaceDuplicateService.cs" />
     <Compile Include="Services\Interfaces\ICogoPointService.cs" />
     <Compile Include="Services\Interfaces\ICogoPointSurfaceReportService.cs" />
+    <Compile Include="Services\Interfaces\ICommand.cs" />
     <Compile Include="Services\Interfaces\IConnectLineworkService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="Services\Interfaces\IFolderBrowserDialogService.cs" />
