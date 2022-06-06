@@ -69,7 +69,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             var pdo = new PromptDoubleOptions(message);
             pdo.Keywords.Add(Keywords.PICK);
-            pdo.AppendKeywordsToMessage = true;
+            pdo.Keywords.Default = Keywords.PICK;
+            //pdo.AppendKeywordsToMessage = true;
 
             var cancelled = false;
             do
@@ -208,6 +209,44 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
             distance = pdrDistance.Value;
 
+            return true;
+        }
+
+        public static bool TryGetDistance(string message, Point3d basePoint, string[] keywords, string defaultKeyword, out string keyword, out double distance)
+        {
+            keyword = string.Empty;
+            distance = double.NaN;
+            var pdo = new PromptDistanceOptions(message)
+            {
+                BasePoint = basePoint,
+                UseBasePoint = true,
+                Only2d = true,
+                UseDashedLine = true,
+                AllowNone = true
+            };
+
+            foreach (string s in keywords)
+            {
+                pdo.Keywords.Add(s);
+            }
+
+            if (!string.IsNullOrEmpty(defaultKeyword) && keywords.Contains(defaultKeyword))
+            {
+                pdo.Keywords.Default = defaultKeyword;
+            }
+
+            pdo.AppendKeywordsToMessage = true;
+
+            var pdr = AcadApp.ActiveDocument.Editor.GetDistance(pdo);
+
+            if (pdr.Status != PromptStatus.OK &&
+                pdr.Status != PromptStatus.Keyword)
+            {
+                return false;
+            }
+
+            keyword = pdr.StringResult;
+            distance = pdr.Value;
             return true;
         }
 
