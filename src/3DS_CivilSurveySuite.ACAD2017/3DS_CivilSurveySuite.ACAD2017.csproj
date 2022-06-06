@@ -88,7 +88,7 @@
     <Compile Include="Services\RasterImageService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TransientGraphicsUtils.cs" />
-    <Compile Include="TraverseUtils.cs" />
+    <Compile Include="Commands\TraverseCommand.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />
     <Compile Include="LineUtils.cs" />
@@ -129,5 +129,6 @@
       <Version>5.3.3</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
