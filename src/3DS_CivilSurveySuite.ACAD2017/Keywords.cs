@@ -17,5 +17,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         public const string FLIP = "Flip";
         public const string NONE = "";
         public const string PICK = "Pick";
+        public const string METRE = "Metre";
+        public const string FEET = "Feet";
+        public const string LINK = "Link";
     }
 }
