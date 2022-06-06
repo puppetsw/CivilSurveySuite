@@ -195,8 +195,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var cs = new CustomizationSection(mainCuiFile);
             foreach (var file in cs.PartialCuiFiles)
             {
-                if (file == fileName)
+                if (Path.GetFileName(file) == fileName)
+                {
                     return true;
+                }
             }
             return false;
         }
