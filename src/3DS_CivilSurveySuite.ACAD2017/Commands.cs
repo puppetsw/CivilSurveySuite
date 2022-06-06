@@ -3,10 +3,12 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System;
 using System.Diagnostics;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
+using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
 namespace _3DS_CivilSurveySuite.ACAD2017
@@ -169,8 +171,23 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public static void Traverse()
         {
-            TraverseUtils.Traverse();
+            // TraverseUtils.Traverse();
+            ExecuteCommand<TraverseCommand>();
         }
+
+        public static void ExecuteCommand<T>() where T : IAcadCommand
+        {
+            try
+            {
+                var cmd = Activator.CreateInstance<T>();
+                cmd.Execute();
+            }
+            catch (Exception ex)
+            {
+                // Log(ex);
+            }
+        }
+
         #endregion
 
         #region Text Commands
