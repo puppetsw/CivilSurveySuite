@@ -78,7 +78,7 @@
 | 3DSCptLabelIns | Creates a point at a text or mtext entity location using the Z position. |
 | 3DSCptLabelInsText | Creates a point at a text or mtext entity location using the contents as the Z position. |
 | 3DSCptLabelsRest | Resets the label of multiple selected CogoPoints. |
-| 3DSCptTruntAtTrees | Runs the Trunk at trees command. |
+| ~~3DSCptTruntAtTrees~~ | ~~Runs the Trunk at trees command.~~ |
 | 3DSRawDesUpper | Converts the raw description of CogoPoints to upper case. |
 | 3DSFullDesUpper | Converts the description format of CogoPoints to upper case. |
 | 3DSCptMatchLblRot | Matches the angle of multiple CogoPoint labels to a line. |
