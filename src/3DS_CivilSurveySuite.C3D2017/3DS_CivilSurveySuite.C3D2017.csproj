@@ -101,5 +101,16 @@
       <Name>3DS_CivilSurveySuite.UI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="3DS_CSS_CIVIL.cuix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="3DS_CSS_CIVIL.mnr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="3DS_CSS_CIVIL_light.mnr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

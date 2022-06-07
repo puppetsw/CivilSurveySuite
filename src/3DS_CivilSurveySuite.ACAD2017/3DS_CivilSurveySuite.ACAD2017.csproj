@@ -69,6 +69,8 @@
     <Compile Include="AcadApp.cs" />
     <Compile Include="AroFloUtils.cs" />
     <Compile Include="BlockUtils.cs" />
+    <Compile Include="Commands\ShowDebugCommand.cs" />
+    <Compile Include="Commands\ShowHelpCommand.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
@@ -118,6 +120,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="3DS_CSS_ACAD.cuix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="3DS_CSS_ACAD.mnr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="3DS_CSS_ACAD_light.mnr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
