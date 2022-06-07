@@ -11,6 +11,10 @@ using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
+    /// <summary>
+    /// Slightly improved version of the Traverse lisp command
+    /// written by Edward Whitney, My dad.
+    /// </summary>
     public class TraverseCommand : IAcadCommand
     {
         private const int GRAPHICS_SIZE = 6;

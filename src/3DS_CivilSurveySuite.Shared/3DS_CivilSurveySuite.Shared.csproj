@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Enums\DistanceUnit.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />
+    <Compile Include="Helpers\CommandHelpers.cs" />
     <Compile Include="Helpers\DataTableHelpers.cs" />
     <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\MathHelpers.cs" />

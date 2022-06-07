@@ -34,7 +34,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
         {
             // Check if ACAD is loaded.
 
-
             AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
             AcadApp.Logger?.Info($"{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
 
@@ -50,8 +49,7 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             if (AcadApp.IsCivil3DRunning())
             {
-                //TODO: Load the Civil 3D toolbar.
-                //AcadApp.LoadCuiFile(_3DS_CUI_FILE);
+                AcadApp.LoadCuiFile(CIVIL_TOOLBAR_CUI_FILE);
             }
         }
 

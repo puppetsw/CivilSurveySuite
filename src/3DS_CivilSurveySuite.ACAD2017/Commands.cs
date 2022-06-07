@@ -1,34 +1,29 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using System;
-using System.Diagnostics;
-using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
+﻿using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
-using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.ACAD2017.Commands))]
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class Commands
     {
+        #region Help Commands
+
         // DEBUG
         [CommandMethod("3DS", "_3DSShowDebug", CommandFlags.Modal)]
         public static void ShowDebug()
         {
-            ILogger logger = Ioc.Default.GetInstance<ILogger>();
-            logger.ShowLog();
+            CommandHelpers.ExecuteCommand<ShowDebugCommand>(AcadApp.Logger);
         }
 
         // HELP
         [CommandMethod("3DS", "_3DSShowHelp", CommandFlags.Modal)]
         public static void ShowHelp()
         {
-            Process.Start("3DSCivilSurveySuite.chm");
+            CommandHelpers.ExecuteCommand<ShowHelpCommand>(AcadApp.Logger);
         }
+
+        #endregion
 
         #region Point Commands
         // Points
@@ -147,7 +142,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Inverse_Pick_Perpendicular();
         }
 
-
         [CommandMethod("3DS", "_3DSPtLabelIns", CommandFlags.Modal)]
         public static void PtAtLabelIns()
         {
@@ -160,7 +154,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             PointUtils.Create_At_Label_Location(PointUtils.CreatePoint, true);
         }
 
-
         [CommandMethod("3DS", "_3DSInsertRaster", CommandFlags.Modal)]
         public static void InsertRasterImg()
         {
@@ -171,22 +164,9 @@ namespace _3DS_CivilSurveySuite.ACAD2017
         [CommandMethod("3DS", "_3DSTraverse", CommandFlags.Modal)]
         public static void Traverse()
         {
-            // TraverseUtils.Traverse();
-            ExecuteCommand<TraverseCommand>();
+            CommandHelpers.ExecuteCommand<TraverseCommand>();
         }
 
-        public static void ExecuteCommand<T>() where T : IAcadCommand
-        {
-            try
-            {
-                var cmd = Activator.CreateInstance<T>();
-                cmd.Execute();
-            }
-            catch (Exception ex)
-            {
-                // Log(ex);
-            }
-        }
 
         #endregion
 
