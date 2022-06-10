@@ -4,6 +4,7 @@
 // prior written consent of the copyright owner.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.Shared.Models;
 
 namespace _3DS_CivilSurveySuite.Shared.Services.Interfaces
@@ -12,6 +13,6 @@ namespace _3DS_CivilSurveySuite.Shared.Services.Interfaces
     {
         string DescriptionKeyFile { get; set; }
 
-        void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
+        Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
     }
 }
