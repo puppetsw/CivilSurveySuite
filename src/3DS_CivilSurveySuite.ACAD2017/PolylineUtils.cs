@@ -148,20 +148,26 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static void DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
         {
-            var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false) { Layer = layerName };
-            btr.AppendEntity(pLine3d);
-            tr.AddNewlyCreatedDBObject(pLine3d, true);
+            using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false) { Layer = layerName })
+            {
+                btr.AppendEntity(pLine3d);
+                tr.AddNewlyCreatedDBObject(pLine3d, true);
+            }
         }
 
         public static void DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
         {
-            var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null);
-            var pLine = new Polyline();
-            pLine.ConvertFrom(pLine2d, false);
-            pLine.Layer = layerName;
-            pLine.Elevation = 0;
-            btr.AppendEntity(pLine);
-            tr.AddNewlyCreatedDBObject(pLine, true);
+            using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null))
+            {
+                using (var pLine = new Polyline())
+                {
+                    pLine.ConvertFrom(pLine2d, false);
+                    pLine.Layer = layerName;
+                    pLine.Elevation = 0;
+                    btr.AppendEntity(pLine);
+                    tr.AddNewlyCreatedDBObject(pLine, true);
+                }
+            }
         }
 
         /// <summary>

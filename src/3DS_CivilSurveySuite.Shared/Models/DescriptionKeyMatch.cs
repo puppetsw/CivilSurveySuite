@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 
 namespace _3DS_CivilSurveySuite.Shared.Models
 {
@@ -8,8 +9,8 @@ namespace _3DS_CivilSurveySuite.Shared.Models
     /// </summary>
     public class DescriptionKeyMatch
     {
-        public DescriptionKey DescriptionKey { get; private set; }
-        public Dictionary<string, List<CivilPoint>> JoinablePoints { get; set; }
+        public DescriptionKey DescriptionKey { get; }
+        public Dictionary<string, List<CivilPoint>> JoinablePoints { get; }
 
         public DescriptionKeyMatch(DescriptionKey descriptionKey)
         {
@@ -17,9 +18,15 @@ namespace _3DS_CivilSurveySuite.Shared.Models
             JoinablePoints = new Dictionary<string, List<CivilPoint>>();
         }
 
+        /// <summary>
+        /// Builds the Regex match pattern for each <see cref="DescriptionKey"/>.
+        /// </summary>
+        /// <param name="descriptionKey">The description key.</param>
+        /// <remarks>This pattern should detect when there is a whitespace between the code and the number.</remarks>
+        /// <returns>A string containing the regex pattern using the given <see cref="DescriptionKey"/>.</returns>
         private static string BuildPattern(DescriptionKey descriptionKey)
         {
-            return "^(" + descriptionKey.Key.Replace("#", ")(\\d\\d?\\d?)").Replace("*", ".*?");
+            return "^(" + descriptionKey.Key.Replace("#", ")(\\s?\\d\\d?\\d?)").Replace("*", ".*?");
         }
 
         /// <summary>
@@ -30,8 +37,14 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <returns></returns>
         public static string LineNumber(string rawDescription, DescriptionKey descriptionKey)
         {
-            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
-            return regMatch.Success ? regMatch.Groups[2].Value : string.Empty;
+            Match regMatch = Regex.Match(rawDescription.ToUpperInvariant(), BuildPattern(descriptionKey));
+            if (!regMatch.Success)
+            {
+                return string.Empty;
+            }
+
+            var match = regMatch.Groups[2].Value;
+            return match;
         }
 
         /// <summary>
@@ -42,8 +55,14 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <returns></returns>
         public static string Description(string rawDescription, DescriptionKey descriptionKey)
         {
-            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
-            return regMatch.Success ? regMatch.Groups[1].Value : string.Empty;
+            Match regMatch = Regex.Match(rawDescription.ToUpperInvariant(), BuildPattern(descriptionKey));
+            if (!regMatch.Success)
+            {
+                return string.Empty;
+            }
+
+            var match = regMatch.Groups[1].Value;
+            return match;
         }
 
         /// <summary>
@@ -52,9 +71,16 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <param name="rawDescription"></param>
         /// <param name="descriptionKey"></param>
         /// <returns></returns>
-        public static bool IsMatch(string rawDescription, DescriptionKey descriptionKey)
+        public static bool IsMatch(string rawDescription, DescriptionKey descriptionKey, ILogger logger = null)
         {
-            Match regMatch = Regex.Match(rawDescription, BuildPattern(descriptionKey));
+            var matchPattern = BuildPattern(descriptionKey);
+            Match regMatch = Regex.Match(rawDescription.ToUpperInvariant(), matchPattern);
+
+            if (regMatch.Success)
+            {
+                logger?.Info($"MATCH! Pattern: {matchPattern}, RawDes: {rawDescription}, DesKey: {descriptionKey.Key}");
+            }
+
             return regMatch.Success;
         }
 
