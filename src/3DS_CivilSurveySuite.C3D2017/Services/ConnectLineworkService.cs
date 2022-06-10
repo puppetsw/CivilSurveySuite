@@ -7,7 +7,9 @@
 //Description : Connects CogoPoints with linework.
 ///////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
@@ -22,7 +24,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
     {
         public string DescriptionKeyFile { get; set; }
 
-        // ReSharper disable once CognitiveComplexity
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
             using (Transaction tr = AcadApp.StartLockedTransaction())
@@ -71,7 +72,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 var bt = (BlockTable) tr.GetObject(AcadApp.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
-                ProcessSpecialCodes(desMapping);
+                var processedList = ProcessSpecialCodes(desMapping);
 
                 foreach (var desKey in desMapping)
                 {
@@ -79,6 +80,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                     AcadApp.Logger.Info($"Joining {deskeyMatch.DescriptionKey.Key}");
 
+                    // TODO: Change to the processedList.
                     foreach (var joinablePoints in deskeyMatch.JoinablePoints)
                     {
                         Point3dCollection points = new Point3dCollection();
@@ -117,8 +119,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
             return Task.CompletedTask;
         }
 
-        private static void ProcessSpecialCodes(Dictionary<string, DescriptionKeyMatch> desMapping)
+        private static IEnumerable<JoinablePoint> ProcessSpecialCodes(Dictionary<string, DescriptionKeyMatch> desMapping)
         {
+            var list = new List<JoinablePoint>();
+
             foreach (var desKey in desMapping)
             {
                 DescriptionKeyMatch deskeyMatch = desKey.Value;
@@ -127,17 +131,43 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     for (var index = 0; index < joinablePoint.Value.Count; index++)
                     {
                         JoinablePoint point = joinablePoint.Value[index];
+
                         if (point.HasSpecialCode)
                         {
                             AcadApp.Logger.Info($"Special Code FOUND! {point.SpecialCode}");
 
                             // Check for valid special codes.
+                            if (!IsValidSpecialCode(point.SpecialCode))
+                            {
+                                continue;
+                            }
 
-                            // Need to be able to look ahead and behind.
+                            // Need to be able to look ahead and behind. Use for
+                            // This is doing my head in at the moment.
                         }
                     }
                 }
             }
+
+            return list;
+        }
+
+        private static bool IsValidSpecialCode(string specialCode)
+        {
+            if (string.IsNullOrEmpty(specialCode))
+            {
+                throw new ArgumentNullException(nameof(specialCode));
+            }
+
+            switch (specialCode)
+            {
+                case ".SR":
+                case ".SL":
+                case ".T":
+                    return true;
+            }
+
+            return false;
         }
     }
 }
