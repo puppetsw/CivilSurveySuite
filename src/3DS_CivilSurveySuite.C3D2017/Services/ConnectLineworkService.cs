@@ -1,9 +1,14 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
+﻿///////////////////////////////////////////////////////////////////////////
+//FileName: ConnectLineworkService.cs
+//FileType: Visual C# Source file
+//Author : Scott Whitney
+//Created On : 7/8/2015 9:56:39 AM
+//Copyright : Scott Whitney. All Rights Reserved.
+//Description : Connects CogoPoints with linework.
+///////////////////////////////////////////////////////////////////////////
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
@@ -18,7 +23,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
         public string DescriptionKeyFile { get; set; }
 
         // ReSharper disable once CognitiveComplexity
-        public void ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
+        public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
             using (Transaction tr = AcadApp.StartLockedTransaction())
             {
@@ -46,6 +51,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                         string description = DescriptionKeyMatch.Description(cogoPoint.RawDescription, descriptionKey);
                         string lineNumber = DescriptionKeyMatch.LineNumber(cogoPoint.RawDescription, descriptionKey);
+                        string specialCode = DescriptionKeyMatch.SpecialCode(cogoPoint.RawDescription, descriptionKey);
 
                         DescriptionKeyMatch deskeyMatch;
                         if (desMapping.ContainsKey(description))
@@ -58,14 +64,15 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             desMapping.Add(description, deskeyMatch);
                         }
 
-                        deskeyMatch.AddCogoPoint(cogoPoint.ToCivilPoint(), lineNumber);
+                        deskeyMatch.AddCogoPoint(cogoPoint.ToCivilPoint(), lineNumber, specialCode, AcadApp.Logger);
                     }
                 }
 
                 var bt = (BlockTable) tr.GetObject(AcadApp.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
-                //TODO: add special code checks in here?
+                ProcessSpecialCodes(desMapping);
+
                 foreach (var desKey in desMapping)
                 {
                     DescriptionKeyMatch deskeyMatch = desKey.Value;
@@ -75,10 +82,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                     foreach (var joinablePoints in deskeyMatch.JoinablePoints)
                     {
                         Point3dCollection points = new Point3dCollection();
-                        foreach (CivilPoint point in joinablePoints.Value)
+                        foreach (var point in joinablePoints.Value)
                         {
-                            points.Add(new Point3d(point.Easting, point.Northing, point.Elevation));
-                            AcadApp.Logger.Info($"Connectable point: x:{point.Easting}, y:{point.Northing} DesKey: {point.RawDescription}");
+                            points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                            AcadApp.Logger.Info($"Connectable point: x:{point.CivilPoint.Easting}, y:{point.CivilPoint.Northing} DesKey: {point.CivilPoint.RawDescription}");
                         }
 
                         string layerName = deskeyMatch.DescriptionKey.Layer;
@@ -105,6 +112,31 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 }
 
                 tr.Commit();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static void ProcessSpecialCodes(Dictionary<string, DescriptionKeyMatch> desMapping)
+        {
+            foreach (var desKey in desMapping)
+            {
+                DescriptionKeyMatch deskeyMatch = desKey.Value;
+                foreach (var joinablePoint in deskeyMatch.JoinablePoints)
+                {
+                    for (var index = 0; index < joinablePoint.Value.Count; index++)
+                    {
+                        JoinablePoint point = joinablePoint.Value[index];
+                        if (point.HasSpecialCode)
+                        {
+                            AcadApp.Logger.Info($"Special Code FOUND! {point.SpecialCode}");
+
+                            // Check for valid special codes.
+
+                            // Need to be able to look ahead and behind.
+                        }
+                    }
+                }
             }
         }
     }

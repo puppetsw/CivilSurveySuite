@@ -5,6 +5,8 @@
 
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
@@ -31,11 +33,11 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public DescriptionKey SelectedKey { get; set; }
 
-        public RelayCommand AddRowCommand => new RelayCommand(AddRow, () => true);
+        public ICommand AddRowCommand => new RelayCommand(AddRow, () => true);
 
-        public RelayCommand RemoveRowCommand => new RelayCommand(RemoveRow, () => true);
+        public ICommand RemoveRowCommand => new RelayCommand(RemoveRow, () => true);
 
-        public RelayCommand ConnectCommand => new RelayCommand(ConnectLinework, () => true);
+        public ICommand ConnectCommand => new AsyncRelayCommand(ConnectLinework);
 
         public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
@@ -56,9 +58,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
             }
         }
 
-        private void ConnectLinework()
+        private async Task ConnectLinework()
         {
-            _connectLineworkService.ConnectCogoPoints(DescriptionKeys);
+            await _connectLineworkService.ConnectCogoPoints(DescriptionKeys);
         }
 
         /// <summary>
