@@ -3,14 +3,12 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
-using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
