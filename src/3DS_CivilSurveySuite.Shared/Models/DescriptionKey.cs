@@ -12,9 +12,13 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         private string _key;
         private string _layer;
 
+        /// <summary>
+        /// Gets the key value.
+        /// </summary>
+        /// <remarks>Always returns in Uppercase.</remarks>
         public string Key
         {
-            get => _key;
+            get => _key.ToUpperInvariant();
             set
             {
                 _key = value;
