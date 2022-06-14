@@ -336,5 +336,47 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
             intersectionPoint = new Point(x, y);
             return true;
         }
+
+        /// <summary>
+        /// Calculates a return leg based on two <see cref="Point"/>s.
+        /// </summary>
+        /// <param name="point1">The base point.</param>
+        /// <param name="point2">The second point for bearing.</param>
+        /// <param name="leftLeg">If true, calculated point is left of line, else right of line.</param>
+        /// <param name="distance">Leg distance.</param>
+        /// <returns>A <see cref="Point"/> representing the new points location.</returns>
+        public static Point CalculateRightAngleTurn(Point point1, Point point2, bool leftLeg = true, double distance = 2.0)
+        {
+            var forwardAngle = AngleHelpers.GetAngleBetweenPoints(point1, point2);
+
+            if (leftLeg)
+            {
+                forwardAngle -= 90;
+            }
+            else
+            {
+                forwardAngle += 90;
+            }
+
+            var newPoint = AngleAndDistanceToPoint(forwardAngle, distance, point1);
+            return newPoint;
+        }
+
+        /// <summary>
+        /// Calculates the third point in a rectangle given 3 existing points.
+        /// </summary>
+        /// <param name="point1">The base point.</param>
+        /// <param name="point2">The second point.</param>
+        /// <param name="point3">The third point.</param>
+        /// <remarks>Elevation is calculated as an average of the 3 points.</remarks>
+        /// <returns>A <see cref="Point"/> representing the third point of a rectangle.</returns>
+        public static Point CalculateRectanglePoint(Point point1, Point point2, Point point3)
+        {
+            var distance = GetDistanceBetweenPoints(point2, point3);
+            var angle = AngleHelpers.GetAngleBetweenPoints(point2, point3);
+
+            var newPoint = AngleAndDistanceToPoint(angle, distance, point1);
+            return newPoint;
+        }
     }
 }
