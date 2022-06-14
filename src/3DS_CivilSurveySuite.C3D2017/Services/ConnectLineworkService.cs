@@ -74,34 +74,38 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         for (var i = 0; i < joinablePoints.Value.Count; i++)
                         {
                             var point = joinablePoints.Value[i];
-                            if (point.HasSpecialCode)
+
+                            try
                             {
-                                if (point.SpecialCode.Contains(".S") && points.Count != 0)
+                                if (point.HasSpecialCode)
                                 {
-                                    pointList.Add(points);
-                                    points = new Point3dCollection();
-                                }
+                                    if (point.SpecialCode.Contains(".S") && points.Count != 0)
+                                    {
+                                        pointList.Add(points);
+                                        points = new Point3dCollection();
+                                    }
 
-                                if (point.SpecialCode.Contains(".SL") || point.SpecialCode.Contains(".L"))
-                                {
-                                    // Calculate left point.
-                                    // Look ahead two points
-                                    var point1 = new Point(point.CivilPoint.Easting, point.CivilPoint.Northing);
-                                    var nextPt = joinablePoints.Value[i + 1];
-
-                                    var point2 = new Point(nextPt.CivilPoint.Easting, nextPt.CivilPoint.Northing);
-                                    var forwardAngle = AngleHelpers.GetAngleBetweenPoints(point1, point2);
-                                    forwardAngle -= 90;
-
-                                    // Calculate left point.
-                                    const double distance = 2.0;
-                                    var pt = PointHelpers.AngleAndDistanceToPoint(forwardAngle, distance, point1);
-
-                                    points.Add(pt.ToPoint3d());
+                                    switch (point.SpecialCode)
+                                    {
+                                        case ".SL":
+                                        case ".L":
+                                            points.Add(CalculateReturnLegPoint(point, joinablePoints.Value[i + 1], LegDirection.Left));
+                                            break;
+                                        case ".SR":
+                                        case ".R":
+                                            points.Add(CalculateReturnLegPoint(point, joinablePoints.Value[i + 1], LegDirection.Right));
+                                            break;
+                                    }
                                 }
                             }
-
-                            points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                            catch (IndexOutOfRangeException e)
+                            {
+                                AcadApp.Logger.Error(e, e.Message);
+                            }
+                            finally
+                            {
+                                points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                            }
                         }
 
                         pointList.Add(points);
@@ -130,6 +134,36 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 tr.Commit();
             }
             return Task.CompletedTask;
+        }
+
+        private enum LegDirection
+        {
+            Left,
+            Right
+        }
+
+        private static Point3d CalculateReturnLegPoint(JoinablePoint point1, JoinablePoint point2, LegDirection legDirection, double distance = 2)
+        {
+            var pt1 = new Point(point1.CivilPoint.Easting, point1.CivilPoint.Northing);
+            var pt2 = new Point(point2.CivilPoint.Easting, point2.CivilPoint.Northing);
+
+            var forwardAngle = AngleHelpers.GetAngleBetweenPoints(pt1, pt2);
+
+            switch (legDirection)
+            {
+                case LegDirection.Left:
+                    forwardAngle -= 90;
+                    break;
+                case LegDirection.Right:
+                    forwardAngle += 90;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(legDirection), legDirection, null);
+            }
+
+            var newPt = PointHelpers.AngleAndDistanceToPoint(forwardAngle, distance, pt1);
+
+            return newPt.ToPoint3d();
         }
     }
 }
