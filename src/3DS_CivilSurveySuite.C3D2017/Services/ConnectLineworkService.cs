@@ -1,15 +1,4 @@
-﻿///////////////////////////////////////////////////////////////////////////
-//FileName: ConnectLineworkService.cs
-//FileType: Visual C# Source file
-//Author : Scott Whitney
-//Created On : 7/8/2015 9:56:39 AM
-//Copyright : Scott Whitney. All Rights Reserved.
-//Description : Connects CogoPoints with linework.
-///////////////////////////////////////////////////////////////////////////
-
-using System;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
@@ -20,6 +9,9 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
+    /// <summary>
+    /// Connects CogoPoints with linework.
+    /// </summary>
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
@@ -72,102 +64,57 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 var bt = (BlockTable) tr.GetObject(AcadApp.ActiveDocument.Database.BlockTableId, OpenMode.ForRead);
                 var btr = (BlockTableRecord) tr.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
 
-                var processedList = ProcessSpecialCodes(desMapping);
-
                 foreach (var desKey in desMapping)
                 {
                     DescriptionKeyMatch deskeyMatch = desKey.Value;
 
-                    AcadApp.Logger.Info($"Joining {deskeyMatch.DescriptionKey.Key}");
-
-                    // TODO: Change to the processedList.
                     foreach (var joinablePoints in deskeyMatch.JoinablePoints)
                     {
+                        var pointList = new List<Point3dCollection>();
                         Point3dCollection points = new Point3dCollection();
+
                         foreach (var point in joinablePoints.Value)
                         {
+                            if (point.HasSpecialCode)
+                            {
+                                if (point.SpecialCode.Contains(".S") && points.Count != 0)
+                                {
+                                    pointList.Add(points);
+                                    points = new Point3dCollection();
+                                }
+                            }
+
                             points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
-                            AcadApp.Logger.Info($"Connectable point: x:{point.CivilPoint.Easting}, y:{point.CivilPoint.Northing} DesKey: {point.CivilPoint.RawDescription}");
                         }
+
+                        pointList.Add(points);
 
                         string layerName = deskeyMatch.DescriptionKey.Layer;
 
-                        //Check if the layer exists, if not create it.
                         if (!LayerUtils.HasLayer(layerName, tr))
                         {
-                            AcadApp.Logger.Info($"Creating layer: {layerName}");
                             LayerUtils.CreateLayer(layerName, tr);
                         }
 
-                        if (deskeyMatch.DescriptionKey.Draw2D)
+                        foreach (var list in pointList)
                         {
-                            PolylineUtils.DrawPolyline2d(tr, btr, points, layerName);
-                        }
+                            if (deskeyMatch.DescriptionKey.Draw2D)
+                            {
+                                PolylineUtils.DrawPolyline2d(tr, btr, list, layerName);
+                            }
 
-                        if (deskeyMatch.DescriptionKey.Draw3D)
-                        {
-                            PolylineUtils.DrawPolyline3d(tr, btr, points, layerName);
+                            if (deskeyMatch.DescriptionKey.Draw3D)
+                            {
+                                PolylineUtils.DrawPolyline3d(tr, btr, list, layerName);
+                            }
                         }
                     }
-
-                    AcadApp.Logger.Info($"Completed joining {deskeyMatch.DescriptionKey.Key}");
                 }
 
                 tr.Commit();
             }
 
             return Task.CompletedTask;
-        }
-
-        private static IEnumerable<JoinablePoint> ProcessSpecialCodes(Dictionary<string, DescriptionKeyMatch> desMapping)
-        {
-            var list = new List<JoinablePoint>();
-
-            foreach (var desKey in desMapping)
-            {
-                DescriptionKeyMatch deskeyMatch = desKey.Value;
-                foreach (var joinablePoint in deskeyMatch.JoinablePoints)
-                {
-                    for (var index = 0; index < joinablePoint.Value.Count; index++)
-                    {
-                        JoinablePoint point = joinablePoint.Value[index];
-
-                        if (point.HasSpecialCode)
-                        {
-                            AcadApp.Logger.Info($"Special Code FOUND! {point.SpecialCode}");
-
-                            // Check for valid special codes.
-                            if (!IsValidSpecialCode(point.SpecialCode))
-                            {
-                                continue;
-                            }
-
-                            // Need to be able to look ahead and behind. Use for
-                            // This is doing my head in at the moment.
-                        }
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        private static bool IsValidSpecialCode(string specialCode)
-        {
-            if (string.IsNullOrEmpty(specialCode))
-            {
-                throw new ArgumentNullException(nameof(specialCode));
-            }
-
-            switch (specialCode)
-            {
-                case ".SR":
-                case ".SL":
-                case ".T":
-                    return true;
-            }
-
-            return false;
         }
     }
 }
