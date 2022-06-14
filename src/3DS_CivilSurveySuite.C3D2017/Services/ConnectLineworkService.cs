@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Shared.Extensions;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
-using Point = _3DS_CivilSurveySuite.Shared.Models.Point;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
@@ -89,17 +89,37 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     {
                                         case ".SL":
                                         case ".L":
-                                            points.Add(CalculateReturnLegPoint(point, joinablePoints.Value[i + 1], LegDirection.Left));
+                                        {
+                                            var point1 = point.CivilPoint.ToPoint();
+                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
+                                            points.Add(PointHelpers.CalculateRightAngleTurn(point1, point2).ToPoint3d());
                                             break;
+                                        }
                                         case ".SR":
                                         case ".R":
-                                            points.Add(CalculateReturnLegPoint(point, joinablePoints.Value[i + 1], LegDirection.Right));
+                                        {
+                                            var point1 = point.CivilPoint.ToPoint();
+                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
+                                            var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
+                                            points.Add(newPoint.ToPoint3d());
                                             break;
+                                        }
+                                        case ".RT":
+                                        {
+                                            var point1 = point.CivilPoint.ToPoint();
+                                            var point2 = joinablePoints.Value[i - 1].CivilPoint.ToPoint();
+                                            var point3 = joinablePoints.Value[i - 2].CivilPoint.ToPoint();
+                                            var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
+                                            points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                                            points.Add(newPoint.ToPoint3d());
+                                            continue;
+                                        }
                                     }
                                 }
                             }
                             catch (IndexOutOfRangeException e)
                             {
+                                AcadApp.Logger.Info($"Special code error at: Pt#{point.CivilPoint.PointNumber}, {point.CivilPoint.RawDescription}");
                                 AcadApp.Logger.Error(e, e.Message);
                             }
                             finally
@@ -134,36 +154,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 tr.Commit();
             }
             return Task.CompletedTask;
-        }
-
-        private enum LegDirection
-        {
-            Left,
-            Right
-        }
-
-        private static Point3d CalculateReturnLegPoint(JoinablePoint point1, JoinablePoint point2, LegDirection legDirection, double distance = 2)
-        {
-            var pt1 = new Point(point1.CivilPoint.Easting, point1.CivilPoint.Northing);
-            var pt2 = new Point(point2.CivilPoint.Easting, point2.CivilPoint.Northing);
-
-            var forwardAngle = AngleHelpers.GetAngleBetweenPoints(pt1, pt2);
-
-            switch (legDirection)
-            {
-                case LegDirection.Left:
-                    forwardAngle -= 90;
-                    break;
-                case LegDirection.Right:
-                    forwardAngle += 90;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(legDirection), legDirection, null);
-            }
-
-            var newPt = PointHelpers.AngleAndDistanceToPoint(forwardAngle, distance, pt1);
-
-            return newPt.ToPoint3d();
         }
     }
 }
