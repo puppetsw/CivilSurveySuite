@@ -29,7 +29,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         {
             if (matchSpecial)
             {
-                return "^(" + descriptionKey.Key.Replace("#", ")(\\s?\\d\\d?\\d?)(\\.\\w\\w?)?").Replace("*", ".*?");
+                return "^(" + descriptionKey.Key.Replace("#", ")(\\s?\\d\\d?\\d?)(\\.\\w\\w?\\w?\\w?)?").Replace("*", ".*?");
             }
 
             return "^(" + descriptionKey.Key.Replace("#", ")(\\s?\\d\\d?\\d?)").Replace("*", ".*?");

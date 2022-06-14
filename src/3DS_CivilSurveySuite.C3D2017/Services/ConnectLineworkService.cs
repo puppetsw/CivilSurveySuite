@@ -104,18 +104,21 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             points.Add(newPoint.ToPoint3d());
                                             break;
                                         }
-                                        case ".RT":
+                                        case ".RECT":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
                                             var point2 = joinablePoints.Value[i - 1].CivilPoint.ToPoint();
                                             var point3 = joinablePoints.Value[i - 2].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
+                                            var averageZ = (point1.Z + point2.Z + point3.Z) / 3;
+                                            var newPoint3d = new Point3d(newPoint.X, newPoint.Y, averageZ);
                                             points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
-                                            points.Add(newPoint.ToPoint3d());
+                                            points.Add(newPoint3d);
                                             continue;
                                         }
                                     }
                                 }
+                                points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
                             }
                             catch (IndexOutOfRangeException e)
                             {
@@ -124,7 +127,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             }
                             finally
                             {
-                                points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
                             }
                         }
 
