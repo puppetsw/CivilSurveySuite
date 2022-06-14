@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
+using Point = _3DS_CivilSurveySuite.Shared.Models.Point;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
@@ -24,11 +27,6 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                 foreach (ObjectId pointId in C3DApp.ActiveDocument.CogoPoints)
                 {
-                    // FIXED?: Seems like there could be a problem with the keys and stuff if they don't match up
-                    // 10/6/22 I wish I was more descriptive with this issue.
-                    // 10/6/22 Added upper invariant calls, hopefully solves this issue If I'm understanding what I wrote correctly.
-
-                    // TODO: add way to check for special codes e.g. SL or RECT
                     var cogoPoint = pointId.GetObject(OpenMode.ForRead) as CogoPoint;
                     if (cogoPoint == null)
                     {
@@ -73,14 +71,33 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         var pointList = new List<Point3dCollection>();
                         Point3dCollection points = new Point3dCollection();
 
-                        foreach (var point in joinablePoints.Value)
+                        for (var i = 0; i < joinablePoints.Value.Count; i++)
                         {
+                            var point = joinablePoints.Value[i];
                             if (point.HasSpecialCode)
                             {
                                 if (point.SpecialCode.Contains(".S") && points.Count != 0)
                                 {
                                     pointList.Add(points);
                                     points = new Point3dCollection();
+                                }
+
+                                if (point.SpecialCode.Contains(".SL") || point.SpecialCode.Contains(".L"))
+                                {
+                                    // Calculate left point.
+                                    // Look ahead two points
+                                    var point1 = new Point(point.CivilPoint.Easting, point.CivilPoint.Northing);
+                                    var nextPt = joinablePoints.Value[i + 1];
+
+                                    var point2 = new Point(nextPt.CivilPoint.Easting, nextPt.CivilPoint.Northing);
+                                    var forwardAngle = AngleHelpers.GetAngleBetweenPoints(point1, point2);
+                                    forwardAngle -= 90;
+
+                                    // Calculate left point.
+                                    const double distance = 2.0;
+                                    var pt = PointHelpers.AngleAndDistanceToPoint(forwardAngle, distance, point1);
+
+                                    points.Add(pt.ToPoint3d());
                                 }
                             }
 
@@ -110,10 +127,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         }
                     }
                 }
-
                 tr.Commit();
             }
-
             return Task.CompletedTask;
         }
     }
