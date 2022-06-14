@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\DistanceUnit.cs" />
+    <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />
     <Compile Include="Helpers\CommandHelpers.cs" />
     <Compile Include="Helpers\DataTableHelpers.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\DescriptionKey.cs" />
     <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="Models\GpsPosition.cs" />
+    <Compile Include="Models\JoinablePoint.cs" />
     <Compile Include="Models\ObservableObject.cs" />
     <Compile Include="Models\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

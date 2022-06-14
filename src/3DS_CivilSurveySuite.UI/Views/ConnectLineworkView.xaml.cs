@@ -37,5 +37,10 @@ namespace _3DS_CivilSurveySuite.UI.Views
                 (DataContext as ConnectLineworkViewModel)?.Save(destinationFilePath);
             }
         }
+
+        private void ConnectButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

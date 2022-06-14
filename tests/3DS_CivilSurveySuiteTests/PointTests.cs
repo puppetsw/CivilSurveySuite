@@ -3,6 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+using System.Windows.Controls;
+using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
@@ -41,6 +43,43 @@ namespace _3DS_CivilSurveySuiteTests
             var result = point.ToString();
 
             Assert.AreEqual(expectedString, result);
+        }
+
+        [Test]
+        public void TestLeftLegPoint()
+        {
+            var point1 = new Point(0, 0);
+            var point2 = new Point(0, 30);
+            var expectedPoint = new Point(-2, 0);
+
+            var result = PointHelpers.CalculateRightAngleTurn(point1, point2);
+
+            Assert.AreEqual(expectedPoint, result);
+        }
+
+        [Test]
+        public void TestRightLegPoint()
+        {
+            var point1 = new Point(0, 0);
+            var point2 = new Point(0, 30);
+            var expectedPoint = new Point(2, 0);
+
+            var result = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
+
+            Assert.AreEqual(expectedPoint, result);
+        }
+
+        [Test]
+        public void TestRectangleCalculate()
+        {
+            var point1 = new Point(0, 0);
+            var point2 = new Point(0, 30);
+            var point3 = new Point(15, 30);
+            var expectedPoint = new Point(15, 0);
+
+            var result = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
+
+            Assert.AreEqual(expectedPoint, result);
         }
     }
 }
