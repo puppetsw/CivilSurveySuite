@@ -1,24 +1,14 @@
 # TODO
 
-## Things to do before 1.0.0.0
-* Finish ribbon and toolbar.
-* Update Commands.md
-
-## House-keeping
-* Fix up tests
 
 ### General
 * Error detection method.
-* Toolbar & Menu
 * Settings
 * Link CogoPoint Labels (for moving)
 
 ### Setout Tool
 * Create block with point and text entities.
 * Export to CSV or Excel.
-
-### Linework Connector
-* Linework tool to replace SmartDraft -- in progress
 
 ### Point Reports
 > Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
