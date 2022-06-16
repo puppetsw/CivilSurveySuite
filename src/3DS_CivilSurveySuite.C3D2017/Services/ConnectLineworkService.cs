@@ -7,7 +7,6 @@ using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
@@ -89,7 +88,15 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
                                             var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
-                                            points.Add(PointHelpers.CalculateRightAngleTurn(point1, point2).ToPoint3d());
+
+                                            var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2);
+
+                                            var cloned = point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = newPoint.Z;
+
+                                            points.Add(cloned);
                                             break;
                                         }
                                         case ".SR":
@@ -98,7 +105,13 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             var point1 = point.CivilPoint.ToPoint();
                                             var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
-                                            points.Add(newPoint.ToPoint3d());
+
+                                            var cloned = point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = newPoint.Z;
+
+                                            points.Add(cloned);
                                             break;
                                         }
                                         case ".RECT":
@@ -108,9 +121,14 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             var point3 = surveyPoints.Value[i - 2].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
                                             var averageZ = (point1.Z + point2.Z + point3.Z) / 3;
-                                            var newPoint3d = new Point3d(newPoint.X, newPoint.Y, averageZ);
-                                            points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
-                                            points.Add(newPoint3d);
+
+                                            var cloned = point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = averageZ;
+
+                                            points.Add(point);
+                                            points.Add(cloned);
                                             continue;
                                         }
                                         case ".SC":
