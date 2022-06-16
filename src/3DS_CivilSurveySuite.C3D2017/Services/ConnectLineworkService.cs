@@ -7,6 +7,7 @@ using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
@@ -88,10 +89,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
                                             var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
-
                                             var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2);
 
-                                            var cloned = point.Clone();
+                                            var cloned = (SurveyPoint)point.Clone();
                                             cloned.CivilPoint.Easting = newPoint.X;
                                             cloned.CivilPoint.Northing = newPoint.Y;
                                             cloned.CivilPoint.Elevation = newPoint.Z;
@@ -106,7 +106,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
 
-                                            var cloned = point.Clone();
+                                            var cloned = (SurveyPoint)point.Clone();
                                             cloned.CivilPoint.Easting = newPoint.X;
                                             cloned.CivilPoint.Northing = newPoint.Y;
                                             cloned.CivilPoint.Elevation = newPoint.Z;
@@ -122,7 +122,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
                                             var averageZ = (point1.Z + point2.Z + point3.Z) / 3;
 
-                                            var cloned = point.Clone();
+                                            var cloned = (SurveyPoint)point.Clone();
                                             cloned.CivilPoint.Easting = newPoint.X;
                                             cloned.CivilPoint.Northing = newPoint.Y;
                                             cloned.CivilPoint.Elevation = averageZ;
@@ -163,12 +163,29 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                         {
                             if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                PolylineUtils.DrawPolyline2d(tr, btr, list, layerName);
+                                PolylineUtils.DrawPolyline2d(tr, btr, list.ToPoint3dCollection(), layerName);
                             }
 
                             if (deskeyMatch.DescriptionKey.Draw3D)
                             {
-                                PolylineUtils.DrawPolyline3d(tr, btr, list, layerName);
+                                PolylineUtils.DrawPolyline3d(tr, btr, list.ToPoint3dCollection(), layerName);
+                            }
+                        }
+
+                        // Check for curves
+                        foreach (var list in pointList)
+                        {
+                            foreach (var surveyPoint in list)
+                            {
+                                if (surveyPoint.StartCurve)
+                                {
+                                    AcadApp.Logger.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                }
+
+                                if (surveyPoint.EndCurve)
+                                {
+                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                }
                             }
                         }
                     }
