@@ -12,9 +12,6 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    /// <summary>
-    /// Connects CogoPoints with linework.
-    /// </summary>
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
@@ -66,14 +63,14 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 {
                     DescriptionKeyMatch deskeyMatch = desKey.Value;
 
-                    foreach (var joinablePoints in deskeyMatch.JoinablePoints)
+                    foreach (var surveyPoints in deskeyMatch.SurveyPoints)
                     {
-                        var pointList = new List<Point3dCollection>();
-                        Point3dCollection points = new Point3dCollection();
+                        var pointList = new List<List<SurveyPoint>>();
+                        var points = new List<SurveyPoint>();
 
-                        for (var i = 0; i < joinablePoints.Value.Count; i++)
+                        for (var i = 0; i < surveyPoints.Value.Count; i++)
                         {
-                            var point = joinablePoints.Value[i];
+                            var point = surveyPoints.Value[i];
 
                             try
                             {
@@ -82,7 +79,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     if (point.SpecialCode.Contains(".S") && points.Count != 0)
                                     {
                                         pointList.Add(points);
-                                        points = new Point3dCollection();
+                                        points = new List<SurveyPoint>();
                                     }
 
                                     switch (point.SpecialCode)
@@ -91,7 +88,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         case ".L":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
+                                            var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
                                             points.Add(PointHelpers.CalculateRightAngleTurn(point1, point2).ToPoint3d());
                                             break;
                                         }
@@ -99,7 +96,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         case ".R":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
+                                            var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
                                             points.Add(newPoint.ToPoint3d());
                                             break;
@@ -107,8 +104,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         case ".RECT":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i - 1].CivilPoint.ToPoint();
-                                            var point3 = joinablePoints.Value[i - 2].CivilPoint.ToPoint();
+                                            var point2 = surveyPoints.Value[i - 1].CivilPoint.ToPoint();
+                                            var point3 = surveyPoints.Value[i - 2].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
                                             var averageZ = (point1.Z + point2.Z + point3.Z) / 3;
                                             var newPoint3d = new Point3d(newPoint.X, newPoint.Y, averageZ);
@@ -116,17 +113,22 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             points.Add(newPoint3d);
                                             continue;
                                         }
+                                        case ".SC":
+                                        {
+                                            break;
+                                        }
+                                        case ".EC":
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
-                                points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                                points.Add(point);
                             }
                             catch (IndexOutOfRangeException e)
                             {
                                 AcadApp.Logger.Info($"Special code error at: Pt#{point.CivilPoint.PointNumber}, {point.CivilPoint.RawDescription}");
                                 AcadApp.Logger.Error(e, e.Message);
-                            }
-                            finally
-                            {
                             }
                         }
 
