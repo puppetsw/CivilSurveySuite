@@ -2,9 +2,9 @@
 
 namespace _3DS_CivilSurveySuite.Shared.Models
 {
-    public class SurveyPoint : IEquatable<SurveyPoint>
+    public class SurveyPoint : IEquatable<SurveyPoint>, ICloneable
     {
-        public CivilPoint CivilPoint { get; }
+        public CivilPoint CivilPoint { get; set; }
 
         public bool HasSpecialCode => !string.IsNullOrEmpty(SpecialCode);
 
@@ -70,9 +70,11 @@ namespace _3DS_CivilSurveySuite.Shared.Models
             }
         }
 
-        public SurveyPoint Clone()
+        public object Clone()
         {
-            return (SurveyPoint)MemberwiseClone();
+            var surveyPoint = (SurveyPoint)MemberwiseClone();
+            surveyPoint.CivilPoint = (CivilPoint)CivilPoint.Clone();
+            return surveyPoint;
         }
     }
 }

@@ -51,5 +51,16 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 return point.X + point.Y + point.Z != 0.0;
             return false;
         }
+
+        public static Point3dCollection ToPoint3dCollection(this List<SurveyPoint> surveyPoints)
+        {
+            Point3dCollection points = new Point3dCollection();
+            foreach (SurveyPoint surveyPoint in surveyPoints)
+            {
+                points.Add(new Point3d(surveyPoint.CivilPoint.Easting, surveyPoint.CivilPoint.Northing, surveyPoint.CivilPoint.Elevation));
+            }
+
+            return points;
+        }
     }
 }

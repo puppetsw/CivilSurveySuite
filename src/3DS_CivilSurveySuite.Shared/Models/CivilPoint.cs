@@ -12,7 +12,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
     /// <summary>
     /// Abstraction class for Civil 3D's CogoPoints.
     /// </summary>
-    public sealed class CivilPoint : INotifyPropertyChanged, IEquatable<CivilPoint>
+    public sealed class CivilPoint : INotifyPropertyChanged, IEquatable<CivilPoint>, ICloneable
     {
         private uint _pointNumber;
         private double _easting;
@@ -169,9 +169,9 @@ namespace _3DS_CivilSurveySuite.Shared.Models
             }
         }
 
-        public CivilPoint Clone()
+        public object Clone()
         {
-            return (CivilPoint)MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }
