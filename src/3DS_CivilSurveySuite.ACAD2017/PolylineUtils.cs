@@ -146,17 +146,20 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return GetPolylineSegmentAngle(polyline, pickedPoint);
         }
 
-        public static void DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
         {
+            ObjectId id;
             using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false) { Layer = layerName })
             {
-                btr.AppendEntity(pLine3d);
+                id = btr.AppendEntity(pLine3d);
                 tr.AddNewlyCreatedDBObject(pLine3d, true);
             }
+            return id;
         }
 
-        public static void DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
         {
+            ObjectId id;
             using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null))
             {
                 using (var pLine = new Polyline())
@@ -164,10 +167,11 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                     pLine.ConvertFrom(pLine2d, false);
                     pLine.Layer = layerName;
                     pLine.Elevation = 0;
-                    btr.AppendEntity(pLine);
+                    id = btr.AppendEntity(pLine);
                     tr.AddNewlyCreatedDBObject(pLine, true);
                 }
             }
+            return id;
         }
 
         /// <summary>
