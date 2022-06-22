@@ -14,6 +14,10 @@ namespace _3DS_CivilSurveySuite.Shared.Models
 
         public bool EndCurve { get; }
 
+        public bool Closed { get; }
+
+        public bool IsProcessed { get; set; }
+
         public SurveyPoint(CivilPoint civilPoint, string specialCode)
         {
             CivilPoint = civilPoint;
@@ -29,6 +33,11 @@ namespace _3DS_CivilSurveySuite.Shared.Models
                 case ".EC":
                 {
                     EndCurve = true;
+                    break;
+                }
+                case ".RECT":
+                {
+                    Closed = true;
                     break;
                 }
             }
@@ -66,6 +75,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
                 hashCode = (hashCode * 397) ^ (SpecialCode != null ? SpecialCode.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ StartCurve.GetHashCode();
                 hashCode = (hashCode * 397) ^ EndCurve.GetHashCode();
+                hashCode = (hashCode * 397) ^ Closed.GetHashCode();
                 return hashCode;
             }
         }

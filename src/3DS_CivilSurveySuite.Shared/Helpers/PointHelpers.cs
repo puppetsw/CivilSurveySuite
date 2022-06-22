@@ -378,5 +378,21 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
             var newPoint = AngleAndDistanceToPoint(angle, distance, point1);
             return newPoint;
         }
+
+        /// <summary>
+        /// Sets a <see cref="Point"/>'s elevation on a grade between two <see cref="Point"/>.
+        /// </summary>
+        /// <param name="point">The subject point.</param>
+        /// <param name="startGrade">Starting grade point.</param>
+        /// <param name="endGrade">Ending grade point.</param>
+        /// <returns>A <see cref="Point"/> representing the new elevation. </returns>
+        public static Point SetElevationOnGrade(this Point point, Point startGrade, Point endGrade)
+        {
+            var gradeDeltaZ = endGrade.Z - startGrade.Z;
+            var gradeLength = GetDistanceBetweenPoints(startGrade, endGrade, decimalPlaces: 8);
+            var distanceAlongGrade = GetDistanceBetweenPoints(startGrade, point, decimalPlaces: 8);
+            var newElevation = startGrade.Z + gradeDeltaZ * (distanceAlongGrade / gradeLength);
+            return new Point(point.X, point.Y, newElevation);
+        }
     }
 }

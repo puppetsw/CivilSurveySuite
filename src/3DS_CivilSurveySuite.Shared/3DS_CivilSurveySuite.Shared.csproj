@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ArcDirection.cs" />
     <Compile Include="Enums\DistanceUnit.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />

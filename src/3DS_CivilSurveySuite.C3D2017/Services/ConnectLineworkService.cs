@@ -12,6 +12,13 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
+    public class SurveyPointList : List<SurveyPoint>
+    {
+        public ObjectId Polyline3d { get; set; }
+
+        public ObjectId Polyline2d { get; set; }
+    }
+
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
@@ -65,8 +72,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                     foreach (var surveyPoints in deskeyMatch.SurveyPoints)
                     {
-                        var pointList = new List<List<SurveyPoint>>();
-                        var points = new List<SurveyPoint>();
+                        var pointList = new List<SurveyPointList>();
+                        var points = new SurveyPointList();
 
                         for (var i = 0; i < surveyPoints.Value.Count; i++)
                         {
@@ -76,10 +83,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             {
                                 if (point.HasSpecialCode)
                                 {
-                                    if (point.SpecialCode.Contains(".S") && points.Count != 0)
+                                    if (point.SpecialCode.Equals(".S") && points.Count != 0)
                                     {
                                         pointList.Add(points);
-                                        points = new List<SurveyPoint>();
+                                        points = new SurveyPointList();
                                     }
 
                                     switch (point.SpecialCode)
@@ -131,12 +138,9 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                             points.Add(cloned);
                                             continue;
                                         }
-                                        case ".SC":
+                                        case ".CLS":
                                         {
-                                            break;
-                                        }
-                                        case ".EC":
-                                        {
+                                            
                                             break;
                                         }
                                     }
@@ -145,7 +149,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             }
                             catch (IndexOutOfRangeException e)
                             {
-                                AcadApp.Logger.Info($"Special code error at: Pt#{point.CivilPoint.PointNumber}, {point.CivilPoint.RawDescription}");
+                                AcadApp.Logger.Info($"Coding error at: PT#{point.CivilPoint.PointNumber}, DES:{point.CivilPoint.RawDescription}");
                                 AcadApp.Logger.Error(e, e.Message);
                             }
                         }
@@ -161,31 +165,66 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                         foreach (var list in pointList)
                         {
+                            var pointCollection = new Point3dCollection();
+                            for (var index = 0; index < list.Count; index++)
+                            {
+                                var surveyPoint = list[index];
+
+                                if (surveyPoint.IsProcessed)
+                                {
+                                    continue;
+                                }
+
+                                if (surveyPoint.StartCurve)
+                                {
+                                    AcadApp.Logger.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+
+                                    surveyPoint.IsProcessed = true;
+                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+
+                                    if (!list[index + 2].EndCurve)
+                                    {
+                                        continue;
+                                    }
+
+                                    // Convert ARC to 3d polyline with grading
+
+                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+
+                                    var startPoint = surveyPoint.CivilPoint.ToPoint();
+                                    var midPoint = list[index + 1].CivilPoint.ToPoint();
+                                    var endPoint = list[index + 2].CivilPoint.ToPoint();
+                                    var arc = new CircularArc3d(startPoint.ToFlattenedPoint3d(), midPoint.ToFlattenedPoint3d(), endPoint.ToFlattenedPoint3d());
+                                    var arcPoints = arc.CurvePoints();
+
+                                    foreach (var arcPoint in arcPoints)
+                                    {
+                                        // Grade in reverse?
+                                        //BUG: Grade ignores midpoint
+                                        //double distance = curve.GetDistAtPoint(curve.GetClosestpointTo(pickedPoint));
+                                        var gradedPoint = arcPoint.ToPoint().SetElevationOnGrade(endPoint, startPoint).ToPoint3d();
+                                        pointCollection.Add(gradedPoint);
+                                    }
+
+                                    // Set the midpoint of arc to processed.
+                                    // So that it doesn't get added again.
+                                    list[index + 1].IsProcessed = true;
+                                }
+                                else
+                                {
+                                    surveyPoint.IsProcessed = true;
+                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+                                }
+                            }
+
                             if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                PolylineUtils.DrawPolyline2d(tr, btr, list.ToPoint3dCollection(), layerName);
+                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName);
                             }
 
                             if (deskeyMatch.DescriptionKey.Draw3D)
                             {
-                                PolylineUtils.DrawPolyline3d(tr, btr, list.ToPoint3dCollection(), layerName);
-                            }
-                        }
-
-                        // Check for curves
-                        foreach (var list in pointList)
-                        {
-                            foreach (var surveyPoint in list)
-                            {
-                                if (surveyPoint.StartCurve)
-                                {
-                                    AcadApp.Logger.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
-                                }
-
-                                if (surveyPoint.EndCurve)
-                                {
-                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
-                                }
+                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName);
                             }
                         }
                     }
