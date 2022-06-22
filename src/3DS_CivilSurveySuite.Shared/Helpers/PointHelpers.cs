@@ -11,6 +11,8 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
 {
     public static class PointHelpers
     {
+        public static double DistanceTo(this Point point1, Point point2) => GetDistanceBetweenPoints(point1, point2);
+
         /// <summary>
         /// Gets distance between two coordinates.
         /// </summary>
@@ -393,6 +395,16 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
             var distanceAlongGrade = GetDistanceBetweenPoints(startGrade, point, decimalPlaces: 8);
             var newElevation = startGrade.Z + gradeDeltaZ * (distanceAlongGrade / gradeLength);
             return new Point(point.X, point.Y, newElevation);
+        }
+
+        public static int DeflectionDirection(Point startPoint, Point endPoint, Point midPoint)
+        {
+            if ((endPoint.X - startPoint.X) * (midPoint.Y - startPoint.Y) - (endPoint.Y - startPoint.Y) * (midPoint.X - startPoint.X) <= 0.0)
+            {
+                return 1;
+            }
+
+            return -1;
         }
     }
 }
