@@ -8,6 +8,22 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     {
         private const double TOLERANCE = 1E-08;
 
+        public static double GetArcBulge(this CircularArc2d circularArc)
+        {
+            double bulge = circularArc.EndAngle - circularArc.StartAngle;
+            if (bulge < 0.0)
+            {
+                bulge += 2.0 * Math.PI;
+            }
+
+            if (circularArc.IsClockWise)
+            {
+                bulge *= -1.0;
+            }
+
+            return Math.Tan(bulge * 0.25);
+        }
+
         public static double GetLength3D(this Curve3d circularArc)
         {
             return circularArc.GetLength(0, 1, TOLERANCE);
