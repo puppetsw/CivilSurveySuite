@@ -140,7 +140,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         }
                                         case ".CLS":
                                         {
-                                            
+
                                             break;
                                         }
                                     }
@@ -194,7 +194,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     var startPoint = surveyPoint.CivilPoint.ToPoint();
                                     var midPoint = list[index + 1].CivilPoint.ToPoint();
                                     var endPoint = list[index + 2].CivilPoint.ToPoint();
-                                    var arc = new CircularArc3d(startPoint.ToFlattenedPoint3d(), midPoint.ToFlattenedPoint3d(), endPoint.ToFlattenedPoint3d());
+                                    var arc = new CircularArc3d(startPoint.ToFlatPoint3d(), midPoint.ToFlatPoint3d(), endPoint.ToFlatPoint3d());
                                     var arcPoints = arc.CurvePoints();
 
                                     foreach (var arcPoint in arcPoints)
