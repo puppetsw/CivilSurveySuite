@@ -19,7 +19,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static Point3d ToPoint3d(this Point point) => new Point3d(point.X, point.Y, point.Z);
 
-        public static Point3d ToFlattenedPoint3d(this Point point) => new Point3d(point.X, point.Y, 0.0);
+        public static Point3d ToFlatPoint3d(this Point point) => new Point3d(point.X, point.Y, 0.0);
 
         public static Point3d ToPoint3d(this Point2d point, double elevation = 0) => new Point3d(point.X, point.Y, elevation);
 

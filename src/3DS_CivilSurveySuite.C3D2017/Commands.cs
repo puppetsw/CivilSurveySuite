@@ -1,12 +1,39 @@
 ﻿using _3DS_CivilSurveySuite.ACAD2017;
+using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.UI.Views;
+using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Autodesk.Civil.DatabaseServices;
 
 [assembly: CommandClass(typeof(_3DS_CivilSurveySuite.C3D2017.Commands))]
 namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class Commands
     {
+        [CommandMethod("3DS", "_3DSTestFeatureLineCurve", CommandFlags.Modal)]
+        public static void TestCommand()
+        {
+            CommandHelpers.ExecuteCommand<TestFeatureLineCurveCommand>();
+        }
+
+        [CommandMethod("3DS", "_3DSTestFeatureLineSite", CommandFlags.Modal)]
+        public static void TestCommand1()
+        {
+            EditorUtils.TryGetEntityOfType<FeatureLine>("", "", out var objectId);
+
+            using (var tr = AcadApp.StartTransaction())
+            {
+                var fl = (FeatureLine)tr.GetObject(objectId, OpenMode.ForRead);
+
+                var o = ObjectId.Null;
+                var id = fl.SiteId;
+
+                AcadApp.WriteMessage(id.ToString());
+
+                tr.Commit();
+            }
+        }
+
         #region CogoPoints
         [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
         public static void CptBrgDist()

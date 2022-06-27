@@ -397,6 +397,13 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
             return new Point(point.X, point.Y, newElevation);
         }
 
+        /// <summary>
+        /// Detect direction of points (Clockwise or Counter-Clockwise)
+        /// </summary>
+        /// <param name="startPoint"></param>
+        /// <param name="endPoint"></param>
+        /// <param name="midPoint"></param>
+        /// <returns><c>1</c> If clockwise, <c>-1</c> if counter-clockwise.</returns>
         public static int DeflectionDirection(Point startPoint, Point endPoint, Point midPoint)
         {
             if ((endPoint.X - startPoint.X) * (midPoint.Y - startPoint.Y) - (endPoint.Y - startPoint.Y) * (midPoint.X - startPoint.X) <= 0.0)
