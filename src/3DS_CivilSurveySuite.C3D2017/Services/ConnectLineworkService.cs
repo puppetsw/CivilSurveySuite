@@ -255,7 +255,11 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 // Add midpoint for curve.
                                 for (int i = 0; i < midPointCollection.Count; i++)
                                 {
-                                    featureLine.InsertElevationPoint(featureLine.GetClosestPointTo(midPointCollection[i], true));
+                                    // Get position of the featureline
+                                    var pointOnFeatureLine = featureLine.GetClosestPointTo(midPointCollection[i], false);
+                                    // Create a new point using the correct height and position.
+                                    var midPoint = new Point3d(pointOnFeatureLine.X, pointOnFeatureLine.Y, midPointCollection[i].Z);
+                                    featureLine.InsertElevationPoint(midPoint);
                                 }
 
                                 // Delete the temporary polyline.
