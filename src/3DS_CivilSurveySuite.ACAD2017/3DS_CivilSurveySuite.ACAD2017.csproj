@@ -76,6 +76,7 @@
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="GeometryUtils.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="LineTypeUtils.cs" />
     <Compile Include="ObjectIdExtensions.cs" />

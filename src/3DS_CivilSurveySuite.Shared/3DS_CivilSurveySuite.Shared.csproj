@@ -71,6 +71,7 @@
     <Compile Include="Models\DescriptionKey.cs" />
     <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="Models\GpsPosition.cs" />
+    <Compile Include="Models\RadiusPoint.cs" />
     <Compile Include="Models\SurveyPoint.cs" />
     <Compile Include="Models\ObservableObject.cs" />
     <Compile Include="Models\Point.cs" />
