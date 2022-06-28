@@ -237,21 +237,35 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return new Line(segment.StartPoint, segment.EndPoint);
         }
 
-
-        public static RadiusPoint SegmentRadiusPoint(this Polyline pline, double param)
+        public static RadiusPoint SegmentRadiusPoint(this Polyline polyline, double param)
         {
             var radiusPoint = new RadiusPoint();
-            double bulgeAt = pline.GetBulgeAt((int) param);
+            double bulgeAt = polyline.GetBulgeAt((int) param);
 
             if (Math.Abs(bulgeAt) > 0.0)
             {
-                Vector3d secondDerivative = pline.GetSecondDerivative(param);
-                int bulgeDirection = bulgeAt > 0.0 ? -1 : 1;
+                var secondDerivative = polyline.GetSecondDerivative(param);
+
+                int bulgeDirection;
+                if (bulgeAt > 0.0)
+                {
+                    bulgeDirection = -1;
+                }
+                else
+                {
+                    bulgeDirection = 1;
+                }
+
                 radiusPoint.Radius = secondDerivative.Length * bulgeDirection;
-                double num2 = secondDerivative.AngleOnPlane(GeometryUtils.PlaneXY);
-                Point3d pointAtParameter = pline.GetPointAtParameter(param);
-                radiusPoint.Point = new Point(pointAtParameter.X - Math.Cos(num2) * radiusPoint.Radius, pointAtParameter.Y - Math.Sin(num2) * radiusPoint.Radius, 0.0);
+
+                var num2 = secondDerivative.AngleOnPlane(GeometryUtils.PlaneXY);
+                var pointAtParameter = polyline.GetPointAtParameter(param);
+
+                radiusPoint.Point = new Point(
+                    pointAtParameter.X - Math.Cos(num2) * radiusPoint.Radius,
+                    pointAtParameter.Y - Math.Sin(num2) * radiusPoint.Radius, 0.0);
             }
+
             return radiusPoint;
         }
 
