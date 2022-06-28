@@ -54,6 +54,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return point3dList;
         }
 
+        public static double ArcLengthByMidOrdinate(double radius, double midOrdinate) => 2.0 * Math.Acos((radius - midOrdinate) / radius) * radius;
+
         //
         // public static bool SetWeighted(this CircularArc3d circArc, List<Point3d> pointList, List<double> weightedList)
         // {
