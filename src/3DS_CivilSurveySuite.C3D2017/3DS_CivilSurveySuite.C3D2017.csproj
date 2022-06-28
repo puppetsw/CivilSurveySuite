@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
+    <Compile Include="FeatureLineUtils.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="CogoPointUtils.cs" />
@@ -111,6 +112,9 @@
     <None Include="3DS_CSS_CIVIL_light.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,16 +8,25 @@ using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
 {
-    /// <summary>
-    /// Connects CogoPoints with linework.
-    /// </summary>
+    public class SurveyPointList : List<SurveyPoint>
+    {
+        public ObjectId Polyline3d { get; set; }
+
+        public ObjectId Polyline2d { get; set; }
+    }
+
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
+
+        public double MidOrdinate { get; set; } = 0.01;
+
+        private const string TEMPORARY_SITE_NAME = "Survey Import";
 
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
@@ -66,23 +75,23 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 {
                     DescriptionKeyMatch deskeyMatch = desKey.Value;
 
-                    foreach (var joinablePoints in deskeyMatch.JoinablePoints)
+                    foreach (var surveyPoints in deskeyMatch.SurveyPoints)
                     {
-                        var pointList = new List<Point3dCollection>();
-                        Point3dCollection points = new Point3dCollection();
+                        var pointList = new List<SurveyPointList>();
+                        var points = new SurveyPointList();
 
-                        for (var i = 0; i < joinablePoints.Value.Count; i++)
+                        for (var i = 0; i < surveyPoints.Value.Count; i++)
                         {
-                            var point = joinablePoints.Value[i];
+                            var point = surveyPoints.Value[i];
 
                             try
                             {
                                 if (point.HasSpecialCode)
                                 {
-                                    if (point.SpecialCode.Contains(".S") && points.Count != 0)
+                                    if (point.SpecialCode.Equals(".S") && points.Count != 0)
                                     {
                                         pointList.Add(points);
-                                        points = new Point3dCollection();
+                                        points = new SurveyPointList();
                                     }
 
                                     switch (point.SpecialCode)
@@ -91,42 +100,63 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         case ".L":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
-                                            points.Add(PointHelpers.CalculateRightAngleTurn(point1, point2).ToPoint3d());
+                                            var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
+                                            var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2);
+
+                                            var cloned = (SurveyPoint)point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = newPoint.Z;
+
+                                            points.Add(cloned);
                                             break;
                                         }
                                         case ".SR":
                                         case ".R":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i + 1].CivilPoint.ToPoint();
+                                            var point2 = surveyPoints.Value[i + 1].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRightAngleTurn(point1, point2, false);
-                                            points.Add(newPoint.ToPoint3d());
+
+                                            var cloned = (SurveyPoint)point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = newPoint.Z;
+
+                                            points.Add(cloned);
                                             break;
                                         }
                                         case ".RECT":
                                         {
                                             var point1 = point.CivilPoint.ToPoint();
-                                            var point2 = joinablePoints.Value[i - 1].CivilPoint.ToPoint();
-                                            var point3 = joinablePoints.Value[i - 2].CivilPoint.ToPoint();
+                                            var point2 = surveyPoints.Value[i - 1].CivilPoint.ToPoint();
+                                            var point3 = surveyPoints.Value[i - 2].CivilPoint.ToPoint();
                                             var newPoint = PointHelpers.CalculateRectanglePoint(point1, point2, point3);
                                             var averageZ = (point1.Z + point2.Z + point3.Z) / 3;
-                                            var newPoint3d = new Point3d(newPoint.X, newPoint.Y, averageZ);
-                                            points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
-                                            points.Add(newPoint3d);
+
+                                            var cloned = (SurveyPoint)point.Clone();
+                                            cloned.CivilPoint.Easting = newPoint.X;
+                                            cloned.CivilPoint.Northing = newPoint.Y;
+                                            cloned.CivilPoint.Elevation = averageZ;
+
+                                            points.Add(point);
+                                            points.Add(cloned);
                                             continue;
+                                        }
+                                        case ".CLS":
+                                        {
+                                            // Don't need to do anything here.
+                                            // It's handled by the SurveyPoint constructor.
+                                            break;
                                         }
                                     }
                                 }
-                                points.Add(new Point3d(point.CivilPoint.Easting, point.CivilPoint.Northing, point.CivilPoint.Elevation));
+                                points.Add(point);
                             }
                             catch (IndexOutOfRangeException e)
                             {
-                                AcadApp.Logger.Info($"Special code error at: Pt#{point.CivilPoint.PointNumber}, {point.CivilPoint.RawDescription}");
-                                AcadApp.Logger.Error(e, e.Message);
-                            }
-                            finally
-                            {
+                                AcadApp.Logger?.Info($"Coding error at: PT#{point.CivilPoint.PointNumber}, DES:{point.CivilPoint.RawDescription}");
+                                AcadApp.Logger?.Error(e, e.Message);
                             }
                         }
 
@@ -141,18 +171,127 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                         foreach (var list in pointList)
                         {
-                            if (deskeyMatch.DescriptionKey.Draw2D)
+                            bool hasCurve = false;
+                            bool isClosed = false;
+                            var pointCollection = new Point3dCollection();
+                            var midPointCollection = new Point3dCollection();
+                            var polyline = new Polyline();
+                            for (var index = 0; index < list.Count; index++)
                             {
-                                PolylineUtils.DrawPolyline2d(tr, btr, list, layerName);
+                                var surveyPoint = list[index];
+
+                                if (surveyPoint.IsProcessed)
+                                {
+                                    continue;
+                                }
+
+                                if (surveyPoint.Closed)
+                                {
+                                    isClosed = true;
+                                }
+
+                                if (surveyPoint.StartCurve)
+                                {
+                                    hasCurve = true;
+                                    AcadApp.Logger?.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                    AcadApp.Logger?.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+
+                                    surveyPoint.IsProcessed = true;
+
+                                    var startPoint = surveyPoint.CivilPoint.ToPoint();
+                                    var midPoint = list[index + 1].CivilPoint.ToPoint();
+                                    var endPoint = list[index + 2].CivilPoint.ToPoint();
+
+                                    midPointCollection.Add(midPoint.ToPoint3d());
+
+                                    // Set the midpoint of arc to processed.
+                                    // So that it doesn't get added again.
+                                    list[index + 1].IsProcessed = true;
+
+                                    var arc = new CircularArc2d(startPoint.ToPoint2d(), midPoint.ToPoint2d(), endPoint.ToPoint2d());
+                                    var bulge = arc.GetArcBulge();
+
+                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+
+                                    polyline.AddVertexAt(index, surveyPoint.CivilPoint.ToPoint().ToPoint2d(), bulge, 0, 0);
+                                    index++;
+                                    polyline.AddVertexAt(index, endPoint.ToPoint2d(), 0, 0, 0);
+                                }
+                                else
+                                {
+                                    surveyPoint.IsProcessed = true;
+                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+                                    polyline.AddVertexAt(index, surveyPoint.CivilPoint.ToPoint().ToPoint2d(), 0, 0, 0);
+                                }
                             }
 
-                            if (deskeyMatch.DescriptionKey.Draw3D)
+                            // Draw the polylines.
+                            if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                PolylineUtils.DrawPolyline3d(tr, btr, list, layerName);
+                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
+                            }
+
+                            if (deskeyMatch.DescriptionKey.Draw3D && !hasCurve)
+                            {
+                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
+                            }
+
+                            // Draw featureline if curve is found.
+                            if (deskeyMatch.DescriptionKey.Draw3D && hasCurve)
+                            {
+                                var polylineId = btr.AppendEntity(polyline);
+                                tr.AddNewlyCreatedDBObject(polyline, true);
+
+                                if (SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
+                                {
+                                    AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
+                                }
+
+                                var featureLineId = FeatureLine.Create("", polylineId, siteId);
+                                var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
+
+                                // Set layer.
+                                featureLine.Layer = layerName;
+
+                                // Set elevations.
+                                for (int i = 0; i < featureLine.GetPoints(FeatureLinePointType.AllPoints).Count; i++)
+                                {
+                                    featureLine.SetPointElevation(i, pointCollection[i].Z);
+                                }
+
+                                // Add midpoint for curve.
+                                for (int i = 0; i < midPointCollection.Count; i++)
+                                {
+                                    // Get position of the featureline
+                                    var pointOnFeatureLine = featureLine.GetClosestPointTo(midPointCollection[i], false);
+                                    // Create a new point using the correct height and position.
+                                    var midPoint = new Point3d(pointOnFeatureLine.X, pointOnFeatureLine.Y, midPointCollection[i].Z);
+                                    featureLine.InsertElevationPoint(midPoint);
+                                }
+
+                                // Delete the temporary polyline.
+                                polyline.Erase();
+
+                                if (!featureLine.TryConvertTo(tr, out var polyline3d, MidOrdinate))
+                                {
+                                    AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
+                                    continue;
+                                }
+                                featureLine.Erase();
+
+                                btr.AppendEntity(polyline3d);
+                                tr.AddNewlyCreatedDBObject(polyline3d, true);
                             }
                         }
                     }
                 }
+
+                // Clean up
+                AcadApp.Logger?.Warn(
+                    SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ?
+                        "TEMPORARY SITE DELETED." :
+                        "TEMPORARY SITE NOT DELETED.");
+
                 tr.Commit();
             }
             return Task.CompletedTask;

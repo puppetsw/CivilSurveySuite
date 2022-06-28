@@ -11,6 +11,8 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
 {
     public static class PointHelpers
     {
+        public static double DistanceTo(this Point point1, Point point2) => GetDistanceBetweenPoints(point1, point2);
+
         /// <summary>
         /// Gets distance between two coordinates.
         /// </summary>
@@ -377,6 +379,39 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
 
             var newPoint = AngleAndDistanceToPoint(angle, distance, point1);
             return newPoint;
+        }
+
+        /// <summary>
+        /// Sets a <see cref="Point"/>'s elevation on a grade between two <see cref="Point"/>.
+        /// </summary>
+        /// <param name="point">The subject point.</param>
+        /// <param name="startGrade">Starting grade point.</param>
+        /// <param name="endGrade">Ending grade point.</param>
+        /// <returns>A <see cref="Point"/> representing the new elevation. </returns>
+        public static Point SetElevationOnGrade(this Point point, Point startGrade, Point endGrade)
+        {
+            var gradeDeltaZ = endGrade.Z - startGrade.Z;
+            var gradeLength = GetDistanceBetweenPoints(startGrade, endGrade, decimalPlaces: 8);
+            var distanceAlongGrade = GetDistanceBetweenPoints(startGrade, point, decimalPlaces: 8);
+            var newElevation = startGrade.Z + gradeDeltaZ * (distanceAlongGrade / gradeLength);
+            return new Point(point.X, point.Y, newElevation);
+        }
+
+        /// <summary>
+        /// Detect direction of points (Clockwise or Counter-Clockwise)
+        /// </summary>
+        /// <param name="startPoint"></param>
+        /// <param name="endPoint"></param>
+        /// <param name="midPoint"></param>
+        /// <returns><c>1</c> If clockwise, <c>-1</c> if counter-clockwise.</returns>
+        public static int DeflectionDirection(Point startPoint, Point endPoint, Point midPoint)
+        {
+            if ((endPoint.X - startPoint.X) * (midPoint.Y - startPoint.Y) - (endPoint.Y - startPoint.Y) * (midPoint.X - startPoint.X) <= 0.0)
+            {
+                return 1;
+            }
+
+            return -1;
         }
     }
 }

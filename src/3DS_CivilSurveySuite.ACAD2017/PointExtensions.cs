@@ -19,6 +19,8 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 
         public static Point3d ToPoint3d(this Point point) => new Point3d(point.X, point.Y, point.Z);
 
+        public static Point3d ToFlatPoint3d(this Point point) => new Point3d(point.X, point.Y, 0.0);
+
         public static Point3d ToPoint3d(this Point2d point, double elevation = 0) => new Point3d(point.X, point.Y, elevation);
 
         public static Point ToPoint(this Point2d point) => new Point(point.X, point.Y);
@@ -50,6 +52,17 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             if (Math.Abs(point.X) < 1E+20 && Math.Abs(point.Y) < 1E+20 && Math.Abs(point.Z) < 1E+20)
                 return point.X + point.Y + point.Z != 0.0;
             return false;
+        }
+
+        public static Point3dCollection ToPoint3dCollection(this List<SurveyPoint> surveyPoints)
+        {
+            Point3dCollection points = new Point3dCollection();
+            foreach (SurveyPoint surveyPoint in surveyPoints)
+            {
+                points.Add(new Point3d(surveyPoint.CivilPoint.Easting, surveyPoint.CivilPoint.Northing, surveyPoint.CivilPoint.Elevation));
+            }
+
+            return points;
         }
     }
 }
