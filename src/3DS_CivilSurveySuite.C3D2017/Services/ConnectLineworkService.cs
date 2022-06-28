@@ -264,6 +264,18 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                                 // Delete the temporary polyline.
                                 polyline.Erase();
+
+                                // UNDONE: Undone until I work out a way to set the mid-ordinate for the exploded line
+                                // or add more points to the FL.
+                                // Explode FeatureLine
+                                /*var explodedFeatureLine = new DBObjectCollection();
+                                featureLine.Explode(explodedFeatureLine);
+                                var poly3d = explodedFeatureLine[0] as Polyline3d;
+
+                                featureLine.Erase();
+
+                                btr.AppendEntity(poly3d);
+                                tr.AddNewlyCreatedDBObject(poly3d, true);*/
                             }
                         }
                     }
