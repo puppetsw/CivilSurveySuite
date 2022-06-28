@@ -28,6 +28,7 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
         private const string TEMPORARY_SITE_NAME = "Survey Import";
 
+        //DEVIL CODE 666%
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
             using (Transaction tr = AcadApp.StartLockedTransaction())
