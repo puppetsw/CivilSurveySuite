@@ -161,5 +161,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
 
             return true;
         }
+
+        public static bool TryDeleteSite(Transaction tr, string siteName)
+        {
+            foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
+            {
+                var site = (Site)tr.GetObject(objectId, OpenMode.ForRead);
+                if (site.Name.Equals(siteName, StringComparison.InvariantCulture))
+                {
+                    site.Erase();
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

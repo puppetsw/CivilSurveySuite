@@ -24,6 +24,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
     {
         public string DescriptionKeyFile { get; set; }
 
+        private const string TEMPORARY_SITE_NAME = "Survey Import";
+
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
             using (Transaction tr = AcadApp.StartLockedTransaction())
@@ -151,8 +153,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                             }
                             catch (IndexOutOfRangeException e)
                             {
-                                AcadApp.Logger.Info($"Coding error at: PT#{point.CivilPoint.PointNumber}, DES:{point.CivilPoint.RawDescription}");
-                                AcadApp.Logger.Error(e, e.Message);
+                                AcadApp.Logger?.Info($"Coding error at: PT#{point.CivilPoint.PointNumber}, DES:{point.CivilPoint.RawDescription}");
+                                AcadApp.Logger?.Error(e, e.Message);
                             }
                         }
 
@@ -189,8 +191,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 if (surveyPoint.StartCurve)
                                 {
                                     hasCurve = true;
-                                    AcadApp.Logger.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
-                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                    AcadApp.Logger?.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                    AcadApp.Logger?.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
 
                                     surveyPoint.IsProcessed = true;
 
@@ -238,7 +240,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 var polylineId = btr.AppendEntity(polyline);
                                 tr.AddNewlyCreatedDBObject(polyline, true);
 
-                                SiteUtils.TryCreateSite(tr, "Survey Import", out var siteId);
+                                if (SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
+                                {
+                                    AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
+                                }
 
                                 var featureLineId = FeatureLine.Create("", polylineId, siteId);
                                 var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
@@ -265,21 +270,20 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 // Delete the temporary polyline.
                                 polyline.Erase();
 
-                                // UNDONE: Undone until I work out a way to set the mid-ordinate for the exploded line
-                                // or add more points to the FL.
-                                // Explode FeatureLine
-                                /*var explodedFeatureLine = new DBObjectCollection();
-                                featureLine.Explode(explodedFeatureLine);
-                                var poly3d = explodedFeatureLine[0] as Polyline3d;
-
+                                featureLine.TryConvertTo(tr, out var polyline3d);
                                 featureLine.Erase();
 
-                                btr.AppendEntity(poly3d);
-                                tr.AddNewlyCreatedDBObject(poly3d, true);*/
+                                btr.AppendEntity(polyline3d);
+                                tr.AddNewlyCreatedDBObject(polyline3d, true);
                             }
                         }
                     }
                 }
+
+                // Clean up
+                // Delete the temporary site.
+                AcadApp.Logger?.Warn(SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ? "TEMPORARY SITE DELETED." : "TEMPORARY SITE NOT DELETED.");
+
                 tr.Commit();
             }
             return Task.CompletedTask;

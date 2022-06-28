@@ -5,6 +5,7 @@
 
 using System;
 using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -235,5 +236,44 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var segment = polyline.GetLineSegmentAt(segmentStart);
             return new Line(segment.StartPoint, segment.EndPoint);
         }
+
+
+        public static RadiusPoint SegmentRadiusPoint(this Polyline pline, double param)
+        {
+            var radiusPoint = new RadiusPoint();
+            double bulgeAt = pline.GetBulgeAt((int) param);
+
+            if (Math.Abs(bulgeAt) > 0.0)
+            {
+                Vector3d secondDerivative = pline.GetSecondDerivative(param);
+                int bulgeDirection = bulgeAt > 0.0 ? -1 : 1;
+                radiusPoint.Radius = secondDerivative.Length * bulgeDirection;
+                double num2 = secondDerivative.AngleOnPlane(GeometryUtils.PlaneXY);
+                Point3d pointAtParameter = pline.GetPointAtParameter(param);
+                radiusPoint.Point = new Point(pointAtParameter.X - Math.Cos(num2) * radiusPoint.Radius, pointAtParameter.Y - Math.Sin(num2) * radiusPoint.Radius, 0.0);
+            }
+            return radiusPoint;
+        }
+
+        /*private static Point3d GetPointAtParameter3ds(this Curve oCurve, double param)
+        {
+            // If not closed and startpoint is not equal endpoint
+            // and param is greater than or equal to endparam
+            // return curve endpoint.
+            if (!oCurve.Closed && oCurve.StartPoint != oCurve.EndPoint && param >= oCurve.EndParam)
+            {
+                return oCurve.EndPoint;
+            }
+
+            // if param = 0 and curve is an alignment
+            // return the start point.
+            if (param == 0.0 && oCurve.ObjectId.ObjectClass.DxfName.Contains("ALIGNMENT"))
+            {
+                return oCurve.StartPoint;
+            }
+
+            // else use the normal parameter method.
+            return oCurve.GetPointAtParameter(param);
+        }*/
     }
 }
