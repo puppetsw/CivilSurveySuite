@@ -14,10 +14,14 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         public bool Equals(CivilSite other)
         {
             if (ReferenceEquals(null, other))
+            {
                 return false;
+            }
 
             if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
 
             return Name == other.Name
                    && Description == other.Description

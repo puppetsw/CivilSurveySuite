@@ -1,9 +1,4 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using _3DS_CivilSurveySuite.ACAD2017;
+﻿using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
 

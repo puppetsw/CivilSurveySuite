@@ -10,12 +10,13 @@ namespace _3DS_CivilSurveySuite.Shared.Models
     public class DescriptionKeyMatch
     {
         public DescriptionKey DescriptionKey { get; }
-        public Dictionary<string, List<JoinablePoint>> JoinablePoints { get; }
+
+        public Dictionary<string, List<SurveyPoint>> SurveyPoints { get; }
 
         public DescriptionKeyMatch(DescriptionKey descriptionKey)
         {
             DescriptionKey = descriptionKey;
-            JoinablePoints = new Dictionary<string, List<JoinablePoint>>();
+            SurveyPoints = new Dictionary<string, List<SurveyPoint>>();
         }
 
         /// <summary>
@@ -110,29 +111,29 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         }
 
         /// <summary>
-        /// Adds the <paramref name="civilPoint"/> to the <see cref="JoinablePoints"/>
+        /// Adds the <paramref name="civilPoint"/> to the <see cref="SurveyPoints"/>
         /// </summary>
         /// <param name="civilPoint"></param>
         /// <param name="lineNumber"></param>
         /// <param name="specialCode"></param>
         /// <remarks>
-        /// Checks if the <see cref="DescriptionKeyMatch.JoinablePoints"/> contains the current line number
+        /// Checks if the <see cref="SurveyPoints"/> contains the current line number
         /// for the point. If it does, add the current point to that dictionary using the key
         /// else, create a new list of points and add it using the key.
         /// </remarks>
         public void AddCogoPoint(CivilPoint civilPoint, string lineNumber, string specialCode, ILogger logger = null)
         {
-            var joinablePoint = new JoinablePoint(civilPoint, specialCode);
+            var joinablePoint = new SurveyPoint(civilPoint, specialCode);
 
-            if (JoinablePoints.ContainsKey(lineNumber))
+            if (SurveyPoints.ContainsKey(lineNumber))
             {
-                JoinablePoints[lineNumber].Add(joinablePoint);
+                SurveyPoints[lineNumber].Add(joinablePoint);
                 logger?.Info($"Adding to existing list {joinablePoint.CivilPoint.RawDescription}");
             }
             else
             {
-                var cogoPoints = new List<JoinablePoint> { joinablePoint };
-                JoinablePoints.Add(lineNumber, cogoPoints);
+                var cogoPoints = new List<SurveyPoint> { joinablePoint };
+                SurveyPoints.Add(lineNumber, cogoPoints);
                 logger?.Info($"Creating new list {joinablePoint.CivilPoint.RawDescription}");
             }
         }
