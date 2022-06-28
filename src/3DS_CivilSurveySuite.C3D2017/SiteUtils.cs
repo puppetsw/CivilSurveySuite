@@ -84,9 +84,11 @@ namespace _3DS_CivilSurveySuite.C3D2017
         /// <returns>IEnumerable&lt;CivilSite&gt;.</returns>
         public static IEnumerable<CivilSite> GetCivilSites()
         {
-            var sites = new List<CivilSite>();
-            // Add the None site.
-            sites.Add(CivilSite.NoneSite);
+            var sites = new List<CivilSite>
+            {
+                // Add the None site.
+                CivilSite.NoneSite
+            };
 
             using (var tr = AcadApp.StartTransaction())
             {
@@ -103,6 +105,75 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 tr.Commit();
             }
             return sites;
+        }
+
+        /// <summary>
+        /// Tries to create a site with the given name.
+        /// </summary>
+        /// <param name="tr">The active <see cref="Transaction"/>. If null starts a new <see cref="Transaction"/></param>
+        /// <param name="siteName">The name of the site to create.</param>
+        /// <param name="siteId">The <see cref="ObjectId"/> of the created site. Null if site not created.</param>
+        /// <returns><c>True</c> if the site was created successfully, otherwise <c>false</c>.</returns>
+        public static bool TryCreateSite(Transaction tr, string siteName, out ObjectId siteId)
+        {
+            siteId = ObjectId.Null;
+            if (string.IsNullOrEmpty(siteName))
+            {
+                return false;
+            }
+
+            bool CheckCreateSite(out ObjectId id)
+            {
+                id = ObjectId.Null;
+                foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
+                {
+                    var site = (Site)tr.GetObject(objectId, OpenMode.ForRead);
+                    if (site.Name.Equals(siteName, StringComparison.InvariantCulture))
+                    {
+                        // Site alread exsits
+                        return false;
+                    }
+                }
+
+                id = Site.Create(C3DApp.ActiveDocument, siteName);
+                return true;
+            }
+
+            if (tr == null)
+            {
+                using (tr = AcadApp.StartTransaction())
+                {
+                    if (!CheckCreateSite(out siteId))
+                    {
+                        return false;
+                    }
+
+                    tr.Commit();
+                }
+            }
+            else
+            {
+                if (!CheckCreateSite(out siteId))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool TryDeleteSite(Transaction tr, string siteName)
+        {
+            foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
+            {
+                var site = (Site)tr.GetObject(objectId, OpenMode.ForRead);
+                if (site.Name.Equals(siteName, StringComparison.InvariantCulture))
+                {
+                    site.Erase();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

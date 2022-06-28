@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ArcDirection.cs" />
     <Compile Include="Enums\DistanceUnit.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Helpers\AngleHelpers.cs" />
@@ -70,7 +71,8 @@
     <Compile Include="Models\DescriptionKey.cs" />
     <Compile Include="Models\DescriptionKeyMatch.cs" />
     <Compile Include="Models\GpsPosition.cs" />
-    <Compile Include="Models\JoinablePoint.cs" />
+    <Compile Include="Models\RadiusPoint.cs" />
+    <Compile Include="Models\SurveyPoint.cs" />
     <Compile Include="Models\ObservableObject.cs" />
     <Compile Include="Models\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

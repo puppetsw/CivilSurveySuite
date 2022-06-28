@@ -5,6 +5,7 @@
 
 using System;
 using _3DS_CivilSurveySuite.Shared.Helpers;
+using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
@@ -146,28 +147,32 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return GetPolylineSegmentAngle(polyline, pickedPoint);
         }
 
-        public static void DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName, bool closed = false)
         {
-            using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false) { Layer = layerName })
+            ObjectId id;
+            using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, closed) { Layer = layerName })
             {
-                btr.AppendEntity(pLine3d);
+                id = btr.AppendEntity(pLine3d);
                 tr.AddNewlyCreatedDBObject(pLine3d, true);
             }
+            return id;
         }
 
-        public static void DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName, bool closed = false)
         {
-            using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null))
+            ObjectId id;
+            using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, closed, 0, 0, null))
             {
                 using (var pLine = new Polyline())
                 {
                     pLine.ConvertFrom(pLine2d, false);
                     pLine.Layer = layerName;
                     pLine.Elevation = 0;
-                    btr.AppendEntity(pLine);
+                    id = btr.AppendEntity(pLine);
                     tr.AddNewlyCreatedDBObject(pLine, true);
                 }
             }
+            return id;
         }
 
         /// <summary>
@@ -231,5 +236,44 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             var segment = polyline.GetLineSegmentAt(segmentStart);
             return new Line(segment.StartPoint, segment.EndPoint);
         }
+
+
+        public static RadiusPoint SegmentRadiusPoint(this Polyline pline, double param)
+        {
+            var radiusPoint = new RadiusPoint();
+            double bulgeAt = pline.GetBulgeAt((int) param);
+
+            if (Math.Abs(bulgeAt) > 0.0)
+            {
+                Vector3d secondDerivative = pline.GetSecondDerivative(param);
+                int bulgeDirection = bulgeAt > 0.0 ? -1 : 1;
+                radiusPoint.Radius = secondDerivative.Length * bulgeDirection;
+                double num2 = secondDerivative.AngleOnPlane(GeometryUtils.PlaneXY);
+                Point3d pointAtParameter = pline.GetPointAtParameter(param);
+                radiusPoint.Point = new Point(pointAtParameter.X - Math.Cos(num2) * radiusPoint.Radius, pointAtParameter.Y - Math.Sin(num2) * radiusPoint.Radius, 0.0);
+            }
+            return radiusPoint;
+        }
+
+        /*private static Point3d GetPointAtParameter3ds(this Curve oCurve, double param)
+        {
+            // If not closed and startpoint is not equal endpoint
+            // and param is greater than or equal to endparam
+            // return curve endpoint.
+            if (!oCurve.Closed && oCurve.StartPoint != oCurve.EndPoint && param >= oCurve.EndParam)
+            {
+                return oCurve.EndPoint;
+            }
+
+            // if param = 0 and curve is an alignment
+            // return the start point.
+            if (param == 0.0 && oCurve.ObjectId.ObjectClass.DxfName.Contains("ALIGNMENT"))
+            {
+                return oCurve.StartPoint;
+            }
+
+            // else use the normal parameter method.
+            return oCurve.GetPointAtParameter(param);
+        }*/
     }
 }
