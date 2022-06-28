@@ -4,7 +4,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace _3DS_CivilSurveySuite.ACAD2017
 {
-    public static class CircularArc3dExtensions
+    public static class CircularArcExtensions
     {
         private const double TOLERANCE = 1E-08;
 

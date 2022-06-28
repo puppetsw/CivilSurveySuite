@@ -8,6 +8,7 @@ using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017.Services
@@ -140,7 +141,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                         }
                                         case ".CLS":
                                         {
-
+                                            // Don't need to do anything here.
+                                            // It's handled by the SurveyPoint constructor.
                                             break;
                                         }
                                     }
@@ -165,7 +167,11 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
 
                         foreach (var list in pointList)
                         {
+                            bool hasCurve = false;
+                            bool isClosed = false;
                             var pointCollection = new Point3dCollection();
+                            var midPointCollection = new Point3dCollection();
+                            var polyline = new Polyline();
                             for (var index = 0; index < list.Count; index++)
                             {
                                 var surveyPoint = list[index];
@@ -175,56 +181,85 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                     continue;
                                 }
 
+                                if (surveyPoint.Closed)
+                                {
+                                    isClosed = true;
+                                }
+
                                 if (surveyPoint.StartCurve)
                                 {
+                                    hasCurve = true;
                                     AcadApp.Logger.Info($"Start Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
+                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
 
                                     surveyPoint.IsProcessed = true;
-                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
-
-                                    if (!list[index + 2].EndCurve)
-                                    {
-                                        continue;
-                                    }
-
-                                    // Convert ARC to 3d polyline with grading
-
-                                    AcadApp.Logger.Info($"End Curve: {surveyPoint.CivilPoint.PointNumber}, {surveyPoint.CivilPoint.RawDescription}");
 
                                     var startPoint = surveyPoint.CivilPoint.ToPoint();
                                     var midPoint = list[index + 1].CivilPoint.ToPoint();
                                     var endPoint = list[index + 2].CivilPoint.ToPoint();
-                                    var arc = new CircularArc3d(startPoint.ToFlatPoint3d(), midPoint.ToFlatPoint3d(), endPoint.ToFlatPoint3d());
-                                    var arcPoints = arc.CurvePoints();
 
-                                    foreach (var arcPoint in arcPoints)
-                                    {
-                                        // Grade in reverse?
-                                        //BUG: Grade ignores midpoint
-                                        //double distance = curve.GetDistAtPoint(curve.GetClosestpointTo(pickedPoint));
-                                        var gradedPoint = arcPoint.ToPoint().SetElevationOnGrade(endPoint, startPoint).ToPoint3d();
-                                        pointCollection.Add(gradedPoint);
-                                    }
+                                    midPointCollection.Add(midPoint.ToPoint3d());
 
                                     // Set the midpoint of arc to processed.
                                     // So that it doesn't get added again.
                                     list[index + 1].IsProcessed = true;
+
+                                    var arc = new CircularArc2d(startPoint.ToPoint2d(), midPoint.ToPoint2d(), endPoint.ToPoint2d());
+                                    var bulge = arc.GetArcBulge();
+
+                                    pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+
+                                    polyline.AddVertexAt(index, surveyPoint.CivilPoint.ToPoint().ToPoint2d(), bulge, 0, 0);
+                                    index++;
+                                    polyline.AddVertexAt(index, endPoint.ToPoint2d(), 0, 0, 0);
                                 }
                                 else
                                 {
                                     surveyPoint.IsProcessed = true;
                                     pointCollection.Add(surveyPoint.CivilPoint.ToPoint().ToPoint3d());
+                                    polyline.AddVertexAt(index, surveyPoint.CivilPoint.ToPoint().ToPoint2d(), 0, 0, 0);
                                 }
                             }
 
+                            // Draw the polylines.
                             if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName);
+                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
                             }
 
-                            if (deskeyMatch.DescriptionKey.Draw3D)
+                            if (deskeyMatch.DescriptionKey.Draw3D && !hasCurve)
                             {
-                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName);
+                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
+                            }
+
+                            // Draw featureline if curve is found.
+                            if (deskeyMatch.DescriptionKey.Draw3D && hasCurve)
+                            {
+                                var polylineId = btr.AppendEntity(polyline);
+                                tr.AddNewlyCreatedDBObject(polyline, true);
+
+                                SiteUtils.TryCreateSite(tr, "Survey Import", out var siteId);
+
+                                var featureLineId = FeatureLine.Create("", polylineId, siteId);
+                                var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
+
+                                // Set layer.
+                                featureLine.Layer = layerName;
+
+                                // Set elevations.
+                                for (int i = 0; i < featureLine.GetPoints(FeatureLinePointType.AllPoints).Count; i++)
+                                {
+                                    featureLine.SetPointElevation(i, pointCollection[i].Z);
+                                }
+
+                                // Add midpoint for curve.
+                                for (int i = 0; i < midPointCollection.Count; i++)
+                                {
+                                    featureLine.InsertElevationPoint(featureLine.GetClosestPointTo(midPointCollection[i], true));
+                                }
+
+                                // Delete the temporary polyline.
+                                polyline.Erase();
                             }
                         }
                     }

@@ -146,10 +146,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return GetPolylineSegmentAngle(polyline, pickedPoint);
         }
 
-        public static ObjectId DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline3d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName, bool closed = false)
         {
             ObjectId id;
-            using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, false) { Layer = layerName })
+            using (var pLine3d = new Polyline3d(Poly3dType.SimplePoly, points, closed) { Layer = layerName })
             {
                 id = btr.AppendEntity(pLine3d);
                 tr.AddNewlyCreatedDBObject(pLine3d, true);
@@ -157,10 +157,10 @@ namespace _3DS_CivilSurveySuite.ACAD2017
             return id;
         }
 
-        public static ObjectId DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName)
+        public static ObjectId DrawPolyline2d(Transaction tr, BlockTableRecord btr, Point3dCollection points, string layerName, bool closed = false)
         {
             ObjectId id;
-            using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, false, 0, 0, null))
+            using (var pLine2d = new Polyline2d(Poly2dType.SimplePoly, points, 0, closed, 0, 0, null))
             {
                 using (var pLine = new Polyline())
                 {

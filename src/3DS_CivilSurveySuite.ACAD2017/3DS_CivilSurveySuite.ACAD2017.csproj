@@ -69,7 +69,7 @@
     <Compile Include="AcadApp.cs" />
     <Compile Include="AroFloUtils.cs" />
     <Compile Include="BlockUtils.cs" />
-    <Compile Include="CircularArc3dExtensions.cs" />
+    <Compile Include="CircularArcExtensions.cs" />
     <Compile Include="Commands\ShowDebugCommand.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
     <Compile Include="CurveUtils.cs" />

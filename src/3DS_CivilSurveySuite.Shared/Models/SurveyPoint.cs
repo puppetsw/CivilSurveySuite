@@ -40,6 +40,11 @@ namespace _3DS_CivilSurveySuite.Shared.Models
                     Closed = true;
                     break;
                 }
+                case ".CLS":
+                {
+                    Closed = true;
+                    break;
+                }
             }
         }
 
