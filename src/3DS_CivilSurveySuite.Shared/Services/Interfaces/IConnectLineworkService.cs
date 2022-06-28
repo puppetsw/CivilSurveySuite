@@ -13,6 +13,8 @@ namespace _3DS_CivilSurveySuite.Shared.Services.Interfaces
     {
         string DescriptionKeyFile { get; set; }
 
+        double MidOrdinate { get; set; }
+
         Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys);
     }
 }

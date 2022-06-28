@@ -24,6 +24,8 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
     {
         public string DescriptionKeyFile { get; set; }
 
+        public double MidOrdinate { get; set; } = 0.01;
+
         private const string TEMPORARY_SITE_NAME = "Survey Import";
 
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
@@ -270,7 +272,11 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                                 // Delete the temporary polyline.
                                 polyline.Erase();
 
-                                featureLine.TryConvertTo(tr, out var polyline3d);
+                                if (!featureLine.TryConvertTo(tr, out var polyline3d, MidOrdinate))
+                                {
+                                    AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
+                                    continue;
+                                }
                                 featureLine.Erase();
 
                                 btr.AppendEntity(polyline3d);
@@ -281,8 +287,10 @@ namespace _3DS_CivilSurveySuite.C3D2017.Services
                 }
 
                 // Clean up
-                // Delete the temporary site.
-                AcadApp.Logger?.Warn(SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ? "TEMPORARY SITE DELETED." : "TEMPORARY SITE NOT DELETED.");
+                AcadApp.Logger?.Warn(
+                    SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ?
+                        "TEMPORARY SITE DELETED." :
+                        "TEMPORARY SITE NOT DELETED.");
 
                 tr.Commit();
             }
