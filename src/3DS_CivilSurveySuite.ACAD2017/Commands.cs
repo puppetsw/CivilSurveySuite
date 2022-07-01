@@ -7,6 +7,14 @@ namespace _3DS_CivilSurveySuite.ACAD2017
 {
     public class Commands
     {
+        #region Menus
+        [CommandMethod("3DS", "_3DSLoadAcadMenu", CommandFlags.Modal)]
+        public static void LoadMenu()
+        {
+            AcadApp.LoadCuiFile(AcadApp.ACAD_TOOLBAR_FILE);
+        }
+        #endregion
+
         #region Help Commands
 
         // DEBUG

@@ -7,6 +7,16 @@ namespace _3DS_CivilSurveySuite.C3D2017
 {
     public static class Commands
     {
+        #region Menus
+
+        [CommandMethod("3DS", "_3DSLoadCivilMenu", CommandFlags.Modal)]
+        public static void LoadMenu()
+        {
+            C3DApp.LoadMenu();
+        }
+
+        #endregion
+
         #region CogoPoints
         [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
         public static void CptBrgDist()
