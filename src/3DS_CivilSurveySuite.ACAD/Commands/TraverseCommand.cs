@@ -6,9 +6,6 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 
-// ReSharper disable CheckNamespace
-// ReSharper disable ClassNeverInstantiated.Global
-
 namespace _3DS_CivilSurveySuite.ACAD
 {
     /// <summary>
