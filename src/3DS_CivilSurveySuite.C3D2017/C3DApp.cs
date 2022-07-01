@@ -46,16 +46,19 @@ namespace _3DS_CivilSurveySuite.C3D2017
                 AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_LoadingError")} {e.Message}");
                 AcadApp.Logger?.Error(e, ResourceHelpers.GetLocalisedString("C3D_LoadingError"));
             }
-
-            if (AcadApp.IsCivil3DRunning())
-            {
-                AcadApp.LoadCuiFile(CIVIL_TOOLBAR_CUI_FILE);
-            }
         }
 
         public void Terminate()
         {
             // Nothing to cleanup.
+        }
+
+        public static void LoadMenu()
+        {
+            if (AcadApp.IsCivil3DRunning())
+            {
+                AcadApp.LoadCuiFile(CIVIL_TOOLBAR_CUI_FILE);
+            }
         }
 
         public static void ShowDialog<TView>() where TView : Window
