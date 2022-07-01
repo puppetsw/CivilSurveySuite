@@ -1,10 +1,10 @@
-﻿using _3DS_CivilSurveySuite.ACAD.Commands;
+﻿using _3DS_CivilSurveySuite.ACAD;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: CommandClass(typeof(Commands))]
-namespace _3DS_CivilSurveySuite.ACAD.Commands
+namespace _3DS_CivilSurveySuite.ACAD
 {
     public class Commands
     {
