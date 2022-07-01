@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
 
-namespace _3DS_CivilSurveySuite.ACAD.Commands
+namespace _3DS_CivilSurveySuite.ACAD
 {
     public class ShowHelpCommand : IAcadCommand
     {
