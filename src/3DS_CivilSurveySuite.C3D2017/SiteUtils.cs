@@ -8,11 +8,7 @@ using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AECC.Interop.Land;
-using Autodesk.AECC.Interop.UiLand;
-using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.Interop;
-using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
