@@ -167,8 +167,6 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return true;
         }
 
-        private const string ACADPRODID = "AutoCAD.Application";
-
         public static bool TryDeleteSite(Transaction tr, string siteName)
         {
             var app = new AeccAppConnection();
