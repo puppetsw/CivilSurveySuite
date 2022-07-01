@@ -16,20 +16,8 @@
             }
         }
 
-        public dynamic AeccDoc
-        {
-            get
-            {
-                return AeccApp.ActiveDocument;
-            }
-        }
+        public dynamic AeccDoc => AeccApp.ActiveDocument;
 
-        public dynamic AeccDb
-        {
-            get
-            {
-                return AeccApp.ActiveDocument.Database;
-            }
-        }
+        public dynamic AeccDb => AeccApp.ActiveDocument.Database;
     }
 }
