@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 
 [assembly: ExtensionApplication(typeof(_3DS_CivilSurveySuite.Loader))]
@@ -24,48 +23,18 @@ namespace _3DS_CivilSurveySuite
             {
                 Assembly.Load(dll);
                 if (!IsAssemblyLoaded(dll))
+                {
                     throw new FileLoadException($"Unable to load {dll}");
+                }
             }
 
-            string versionYear = VersionYear();
-            if (string.IsNullOrEmpty(versionYear))
-                return;
-
-            Assembly.Load($"3DS_CivilSurveySuite.ACAD{versionYear}");
+            Assembly.Load($"3DS_CivilSurveySuite.ACAD");
 
             // Check if we are running Civil3D.
             if (IsCivil3D())
-                Assembly.Load($"3DS_CivilSurveySuite.C3D{versionYear}");
-        }
-
-        private static string VersionYear()
-        {
-            // Load plugin dlls
-            string registryProductRootKey = HostApplicationServices.Current.UserRegistryProductRootKey;
-
-            // Check which version to load.
-            string versionYear;
-            if (registryProductRootKey.Contains("\\R19.0\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R19.1\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R20.0\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R20.1\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R21.0\\"))
-                versionYear = "2017";
-            else if (registryProductRootKey.Contains("\\R22.0\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R23.0\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R23.1\\"))
-                versionYear = "";
-            else if (registryProductRootKey.Contains("\\R24.0\\"))
-                versionYear = "";
-            else
-                versionYear = "";
-            return versionYear;
+            {
+                Assembly.Load($"3DS_CivilSurveySuite.CIVIL");
+            }
         }
 
         public void Terminate()
@@ -82,7 +51,7 @@ namespace _3DS_CivilSurveySuite
         {
             var currentDomain = AppDomain.CurrentDomain;
             var assemblies = currentDomain.GetAssemblies();
-            return assemblies.Any(assem => assem.GetName().Name == assemblyName);
+            return assemblies.Any(assembly => assembly.GetName().Name == assemblyName);
         }
     }
 }

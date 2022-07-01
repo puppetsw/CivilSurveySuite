@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1A198AD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite", "src\3DS_CivilSurveySuite\3DS_CivilSurveySuite.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.ACAD2017", "src\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj", "{27174B74-79D3-4579-8AAE-D4EAECB04B3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.ACAD", "src\3DS_CivilSurveySuite.ACAD\3DS_CivilSurveySuite.ACAD.csproj", "{27174B74-79D3-4579-8AAE-D4EAECB04B3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.C3D2017", "src\3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj", "{6996AD26-737E-4A36-999B-FF6C051C1B2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.CIVIL", "src\3DS_CivilSurveySuite.CIVIL\3DS_CivilSurveySuite.CIVIL.csproj", "{6996AD26-737E-4A36-999B-FF6C051C1B2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DS_CivilSurveySuite.UI", "src\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj", "{0431E86D-1A04-4F76-8AFC-193F84FA7965}"
 EndProject
