@@ -28,7 +28,7 @@ namespace _3DS_CivilSurveySuite.ACAD2017
     /// </summary>
     public sealed class AcadApp : IExtensionApplication
     {
-        private const string ACAD_TOOLBAR_FILE = "3DS_CSS_ACAD.cuix";
+        public const string ACAD_TOOLBAR_FILE = "3DS_CSS_ACAD.cuix";
 
         /// <summary>
         /// Gets the <see cref="DocumentManager"/>.
@@ -61,17 +61,6 @@ namespace _3DS_CivilSurveySuite.ACAD2017
                 Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
                 Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
                 Logger.Info("ACAD Services registered successfully.");
-
-#if !DEBUG
-                // If Civil 3D is running we will load the civil ribbon and menu only.
-                if (!IsCivil3DRunning())
-                {
-                    LoadCuiFile(ACAD_TOOLBAR_FILE);
-                }
-#else
-                LoadCuiFile(ACAD_TOOLBAR_FILE);
-#endif
-
             }
             catch (InvalidOperationException e)
             {
