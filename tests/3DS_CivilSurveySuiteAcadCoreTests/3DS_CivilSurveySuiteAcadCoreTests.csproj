@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.ACAD2017\3DS_CivilSurveySuite.ACAD2017.csproj" />
-    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.C3D2017\3DS_CivilSurveySuite.C3D2017.csproj" />
+    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.ACAD\3DS_CivilSurveySuite.ACAD.csproj" />
+    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.CIVIL\3DS_CivilSurveySuite.CIVIL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
