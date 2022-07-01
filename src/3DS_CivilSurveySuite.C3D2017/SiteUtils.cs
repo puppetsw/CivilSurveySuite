@@ -7,7 +7,12 @@ using System;
 using System.Collections.Generic;
 using _3DS_CivilSurveySuite.ACAD2017;
 using _3DS_CivilSurveySuite.Shared.Models;
+using Autodesk.AECC.Interop.Land;
+using Autodesk.AECC.Interop.UiLand;
+using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Interop;
+using Autodesk.AutoCAD.Runtime;
 using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.C3D2017
@@ -162,18 +167,42 @@ namespace _3DS_CivilSurveySuite.C3D2017
             return true;
         }
 
+        private const string ACADPRODID = "AutoCAD.Application";
+
         public static bool TryDeleteSite(Transaction tr, string siteName)
         {
-            foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
+            var app = new AeccAppConnection();
+
+            if (app.AeccApp != null)
+            {
+                int index = 0;
+                foreach (AeccSite site in app.AeccDb.Sites)
+                {
+                    if (site.Name.Equals(siteName))
+                    {
+                        app.AeccDb.Sites.Remove(index);
+                        return true;
+                    }
+
+                    index++;
+                }
+            }
+
+            return false;
+            // UNDONE: Can't delete site using Erase()
+            // See: https://forums.autodesk.com/t5/civil-3d-customization/removing-sites/td-p/4687437
+            // Also see: https://forums.autodesk.com/t5/civil-3d-customization/erase-site/m-p/4759889
+            /*foreach (ObjectId objectId in C3DApp.ActiveDocument.GetSiteIds())
             {
                 var site = (Site)tr.GetObject(objectId, OpenMode.ForRead);
                 if (site.Name.Equals(siteName, StringComparison.InvariantCulture))
                 {
+                    site.UpgradeOpen();
                     site.Erase();
                     return true;
                 }
             }
-            return false;
+            return false;*/
         }
     }
 }
