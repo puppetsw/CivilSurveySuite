@@ -170,7 +170,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
             if (app.AeccApp != null)
             {
                 int index = 0;
-                foreach (AeccSite site in app.AeccDb.Sites)
+                foreach (dynamic site in app.AeccDb.Sites)
                 {
                     if (site.Name.Equals(siteName))
                     {
