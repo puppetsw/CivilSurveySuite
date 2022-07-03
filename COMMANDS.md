@@ -109,6 +109,11 @@
 | 3DSShowCogoPointEditor | Shows the CogoPoint editor dialog. |
 | 3DSShowCogoPointFindReplace | Shows the CogoPoint find/replace dialog. |
 
+## Feature Lines
+| Command | Description |
+| --- | ----------- |
+| 3DSFLATTENFEATURELINE | Flattens selected feature lines. (sets elevation to 0 for each vertex) |
+
 ## Labels
 | Command | Description |
 | --- | ----------- |
