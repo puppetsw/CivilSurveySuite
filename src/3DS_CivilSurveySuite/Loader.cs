@@ -1,9 +1,4 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,12 +9,25 @@ namespace _3DS_CivilSurveySuite
 {
     public class Loader : IExtensionApplication
     {
+        private const string ACAD_DLL = "3DS_CivilSurveySuite.ACAD";
+        private const string CIVIL_DLL = "3DS_CivilSurveySuite.CIVIL";
+        private readonly string[] _supportDlls = { "Microsoft.Xaml.Behaviors" };
+
         public void Initialize()
         {
-            // Load supporting DLLs.
-            string[] supportDlls = { "Microsoft.Xaml.Behaviors" };
+            LoadSupportAssemblies();
+            Assembly.Load(ACAD_DLL);
+            if (IsCivil3D())
+            {
+                Assembly.Load(CIVIL_DLL);
+            }
+        }
 
-            foreach (string dll in supportDlls)
+        public void Terminate() { }
+
+        private void LoadSupportAssemblies()
+        {
+            foreach (string dll in _supportDlls)
             {
                 Assembly.Load(dll);
                 if (!IsAssemblyLoaded(dll))
@@ -27,19 +35,6 @@ namespace _3DS_CivilSurveySuite
                     throw new FileLoadException($"Unable to load {dll}");
                 }
             }
-
-            Assembly.Load($"3DS_CivilSurveySuite.ACAD");
-
-            // Check if we are running Civil3D.
-            if (IsCivil3D())
-            {
-                Assembly.Load($"3DS_CivilSurveySuite.CIVIL");
-            }
-        }
-
-        public void Terminate()
-        {
-            // Do nothing.
         }
 
         private static bool IsCivil3D()
