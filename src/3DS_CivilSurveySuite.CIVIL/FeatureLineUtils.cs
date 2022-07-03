@@ -34,7 +34,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
             var pointCount = featureLine.GetPoints(FeatureLinePointType.AllPoints);
 
-            for (int i = 0; i < pointCount.Count - 1; i++)
+            for (int i = 0; i < pointCount.Count; i++)
             {
                 featureLine.SetPointElevation(i, 0);
             }
