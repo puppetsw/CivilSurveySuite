@@ -243,10 +243,12 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                 var polylineId = btr.AppendEntity(polyline);
                                 tr.AddNewlyCreatedDBObject(polyline, true);
 
-                                if (SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
+                                if (!SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
                                 {
-                                    AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
+                                    continue;
                                 }
+
+                                AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
 
                                 var featureLineId = FeatureLine.Create("", polylineId, siteId);
                                 var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
@@ -278,6 +280,7 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                     AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
                                     continue;
                                 }
+
                                 featureLine.Erase();
 
                                 btr.AppendEntity(polyline3d);
