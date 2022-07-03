@@ -106,6 +106,7 @@
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
     <Compile Include="FeatureLineUtils.cs" />
+    <Compile Include="Commands\FlattenFeatureLineCommand.cs" />
     <Compile Include="Ioc.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="CogoPointUtils.cs" />
@@ -149,8 +150,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

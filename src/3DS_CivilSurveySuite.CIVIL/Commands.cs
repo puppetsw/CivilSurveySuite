@@ -1,9 +1,9 @@
 ﻿using _3DS_CivilSurveySuite.ACAD;
+using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.UI.Views;
 using Autodesk.AutoCAD.Runtime;
-using Commands = _3DS_CivilSurveySuite.CIVIL.Commands;
 
-[assembly: CommandClass(typeof(Commands))]
+[assembly: CommandClass(typeof(_3DS_CivilSurveySuite.CIVIL.Commands))]
 namespace _3DS_CivilSurveySuite.CIVIL
 {
     public static class Commands
@@ -253,6 +253,16 @@ namespace _3DS_CivilSurveySuite.CIVIL
         public static void OverrideText()
         {
             LabelUtils.OverrideTextLabel();
+        }
+
+        #endregion
+
+        #region Feature Lines
+
+        [CommandMethod("3DS", "_3DSFlattenFeatureLine", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        public static void FlattenFeatureLine()
+        {
+            CommandHelpers.ExecuteCommand<FlattenFeatureLineCommand>();
         }
 
         #endregion
