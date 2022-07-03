@@ -6,12 +6,13 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
+using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 
 namespace _3DS_CivilSurveySuite.CIVIL
 {
     public static class FeatureLineUtils
     {
-        public static ObjectId AddFeatureFromPoly(this Site site, Polyline poly, FeatureLineStyle style)
+        public static ObjectId CreateFeatureLineFromPoly(this Site site, Polyline poly, FeatureLineStyle style)
         {
             object acadObject = site.AcadObject;
             object[] args =
@@ -21,7 +22,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
             };
 
             object target = acadObject.GetType().InvokeMember("FeatureLines", BindingFlags.GetProperty, null, acadObject, null);
-            return Autodesk.AutoCAD.DatabaseServices.DBObject.FromAcadObject(target.GetType().InvokeMember("AddFromPolylineEx", BindingFlags.InvokeMethod, null, target, args));
+            return DBObject.FromAcadObject(target.GetType().InvokeMember("AddFromPolylineEx", BindingFlags.InvokeMethod, null, target, args));
         }
 
         public static void FlattenFeatureLine(FeatureLine featureLine)
@@ -83,22 +84,27 @@ namespace _3DS_CivilSurveySuite.CIVIL
                 baseCurve.Elevation = 0.0;
                 return baseCurve;
             }
+
             object acadObject = featureLine.AcadObject;
-            Polyline polyline = new Polyline();
             object[] args = { 1 };
             double[] numArray = (double[]) acadObject.GetType().InvokeMember("GetPoints", BindingFlags.InvokeMethod, null, acadObject, args);
-            int index1 = 0;
-            int index2 = 0;
-            while (index1 < numArray.Length)
+
+            Polyline polyline = new Polyline();
+
+            int vertexIndex = 0;
+            int polyIndex = 0;
+
+            while (vertexIndex < numArray.Length)
             {
-                Point2d pt = new Point2d(numArray[index1], numArray[index1 + 1]);
-                Point3d point3d = new Point3d(numArray[index1], numArray[index1 + 1], numArray[index1 + 2]);
+                Point2d pt = new Point2d(numArray[vertexIndex], numArray[vertexIndex + 1]);
+                Point3d point3d = new Point3d(numArray[vertexIndex], numArray[vertexIndex + 1], numArray[vertexIndex + 2]);
                 args[0] = point3d.ToArray();
                 double bulge = (double) acadObject.GetType().InvokeMember("GetBulgeAtPoint", BindingFlags.InvokeMethod, null, acadObject, args);
-                polyline.AddVertexAt(index2, pt, bulge, 0.0, 0.0);
-                index1 += 3;
-                index2++;
+                polyline.AddVertexAt(polyIndex, pt, bulge, 0.0, 0.0);
+                vertexIndex += 3;
+                polyIndex++;
             }
+
             polyline.Elevation = 0.0;
             return polyline;
         }
