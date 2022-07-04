@@ -20,6 +20,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private readonly IConnectLineworkService _connectLineworkService;
         private ObservableCollection<DescriptionKey> _descriptionKeys;
+        private double _midOrdinateDistance;
 
         public ObservableCollection<DescriptionKey> DescriptionKeys
         {
@@ -29,6 +30,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 _descriptionKeys = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        public double MidOrdinateDistance
+        {
+            get => _midOrdinateDistance;
+            set => SetProperty(ref _midOrdinateDistance, value);
         }
 
         public DescriptionKey SelectedKey { get; set; }
@@ -41,7 +48,9 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
+            MidOrdinateDistance = 0.0;
             _connectLineworkService = connectLineworkService;
+            _connectLineworkService.DescriptionKeyFile = Properties.Settings.Default.DescriptionKeyFileName;
             LoadSettings(_connectLineworkService.DescriptionKeyFile);
         }
 
@@ -60,6 +69,7 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private async Task ConnectLinework()
         {
+            _connectLineworkService.MidOrdinate = MidOrdinateDistance;
             await _connectLineworkService.ConnectCogoPoints(DescriptionKeys);
         }
 
@@ -68,6 +78,12 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         /// </summary>
         private void LoadSettings(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                DescriptionKeys = new ObservableCollection<DescriptionKey>();
+                return;
+            }
+
             if (File.Exists(fileName))
             {
                 Load(fileName);
@@ -94,8 +110,8 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public void Save(string fileName)
         {
             XmlHelper.WriteToXmlFile(fileName, DescriptionKeys);
-            //Properties.Settings.Default.ConnectLineworkFileName = fileName;
-            //Properties.Settings.Default.Save();
+            Properties.Settings.Default.DescriptionKeyFileName = fileName;
+            Properties.Settings.Default.Save();
         }
     }
 }
