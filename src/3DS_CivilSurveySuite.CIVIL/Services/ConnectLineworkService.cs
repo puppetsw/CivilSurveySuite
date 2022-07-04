@@ -13,12 +13,7 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.CIVIL.Services
 {
-    public class SurveyPointList : List<SurveyPoint>
-    {
-        public ObjectId Polyline3d { get; set; }
-
-        public ObjectId Polyline2d { get; set; }
-    }
+    public class SurveyPointList : List<SurveyPoint> { }
 
     public class ConnectLineworkService : IConnectLineworkService
     {
@@ -229,12 +224,12 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                             // Draw the polylines.
                             if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
+                                PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
                             }
 
                             if (deskeyMatch.DescriptionKey.Draw3D && !hasCurve)
                             {
-                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
+                                PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
                             }
 
                             // Draw featureline if curve is found.
