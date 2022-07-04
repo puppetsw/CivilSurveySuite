@@ -152,6 +152,7 @@
     <Compile Include="Views\TraverseView.xaml.cs">
       <DependentUpon>TraverseView.xaml</DependentUpon>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
