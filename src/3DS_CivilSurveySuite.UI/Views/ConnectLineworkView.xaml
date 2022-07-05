@@ -114,6 +114,15 @@
                     Binding="{Binding Draw3D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Header="3D"
                     HeaderStyle="{StaticResource HeaderCenter}" />
+                <DataGridTextColumn
+                    Width="50"
+                    Binding="{Binding MidOrdinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=0.01}"
+                    Header="Mid-Ordinate" />
+                <DataGridCheckBoxColumn
+                    Width="130"
+                    Binding="{Binding ExplodeFeatureLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}"
+                    Header="Explode Feature Line"
+                    HeaderStyle="{StaticResource HeaderCenter}" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

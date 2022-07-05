@@ -42,6 +42,12 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
         public static bool TryConvertTo(this FeatureLine featureLine, Transaction tr, out Polyline3d polyline3d, double midOrdinate = 0.01)
         {
+            // If the mid-ordinate distance is 0 set it to the default.
+            if (midOrdinate <= 0)
+            {
+                midOrdinate = 0.01;
+            }
+
             Point3dCollection points;
             Polyline polyline = featureLine.BaseCurve2d();
             if (polyline.HasBulges)
@@ -50,16 +56,25 @@ namespace _3DS_CivilSurveySuite.CIVIL
                 for (int i = 0; i < polyline.EndParam; i++)
                 {
                     var radiusPoint = polyline.SegmentRadiusPoint(i);
-                    if (radiusPoint.IsArc())
+                    if (!radiusPoint.IsArc())
                     {
-                        double num = CircularArcExtensions.ArcLengthByMidOrdinate(Math.Abs(radiusPoint.Radius), midOrdinate);
-                        double distanceAtParameter1 = polyline.GetDistanceAtParameter(i);
-                        double distanceAtParameter2 = polyline.GetDistanceAtParameter(i + 1);
-                        while ((distanceAtParameter1 += num) < distanceAtParameter2)
+                        continue;
+                    }
+
+                    double num = CircularArcExtensions.ArcLengthByMidOrdinate(Math.Abs(radiusPoint.Radius), midOrdinate);
+                    double distanceAtParameter1 = polyline.GetDistanceAtParameter(i);
+                    double distanceAtParameter2 = polyline.GetDistanceAtParameter(i + 1);
+                    while ((distanceAtParameter1 += num) < distanceAtParameter2)
+                    {
+                        polyline.GetPointAtDist(distanceAtParameter1);
+                        Point3d pointAtDist = featureLine.GetPointAtDist(distanceAtParameter1);
+                        try
                         {
-                            polyline.GetPointAtDist(distanceAtParameter1);
-                            Point3d pointAtDist = featureLine.GetPointAtDist(distanceAtParameter1);
                             featureLine.InsertElevationPoint(pointAtDist);
+                        }
+                        catch (ArgumentException e)
+                        {
+                            Console.WriteLine(e);
                         }
                     }
                 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Shared.Models
@@ -11,6 +12,8 @@ namespace _3DS_CivilSurveySuite.Shared.Models
 
         private string _key;
         private string _layer;
+        private double _midOrdinate;
+        private bool _explodeFeatureLine;
 
         /// <summary>
         /// Gets the key value.
@@ -62,6 +65,26 @@ namespace _3DS_CivilSurveySuite.Shared.Models
             set
             {
                 _draw3D = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double MidOrdinate
+        {
+            get => _midOrdinate;
+            set
+            {
+                _midOrdinate = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ExplodeFeatureLine
+        {
+            get => _explodeFeatureLine;
+            set
+            {
+                _explodeFeatureLine = value;
                 NotifyPropertyChanged();
             }
         }
