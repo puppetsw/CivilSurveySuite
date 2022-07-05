@@ -105,6 +105,7 @@
     <Compile Include="AeccAppTools.cs" />
     <Compile Include="AlignmentUtils.cs" />
     <Compile Include="C3DApp.cs" />
+    <Compile Include="Commands\FeatureLineSiteCommand.cs" />
     <Compile Include="FeatureLineUtils.cs" />
     <Compile Include="Commands\FlattenFeatureLineCommand.cs" />
     <Compile Include="Ioc.cs" />

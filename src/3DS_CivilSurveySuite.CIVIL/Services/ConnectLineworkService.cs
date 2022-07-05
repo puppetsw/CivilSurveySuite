@@ -238,14 +238,7 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                 var polylineId = btr.AppendEntity(polyline);
                                 tr.AddNewlyCreatedDBObject(polyline, true);
 
-                                if (!SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
-                                {
-                                    continue;
-                                }
-
-                                AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
-
-                                var featureLineId = FeatureLine.Create("", polylineId, siteId);
+                                var featureLineId = FeatureLine.Create("", polylineId);
                                 var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
 
                                 // Set layer.
@@ -270,7 +263,12 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                 // Delete the temporary polyline.
                                 polyline.Erase();
 
-                                if (!featureLine.TryConvertTo(tr, out var polyline3d, MidOrdinate))
+                                if (!desKey.Value.DescriptionKey.ExplodeFeatureLine)
+                                {
+                                    continue;
+                                }
+
+                                if (!featureLine.TryConvertTo(tr, out var polyline3d, desKey.Value.DescriptionKey.MidOrdinate))
                                 {
                                     AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
                                     continue;
@@ -284,13 +282,6 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                         }
                     }
                 }
-
-                // Clean up
-                AcadApp.Logger?.Warn(
-                    SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ?
-                        "TEMPORARY SITE DELETED." :
-                        "TEMPORARY SITE NOT DELETED.");
-
                 tr.Commit();
             }
             return Task.CompletedTask;
