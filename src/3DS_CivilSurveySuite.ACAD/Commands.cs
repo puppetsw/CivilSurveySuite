@@ -8,6 +8,16 @@ namespace _3DS_CivilSurveySuite.ACAD
 {
     public class Commands
     {
+        #region Debug/Testing
+
+        [CommandMethod("3DS", "_3DSTestingCommand", CommandFlags.Modal)]
+        public static void Test()
+        {
+            CommandHelpers.ExecuteCommand<TestingCommand>();
+        }
+
+        #endregion
+
         #region Menus
         [CommandMethod("3DS", "_3DSLoadAcadMenu", CommandFlags.Modal)]
         public static void LoadMenu()

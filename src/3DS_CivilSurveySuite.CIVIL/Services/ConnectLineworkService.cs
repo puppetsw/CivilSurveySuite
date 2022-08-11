@@ -21,8 +21,6 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
 
         public double MidOrdinate { get; set; } = 0.01;
 
-        private const string TEMPORARY_SITE_NAME = "Survey Import";
-
         //DEVIL CODE 666%
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
         {
@@ -268,7 +266,7 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                     continue;
                                 }
 
-                                if (!featureLine.TryConvertTo(tr, out var polyline3d, desKey.Value.DescriptionKey.MidOrdinate))
+                                if (!featureLine.ConvertToPolyline3d(tr, out var polyline3d, desKey.Value.DescriptionKey.MidOrdinate))
                                 {
                                     AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
                                     continue;

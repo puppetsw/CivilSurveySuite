@@ -70,6 +70,67 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
         }
 
+        /// <summary>
+        /// Converts a <see cref="Polyline"/> to <see cref="Polyline3d"/>
+        /// </summary>
+        /// <param name="polyline"></param>
+        /// <param name="sourcePoints"></param>
+        /// <param name="tr"></param>
+        /// <param name="polyline3d"></param>
+        /// <param name="midOrdinate"></param>
+        /// <returns></returns>
+        public static bool ConvertToPolyline3d(this Polyline polyline, Point3dCollection sourcePoints,
+            Transaction tr, out Polyline3d polyline3d, double midOrdinate = 0.01)
+        {
+            if (midOrdinate <= 0)
+            {
+                midOrdinate = 0.01;
+            }
+
+            Point3dCollection points = new Point3dCollection();
+
+            for (int i = 0; i < polyline.EndParam; i++)
+            {
+                Point3d point1 = sourcePoints[i];
+                Point3d point2 = Point3d.Origin;
+
+                if (i != (int)polyline.EndParam)
+                {
+                    point2 = sourcePoints[i + 1];
+                }
+
+                points.Add(point1);
+
+                var radiusPoint = polyline.SegmentRadiusPoint(i);
+                if (!radiusPoint.IsArc())
+                {
+                    if (point2 != Point3d.Origin)
+                    {
+                        points.Add(point2);
+                    }
+
+                    continue;
+                }
+
+                var arc = new CircularArc2d(polyline.GetPointAtParameter(i).ToPoint2d(), radiusPoint.Radius);
+
+                double stepDistance = CircularArcExtensions.ArcLengthByMidOrdinate(Math.Abs(radiusPoint.Radius), midOrdinate);
+                double distanceAtParameter1 = polyline.GetDistanceAtParameter(i);
+                double distanceAtParameter2 = polyline.GetDistanceAtParameter(i + 1);
+                while ((distanceAtParameter1 += stepDistance) < distanceAtParameter2)
+                {
+                    Point3d pointAtDist = polyline.GetPointAtDist(distanceAtParameter1);
+
+                    //firstPoint.Z + elevationDifference * (distance / distanceBetweenPoints)
+                    var height = point1.Z + (point1.Z - point2.Z) * (distanceAtParameter1 / arc.GetLength(0, 1));
+                    points.Add(new Point3d(pointAtDist.X, pointAtDist.Y, height));
+                }
+            }
+
+            polyline3d = new Polyline3d(Poly3dType.SimplePoly, points, false);
+            polyline3d.Layer = polyline.Layer;
+            return true;
+        }
 
         public static Polyline Square(Point2d basePoint, double squareSize, int lineWidth = 0)
         {
