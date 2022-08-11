@@ -81,6 +81,7 @@
     <Compile Include="CircularArcExtensions.cs" />
     <Compile Include="Commands\ShowDebugCommand.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
+    <Compile Include="Commands\TestingCommand.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
