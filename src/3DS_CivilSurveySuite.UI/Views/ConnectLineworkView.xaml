@@ -65,11 +65,6 @@
                         <TextBlock Margin="3,0,0,0" Text="Connect" />
                     </StackPanel>
                 </Button>
-                <Separator />
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBox Width="30" Text="{Binding MidOrdinateDistance}" />
-                    <TextBlock Margin="3,0,0,0" Text="Mid-ordinate" />
-                </StackPanel>
             </ToolBar>
         </ToolBarTray>
         <DataGrid
