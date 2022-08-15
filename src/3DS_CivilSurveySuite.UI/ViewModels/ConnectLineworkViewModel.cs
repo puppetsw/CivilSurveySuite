@@ -15,7 +15,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
     {
         private readonly IConnectLineworkService _connectLineworkService;
         private ObservableCollection<DescriptionKey> _descriptionKeys;
-        private double _midOrdinateDistance;
 
         public ObservableCollection<DescriptionKey> DescriptionKeys
         {
@@ -25,12 +24,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
                 _descriptionKeys = value;
                 NotifyPropertyChanged();
             }
-        }
-
-        public double MidOrdinateDistance
-        {
-            get => _midOrdinateDistance;
-            set => SetProperty(ref _midOrdinateDistance, value);
         }
 
         public DescriptionKey SelectedKey { get; set; }
@@ -43,9 +36,14 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
-            MidOrdinateDistance = 0.0;
             _connectLineworkService = connectLineworkService;
-            _connectLineworkService.DescriptionKeyFile = Properties.Settings.Default.DescriptionKeyFileName;
+
+            // Check if the service already has a fileName assigned. If not we can use the settings property.
+            if (string.IsNullOrEmpty(_connectLineworkService.DescriptionKeyFile))
+            {
+                _connectLineworkService.DescriptionKeyFile = Properties.Settings.Default.DescriptionKeyFileName;
+            }
+
             LoadSettings(_connectLineworkService.DescriptionKeyFile);
         }
 
@@ -64,7 +62,6 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
 
         private async Task ConnectLinework()
         {
-            _connectLineworkService.MidOrdinate = MidOrdinateDistance;
             await _connectLineworkService.ConnectCogoPoints(DescriptionKeys);
         }
 
