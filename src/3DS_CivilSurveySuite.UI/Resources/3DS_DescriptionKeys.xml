@@ -6,7 +6,7 @@
     <Description>Bottom of bank</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -15,7 +15,7 @@
     <Description>Building</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -24,7 +24,7 @@
     <Description>Communications Pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -33,7 +33,7 @@
     <Description>Elec Pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -42,7 +42,7 @@
     <Description>Edge of road</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -51,7 +51,7 @@
     <Description>Tick Fence</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -60,7 +60,7 @@
     <Description>Footpath</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -69,7 +69,7 @@
     <Description>GI Fence</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -78,7 +78,7 @@
     <Description>Gas Pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -87,7 +87,7 @@
     <Description>Fence Gate</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -96,7 +96,7 @@
     <Description>House</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -105,7 +105,7 @@
     <Description>Line Blue</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -114,7 +114,7 @@
     <Description>Line Green</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -123,7 +123,7 @@
     <Description>Lip of kerb</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -132,7 +132,7 @@
     <Description>Line marking</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -141,7 +141,7 @@
     <Description>General line</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -150,7 +150,7 @@
     <Description>Line red</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -159,7 +159,7 @@
     <Description>Line violet</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -168,7 +168,7 @@
     <Description>Line white</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -177,7 +177,7 @@
     <Description>Line yellow</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -195,7 +195,7 @@
     <Description>Overhead power lines</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -204,7 +204,7 @@
     <Description>Retaining wall</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -213,7 +213,7 @@
     <Description>Recycled water pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -222,7 +222,7 @@
     <Description>Shed</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -231,7 +231,7 @@
     <Description>Sewer pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -240,7 +240,7 @@
     <Description>Stormwater pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -249,7 +249,7 @@
     <Description>Top of bank</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -258,7 +258,7 @@
     <Description>Top of kerb</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -267,7 +267,7 @@
     <Description>Utility box</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -276,7 +276,7 @@
     <Description>Vegetation</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -285,7 +285,7 @@
     <Description>Building dashed</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -294,7 +294,7 @@
     <Description>Wall line</Description>
     <Draw2D>true</Draw2D>
     <Draw3D>false</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -303,7 +303,7 @@
     <Description>Water pipe</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
   <DescriptionKey>
@@ -312,7 +312,7 @@
     <Description>Water table</Description>
     <Draw2D>false</Draw2D>
     <Draw3D>true</Draw3D>
-    <MidOrdinate>0</MidOrdinate>
+    <MidOrdinate>0.01</MidOrdinate>
     <ExplodeFeatureLine>false</ExplodeFeatureLine>
   </DescriptionKey>
 </ArrayOfDescriptionKey>

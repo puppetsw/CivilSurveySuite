@@ -34,9 +34,12 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
             if (dialog.ShowDialog() == true)
             {
-                string destinationFilePath = dialog.FileName;
-                _fileName = destinationFilePath;
-                (DataContext as ConnectLineworkViewModel)?.Load(destinationFilePath);
+                _fileName = dialog.FileName;
+                var isLoaded = ((ConnectLineworkViewModel)DataContext).LoadSettings(_fileName);
+                if (!isLoaded)
+                {
+                    MessageBox.Show("Unable to load Description Key file", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -46,9 +49,12 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
             if (dialog.ShowDialog() == true)
             {
-                string destinationFilePath = dialog.FileName;
-                _fileName = destinationFilePath;
-                (DataContext as ConnectLineworkViewModel)?.Save(destinationFilePath);
+                _fileName = dialog.FileName;
+                var isSaved = ((ConnectLineworkViewModel)DataContext).SaveSettings(_fileName);
+                if (!isSaved)
+                {
+                    MessageBox.Show("Unable to save Description Key file. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
