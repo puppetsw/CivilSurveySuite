@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace _3DS_CivilSurveySuite.Shared.Models
@@ -12,7 +11,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
 
         private string _key;
         private string _layer;
-        private double _midOrdinate;
+        private double _midOrdinate = 0.01;
         private bool _explodeFeatureLine;
 
         /// <summary>
