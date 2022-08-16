@@ -20,7 +20,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <remarks>Always returns in Uppercase.</remarks>
         public string Key
         {
-            get => _key.ToUpperInvariant();
+            get => _key?.ToUpperInvariant();
             set
             {
                 _key = value;

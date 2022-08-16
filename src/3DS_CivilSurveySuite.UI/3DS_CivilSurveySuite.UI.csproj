@@ -160,6 +160,7 @@
     <None Include="3DSCivilSurveySuite.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Resources\Fonts\Segoe Fluent Icons.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\Brushes.xaml" />
