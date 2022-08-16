@@ -13,20 +13,13 @@ using Autodesk.Civil.DatabaseServices;
 
 namespace _3DS_CivilSurveySuite.CIVIL.Services
 {
-    public class SurveyPointList : List<SurveyPoint>
-    {
-        public ObjectId Polyline3d { get; set; }
-
-        public ObjectId Polyline2d { get; set; }
-    }
+    public class SurveyPointList : List<SurveyPoint> { }
 
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
 
         public double MidOrdinate { get; set; } = 0.01;
-
-        private const string TEMPORARY_SITE_NAME = "Survey Import";
 
         //DEVIL CODE 666%
         public Task ConnectCogoPoints(IReadOnlyList<DescriptionKey> descriptionKeys)
@@ -229,12 +222,12 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                             // Draw the polylines.
                             if (deskeyMatch.DescriptionKey.Draw2D)
                             {
-                                list.Polyline2d = PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
+                                PolylineUtils.DrawPolyline2d(tr, btr, pointCollection, layerName, isClosed);
                             }
 
                             if (deskeyMatch.DescriptionKey.Draw3D && !hasCurve)
                             {
-                                list.Polyline3d = PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
+                                PolylineUtils.DrawPolyline3d(tr, btr, pointCollection, layerName, isClosed);
                             }
 
                             // Draw featureline if curve is found.
@@ -243,14 +236,7 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                 var polylineId = btr.AppendEntity(polyline);
                                 tr.AddNewlyCreatedDBObject(polyline, true);
 
-                                if (!SiteUtils.TryCreateSite(tr, TEMPORARY_SITE_NAME, out var siteId))
-                                {
-                                    continue;
-                                }
-
-                                AcadApp.Logger?.Info("TEMPORARY SITE CREATED.");
-
-                                var featureLineId = FeatureLine.Create("", polylineId, siteId);
+                                var featureLineId = FeatureLine.Create("", polylineId);
                                 var featureLine = (FeatureLine)tr.GetObject(featureLineId, OpenMode.ForWrite);
 
                                 // Set layer.
@@ -275,7 +261,12 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                                 // Delete the temporary polyline.
                                 polyline.Erase();
 
-                                if (!featureLine.TryConvertTo(tr, out var polyline3d, MidOrdinate))
+                                if (!desKey.Value.DescriptionKey.ExplodeFeatureLine)
+                                {
+                                    continue;
+                                }
+
+                                if (!featureLine.ConvertToPolyline3d(tr, out var polyline3d, desKey.Value.DescriptionKey.MidOrdinate))
                                 {
                                     AcadApp.Logger?.Warn("Error converting feature line to Polyline.");
                                     continue;
@@ -289,13 +280,6 @@ namespace _3DS_CivilSurveySuite.CIVIL.Services
                         }
                     }
                 }
-
-                // Clean up
-                AcadApp.Logger?.Warn(
-                    SiteUtils.TryDeleteSite(tr, TEMPORARY_SITE_NAME) ?
-                        "TEMPORARY SITE DELETED." :
-                        "TEMPORARY SITE NOT DELETED.");
-
                 tr.Commit();
             }
             return Task.CompletedTask;

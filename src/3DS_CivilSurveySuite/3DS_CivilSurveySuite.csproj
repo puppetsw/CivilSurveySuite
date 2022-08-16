@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>_3DS_CivilSurveySuite</RootNamespace>
     <AssemblyName>3DS_CivilSurveySuite</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <Deterministic>true</Deterministic>

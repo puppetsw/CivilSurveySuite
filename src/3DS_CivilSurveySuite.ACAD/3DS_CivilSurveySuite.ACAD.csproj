@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>_3DS_CivilSurveySuite.ACAD</RootNamespace>
     <AssemblyName>3DS_CivilSurveySuite.ACAD</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -81,6 +81,7 @@
     <Compile Include="CircularArcExtensions.cs" />
     <Compile Include="Commands\ShowDebugCommand.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
+    <Compile Include="Commands\TestingCommand.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />

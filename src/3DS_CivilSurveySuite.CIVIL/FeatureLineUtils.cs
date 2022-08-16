@@ -40,9 +40,14 @@ namespace _3DS_CivilSurveySuite.CIVIL
             }
         }
 
-        public static bool TryConvertTo(this FeatureLine featureLine, Transaction tr, out Polyline3d polyline3d, double midOrdinate = 0.01)
+        public static bool ConvertToPolyline3d(this FeatureLine featureLine, Transaction tr, out Polyline3d polyline3d, double midOrdinate = 0.01)
         {
-            Point3dCollection points;
+            // If the mid-ordinate distance is 0 set it to the default.
+            if (midOrdinate <= 0)
+            {
+                midOrdinate = 0.01;
+            }
+
             Polyline polyline = featureLine.BaseCurve2d();
             if (polyline.HasBulges)
             {
@@ -50,17 +55,18 @@ namespace _3DS_CivilSurveySuite.CIVIL
                 for (int i = 0; i < polyline.EndParam; i++)
                 {
                     var radiusPoint = polyline.SegmentRadiusPoint(i);
-                    if (radiusPoint.IsArc())
+                    if (!radiusPoint.IsArc())
                     {
-                        double num = CircularArcExtensions.ArcLengthByMidOrdinate(Math.Abs(radiusPoint.Radius), midOrdinate);
-                        double distanceAtParameter1 = polyline.GetDistanceAtParameter(i);
-                        double distanceAtParameter2 = polyline.GetDistanceAtParameter(i + 1);
-                        while ((distanceAtParameter1 += num) < distanceAtParameter2)
-                        {
-                            polyline.GetPointAtDist(distanceAtParameter1);
-                            Point3d pointAtDist = featureLine.GetPointAtDist(distanceAtParameter1);
-                            featureLine.InsertElevationPoint(pointAtDist);
-                        }
+                        continue;
+                    }
+
+                    double stepDistance = CircularArcExtensions.ArcLengthByMidOrdinate(Math.Abs(radiusPoint.Radius), midOrdinate);
+                    double distanceAtParameter1 = polyline.GetDistanceAtParameter(i);
+                    double distanceAtParameter2 = polyline.GetDistanceAtParameter(i + 1);
+                    while ((distanceAtParameter1 += stepDistance) < distanceAtParameter2)
+                    {
+                        Point3d pointAtDist = featureLine.GetPointAtDist(distanceAtParameter1);
+                        featureLine.InsertElevationPoint(pointAtDist);
                     }
                 }
             }
@@ -69,7 +75,8 @@ namespace _3DS_CivilSurveySuite.CIVIL
                 polyline3d = null;
                 return false;
             }
-            points = featureLine.GetPoints(FeatureLinePointType.AllPoints);
+
+            Point3dCollection points = featureLine.GetPoints(FeatureLinePointType.AllPoints);
 
             polyline3d = new Polyline3d(Poly3dType.SimplePoly, points, false);
             polyline3d.Layer = featureLine.Layer;

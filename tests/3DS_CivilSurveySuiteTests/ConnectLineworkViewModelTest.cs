@@ -47,7 +47,7 @@ namespace _3DS_CivilSurveySuiteTests
         public void SaveSettings_To_File()
         {
             var vm = new ConnectLineworkViewModel(_mock.Object);
-            vm.Save(_testPath);
+            vm.SaveSettings(_testPath);
         }
 
         [Test]
