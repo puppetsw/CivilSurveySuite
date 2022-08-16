@@ -1,9 +1,4 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -42,6 +37,13 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         public ConnectLineworkViewModel(IConnectLineworkService connectLineworkService)
         {
             _connectLineworkService = connectLineworkService;
+
+            // Check if the service already has a fileName assigned. If not we can use the settings property.
+            if (string.IsNullOrEmpty(_connectLineworkService.DescriptionKeyFile))
+            {
+                _connectLineworkService.DescriptionKeyFile = Properties.Settings.Default.DescriptionKeyFileName;
+            }
+
             LoadSettings(_connectLineworkService.DescriptionKeyFile);
         }
 
@@ -66,36 +68,37 @@ namespace _3DS_CivilSurveySuite.UI.ViewModels
         /// <summary>
         /// Get the last xml file loaded from settings
         /// </summary>
-        private void LoadSettings(string fileName)
+        public bool LoadSettings(string fileName)
         {
-            if (File.Exists(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
-                Load(fileName);
+                if (File.Exists(fileName))
+                {
+                    DescriptionKeys = XmlHelper.ReadFromXmlFile<ObservableCollection<DescriptionKey>>(fileName);
+                    return true;
+                }
             }
-            else
-            {
-                DescriptionKeys = new ObservableCollection<DescriptionKey>();
-            }
-        }
 
-        /// <summary>
-        /// Load XML file
-        /// </summary>
-        /// <param name="fileName"></param>
-        public void Load(string fileName)
-        {
-            DescriptionKeys = XmlHelper.ReadFromXmlFile<ObservableCollection<DescriptionKey>>(fileName);
+            DescriptionKeys = new ObservableCollection<DescriptionKey>();
+            return false;
         }
 
         /// <summary>
         /// Save XML file
         /// </summary>
         /// <param name="fileName"></param>
-        public void Save(string fileName)
+        public bool SaveSettings(string fileName)
         {
+            if (string.IsNullOrEmpty(fileName) || DescriptionKeys == null
+                                               || DescriptionKeys.Count == 0)
+            {
+                return false;
+            }
+
             XmlHelper.WriteToXmlFile(fileName, DescriptionKeys);
-            //Properties.Settings.Default.ConnectLineworkFileName = fileName;
-            //Properties.Settings.Default.Save();
+            Properties.Settings.Default.DescriptionKeyFileName = fileName;
+            Properties.Settings.Default.Save();
+            return true;
         }
     }
 }

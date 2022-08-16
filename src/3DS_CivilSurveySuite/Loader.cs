@@ -11,7 +11,10 @@ namespace _3DS_CivilSurveySuite
     {
         private const string ACAD_DLL = "3DS_CivilSurveySuite.ACAD";
         private const string CIVIL_DLL = "3DS_CivilSurveySuite.CIVIL";
-        private readonly string[] _supportDlls = { "Microsoft.Xaml.Behaviors" };
+        private readonly string[] _supportDlls =
+        {
+            "Microsoft.Xaml.Behaviors"
+        };
 
         public void Initialize()
         {
