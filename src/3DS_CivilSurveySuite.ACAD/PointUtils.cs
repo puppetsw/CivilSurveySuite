@@ -168,22 +168,22 @@ namespace _3DS_CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick the first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick the second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d thirdPoint))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick the third point: ", out Point3d thirdPoint))
                     return;
 
                 graphics.DrawPlus(thirdPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d fourthPoint))
+                if (!EditorUtils.TryGetPoint("\n3DS> Pick the fourth point: ", out Point3d fourthPoint))
                     return;
 
                 graphics.DrawPlus(fourthPoint, Settings.GraphicsSize);
