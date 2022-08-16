@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.Win32;
@@ -14,6 +15,8 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
         public ConnectLineworkView(ConnectLineworkViewModel viewModel)
         {
+            Resources.Source = new Uri("pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Styles.xaml");
+
             InitializeComponent();
 
             DataContext = viewModel;
