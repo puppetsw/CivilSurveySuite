@@ -15,8 +15,6 @@ namespace _3DS_CivilSurveySuite.UI.Views
 
         public ConnectLineworkView(ConnectLineworkViewModel viewModel)
         {
-            Resources.Source = new Uri("pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Styles.xaml");
-
             InitializeComponent();
 
             DataContext = viewModel;
