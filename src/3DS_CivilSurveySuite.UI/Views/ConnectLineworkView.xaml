@@ -11,16 +11,14 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
-            <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9" />
-            <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb" />
-            <SolidColorBrush x:Key="InactiveBackground" Color="#f0f0f0" />
+            <FontFamily x:Key="AppSymbolFontFamily">pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
@@ -34,55 +32,67 @@
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource AddRowToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource AddRowToolbarIcon}" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE710;" />
                 </Button>
                 <Button Command="{Binding RemoveRowCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource RemoveRowToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource RemoveRowToolbarIcon}" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE738;" />
                 </Button>
                 <Separator />
                 <Button Click="Load_Click">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource OpenDocumentToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource OpenDocumentToolbarIcon}" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE838;" />
                 </Button>
                 <Button Click="Save_Click">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource SaveDocumentToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource SaveDocumentToolbarIcon}" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE74E;" />
                 </Button>
                 <Separator />
-                <Button
-                    x:Name="ConnectButton"
-                    Click="ConnectButton_Click"
-                    Command="{Binding ConnectCommand}">
-                    <Image Source="{StaticResource AcceptToolbarIcon}" />
+                <Button Click="ConnectButton_Click" Command="{Binding ConnectCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ConnectLineworkToolTipContent}" />
+                    </Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE70F;" />
+                        <TextBlock
+                            Margin="3,0,0,0"
+                            VerticalAlignment="Center"
+                            Text="Connect" />
+                    </StackPanel>
                 </Button>
             </ToolBar>
         </ToolBarTray>
+
         <DataGrid
             HorizontalContentAlignment="Center"
             AutoGenerateColumns="False"
-            Background="{StaticResource YellowBackground}"
-            CanUserAddRows="false"
+            CanUserAddRows="False"
             CanUserDeleteRows="False"
             CanUserReorderColumns="False"
             CanUserSortColumns="False"
-            GridLinesVisibility="All"
-            HorizontalGridLinesBrush="{StaticResource BlueGridLine}"
             ItemsSource="{Binding DescriptionKeys}"
-            RowHeight="22"
-            SelectedItem="{Binding SelectedKey}"
-            VerticalGridLinesBrush="{StaticResource RedGridLine}">
-            <DataGrid.Resources>
-                <Style x:Key="HeaderCenter" TargetType="DataGridColumnHeader">
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                </Style>
-            </DataGrid.Resources>
+            SelectedItem="{Binding SelectedKey}">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="80"
@@ -99,13 +109,19 @@
                 <DataGridCheckBoxColumn
                     Width="50"
                     Binding="{Binding Draw2D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Header="2D"
-                    HeaderStyle="{StaticResource HeaderCenter}" />
+                    Header="2D" />
                 <DataGridCheckBoxColumn
                     Width="50"
                     Binding="{Binding Draw3D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Header="3D"
-                    HeaderStyle="{StaticResource HeaderCenter}" />
+                    Header="3D" />
+                <DataGridTextColumn
+                    Width="50"
+                    Binding="{Binding MidOrdinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=0.01}"
+                    Header="Mid-Ordinate" />
+                <DataGridCheckBoxColumn
+                    Width="130"
+                    Binding="{Binding ExplodeFeatureLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=True}"
+                    Header="Explode Feature Line" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

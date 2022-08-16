@@ -11,6 +11,8 @@ namespace _3DS_CivilSurveySuite.Shared.Models
 
         private string _key;
         private string _layer;
+        private double _midOrdinate = 0.01;
+        private bool _explodeFeatureLine;
 
         /// <summary>
         /// Gets the key value.
@@ -18,7 +20,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <remarks>Always returns in Uppercase.</remarks>
         public string Key
         {
-            get => _key.ToUpperInvariant();
+            get => _key?.ToUpperInvariant();
             set
             {
                 _key = value;
@@ -62,6 +64,26 @@ namespace _3DS_CivilSurveySuite.Shared.Models
             set
             {
                 _draw3D = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public double MidOrdinate
+        {
+            get => _midOrdinate;
+            set
+            {
+                _midOrdinate = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ExplodeFeatureLine
+        {
+            get => _explodeFeatureLine;
+            set
+            {
+                _explodeFeatureLine = value;
                 NotifyPropertyChanged();
             }
         }

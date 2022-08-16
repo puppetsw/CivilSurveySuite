@@ -265,6 +265,12 @@ namespace _3DS_CivilSurveySuite.CIVIL
             CommandHelpers.ExecuteCommand<FlattenFeatureLineCommand>();
         }
 
+        [CommandMethod("3DS", "_3DSFeatureLineSite", CommandFlags.Modal)]
+        public static void FeatureLineSite()
+        {
+            CommandHelpers.ExecuteCommand<FeatureLineSiteCommand>();
+        }
+
         #endregion
     }
 }
