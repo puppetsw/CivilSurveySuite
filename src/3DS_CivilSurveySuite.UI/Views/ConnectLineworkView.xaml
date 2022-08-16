@@ -66,10 +66,10 @@
                         Text="&#xE74E;" />
                 </Button>
                 <Separator />
-                <Button
-                    x:Name="ConnectButton"
-                    Click="ConnectButton_Click"
-                    Command="{Binding ConnectCommand}">
+                <Button Click="ConnectButton_Click" Command="{Binding ConnectCommand}">
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ConnectLineworkToolTipContent}" />
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
                             FontFamily="{StaticResource AppSymbolFontFamily}"
@@ -85,10 +85,9 @@
         </ToolBarTray>
 
         <DataGrid
-            Margin="0,8,0,0"
             HorizontalContentAlignment="Center"
             AutoGenerateColumns="False"
-            CanUserAddRows="false"
+            CanUserAddRows="False"
             CanUserDeleteRows="False"
             CanUserReorderColumns="False"
             CanUserSortColumns="False"
