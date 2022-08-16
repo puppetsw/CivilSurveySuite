@@ -136,4 +136,10 @@
             <TextBlock Text="Saves a description key set to a file." />
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="ConnectLineworkToolTipContent">
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Text="Connect Linework" />
+            <TextBlock Text="Connects all CogoPoints in drawing using the specified description key set." />
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>
