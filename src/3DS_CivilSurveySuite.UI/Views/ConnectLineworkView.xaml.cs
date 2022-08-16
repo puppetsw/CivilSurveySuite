@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using _3DS_CivilSurveySuite.UI.ViewModels;
 using Microsoft.Win32;
