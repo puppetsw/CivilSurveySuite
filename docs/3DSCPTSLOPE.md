@@ -1,4 +1,4 @@
-# 3DSPTSLOPE
+# 3DSCPTSLOPE
 
 ## Description
 
