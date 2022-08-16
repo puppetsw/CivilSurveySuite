@@ -13,8 +13,7 @@ namespace _3DS_CivilSurveySuite
         private const string CIVIL_DLL = "3DS_CivilSurveySuite.CIVIL";
         private readonly string[] _supportDlls =
         {
-            "Microsoft.Xaml.Behaviors",
-            "Wpf.Ui"
+            "Microsoft.Xaml.Behaviors"
         };
 
         public void Initialize()
