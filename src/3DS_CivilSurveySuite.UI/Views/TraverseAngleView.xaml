@@ -1,14 +1,19 @@
-﻿<Window x:Class="_3DS_CivilSurveySuite.UI.Views.TraverseAngleView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.UI.Converters"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.UI.Behaviors"
-             xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:TraverseAngleViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800" Title="Traverse Angle Tool" ResizeMode="CanResizeWithGrip">
+﻿<Window
+    x:Class="_3DS_CivilSurveySuite.UI.Views.TraverseAngleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:behaviors="clr-namespace:_3DS_CivilSurveySuite.UI.Behaviors"
+    xmlns:converters="clr-namespace:_3DS_CivilSurveySuite.UI.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:_3DS_CivilSurveySuite.UI.ViewModels"
+    Title="Traverse Angle Tool"
+    d:DataContext="{d:DesignInstance vm:TraverseAngleViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ResizeMode="CanResizeWithGrip"
+    mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="RedGridLine" Color="#ffc0c0" />
@@ -17,6 +22,7 @@
             <converters:DistanceConverter x:Key="DistanceConverter" />
             <converters:BearingConverter x:Key="BearingConverter" />
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -36,154 +42,185 @@
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource AddRowToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource AddRowToolbarIcon}" Width="16" Height="16" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE710;" />
                 </Button>
                 <Button Command="{Binding RemoveRowCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource RemoveRowToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource RemoveRowToolbarIcon}" Width="16" Height="16" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE738;" />
                 </Button>
                 <Button Command="{Binding ClearCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource ClearToolTipContent}" />
                     </Button.ToolTip>
-                    <Image Source="{StaticResource ClearToolbarIcon}" Width="16" Height="16" />
+                    <TextBlock
+                        FontFamily="{StaticResource AppSymbolFontFamily}"
+                        FontSize="24"
+                        Text="&#xE894;" />
                 </Button>
                 <Separator IsTabStop="False" />
 
                 <Button Command="{Binding OpenFileCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource OpenTraverseToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource OpenTraverseToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource OpenDocumentToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE838;" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding SaveFileCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource SaveTraverseToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource SaveTraverseToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource SaveDocumentToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE74E;" />
                     </StackPanel>
                 </Button>
-
+                <Separator IsTabStop="False" />
                 <Button Command="{Binding SetBasePointCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource SetBasePointToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource SetBasePointToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE972;" />
                     </StackPanel>
                 </Button>
-                <!--<Button Command="{Binding RefreshTraverseCommand}">
-                    <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource RefreshToolTipContent}"/>
-                    </Button.ToolTip>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource RefreshTraverseToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Refresh"/>
-                    </StackPanel>
-                </Button>-->
                 <Button Command="{Binding DrawCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource DrawToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource DrawToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource DrawTraverseToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Draw Traverse" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE70F;" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding SelectLineCommand}">
-                    <!--<Button.ToolTip>
-                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
-                    </Button.ToolTip>-->
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource SelectObjectsToolTipContent}" />
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource SelectObjectIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Select Object" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE7C9;" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding ZoomExtentsCommand}">
-                    <!--<Button.ToolTip>
-                        --><!--<ToolTip ContentTemplate="{StaticResource }"/>--><!--
-                    </Button.ToolTip>-->
+                    <Button.ToolTip>
+                        <ToolTip ContentTemplate="{StaticResource ZoomExtentsToolTipContent}" />
+                    </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource ZoomExtents}" Width="16" Height="16"/>
-                        <TextBlock Text=" Zoom Extents" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE8A3;" />
+                        <!-- <TextBlock Text=" Zoom Extents" /> -->
                     </StackPanel>
                 </Button>
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding FeetToMetersCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource FeetToMetersToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource FeetToMetersToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource FeetToMetersToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Feet To Meters" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xED5E;" />
+                        <TextBlock VerticalAlignment="Center" Text=" Feet &gt; Meters" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding LinksToMetersCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource LinksToMetersToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource LinksToMetersToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource LinksToMetersToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Links To Meters" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xED5E;" />
+                        <TextBlock VerticalAlignment="Center" Text=" Links &gt; Meters" />
                     </StackPanel>
                 </Button>
                 <Button Command="{Binding FlipBearingCommand}">
                     <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}"/>
+                        <ToolTip ContentTemplate="{StaticResource FlipBearingToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource FlipBearingToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Flip Bearing" />
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE7AD;" />
                     </StackPanel>
                 </Button>
-                <!--<Button Command="{Binding ShowViewerCommand}">
-                    <Button.ToolTip>
-                        <ToolTip ContentTemplate="{StaticResource PreviewToolTipContent}"/>
-                    </Button.ToolTip>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="{StaticResource PreviewToolbarIcon}" Width="16" Height="16"/>
-                        <TextBlock Text=" Viewer" />
-                    </StackPanel>
-                </Button>-->
                 <Separator IsTabStop="False" />
                 <Button Command="{Binding ShowHelpCommand}">
                     <Button.ToolTip>
                         <ToolTip ContentTemplate="{StaticResource ShowHelpToolTipContent}" />
                     </Button.ToolTip>
                     <StackPanel Orientation="Horizontal" ToolTip="Help">
-                        <Image Source="{StaticResource HelpToolbarIcon}" Width="16" Height="16"/>
+                        <TextBlock
+                            FontFamily="{StaticResource AppSymbolFontFamily}"
+                            FontSize="24"
+                            Text="&#xE897;" />
                     </StackPanel>
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <StatusBar DockPanel.Dock="Bottom" Height="23">
-            <StatusBarItem Content="Closure: bearing = "/>
+        <StatusBar Height="23" DockPanel.Dock="Bottom">
+            <StatusBarItem Content="Closure: bearing = " />
             <StatusBarItem Content="{Binding CloseBearing}" />
-            <StatusBarItem Content="distance = "/>
+            <StatusBarItem Content="distance = " />
             <StatusBarItem Content="{Binding CloseDistance}" />
         </StatusBar>
-        <DataGrid x:Name="DgTraverse" DockPanel.Dock="Bottom"
-                  ItemsSource="{Binding TraverseAngles}"
-                  SelectedItem="{Binding SelectedTraverseAngle}"
-                  SelectionMode="Single" SelectionUnit="FullRow" GridLinesVisibility="All" AutoGenerateColumns="False"
-                  HorizontalGridLinesBrush="{StaticResource BlueGridLine}"
-                  VerticalGridLinesBrush="{StaticResource RedGridLine}"
-                  Background="{StaticResource YellowBackground}"
-                  CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False"
-                  RowHeight="25" HorizontalContentAlignment="Center">
+        <DataGrid
+            x:Name="DgTraverse"
+            HorizontalContentAlignment="Center"
+            AutoGenerateColumns="False"
+            Background="{StaticResource YellowBackground}"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            CanUserReorderColumns="False"
+            CanUserSortColumns="False"
+            DockPanel.Dock="Bottom"
+            GridLinesVisibility="All"
+            HorizontalGridLinesBrush="{StaticResource BlueGridLine}"
+            ItemsSource="{Binding TraverseAngles}"
+            RowHeight="25"
+            SelectedItem="{Binding SelectedTraverseAngle}"
+            SelectionMode="Single"
+            SelectionUnit="FullRow"
+            VerticalGridLinesBrush="{StaticResource RedGridLine}">
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="SourceUpdated">
                     <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.GridUpdatedCommand}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Index}" Width="60" IsReadOnly="True" />
-                <DataGridTemplateColumn Header="Angle" Width="100">
+                <DataGridTextColumn
+                    Width="60"
+                    Binding="{Binding Index}"
+                    Header="ID"
+                    IsReadOnly="True" />
+                <DataGridTemplateColumn Width="100" Header="Angle">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -192,30 +229,33 @@
                                 <TextBlock Text="{Binding Angle.Minutes}" />
                                 <TextBlock Text="'" />
                                 <TextBlock Text="{Binding Angle.Seconds}" />
-                                <TextBlock Text='"' />
+                                <TextBlock Text="&quot;" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True"
-                                     behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <behaviors:TakeFocusAction />
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <TextBox.Text>
-                                    <Binding Path="Bearing" Converter="{StaticResource BearingConverter}"
-                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
-                                             ValidatesOnExceptions="True"
-                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
+                                    <Binding
+                                        Converter="{StaticResource BearingConverter}"
+                                        NotifyOnSourceUpdated="True"
+                                        Path="Bearing"
+                                        UpdateSourceTrigger="LostFocus"
+                                        ValidatesOnDataErrors="True"
+                                        ValidatesOnExceptions="True"
+                                        ValidatesOnNotifyDataErrors="True" />
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Distance" Width="100">
+                <DataGridTemplateColumn Width="100" Header="Distance">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Distance, StringFormat=N3}" />
@@ -223,37 +263,38 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True"
-                                     behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
+                            <TextBox behaviors:SelectAllFocusBehavior.Enable="True" behaviors:SimpleCalculationTextBoxBehavior.Enable="True">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Loaded">
                                         <behaviors:TakeFocusAction />
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <TextBox.Text>
-                                    <Binding Path="Distance" Converter="{StaticResource DistanceConverter}"
-                                             StringFormat="N3"
-                                             ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True"
-                                             ValidatesOnExceptions="True"
-                                             UpdateSourceTrigger="LostFocus" NotifyOnSourceUpdated="True" />
+                                    <Binding
+                                        Converter="{StaticResource DistanceConverter}"
+                                        NotifyOnSourceUpdated="True"
+                                        Path="Distance"
+                                        StringFormat="N3"
+                                        UpdateSourceTrigger="LostFocus"
+                                        ValidatesOnDataErrors="True"
+                                        ValidatesOnExceptions="True"
+                                        ValidatesOnNotifyDataErrors="True" />
                                 </TextBox.Text>
                             </TextBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Rotation Direction" Width="150">
+                <DataGridTemplateColumn Width="150" Header="Rotation Direction">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RotationDirectionValues}"
-                                      SelectedItem="{Binding RotationDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RotationDirectionValues}" SelectedItem="{Binding RotationDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Reference Bearing Direction" Width="200">
+                <DataGridTemplateColumn Width="200" Header="Reference Bearing Direction">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReferenceDirectionValues}"
-                                      SelectedItem="{Binding ReferenceDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReferenceDirectionValues}" SelectedItem="{Binding ReferenceDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
