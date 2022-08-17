@@ -111,14 +111,26 @@
     </DataTemplate>
     <DataTemplate x:Key="OpenTraverseToolTipContent">
         <StackPanel>
-            <TextBlock FontWeight="Bold" Text="Preview" />
+            <TextBlock FontWeight="Bold" Text="Open Traverse" />
             <TextBlock Text="Opens a previously saved traverse." />
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="SaveTraverseToolTipContent">
         <StackPanel>
-            <TextBlock FontWeight="Bold" Text="Preview" />
+            <TextBlock FontWeight="Bold" Text="Save Traverse" />
             <TextBlock Text="Saves the current traverse to a file." />
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="ZoomExtentsToolTipContent">
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Text="Zoom Extents" />
+            <TextBlock Text="Zooms the editor window to the extends of the traverse." />
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="SelectObjectsToolTipContent">
+        <StackPanel>
+            <TextBlock FontWeight="Bold" Text="Select Lines/Polylines" />
+            <TextBlock Text="Select a line or polyline entity to be added to the traverse." />
         </StackPanel>
     </DataTemplate>
 
