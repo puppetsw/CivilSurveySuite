@@ -1,4 +1,3 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="AppSymbolFontFamily">pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
 </ResourceDictionary>
