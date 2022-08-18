@@ -16,4 +16,3 @@ Command: 3DSLABELMASKON
 3DS> Select CogoPoints to turn label mask(s) on: 1 found
 3DS> Select CogoPoints to turn label mask(s) on:
 ```
-```
