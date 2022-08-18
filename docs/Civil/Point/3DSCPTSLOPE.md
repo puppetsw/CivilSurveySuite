@@ -1,11 +1,3 @@
 # 3DSCPTSLOPE
 
-## Description
-
-Creates a point at a location with the calculated slope.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTSLOPE.md)

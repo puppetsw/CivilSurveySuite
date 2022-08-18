@@ -1,11 +1,3 @@
 # 3DSCPTBETWEENPTS
 
-## Description
-
-Creates a point in-between points.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTBETWEENPTS.md)

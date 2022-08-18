@@ -2,10 +2,11 @@
 
 ## Description
 
-Inverses between two CogoPoints given point numbers.
+Inverses between two **CogoPoint**s given point numbers.
 
 ## Usage
 
 ## Example Output
+
 ```
 ```

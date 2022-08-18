@@ -1,11 +1,3 @@
 # 3DSCPTDISTSLOPE
 
-## Description
-
-Creates a point at a bearing and slope.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTDISTSLOPE.md)
