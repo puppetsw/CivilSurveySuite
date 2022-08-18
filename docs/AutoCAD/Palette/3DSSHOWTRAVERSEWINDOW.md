@@ -6,6 +6,8 @@ Shows the traverse utility window.
 
 ## Usage
 
+* Run command (3DSSHOWTRAVERSEWINDOW)
+
 ## Example Output
 
 ```
@@ -13,3 +15,4 @@ Shows the traverse utility window.
 
 ## Screenshot
 
+![Traverse Window](../../../images/screenshots/traversewindow.png)

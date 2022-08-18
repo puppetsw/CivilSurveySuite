@@ -6,6 +6,8 @@ Shows the debug logs.
 
 ## Usage
 
-## Example Output
-```
-```
+* Run command (3DSSHOWDEBUG)
+
+## Screenshot
+
+![Debug](../../../images/screenshots/debug.png)
