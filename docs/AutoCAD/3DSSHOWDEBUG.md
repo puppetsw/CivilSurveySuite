@@ -10,4 +10,4 @@ Shows the debug logs.
 
 ## Screenshot
 
-![Debug](../../../images/screenshots/debug.png)
+![Debug](../../images/screenshots/debug.png)
