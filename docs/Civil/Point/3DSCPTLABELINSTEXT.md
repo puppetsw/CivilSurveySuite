@@ -1,11 +1,3 @@
 # 3DSCPTLABELINSTEXT
 
-## Description
-
-Creates a point at a text or mtext entity location using the contents as the Z position.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTLABELINSTEXT.md)
