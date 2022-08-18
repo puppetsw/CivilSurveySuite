@@ -211,6 +211,13 @@ namespace _3DS_CivilSurveySuite.CIVIL
             {
                 var surfaces = C3DApp.ActiveDocument.GetSurfaceIds();
 
+                if (surfaces == null || surfaces.Count == 0)
+                {
+                    tr.Commit();
+                    AcadApp.Editor.WriteMessage("\n3DS> No surfaces in drawing.");
+                    return;
+                }
+
                 // Check if objects are in more than one surface?
                 var surface = surfaces.Count > 1
                     ? SelectionUtils.SelectSurface()
@@ -247,6 +254,15 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
             using (var tr = AcadApp.StartTransaction())
             {
+                var surfaces = C3DApp.ActiveDocument.GetSurfaceIds();
+
+                if (surfaces == null || surfaces.Count == 0)
+                {
+                    tr.Commit();
+                    AcadApp.Editor.WriteMessage("\n3DS> No surfaces in drawing.");
+                    return;
+                }
+
                 var surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
                     ? SelectionUtils.SelectSurface()
                     : GetSurfaceByIndex(tr, 0);
