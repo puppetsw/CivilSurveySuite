@@ -2,10 +2,12 @@
 
 ## Description
 
-Shows the help file.
+Opens the help documentation.
 
 ## Usage
 
-## Example Output
-```
-```
+* Run command (3DSSHOWHELP)
+
+## Screenshot
+
+![Help](../../images/screenshots/help.png)
