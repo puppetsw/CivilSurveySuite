@@ -299,7 +299,9 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="value">if set to <c>true</c> [value].</param>
         public static void LabelMaskToggle(bool value)
         {
-            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\n3DS> Select CogoPoints to turn label mask(s) off: ",
+            var onOffText = value ? "on" : "off";
+
+            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>($"\n3DS> Select CogoPoints to turn label mask(s) {onOffText}: ",
                     "\n3DS> Remove CogoPoint labels", out var objectIds))
                 return;
 
