@@ -1,0 +1,3 @@
+# 3DSCPTBETWEENPTS
+
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTBETWEENPTS.md)
