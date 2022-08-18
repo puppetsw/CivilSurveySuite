@@ -1,11 +1,3 @@
 # 3DSCPTINTDIST
 
-## Description
-
-Creates a point at the intersection of two distances.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTINTDIST.md)

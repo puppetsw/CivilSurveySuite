@@ -1,11 +1,3 @@
 # 3DSCPTOFFSETBETWEENPTS
 
-## Description
-
-Creates a point between points at an offset.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTOFFSETBETWEENPTS.md)

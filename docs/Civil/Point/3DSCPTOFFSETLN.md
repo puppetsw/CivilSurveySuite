@@ -1,11 +1,3 @@
 # 3DSCPTOFFSETLN
 
-## Description
-
-Creates a point at the intersection of two offset lines.
-
-## Usage
-
-## Example Output
-```
-```
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTOFFSETLN.md)
