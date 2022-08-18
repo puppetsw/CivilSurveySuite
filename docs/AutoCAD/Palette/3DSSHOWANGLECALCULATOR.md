@@ -22,4 +22,4 @@ Command: 3DSSHOWANGLECALCULATOR
 
 # Screenshot
 
-![Bearing Calculator](../../../images/bearingcalculator.png)
+![Bearing Calculator](../../../images/screenshots/bearingcalculator.png)
