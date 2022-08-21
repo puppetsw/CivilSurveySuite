@@ -58,7 +58,10 @@ namespace _3DS_CivilSurveySuite.UI.UserControl
             AddSelectedColumn();
         }
 
-        //BUG: Somehow a null column was added in between two valid sort columns.
+        // BUG: Somehow a null column was added in between two valid sort columns.
+        // Steps to reproduce.
+        // Add new sorting column
+        // Change column name of first sorting column.
         private void AddSelectedColumn()
         {
             foreach (UIElement element in LayoutParent.Children)
