@@ -47,7 +47,7 @@
     </Window.Resources>
 
     <TabControl x:Name="TabControl">
-        <TabItem Header="Settings">
+        <TabItem x:Name="SettingsTabItem" Header="Settings">
             <ScrollViewer>
                 <StackPanel>
                     <ListBox x:Name="AlignmentListBox" ItemsSource="{Binding ReportService.CivilAlignmentOptions}">
