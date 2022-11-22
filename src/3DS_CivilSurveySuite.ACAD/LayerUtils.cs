@@ -25,7 +25,7 @@ namespace _3DS_CivilSurveySuite.ACAD
 
             var layerTable = tr.GetObject(AcadApp.ActiveDocument.Database.LayerTableId, OpenMode.ForRead) as LayerTable;
 
-            return !(layerTable is null) && layerTable.Has(layerName);
+            return layerTable != null && layerTable.Has(layerName);
         }
 
         /// <summary>
