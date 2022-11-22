@@ -120,10 +120,13 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
             var pointGroup = GetPointGroupByName(tr, groupName);
 
-            if (pointGroup.PointsCount == 0)
-                return $"3DS> No points in {groupName}";
+            if (pointGroup == null)
+                return "No points in drawing.";
 
-            var pointNumbers = GetPointGroupByName(tr, groupName).GetPointNumbers();
+            if (pointGroup.PointsCount == 0)
+                return $"No points in {groupName}";
+
+            var pointNumbers = pointGroup.GetPointNumbers();
 
             int index = 0;
             while (index < pointNumbers.Length)
