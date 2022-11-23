@@ -535,7 +535,10 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
                 var pkr = AcadApp.Editor.GetKeywords(pko);
 
-                EditorUtils.TryGetDouble("\n3DS> Tolerance: ", out double tolerance, true, 0.001);
+                EditorUtils.TryGetDouble("\n3DS> Tolerance: ", out var tolerance, true, 0.001);
+
+                if (tolerance == null)
+                    return;
 
                 if (pkr.Status != PromptStatus.OK && string.IsNullOrEmpty(pkr.StringResult))
                 {
@@ -555,13 +558,13 @@ namespace _3DS_CivilSurveySuite.CIVIL
                         double elevationAtXy = surface.FindElevationAtXY(cogoPoint.Easting, cogoPoint.Northing);
 
                         if (pkr.StringResult == "Above" && cogoPoint.Elevation > elevationAtXy
-                                                        && cogoPoint.Elevation - elevationAtXy > tolerance)
+                                                        && cogoPoint.Elevation - elevationAtXy > tolerance.Value)
                         {
                             selectionObjectIds.Add(cogoPointId);
                         }
 
                         if (pkr.StringResult == "Below" && cogoPoint.Elevation < elevationAtXy
-                                                        && elevationAtXy - cogoPoint.Elevation > tolerance)
+                                                        && elevationAtXy - cogoPoint.Elevation > tolerance.Value)
                         {
                             selectionObjectIds.Add(cogoPointId);
                         }
