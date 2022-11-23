@@ -25,16 +25,19 @@ namespace _3DS_CivilSurveySuite.ACAD
 
         private UnitType _currentUnitType = UnitType.Metre;
 
-        private double ApplyUnitConversion(double distance)
+        private double? ApplyUnitConversion(double? distance)
         {
+            if (distance == null)
+                return null;
+
             switch (_currentUnitType)
             {
                 case UnitType.Metre:
-                    return distance;
+                    return distance.Value;
                 case UnitType.Feet:
-                    return MathHelpers.ConvertFeetToMeters(distance);
+                    return MathHelpers.ConvertFeetToMeters(distance.Value);
                 case UnitType.Link:
-                    return MathHelpers.ConvertLinkToMeters(distance);
+                    return MathHelpers.ConvertLinkToMeters(distance.Value);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -47,30 +50,30 @@ namespace _3DS_CivilSurveySuite.ACAD
             try
             {
                 if (!EditorUtils.TryGetPoint("\n3DS> Select base point: ", out Point3d basePoint))
-                {
                     return;
-                }
 
                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
 
                 do
                 {
                     if (!EditorUtils.TryGetAngle("\n3DS> Enter bearing: ", basePoint, out var angle))
-                    {
                         return;
-                    }
+
+                    if (angle == null)
+                        break;
 
                     AcadApp.Editor.WriteMessage($"\n3DS> {angle}");
 
-                    double distance;
+                    double? distance;
                     bool selectingUnits = true;
                     do
                     {
                         if (!EditorUtils.TryGetDistance("\n3DS> Distance: ", basePoint, new[] { "Units" }, "Units",
                                 out var keyword, out distance))
-                        {
                             return;
-                        }
+
+                        if (distance == null)
+                            return;
 
                         if (!string.IsNullOrEmpty(keyword))
                         {
@@ -120,7 +123,11 @@ namespace _3DS_CivilSurveySuite.ACAD
                         pko.Keywords.Default = Keywords.ACCEPT;
 
                         var calculatedDistance = ApplyUnitConversion(distance);
-                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, calculatedDistance, basePoint.ToPoint());
+
+                        if (calculatedDistance == null)
+                            throw new InvalidOperationException("distance was null");
+
+                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, calculatedDistance.Value, basePoint.ToPoint());
 
                         graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                         graphics.DrawPlus(newPoint.ToPoint3d(), GRAPHICS_SIZE);
@@ -132,6 +139,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                         switch (prResult.StringResult)
                         {
                             case Keywords.ACCEPT:
+                            {
                                 using (var tr = AcadApp.StartTransaction())
                                 {
                                     LineUtils.DrawLine(tr, basePoint, newPoint.ToPoint3d());
@@ -143,16 +151,23 @@ namespace _3DS_CivilSurveySuite.ACAD
                                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
                                 traverseAccepted = true;
                                 break;
+                            }
                             case Keywords.CHANGE:
+                            {
                                 graphics.ClearGraphics();
                                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
                                 traverseAccepted = true;
                                 break;
+                            }
                             case Keywords.FLIP:
+                            {
                                 angle += 180;
                                 graphics.ClearGraphics();
                                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
                                 break;
+                            }
+                            case "":
+                                return;
                         }
                     } while (!traverseAccepted);
                 } while (true);
@@ -163,6 +178,7 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
             finally
             {
+                graphics.ClearGraphics();
                 graphics.Dispose();
             }
         }
