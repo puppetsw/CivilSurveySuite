@@ -161,6 +161,9 @@ namespace _3DS_CivilSurveySuite.CIVIL
             if (!EditorUtils.TryGetDouble("\n3DS> Scale amount", out var scaleAmount, true, 1.0d, false))
                 return;
 
+            if (scaleAmount == null)
+                return;
+
             using (var tr = AcadApp.StartTransaction())
             {
                 foreach (ObjectId id in pointIds)
@@ -170,7 +173,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
                     pt.UpgradeOpen();
 
                     var elevation = pt.Elevation;
-                    var scaledElevation = scaleAmount * elevation;
+                    var scaledElevation = scaleAmount.Value * elevation;
                     pt.Elevation = scaledElevation;
 
                     pt.DowngradeOpen();

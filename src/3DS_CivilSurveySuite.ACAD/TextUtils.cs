@@ -279,7 +279,10 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to add to text: ", out double addValue))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to add to text: ", out var addValue))
+                return;
+
+            if (addValue == null)
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -296,7 +299,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        double mathValue = Convert.ToDouble(text) + addValue;
+                        double mathValue = Convert.ToDouble(text) + addValue.Value;
                         UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
@@ -322,7 +325,10 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to subtract from text: ", out double subtractValue))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to subtract from text: ", out var subtractValue))
+                return;
+
+            if (subtractValue == null)
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -339,7 +345,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        double mathValue = Convert.ToDouble(text) - subtractValue;
+                        double mathValue = Convert.ToDouble(text) - subtractValue.Value;
                         UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
@@ -365,7 +371,10 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to multiply by text: ", out double multiplyValue))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to multiply by text: ", out var multiplyValue))
+                return;
+
+            if (multiplyValue == null)
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -382,7 +391,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        double mathValue = Convert.ToDouble(text) * multiplyValue;
+                        double mathValue = Convert.ToDouble(text) * multiplyValue.Value;
                         UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
@@ -408,7 +417,10 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to divide by text: ", out double divideValue))
+            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to divide by text: ", out var divideValue))
+                return;
+
+            if (divideValue == null)
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -425,7 +437,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (text.IsNumeric())
                     {
                         textEnt.UpgradeOpen();
-                        double mathValue = Convert.ToDouble(text) / divideValue;
+                        double mathValue = Convert.ToDouble(text) / divideValue.Value;
                         UpdateText(textEnt, mathValue.ToString(CultureInfo.InvariantCulture));
                         textEnt.DowngradeOpen();
                     }
