@@ -69,7 +69,7 @@ namespace _3DS_CivilSurveySuite.ACAD
 
             var pdo = new PromptDoubleOptions(message);
             pdo.Keywords.Add(Keywords.PICK);
-            pdo.Keywords.Default = Keywords.PICK;
+            //pdo.Keywords.Default = Keywords.PICK;
             //pdo.AppendKeywordsToMessage = true;
 
             var cancelled = false;
