@@ -10,11 +10,14 @@ namespace _3DS_CivilSurveySuite.ACAD
 {
     /// <summary>
     /// Slightly improved version of the Traverse lisp command
-    /// written by Edward Whitney, My dad.
+    /// written by Edward Whitney, my dad.
     /// </summary>
     public class TraverseCommand : IAcadCommand
     {
         private const int GRAPHICS_SIZE = 6;
+
+        string _unitsString;
+
 
         private enum UnitType
         {
@@ -43,32 +46,50 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
         }
 
+        private void SetUnitsString()
+        {
+            switch (_currentUnitType)
+            {
+                case UnitType.Metre:
+                    _unitsString = "metres";
+                    break;
+                case UnitType.Feet:
+                    _unitsString = "feet and Inches";
+                    break;
+                case UnitType.Link:
+                    _unitsString = "links";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
         private void Traverse()
         {
             var graphics = new TransientGraphics();
 
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Select base point: ", out Point3d basePoint))
+                if (!EditorUtils.TryGetPoint("\n3DS> Specify base point: ", out Point3d basePoint))
                     return;
 
                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
 
                 do
                 {
-                    if (!EditorUtils.TryGetAngle("\n3DS> Enter bearing: ", basePoint, out var angle))
+                    if (!EditorUtils.TryGetAngle("\n3DS> Specify bearing or: ", basePoint, out var bearing))
                         return;
 
-                    if (angle == null)
+                    if (bearing == null)
                         break;
-
-                    AcadApp.Editor.WriteMessage($"\n3DS> {angle}");
 
                     double? distance;
                     bool selectingUnits = true;
                     do
                     {
-                        if (!EditorUtils.TryGetDistance("\n3DS> Distance: ", basePoint, new[] { "Units" }, "Units",
+                        SetUnitsString();
+
+                        if (!EditorUtils.TryGetDistance($"\n3DS> Specify distance in {_unitsString} or: ", basePoint, new[] { "Units" }, "Units",
                                 out var keyword, out distance))
                             return;
 
@@ -79,7 +100,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                         {
                             if (keyword == "Units")
                             {
-                                var pkoUnits = new PromptKeywordOptions("\n3DS> Select distance units: ") { AppendKeywordsToMessage = true };
+                                var pkoUnits = new PromptKeywordOptions($"\n3DS> Specify units: ") { AppendKeywordsToMessage = true };
                                 pkoUnits.Keywords.Add(Keywords.METRE);
                                 pkoUnits.Keywords.Add(Keywords.FEET);
                                 pkoUnits.Keywords.Add(Keywords.LINK);
@@ -93,9 +114,11 @@ namespace _3DS_CivilSurveySuite.ACAD
                                         break;
                                     case Keywords.FEET:
                                         _currentUnitType = UnitType.Feet;
-                                        AcadApp.Editor.WriteMessage("\n3DS> Feet and inches are represented as a decimal.");
+                                        AcadApp.Editor.WriteMessage("\n----------------------------------------------------");
+                                        AcadApp.Editor.WriteMessage("\nFeet and inches are represented as a decimal number.");
                                         AcadApp.Editor.WriteMessage("\nExample: 5 feet and 2 inches, expected input: 5.02.");
                                         AcadApp.Editor.WriteMessage("\nInches less than 10 must have a preceding zero.");
+                                        AcadApp.Editor.WriteMessage("\n----------------------------------------------------");
                                         break;
                                     case Keywords.LINK:
                                         _currentUnitType = UnitType.Link;
@@ -105,7 +128,6 @@ namespace _3DS_CivilSurveySuite.ACAD
                         }
                         else
                         {
-                            AcadApp.Editor.WriteMessage($"\n3DS> {distance} Units: {_currentUnitType}");
                             selectingUnits = false;
                         }
                     } while (selectingUnits);
@@ -113,7 +135,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     bool traverseAccepted = false;
                     do
                     {
-                        var pko = new PromptKeywordOptions("\n3DS> Accept and continue traverse? ")
+                        var pko = new PromptKeywordOptions("\n3DS> Accept and continue? ")
                         {
                             AppendKeywordsToMessage = true
                         };
@@ -127,12 +149,12 @@ namespace _3DS_CivilSurveySuite.ACAD
                         if (calculatedDistance == null)
                             throw new InvalidOperationException("distance was null");
 
-                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(angle, calculatedDistance.Value, basePoint.ToPoint());
+                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(bearing, calculatedDistance.Value, basePoint.ToPoint());
 
                         graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                         graphics.DrawPlus(newPoint.ToPoint3d(), GRAPHICS_SIZE);
                         graphics.DrawArrow(PointHelpers.GetMidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(),
-                            angle, GRAPHICS_SIZE);
+                            bearing, GRAPHICS_SIZE);
 
                         PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 
@@ -161,7 +183,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                             }
                             case Keywords.FLIP:
                             {
-                                angle += 180;
+                                bearing += 180;
                                 graphics.ClearGraphics();
                                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
                                 break;
@@ -174,6 +196,7 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
             catch (Exception e)
             {
+                Ioc.Default.GetInstance<ILogger>()?.Error(e, e.Message);
                 AcadApp.Editor.WriteMessage($"Exception: {e.Message}");
             }
             finally
