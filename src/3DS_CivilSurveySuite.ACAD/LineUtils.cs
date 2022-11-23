@@ -185,12 +185,15 @@ namespace _3DS_CivilSurveySuite.ACAD
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter leg distance: ", out double distance))
+                if (!EditorUtils.TryGetDistance("\n3DS> Enter leg distance: ", out var distance))
+                    return;
+
+                if (distance == null)
                     return;
 
                 // Get angle and add 90° to it.
                 var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint()) + 90;
-                var newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
+                var newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance.Value, firstPoint.ToPoint());
 
                 graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
 
@@ -210,7 +213,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                             break;
                         case Keywords.FLIP:
                             angle = angle.Flip();
-                            newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance, firstPoint.ToPoint());
+                            newPoint = PointHelpers.AngleAndDistanceToPoint(angle, distance.Value, firstPoint.ToPoint());
                             graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
                             DrawLine(tr, firstPoint, newPoint.ToPoint3d());
                             break;
