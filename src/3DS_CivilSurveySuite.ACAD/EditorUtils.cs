@@ -190,7 +190,7 @@ namespace _3DS_CivilSurveySuite.ACAD
         /// <param name="basePoint">Optional base point parameter. If null, will prompt</param>
         /// <param name="distance">A double containing the output distance. the user to select a base point.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool TryGetDistance(string message, Point3d basePoint, out double distance)
+        public static bool TryGetDistance(string message, Point3d basePoint, out double? distance)
         {
             distance = double.NaN;
             var pdo = new PromptDistanceOptions(message)
@@ -212,10 +212,10 @@ namespace _3DS_CivilSurveySuite.ACAD
             return true;
         }
 
-        public static bool TryGetDistance(string message, Point3d basePoint, string[] keywords, string defaultKeyword, out string keyword, out double distance)
+        public static bool TryGetDistance(string message, Point3d basePoint, string[] keywords, string defaultKeyword, out string keyword, out double? distance)
         {
             keyword = string.Empty;
-            distance = double.NaN;
+            distance = null;
             var pdo = new PromptDistanceOptions(message)
             {
                 BasePoint = basePoint,
@@ -256,7 +256,7 @@ namespace _3DS_CivilSurveySuite.ACAD
         /// <param name="message">The message to display to the user.</param>
         /// <param name="distance">A double containing the output distance.</param>
         /// <returns><c>true</c> if got distance successfully, <c>false</c> otherwise.</returns>
-        public static bool TryGetDistance(string message, out double distance)
+        public static bool TryGetDistance(string message, out double? distance)
         {
             distance = double.NaN;
 
@@ -286,7 +286,7 @@ namespace _3DS_CivilSurveySuite.ACAD
         /// <param name="defaultValue">The default value.</param>
         /// <param name="allowZero"></param>
         /// <returns><c>true</c> if a double was successfully entered, <c>false</c> otherwise.</returns>
-        public static bool TryGetDouble(string message, out double value, bool useDefaultValue = false, double defaultValue = 0, bool allowZero = true)
+        public static bool TryGetDouble(string message, out double? value, bool useDefaultValue = false, double defaultValue = 0, bool allowZero = true)
         {
             value = double.MinValue;
 
