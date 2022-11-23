@@ -18,7 +18,6 @@ namespace _3DS_CivilSurveySuite.ACAD
 
         string _unitsString;
 
-
         private enum UnitType
         {
             Metre,
@@ -54,7 +53,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     _unitsString = "metres";
                     break;
                 case UnitType.Feet:
-                    _unitsString = "feet and Inches";
+                    _unitsString = "feet and inches";
                     break;
                 case UnitType.Link:
                     _unitsString = "links";
