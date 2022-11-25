@@ -82,6 +82,8 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (bearing == null)
                         break;
 
+                    graphics.DrawLine(basePoint, PointHelpers.AngleAndDistanceToPoint(bearing, 1000000, basePoint.ToPoint()).ToPoint3d());
+
                     double? distance;
                     bool selectingUnits = true;
                     do
@@ -94,6 +96,9 @@ namespace _3DS_CivilSurveySuite.ACAD
 
                         if (distance == null)
                             return;
+
+                        graphics.Undo();
+                        graphics.DrawLine(basePoint, PointHelpers.AngleAndDistanceToPoint(bearing, distance.Value, basePoint.ToPoint()).ToPoint3d(), useDashedLine: true);
 
                         if (!string.IsNullOrEmpty(keyword))
                         {
@@ -131,6 +136,8 @@ namespace _3DS_CivilSurveySuite.ACAD
                         }
                     } while (selectingUnits);
 
+                    graphics.Undo();
+
                     bool traverseAccepted = false;
                     do
                     {
@@ -152,8 +159,6 @@ namespace _3DS_CivilSurveySuite.ACAD
 
                         graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                         graphics.DrawPlus(newPoint.ToPoint3d(), GRAPHICS_SIZE);
-                        graphics.DrawArrow(PointHelpers.GetMidpointBetweenPoints(basePoint.ToPoint(), newPoint).ToPoint3d(),
-                            bearing, GRAPHICS_SIZE);
 
                         PromptResult prResult = AcadApp.Editor.GetKeywords(pko);
 
