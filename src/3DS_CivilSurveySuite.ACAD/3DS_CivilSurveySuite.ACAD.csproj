@@ -81,7 +81,9 @@
     <Compile Include="CircularArcExtensions.cs" />
     <Compile Include="Commands\ShowDebugCommand.cs" />
     <Compile Include="Commands\ShowHelpCommand.cs" />
-    <Compile Include="Commands\TestingCommand.cs" />
+    <Compile Include="Commands\TestCommands\TestingCommand.cs" />
+    <Compile Include="Commands\TestCommands\TransientGraphicsTestCommand.cs" />
+    <Compile Include="Commands\TestCommands\TransientGraphicsUndoTestCommand.cs" />
     <Compile Include="CurveUtils.cs" />
     <Compile Include="DxfNames.cs" />
     <Compile Include="EditorUtils.cs" />
@@ -101,7 +103,7 @@
     <Compile Include="Services\ProcessService.cs" />
     <Compile Include="Services\RasterImageService.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TransientGraphicsUtils.cs" />
+    <Compile Include="TransientDrawable.cs" />
     <Compile Include="Commands\TraverseCommand.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />

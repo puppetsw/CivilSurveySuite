@@ -1,10 +1,7 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using Autodesk.AutoCAD.Colors;
@@ -15,6 +12,8 @@ using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite.ACAD
 {
+    public sealed class Drawables : List<Drawable> { }
+
     /// <summary>
     /// A helper class to display and manage TransientGraphics
     /// within AutoCAD.
@@ -29,6 +28,7 @@ namespace _3DS_CivilSurveySuite.ACAD
     /// try
     /// {
     ///   graphics.DrawLine(point1, point2);
+    ///   graphics.Undo(); // If you need to undo last drawn.
     /// }
     /// finally
     /// {
@@ -38,7 +38,7 @@ namespace _3DS_CivilSurveySuite.ACAD
     /// </example>
     public sealed class TransientGraphics : IDisposable
     {
-        private readonly DBObjectCollection _graphics;
+        private readonly List<TransientDrawable> _drawables;
 
         private const string DASHED_LINE_TYPE = "DASHED";
 
@@ -46,7 +46,7 @@ namespace _3DS_CivilSurveySuite.ACAD
 
         public TransientGraphics()
         {
-            _graphics = new DBObjectCollection();
+            _drawables = new List<TransientDrawable>();
         }
 
         private static double ScreenSize(int numPix)
@@ -75,16 +75,20 @@ namespace _3DS_CivilSurveySuite.ACAD
                 entity.Linetype = DASHED_LINE_TYPE;
         }
 
-        private void DrawAdd(DBObject entity, TransientDrawingMode mode = TransientDrawingMode.Main)
+        private void AddTransientDrawable(TransientDrawable drawable, TransientDrawingMode mode = TransientDrawingMode.Main)
         {
-            _graphics.Add(entity);
-            TransientManager.CurrentTransientManager.AddTransient(entity, mode, 0, new IntegerCollection());
+            _drawables.Add(drawable);
+
+            foreach (Drawable entity in drawable)
+                TransientManager.CurrentTransientManager.AddTransient(entity, mode, 0, new IntegerCollection());
         }
 
         public void DrawLines(IReadOnlyList<Point2d> coordinates, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLines(coordinates.ToListOfPoint3d(), mode);
 
         public void DrawLines(IReadOnlyList<Point3d> coordinates, TransientDrawingMode mode = TransientDrawingMode.Main)
         {
+            var drawables = new TransientDrawable();
+
             // Start a count for the next coordinate in the collection.
             var nextCoord = 1;
             // Draw the coord lines
@@ -95,9 +99,11 @@ namespace _3DS_CivilSurveySuite.ACAD
 
                 var startPoint = new Point3d(point.X, point.Y, 0);
                 var endPoint = new Point3d(coordinates[nextCoord].X, coordinates[nextCoord].Y, 0);
-                DrawLine(startPoint, endPoint, mode);
+                drawables.Add(DrawLine(startPoint, endPoint, true));
                 nextCoord++;
             }
+
+            AddTransientDrawable(drawables, mode);
         }
 
         public void DrawLine(Point2d point1, Point2d point2, TransientDrawingMode mode = TransientDrawingMode.Main) => DrawLine(point1.ToPoint3d(), point2.ToPoint3d(), mode);
@@ -111,7 +117,18 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (useDashedLine)
                 SetLineType(line);
 
-            DrawAdd(line, mode);
+            var drawable = new TransientDrawable { line };
+            AddTransientDrawable(drawable, mode);
+        }
+
+        private Drawable DrawLine(Point3d point1, Point3d point2, bool useDashedLine = true)
+        {
+            var line = new Line(point1, point2) { Color = Color };
+
+            if (useDashedLine)
+                SetLineType(line);
+
+            return line;
         }
 
         public void DrawLine(Curve curve, TransientDrawingMode mode = TransientDrawingMode.Main, bool useDashedLine = false)
@@ -119,7 +136,8 @@ namespace _3DS_CivilSurveySuite.ACAD
             if (useDashedLine)
                 SetLineType(curve);
 
-            DrawAdd(curve, mode);
+            var drawable = new TransientDrawable { curve };
+            AddTransientDrawable(drawable, mode);
         }
 
         public void DrawSquare(Point3d position, double squareSize)
@@ -129,10 +147,13 @@ namespace _3DS_CivilSurveySuite.ACAD
             var bottomRight = new Point3d(topRight.X, topRight.Y + squareSize, 0);
             var bottomLeft = new Point3d(bottomRight.X - squareSize, bottomRight.Y, 0);
 
-            DrawLine(topLeft, topRight);
-            DrawLine(topRight, bottomRight);
-            DrawLine(bottomRight, bottomLeft);
-            DrawLine(bottomLeft, topLeft);
+            var l1 = DrawLine(topLeft, topRight, true);
+            var l2 = DrawLine(topRight, bottomRight, true);
+            var l3 = DrawLine(bottomRight, bottomLeft, true);
+            var l4 = DrawLine(bottomLeft, topLeft, true);
+
+            var drawable = new TransientDrawable { l1, l2, l3, l4 };
+            AddTransientDrawable(drawable);
         }
 
         public void DrawRectangle(Point3d position, double width, double height)
@@ -142,10 +163,13 @@ namespace _3DS_CivilSurveySuite.ACAD
             var bottomRight = new Point3d(topRight.X, topRight.Y + height, 0);
             var bottomLeft = new Point3d(bottomRight.X - width, bottomRight.Y, 0);
 
-            DrawLine(topLeft, topRight);
-            DrawLine(topRight, bottomRight);
-            DrawLine(bottomRight, bottomLeft);
-            DrawLine(bottomLeft, topLeft);
+            var l1 = DrawLine(topLeft, topRight, true);
+            var l2 = DrawLine(topRight, bottomRight, true);
+            var l3 = DrawLine(bottomRight, bottomLeft, true);
+            var l4 = DrawLine(bottomLeft, topLeft, true);
+
+            var drawable = new TransientDrawable { l1, l2, l3, l4 };
+            AddTransientDrawable(drawable);
         }
 
         public void DrawCircle(Point3d position, double circleSize = 0.5)
@@ -153,7 +177,9 @@ namespace _3DS_CivilSurveySuite.ACAD
             var circle = new Circle(position, Vector3d.ZAxis, circleSize) { Color = Color };
 
             SetLineType(circle);
-            DrawAdd(circle);
+
+            var drawable = new TransientDrawable { circle };
+            AddTransientDrawable(drawable);
         }
 
         public void DrawBox(Point3d position, int size, bool fill = false)
@@ -168,13 +194,18 @@ namespace _3DS_CivilSurveySuite.ACAD
             polyline.AddVertexAt(1, point2.ToPoint2d(), 0, 0, 0);
             polyline.AddVertexAt(2, point3.ToPoint2d(), 0, 0, 0);
             polyline.AddVertexAt(3, point4.ToPoint2d(), 0, 0, 0);
-            DrawAdd(polyline);
 
-            if (!fill)
-                return;
+            var drawable = new TransientDrawable();
 
-            var solid = new Solid(point1, point2, point4, point3) { Color = Color };
-            DrawAdd(solid);
+            if (fill)
+            {
+                var solid = new Solid(point1, point2, point4, point3) { Color = Color };
+                drawable.Add(solid);
+            }
+
+            drawable.Add(polyline);
+
+            AddTransientDrawable(drawable);
         }
 
         public void DrawTriangle(Point3d position, int size, bool fill = true)
@@ -193,13 +224,15 @@ namespace _3DS_CivilSurveySuite.ACAD
             polyline.AddVertexAt(1, endPoint1.ToPoint2d(), 0, 0, 0);
             polyline.AddVertexAt(2, topPoint.ToPoint2d(), 0, 0, 0);
 
-            DrawAdd(polyline);
+            var drawable = new TransientDrawable { polyline };
 
-            if (!fill)
-                return;
+            if (fill)
+            {
+                var solid = new Solid(topPoint.ToPoint3d(), endPoint2.ToPoint3d(), endPoint1.ToPoint3d()) { Color = Color };
+                drawable.Add(solid);
+            }
 
-            var solid = new Solid(topPoint.ToPoint3d(), endPoint2.ToPoint3d(), endPoint1.ToPoint3d()) { Color = Color };
-            DrawAdd(solid);
+            AddTransientDrawable(drawable);
         }
 
         public void DrawX(Point3d position, int size)
@@ -216,7 +249,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                 Color = Color
             };
 
-            DrawAdd(line1);
+            var drawable = new TransientDrawable { line1 };
 
             var startPoint2 = new Point3d(position.X + screenSize * 0.5, position.Y - screenSize * 0.5, 0);
             var endPoint2 = new Point3d(position.X - screenSize * 0.5, position.Y + screenSize * 0.5, 0);
@@ -228,7 +261,8 @@ namespace _3DS_CivilSurveySuite.ACAD
                 Color = Color
             };
 
-            DrawAdd(line2);
+            drawable.Add(line2);
+            AddTransientDrawable(drawable);
         }
 
         public void DrawDot(Point3d point, int size)
@@ -241,12 +275,13 @@ namespace _3DS_CivilSurveySuite.ACAD
             polyline.AddVertexAt(0, new Point2d(point.X - screenSize * 0.25, point.Y), 1.0, circleSize, circleSize);
             polyline.AddVertexAt(1, new Point2d(point.X + screenSize * 0.25, point.Y), 1.0, circleSize, circleSize);
 
-            DrawAdd(polyline);
+            var drawable = new TransientDrawable { polyline };
 
             var vector3d = new Vector3d(0, 0, 1);
             var circle = new Circle(point, vector3d, circleSize) { Color = Color };
 
-            DrawAdd(circle);
+            drawable.Add(circle);
+            AddTransientDrawable(drawable);
         }
 
         public void DrawPlus(Point3d position, int size)
@@ -263,7 +298,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                 Color = Color
             };
 
-            DrawAdd(line1);
+            var drawable = new TransientDrawable { line1 };
 
             var startPoint2 = new Point3d(position.X, position.Y - screenSize * 0.5, 0);
             var endPoint2 = new Point3d(position.X, position.Y + screenSize * 0.5, 0);
@@ -275,7 +310,8 @@ namespace _3DS_CivilSurveySuite.ACAD
                 Color = Color
             };
 
-            DrawAdd(line2);
+            drawable.Add(line2);
+            AddTransientDrawable(drawable);
         }
 
         public void DrawArrow(Point3d position, Angle arrowDirection, int size, bool fill = true)
@@ -293,13 +329,15 @@ namespace _3DS_CivilSurveySuite.ACAD
             polyline.AddVertexAt(1, endPoint2.ToPoint2d(), 0, 0, 0);
             polyline.AddVertexAt(2, endPoint3.ToPoint2d(), 0, 0, 0);
 
-            DrawAdd(polyline);
+            var drawable = new TransientDrawable { polyline };
 
-            if (!fill)
-                return;
+            if (fill)
+            {
+                var solid = new Solid(position, endPoint2.ToPoint3d(), endPoint3.ToPoint3d()) { Color = Color };
+                drawable.Add(solid);
+            }
 
-            var solid = new Solid(position, endPoint2.ToPoint3d(), endPoint3.ToPoint3d()) { Color = Color };
-            DrawAdd(solid);
+            AddTransientDrawable(drawable);
         }
 
         public void DrawArrow(Point3d position, double bearing, int size, bool fill = true) => DrawArrow(position, new Angle(bearing), size, fill);
@@ -320,30 +358,53 @@ namespace _3DS_CivilSurveySuite.ACAD
             mText.Attachment = AttachmentPoint.BottomCenter;
             mText.TextHeight = TextSize(textSize);
             mText.Contents = text;
-            DrawAdd(mText);
+
+            var drawable = new TransientDrawable { mText };
+            AddTransientDrawable(drawable);
         }
 
         public void ClearGraphics()
         {
-            if (_graphics == null)
-            {
+            if (_drawables == null)
                 return;
-            }
 
-            if (_graphics.Count < 0)
-            {
+            if (_drawables.Count < 0)
                 return;
-            }
 
             var tm = TransientManager.CurrentTransientManager;
             var intCol = new IntegerCollection();
 
-            foreach (DBObject graphic in _graphics)
+            foreach (TransientDrawable transientDrawable in _drawables)
             {
-                tm.EraseTransient(graphic, intCol);
-                graphic.Dispose();
+                foreach (Drawable drawable in transientDrawable)
+                {
+                    tm.EraseTransient(drawable, intCol);
+                    drawable.Dispose();
+                }
             }
+
+            _drawables.Clear();
+
             AcadApp.Editor.UpdateScreen();
+        }
+
+        public void Undo()
+        {
+            if (_drawables == null)
+                return;
+
+            if (_drawables.Count <= 0)
+                return;
+
+            var lastIndex = _drawables.Count - 1;
+            var lastDrawable = _drawables[lastIndex];
+
+            var intCol = new IntegerCollection();
+
+            foreach (Drawable drawable in lastDrawable)
+                TransientManager.CurrentTransientManager.EraseTransient(drawable, intCol);
+
+            _drawables.RemoveAt(lastIndex);
         }
 
         private void Dispose(bool disposing)
@@ -354,12 +415,68 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
 
             ClearGraphics();
-            _graphics?.Dispose();
         }
 
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        /// <summary>
+        /// Draws a chainage between two <see cref="Point3d"/> entities.
+        /// </summary>
+        /// <param name="graphics">The <see cref="TransientGraphics"/> object to draw the chainage.</param>
+        /// <param name="firstPoint"></param>
+        /// <param name="secondPoint"></param>
+        /// <param name="interval"></param>
+        /// <param name="textSize"></param>
+        public void DrawChainage(Point3d firstPoint, Point3d secondPoint, int interval = 10, double textSize = 1.0)
+        {
+            var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+            var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
+
+            var drawables = new TransientDrawable();
+
+            var intervalStep = 0;
+            while (intervalStep < distance)
+            {
+                var point = PointHelpers.AngleAndDistanceToPoint(angle, intervalStep, firstPoint.ToPoint());
+
+                drawables.Add(DrawTick(point.ToPoint3d(), angle));
+                drawables.Add(DrawChainageText(point.ToPoint3d(), intervalStep.ToString(), textSize, angle, planReadability: false));
+                intervalStep += interval;
+            }
+            //draw last
+            drawables.Add(DrawTick(secondPoint, angle));
+            drawables.Add(DrawChainageText(secondPoint, Math.Round(distance, 3).ToString(CultureInfo.InvariantCulture), textSize, angle, planReadability: false));
+            AddTransientDrawable(drawables);
+        }
+
+        private Drawable DrawChainageText(Point3d position, string text, double textSize, Angle angle, double offsetAmount = 0.5, bool planReadability = true)
+        {
+            var mText = new MText();
+            mText.SetDatabaseDefaults();
+
+            mText.Rotation = planReadability ?
+                angle.GetOrdinaryAngle().ToCounterClockwise().ToRadians() :
+                angle.ToCounterClockwise().ToRadians();
+
+            Point insPoint = PointHelpers.AngleAndDistanceToPoint(angle.GetOrdinaryAngle() - 90, TextOffset(offsetAmount), position.ToPoint());
+
+            mText.Location = insPoint.ToPoint3d();
+            mText.Color = Color;
+            mText.Attachment = AttachmentPoint.BottomCenter;
+            mText.TextHeight = TextSize(textSize);
+            mText.Contents = text;
+
+            return mText;
+        }
+
+        private Drawable DrawTick(Point3d tickPoint, Angle drawAngle, double tickLength = 1.0)
+        {
+            var point1 = PointHelpers.AngleAndDistanceToPoint(drawAngle + 90, tickLength, tickPoint.ToPoint());
+            var point2 = PointHelpers.AngleAndDistanceToPoint(drawAngle - 90, tickLength, tickPoint.ToPoint());
+            return DrawLine(point1.ToPoint3d(), point2.ToPoint3d(), useDashedLine: false);
         }
     }
 }
