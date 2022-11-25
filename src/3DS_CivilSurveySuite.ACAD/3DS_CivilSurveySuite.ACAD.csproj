@@ -104,7 +104,6 @@
     <Compile Include="Services\RasterImageService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TransientDrawable.cs" />
-    <Compile Include="TransientGraphicsUtils.cs" />
     <Compile Include="Commands\TraverseCommand.cs" />
     <Compile Include="Keywords.cs" />
     <Compile Include="LayerUtils.cs" />
