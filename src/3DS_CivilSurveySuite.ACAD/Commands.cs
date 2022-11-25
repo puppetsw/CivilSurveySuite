@@ -16,6 +16,18 @@ namespace _3DS_CivilSurveySuite.ACAD
             CommandHelpers.ExecuteCommand<TestingCommand>();
         }
 
+        [CommandMethod("3DS", "_3DSTestTransientGraphics", CommandFlags.Modal)]
+        public static void TestTransientGraphics()
+        {
+            CommandHelpers.ExecuteCommand<TransientGraphicsTestCommand>();
+        }
+
+        [CommandMethod("3DS", "_3DSTestTransientGraphicsUndo", CommandFlags.Modal)]
+        public static void TestTransientGraphicsUndo()
+        {
+            CommandHelpers.ExecuteCommand<TransientGraphicsUndoTestCommand>();
+        }
+
         #endregion
 
         #region Menus
