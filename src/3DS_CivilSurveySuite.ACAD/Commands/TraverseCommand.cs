@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using _3DS_CivilSurveySuite.Shared.Helpers;
 using _3DS_CivilSurveySuite.Shared.Models;
 using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
+using _3DS_CivilSurveySuite.UI.Helpers;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
@@ -9,14 +11,12 @@ using Exception = Autodesk.AutoCAD.Runtime.Exception;
 namespace _3DS_CivilSurveySuite.ACAD
 {
     /// <summary>
-    /// Slightly improved version of the Traverse lisp command
-    /// written by Edward Whitney, my dad.
+    /// Slightly improved version of the original Traverse lisp routine
+    /// written and created by Ted Whitney.
     /// </summary>
     public class TraverseCommand : IAcadCommand
     {
         private const int GRAPHICS_SIZE = 6;
-
-        string _unitsString;
 
         private enum UnitType
         {
@@ -27,37 +27,81 @@ namespace _3DS_CivilSurveySuite.ACAD
 
         private UnitType _currentUnitType = UnitType.Metre;
 
-        private double? ApplyUnitConversion(double? distance)
+        /// <summary>
+        /// Gets the converted distance value.
+        /// </summary>
+        /// <returns>System.Nullable&lt;System.Double&gt;.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        private double? GetDistance(Point3d basePoint, out string keyword)
         {
-            if (distance == null)
-                return null;
+            keyword = string.Empty;
 
             switch (_currentUnitType)
             {
                 case UnitType.Metre:
-                    return distance.Value;
+                    return !EditorUtils.TryGetDistance(
+                        string.Format(ResourceHelpers.GetLocalisedString("SpecifyDistanceInOr"), GetUnitsString()),
+                        basePoint, new[] { ResourceHelpers.GetLocalisedString("Units") },
+                        ResourceHelpers.GetLocalisedString("Units"), out keyword, out double? distance)
+                        ? null
+                        : distance;
                 case UnitType.Feet:
-                    return MathHelpers.ConvertFeetToMeters(distance.Value);
+                    return GetFeetAndInches(basePoint, out keyword);
                 case UnitType.Link:
-                    return MathHelpers.ConvertLinkToMeters(distance.Value);
+                    return GetLinks(basePoint, out keyword);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void SetUnitsString()
+        private double? GetLinks(Point3d basePoint, out string keyword)
+        {
+            if (!EditorUtils.TryGetDistance(
+                    string.Format(ResourceHelpers.GetLocalisedString("SpecifyDistanceInOr"), GetUnitsString()),
+                    basePoint, new[] { ResourceHelpers.GetLocalisedString("Units") },
+                    ResourceHelpers.GetLocalisedString("Units"), out keyword, out double? links))
+                return null;
+
+            if (links == null)
+                return null;
+
+            double? distance = MathHelpers.ConvertLinkToMeters(links.Value);
+            return distance;
+        }
+
+        private double? GetFeetAndInches(Point3d basePoint, out string keyword)
+        {
+            if (!EditorUtils.TryGetDistance(
+                    string.Format(ResourceHelpers.GetLocalisedString("SpecifyDistanceInOr"), GetUnitsString()),
+                    basePoint, new[] { ResourceHelpers.GetLocalisedString("Units") },
+                    ResourceHelpers.GetLocalisedString("Units"), out keyword, out double? feet))
+                return null;
+
+            if (feet == null || !string.IsNullOrEmpty(keyword))
+                return null;
+
+            if (!EditorUtils.TryGetDouble(ResourceHelpers.GetLocalisedString("SpecifyInches"), out double? inches,
+                    useDefaultValue: true, defaultValue: 0))
+                return null;
+
+            double? distance = MathHelpers.FeetToMeters(feet);
+
+            if (inches != null)
+                distance += MathHelpers.InchesToMeters(inches);
+
+            return distance;
+        }
+
+        private string GetUnitsString()
         {
             switch (_currentUnitType)
             {
                 case UnitType.Metre:
-                    _unitsString = "metres";
-                    break;
+                    return ResourceHelpers.GetLocalisedString("Metres").ToLower();
                 case UnitType.Feet:
-                    _unitsString = "feet and inches";
-                    break;
+                    return ResourceHelpers.GetLocalisedString("Feet").ToLower();
                 case UnitType.Link:
-                    _unitsString = "links";
-                    break;
+                    return ResourceHelpers.GetLocalisedString("Links").ToUpper();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -69,14 +113,16 @@ namespace _3DS_CivilSurveySuite.ACAD
 
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Specify base point: ", out Point3d basePoint))
+                if (!EditorUtils.TryGetPoint(ResourceHelpers.GetLocalisedString("SpecifyBasePoint"), out Point3d basePoint))
                     return;
+
+                AcadApp.Editor.WriteMessage("\n");
 
                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
 
                 do
                 {
-                    if (!EditorUtils.TryGetAngle("\n3DS> Specify bearing or: ", basePoint, out var bearing))
+                    if (!EditorUtils.TryGetAngle(ResourceHelpers.GetLocalisedString("SpecifyBearingOr"), basePoint, out var bearing))
                         return;
 
                     if (bearing == null)
@@ -88,23 +134,22 @@ namespace _3DS_CivilSurveySuite.ACAD
                     bool selectingUnits = true;
                     do
                     {
-                        SetUnitsString();
+                        distance = GetDistance(basePoint, out var keyword);
 
-                        if (!EditorUtils.TryGetDistance($"\n3DS> Specify distance in {_unitsString} or: ", basePoint, new[] { "Units" }, "Units",
-                                out var keyword, out distance))
-                            return;
-
-                        if (distance == null)
-                            return;
-
-                        graphics.Undo();
-                        graphics.DrawLine(basePoint, PointHelpers.AngleAndDistanceToPoint(bearing, distance.Value, basePoint.ToPoint()).ToPoint3d(), useDashedLine: true);
+                        if (distance > 0)
+                        {
+                            graphics.Undo();
+                            graphics.DrawLine(basePoint, PointHelpers.AngleAndDistanceToPoint(bearing, distance.Value, basePoint.ToPoint()).ToPoint3d(), useDashedLine: true);
+                        }
 
                         if (!string.IsNullOrEmpty(keyword))
                         {
-                            if (keyword == "Units")
+                            if (string.Equals(keyword, ResourceHelpers.GetLocalisedString("Units"), StringComparison.CurrentCultureIgnoreCase))
                             {
-                                var pkoUnits = new PromptKeywordOptions($"\n3DS> Specify units: ") { AppendKeywordsToMessage = true };
+                                var pkoUnits = new PromptKeywordOptions(ResourceHelpers.GetLocalisedString("SpecifyUnits"))
+                                {
+                                    AppendKeywordsToMessage = true
+                                };
                                 pkoUnits.Keywords.Add(Keywords.METRE);
                                 pkoUnits.Keywords.Add(Keywords.FEET);
                                 pkoUnits.Keywords.Add(Keywords.LINK);
@@ -118,11 +163,6 @@ namespace _3DS_CivilSurveySuite.ACAD
                                         break;
                                     case Keywords.FEET:
                                         _currentUnitType = UnitType.Feet;
-                                        AcadApp.Editor.WriteMessage("\n----------------------------------------------------");
-                                        AcadApp.Editor.WriteMessage("\nFeet and inches are represented as a decimal number.");
-                                        AcadApp.Editor.WriteMessage("\nExample: 5 feet and 2 inches, expected input: 5.02.");
-                                        AcadApp.Editor.WriteMessage("\nInches less than 10 must have a preceding zero.");
-                                        AcadApp.Editor.WriteMessage("\n----------------------------------------------------");
                                         break;
                                     case Keywords.LINK:
                                         _currentUnitType = UnitType.Link;
@@ -141,7 +181,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     bool traverseAccepted = false;
                     do
                     {
-                        var pko = new PromptKeywordOptions("\n3DS> Accept and continue? ")
+                        var pko = new PromptKeywordOptions(ResourceHelpers.GetLocalisedString("AcceptAndContinue"))
                         {
                             AppendKeywordsToMessage = true
                         };
@@ -150,12 +190,8 @@ namespace _3DS_CivilSurveySuite.ACAD
                         pko.Keywords.Add(Keywords.FLIP);
                         pko.Keywords.Default = Keywords.ACCEPT;
 
-                        var calculatedDistance = ApplyUnitConversion(distance);
-
-                        if (calculatedDistance == null)
-                            throw new InvalidOperationException("distance was null");
-
-                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(bearing, calculatedDistance.Value, basePoint.ToPoint());
+                        Debug.Assert(distance != null);
+                        Point newPoint = PointHelpers.AngleAndDistanceToPoint(bearing, distance.Value, basePoint.ToPoint());
 
                         graphics.DrawLine(basePoint.ToPoint2d(), newPoint.ToPoint2d());
                         graphics.DrawPlus(newPoint.ToPoint3d(), GRAPHICS_SIZE);
@@ -192,7 +228,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                                 graphics.DrawPlus(basePoint, GRAPHICS_SIZE);
                                 break;
                             }
-                            case "":
+                            default:
                                 return;
                         }
                     } while (!traverseAccepted);
@@ -200,7 +236,7 @@ namespace _3DS_CivilSurveySuite.ACAD
             }
             catch (Exception e)
             {
-                Ioc.Default.GetInstance<ILogger>()?.Error(e, e.Message);
+                Ioc.Default.GetInstance<ILogger>().Error(e, e.Message);
                 AcadApp.Editor.WriteMessage($"Exception: {e.Message}");
             }
             finally

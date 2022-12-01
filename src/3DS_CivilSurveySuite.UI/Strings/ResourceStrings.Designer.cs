@@ -133,6 +133,15 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Accept and continue?.
+        /// </summary>
+        internal static string AcceptAndContinue {
+            get {
+                return ResourceManager.GetString("AcceptAndContinue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 3DS&gt; Loading Civil Survey Suite for Civil 3D....
         /// </summary>
         internal static string C3D_Loading {
@@ -178,11 +187,47 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feet.
+        /// </summary>
+        internal static string Feet {
+            get {
+                return ResourceManager.GetString("Feet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Description.
         /// </summary>
         internal static string FullDescription {
             get {
                 return ResourceManager.GetString("FullDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inches.
+        /// </summary>
+        internal static string Inches {
+            get {
+                return ResourceManager.GetString("Inches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Links.
+        /// </summary>
+        internal static string Links {
+            get {
+                return ResourceManager.GetString("Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metres.
+        /// </summary>
+        internal static string Metres {
+            get {
+                return ResourceManager.GetString("Metres", resourceCulture);
             }
         }
         
@@ -232,11 +277,65 @@ namespace _3DS_CivilSurveySuite.UI.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Specify base point:.
+        /// </summary>
+        internal static string SpecifyBasePoint {
+            get {
+                return ResourceManager.GetString("SpecifyBasePoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Specify bearing or:.
+        /// </summary>
+        internal static string SpecifyBearingOr {
+            get {
+                return ResourceManager.GetString("SpecifyBearingOr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Specify distance in {0} or:.
+        /// </summary>
+        internal static string SpecifyDistanceInOr {
+            get {
+                return ResourceManager.GetString("SpecifyDistanceInOr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Specify inches:.
+        /// </summary>
+        internal static string SpecifyInches {
+            get {
+                return ResourceManager.GetString("SpecifyInches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3DS&gt; Specify units:.
+        /// </summary>
+        internal static string SpecifyUnits {
+            get {
+                return ResourceManager.GetString("SpecifyUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Station.
         /// </summary>
         internal static string Station {
             get {
                 return ResourceManager.GetString("Station", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Units.
+        /// </summary>
+        internal static string Units {
+            get {
+                return ResourceManager.GetString("Units", resourceCulture);
             }
         }
     }

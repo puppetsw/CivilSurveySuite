@@ -1,9 +1,4 @@
-﻿// Copyright Scott Whitney. All Rights Reserved.
-// Reproduction or transmission in whole or in part, any form or by any
-// means, electronic, mechanical or otherwise, is prohibited without the
-// prior written consent of the copyright owner.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using _3DS_CivilSurveySuite.Shared.Models;
@@ -15,6 +10,38 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
     /// </summary>
     public static class MathHelpers
     {
+        private const double FEET_CONVERSION = 0.3048;
+        private const double INCH_CONVERSION = 0.0254;
+        private const double LINK_CONVERSION = 0.201168;
+
+        /// <summary>
+        /// Convert feet to meters.
+        /// </summary>
+        /// <param name="feet">The feet.</param>
+        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
+        /// <returns>System.Double.</returns>
+        public static double FeetToMeters(double? feet, int decimalPlaces = 4)
+        {
+            if (feet == null)
+                return 0;
+
+            return Math.Round(feet.Value * FEET_CONVERSION, decimalPlaces);
+        }
+
+        /// <summary>
+        /// Convert inches to meters.
+        /// </summary>
+        /// <param name="inches">The inches.</param>
+        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
+        /// <returns>System.Double.</returns>
+        public static double InchesToMeters(double? inches, int decimalPlaces = 4)
+        {
+            if (inches == null)
+                return 0;
+
+            return Math.Round(inches.Value * INCH_CONVERSION, decimalPlaces);
+        }
+
         /// <summary>
         /// Converts links to meters.
         /// </summary>
@@ -23,8 +50,7 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <returns>A double representing the links value in meters.</returns>
         public static double ConvertLinkToMeters(double link, int decimalPlaces = 4)
         {
-            const double linkConversion = 0.201168;
-            return Math.Round(link * linkConversion, decimalPlaces);
+            return Math.Round(link * LINK_CONVERSION, decimalPlaces);
         }
 
         /// <summary>
@@ -38,12 +64,9 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <returns>A double representing the feet and inches in meters.</returns>
         public static double ConvertFeetToMeters(double feetAndInches, int decimalPlaces = 4)
         {
-            const double feetConversion = 0.3048;
-            const double inchConversion = 0.0254;
-
-            var feet = Math.Truncate(feetAndInches) * feetConversion;
+            var feet = Math.Truncate(feetAndInches) * FEET_CONVERSION;
             var inch1 = feetAndInches - Math.Truncate(feetAndInches);
-            var inch2 = (inch1 * 100) * inchConversion;
+            var inch2 = inch1 * 100 * INCH_CONVERSION;
 
             return Math.Round(feet + inch2, decimalPlaces);
         }
