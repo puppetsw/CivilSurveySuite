@@ -141,6 +141,9 @@
   <data name="ACAD_SelectSecondLineOrPolyline" xml:space="preserve">
     <value>3DS&gt; Select second line or polyline:</value>
   </data>
+  <data name="AcceptAndContinue" xml:space="preserve">
+    <value>3DS&gt; Accept and continue?</value>
+  </data>
   <data name="C3D_Loading" xml:space="preserve">
     <value>3DS&gt; Loading Civil Survey Suite for Civil 3D...</value>
   </data>
@@ -156,8 +159,20 @@
   <data name="Elevation" xml:space="preserve">
     <value>Elevation</value>
   </data>
+  <data name="Feet" xml:space="preserve">
+    <value>Feet</value>
+  </data>
   <data name="FullDescription" xml:space="preserve">
     <value>Full Description</value>
+  </data>
+  <data name="Inches" xml:space="preserve">
+    <value>Inches</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="Metres" xml:space="preserve">
+    <value>Metres</value>
   </data>
   <data name="Northing" xml:space="preserve">
     <value>Northing</value>
@@ -174,7 +189,25 @@
   <data name="Site" xml:space="preserve">
     <value>Site</value>
   </data>
+  <data name="SpecifyBasePoint" xml:space="preserve">
+    <value>3DS&gt; Specify base point:</value>
+  </data>
+  <data name="SpecifyBearingOr" xml:space="preserve">
+    <value>3DS&gt; Specify bearing or:</value>
+  </data>
+  <data name="SpecifyDistanceInOr" xml:space="preserve">
+    <value>3DS&gt; Specify distance in {0} or:</value>
+  </data>
+  <data name="SpecifyInches" xml:space="preserve">
+    <value>3DS&gt; Specify inches:</value>
+  </data>
+  <data name="SpecifyUnits" xml:space="preserve">
+    <value>3DS&gt; Specify units:</value>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>Station</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Units</value>
   </data>
 </root>
