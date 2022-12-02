@@ -238,7 +238,7 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <param name="dist2">The dist2.</param>
         /// <param name="solution1">The solution1.</param>
         /// <param name="solution2">The solution2.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if distances intersect, <c>false</c> otherwise.</returns>
         public static bool DistanceDistanceIntersection(Point point1, double dist1, Point point2, double dist2, out Point solution1, out Point solution2)
         {
             solution1 = Point.Origin;
@@ -274,7 +274,7 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <param name="solution1"></param>
         /// <param name="solution2"></param>
         /// <param name="decimalPlaces"></param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if angle and distance intersect, <c>false</c> otherwise.</returns>
         public static bool AngleDistanceIntersection(Point point1, Angle angle1, Point point2, double radius, out Point solution1, out Point solution2, int decimalPlaces = 5)
         {
             var point1A = AngleAndDistanceToPoint(angle1, 32000, point1);
