@@ -470,7 +470,6 @@ namespace _3DS_CivilSurveySuite.ACAD
         /// <summary>
         /// Draws a chainage between two <see cref="Point3d"/> entities.
         /// </summary>
-        /// <param name="graphics">The <see cref="TransientGraphics"/> object to draw the chainage.</param>
         /// <param name="firstPoint"></param>
         /// <param name="secondPoint"></param>
         /// <param name="interval"></param>
