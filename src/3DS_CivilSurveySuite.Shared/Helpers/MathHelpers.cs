@@ -75,9 +75,8 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// Converts a decimal degrees value to radians.
         /// </summary>
         /// <param name="decimalDegrees">The decimal degrees to convert.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double value containing the decimal degrees in radians.</returns>
-        public static double DecimalDegreesToRadians(double decimalDegrees, int decimalPlaces = 15)
+        public static double DecimalDegreesToRadians(double decimalDegrees)
         {
             return decimalDegrees / 180 * Math.PI;
         }
@@ -86,9 +85,8 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// Converts a radians value to decimal degrees.
         /// </summary>
         /// <param name="radians">The radians to convert.</param>
-        /// <param name="decimalPlaces">The number of decimal places to round to. Default 6.</param>
         /// <returns>A double value containing the radians value in decimal degrees.</returns>
-        public static double RadiansToDecimalDegrees(double radians, int decimalPlaces = 15)
+        public static double RadiansToDecimalDegrees(double radians)
         {
             return (radians * 180) / Math.PI;
         }
@@ -100,19 +98,14 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <param name="x2">Easting of second coordinate.</param>
         /// <param name="y1">Northing of first coordinate.</param>
         /// <param name="y2">Northing of second coordinate.</param>
-        /// <param name="useRounding"></param>
-        /// <param name="decimalPlaces">The number of decimal places to round to.</param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double GetDistanceBetweenPoints(double x1, double x2, double y1, double y2, bool useRounding = false, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(double x1, double x2, double y1, double y2)
         {
             double x = Math.Abs(x1 - x2);
             double y = Math.Abs(y1 - y2);
 
             return Math.Sqrt(x * x + y * y);
         }
-
-
-
 
         public static bool LineSegementsIntersect(Vector p, Vector p2, Vector q, Vector q2, out Point intersectingPoint, bool considerCollinearOverlapAsIntersect = false)
         {
