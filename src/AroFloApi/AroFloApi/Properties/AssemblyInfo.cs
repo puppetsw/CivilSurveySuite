@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AroFloTestApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("AroFloApi")]
+[assembly: AssemblyDescription("AroFlo API")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AroFloTestApp")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCompany("3D Surveys")]
+[assembly: AssemblyProduct("AroFloApi")]
+[assembly: AssemblyCopyright("Copyright © 3D Surveys 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
