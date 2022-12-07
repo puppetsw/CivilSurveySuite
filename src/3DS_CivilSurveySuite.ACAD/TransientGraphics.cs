@@ -393,9 +393,11 @@ namespace _3DS_CivilSurveySuite.ACAD
                 if (!tsTable.Has(TEXT_STYLE_NAME))
                 {
                     tsTable.UpgradeOpen();
-                    var textStyle = new TextStyleTableRecord();
-                    textStyle.FileName = "iso.shx";
-                    textStyle.Name = TEXT_STYLE_NAME;
+                    var textStyle = new TextStyleTableRecord
+                    {
+                        FileName = "iso.shx",
+                        Name = TEXT_STYLE_NAME,
+                    };
                     textStyleId = tsTable.Add(textStyle);
                     tr.AddNewlyCreatedDBObject(textStyle, true);
                 }
