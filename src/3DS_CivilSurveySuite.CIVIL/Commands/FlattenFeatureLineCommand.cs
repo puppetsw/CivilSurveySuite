@@ -9,8 +9,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
     {
         public void Execute()
         {
-            var featureLines = new ObjectIdCollection();
-            if (!EditorUtils.TryGetImpliedSelectionOfType<FeatureLine>(out featureLines))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<FeatureLine>(out var featureLines))
             {
                 if (!EditorUtils.TryGetSelectionOfType<FeatureLine>("\n3DS> Select Feature Line: ", "\n3DS> Remove Feature Line: ", out featureLines))
                 {
