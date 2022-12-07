@@ -873,10 +873,12 @@ namespace _3DS_CivilSurveySuite.ACAD
 
         public static void Inverse(Point3d firstPoint, Point3d secondPoint)
         {
+            var decimalPlaces = SystemVariables.LUPREC;
+
             var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-            var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint(), true, SystemVariables.LUPREC);
-            var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
-            var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
+            var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint(), true, decimalPlaces);
+            var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint(), decimalPlaces);
+            var slope = Math.Round(Math.Abs(delta.Z / distance * 100), decimalPlaces);
 
             AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
             AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
@@ -939,10 +941,12 @@ namespace _3DS_CivilSurveySuite.ACAD
                     if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
                         return;
 
+                    var decimalPlaces = SystemVariables.LUPREC;
+
                     var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                    var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-                    var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint());
-                    var slope = Math.Round(Math.Abs(delta.Z / distance * 100), 3);
+                    var distance = Math.Round(PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint()), decimalPlaces);
+                    var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint(), decimalPlaces);
+                    var slope = Math.Round(Math.Abs(delta.Z / distance * 100), decimalPlaces);
 
                     var midPoint = PointHelpers.GetMidpointBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
                     graphics.ClearGraphics();
