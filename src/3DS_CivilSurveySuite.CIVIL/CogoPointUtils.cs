@@ -717,6 +717,9 @@ namespace _3DS_CivilSurveySuite.CIVIL
         {
             var pointGroup = PointGroupUtils.GetPointGroupByName(tr, "_All Points");
 
+            if (pointGroup == null)
+                return 1;
+
             long num = 0;
             if (pointGroup.ObjectId.IsValid)
             {
