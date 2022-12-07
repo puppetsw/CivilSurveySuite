@@ -876,7 +876,7 @@ namespace _3DS_CivilSurveySuite.ACAD
             var decimalPlaces = SystemVariables.LUPREC;
 
             var angle = AngleHelpers.GetAngleBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint());
-            var distance = PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint(), true, decimalPlaces);
+            var distance = Math.Round(PointHelpers.GetDistanceBetweenPoints(firstPoint.ToPoint(), secondPoint.ToPoint()), decimalPlaces);
             var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint(), decimalPlaces);
             var slope = Math.Round(Math.Abs(delta.Z / distance * 100), decimalPlaces);
 
@@ -1002,7 +1002,7 @@ namespace _3DS_CivilSurveySuite.ACAD
                     graphics.DrawX(pickedPoint, Settings.GraphicsSize);
                     graphics.DrawLine(pickedPoint, intersectionPoint.ToPoint3d());
 
-                    var distance = PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), intersectionPoint, true);
+                    var distance = Math.Round(PointHelpers.GetDistanceBetweenPoints(pickedPoint.ToPoint(), intersectionPoint), SystemVariables.LUPREC);
                     var angle = AngleHelpers.GetAngleBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
 
                     var midPt = PointHelpers.GetMidpointBetweenPoints(pickedPoint.ToPoint(), intersectionPoint);
