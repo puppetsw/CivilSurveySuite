@@ -12,8 +12,6 @@ using Polyline = Autodesk.AutoCAD.DatabaseServices.Polyline;
 
 namespace _3DS_CivilSurveySuite.ACAD
 {
-    public sealed class Drawables : List<Drawable> { }
-
     /// <summary>
     /// A helper class to display and manage TransientGraphics
     /// within AutoCAD.
