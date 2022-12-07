@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("3DS_CivilSurveySuite.Shared")]
-[assembly: AssemblyDescription("Shared Component of 3DS CivilSurveySuite")]
+[assembly: AssemblyTitle("3DS_CivilSurveySuite.Loader")]
+[assembly: AssemblyDescription("Loader Component of 3DS CivilSurveySuite")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("3D Surveys")]
 [assembly: AssemblyProduct("3DS CivilSurveySuite")]
@@ -17,9 +17,6 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0a9643c4-a65b-4d1c-820a-bec5a3b1a8f7")]
 
 // Version information for an assembly consists of the following four values:
 //
