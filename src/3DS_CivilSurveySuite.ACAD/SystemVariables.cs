@@ -35,32 +35,41 @@ namespace _3DS_CivilSurveySuite.ACAD
             Application.SetSystemVariable(variableName, value);
         }
 
-        // ReSharper disable InconsistentNaming
-        public static Point2d SCREENSIZE
-        {
-            get => GetSystemVariable<Point2d>();
-            set => SetSystemVariable(value);
-        }
+        /// <summary>
+        /// Gets current viewport size in pixels (X and Y).
+        /// </summary>
+        public static Point2d SCREENSIZE => GetSystemVariable<Point2d>();
 
-        public static double VIEWSIZE
-        {
-            get => GetSystemVariable<double>();
-            set => SetSystemVariable(value);
-        }
+        /// <summary>
+        /// Gets the height of the view displayed in the current viewport, measured in drawing units.
+        /// </summary>
+        public static double VIEWSIZE => GetSystemVariable<double>();
 
+        /// <summary>
+        /// Gets or sets the display precision for linear units and coordinates.
+        /// </summary>
+        /// <value>The luprec.</value>
         public static short LUPREC
         {
             get => GetSystemVariable<short>();
             set => SetSystemVariable(value);
         }
 
+        /// <summary>
+        /// Gets or sets the name of the current annotation scale for the current space.
+        /// </summary>
+        /// <remarks>
+        /// You can only enter a named scale that exists in the drawing's named scale list.
+        /// </remarks>
         public static double CANNOSCALEVALUE
         {
             get => GetSystemVariable<double>();
             set => SetSystemVariable(value);
         }
 
+        /// <summary>
+        /// Gets the customization file name, including the path for the file name.
+        /// </summary>
         public static string MENUNAME => GetSystemVariable<string>();
-        // ReSharper restore InconsistentNaming
     }
 }
