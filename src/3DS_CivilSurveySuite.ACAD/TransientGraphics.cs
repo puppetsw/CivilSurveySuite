@@ -363,8 +363,50 @@ namespace _3DS_CivilSurveySuite.ACAD
             mText.TextHeight = TextSize(textSize);
             mText.Contents = text;
 
+            var textStyleId = GetTextStyleId();
+
+            if (textStyleId != null)
+                mText.TextStyleId = textStyleId.Value;
+            else
+                AcadApp.Logger.Warn("Unable to get or create transient graphics text style. Using default.");
+
             var drawable = new TransientDrawable { mText };
             AddTransientDrawable(drawable);
+        }
+
+        private const string TEXT_STYLE_NAME = "CSS_Transient_Text";
+
+        private static ObjectId? GetTextStyleId()
+        {
+            using (var tr = AcadApp.StartLockedTransaction())
+            {
+                var tsTable = (TextStyleTable)tr.GetObject(AcadApp.ActiveDatabase.TextStyleTableId, OpenMode.ForRead);
+
+                if (tsTable == null)
+                {
+                    tr.Commit();
+                    return null;
+                }
+
+                ObjectId textStyleId;
+
+                if (!tsTable.Has(TEXT_STYLE_NAME))
+                {
+                    tsTable.UpgradeOpen();
+                    var textStyle = new TextStyleTableRecord();
+                    textStyle.FileName = "iso.shx";
+                    textStyle.Name = TEXT_STYLE_NAME;
+                    textStyleId = tsTable.Add(textStyle);
+                    tr.AddNewlyCreatedDBObject(textStyle, true);
+                }
+                else
+                {
+                    textStyleId = tsTable[TEXT_STYLE_NAME];
+                }
+
+                tr.Commit();
+                return textStyleId;
+            }
         }
 
         public void ClearGraphics()
