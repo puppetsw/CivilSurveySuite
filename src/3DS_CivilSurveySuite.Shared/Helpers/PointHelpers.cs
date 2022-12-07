@@ -18,12 +18,10 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// </summary>
         /// <param name="point1">The first coordinate.</param>
         /// <param name="point2">The second coordinate.</param>
-        /// <param name="useRounding"></param>
-        /// <param name="decimalPlaces"></param>
         /// <returns>A double representing the distance between the two coordinates.</returns>
-        public static double GetDistanceBetweenPoints(Point point1, Point point2, bool useRounding = false, int decimalPlaces = 4)
+        public static double GetDistanceBetweenPoints(Point point1, Point point2)
         {
-            return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y, useRounding, decimalPlaces);
+            return MathHelpers.GetDistanceBetweenPoints(point1.X, point2.X, point1.Y, point2.Y);
         }
 
         /// <summary>
@@ -313,8 +311,6 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         /// <returns><c>true</c> if can calculate intersection, <c>false</c> otherwise.</returns>
         public static bool FourPointIntersection(Point a, Point b, Point c, Point d, out Point intersectionPoint, int decimalPlaces = 8)
         {
-            intersectionPoint = Point.Origin;
-
             // Line AB represented as a1x + b1y = c1
             double a1 = b.Y - a.Y;
             double b1 = a.X - b.X;
@@ -391,8 +387,8 @@ namespace _3DS_CivilSurveySuite.Shared.Helpers
         public static Point SetElevationOnGrade(this Point point, Point startGrade, Point endGrade)
         {
             var gradeDeltaZ = endGrade.Z - startGrade.Z;
-            var gradeLength = GetDistanceBetweenPoints(startGrade, endGrade, decimalPlaces: 8);
-            var distanceAlongGrade = GetDistanceBetweenPoints(startGrade, point, decimalPlaces: 8);
+            var gradeLength = GetDistanceBetweenPoints(startGrade, endGrade);
+            var distanceAlongGrade = GetDistanceBetweenPoints(startGrade, point);
             var newElevation = startGrade.Z + gradeDeltaZ * (distanceAlongGrade / gradeLength);
             return new Point(point.X, point.Y, newElevation);
         }
