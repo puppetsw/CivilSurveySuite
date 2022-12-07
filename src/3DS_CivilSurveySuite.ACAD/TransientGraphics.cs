@@ -60,6 +60,10 @@ namespace _3DS_CivilSurveySuite.ACAD
         {
             var viewSize = SystemVariables.VIEWSIZE;
             var text = viewSize / 100 * textSize;
+
+            if (text <= 0) // don't allow value to be less than or equal to 0.
+                return 1;
+
             return Math.Round(text, 2);
         }
 
