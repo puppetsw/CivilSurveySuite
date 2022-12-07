@@ -116,7 +116,7 @@ namespace _3DS_CivilSurveySuite.Shared.Models
         /// <param name="civilPoint"></param>
         /// <param name="lineNumber"></param>
         /// <param name="specialCode"></param>
-        /// <param name="logger"></param>
+        /// <param name="logger">Optional <see cref="ILogger"/></param>
         /// <remarks>
         /// Checks if the <see cref="SurveyPoints"/> contains the current line number
         /// for the point. If it does, add the current point to that dictionary using the key
