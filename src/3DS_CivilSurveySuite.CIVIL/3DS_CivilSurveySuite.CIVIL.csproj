@@ -104,6 +104,7 @@
     <Compile Include="AeccAppConnection.cs" />
     <Compile Include="AeccAppTools.cs" />
     <Compile Include="AlignmentUtils.cs" />
+    <Compile Include="BreaklineData.cs" />
     <Compile Include="C3DApp.cs" />
     <Compile Include="Commands\FeatureLineSiteCommand.cs" />
     <Compile Include="FeatureLineUtils.cs" />

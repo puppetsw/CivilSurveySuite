@@ -246,6 +246,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <summary>
         /// Removes the selected breakline(s) from the selected surface.
         /// </summary>
+        // BUG: When using this method, it only works on subsequent runs. First run does nothing?
         public static void RemoveBreaklinesFromSurface()
         {
             if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\n3DS> Select breaklines: ",
@@ -268,14 +269,40 @@ namespace _3DS_CivilSurveySuite.CIVIL
                     : GetSurfaceByIndex(tr, 0);
 
                 if (surface == null)
+                {
+                    tr.Commit();
                     return;
+                }
 
-                var breaklineDefs = surface.BreaklinesDefinition;
+                var tinSurface = (TinSurface)tr.GetObject(surface.ObjectId, OpenMode.ForWrite);
+
+                var breaklineDefs = tinSurface.BreaklinesDefinition;
                 var breaklinesToBeRemoved = new List<int>();
 
-                for (var i = 0; i < breaklineDefs.Count; i++)
+                var breaklineList = new List<BreaklineData>();
+
+                object[] args = new object[1];
+                object acadObject = tinSurface.AcadObject;
+                object target1 = acadObject.GetType().InvokeMember("Breaklines", BindingFlags.GetProperty, null, acadObject, null);
+                for (int i = 0; i < (int) target1.GetType().InvokeMember("Count", BindingFlags.GetProperty, null, target1, null); i++)
                 {
-                    var breaklineSet = breaklineDefs[i];
+                    SurfaceOperationAddBreakline operationAddBreakline1 = null;
+                    args[0] = i;
+
+                    object target2 = target1.GetType().InvokeMember("Item", BindingFlags.InvokeMethod, null, target1, args);
+                    object obj2 = target2.GetType().InvokeMember("Description", BindingFlags.GetProperty, null, target2, null);
+
+                    for (int ii = 0; ii < breaklineDefs.Count; ii++)
+                    {
+                        SurfaceOperationAddBreakline operationAddBreakline2 = breaklineDefs[ii];
+                        if (operationAddBreakline2.Description != (string)obj2)
+                            continue;
+
+                        operationAddBreakline1 = operationAddBreakline2;
+                        break;
+                    }
+
+                    var breaklineSet = operationAddBreakline1;
 
                     // Store current breakline details so we can re-create them.
                     double midOrd = breaklineSet.MidOrdinateDistance;
@@ -284,7 +311,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
                     double weedAngle = breaklineSet.WeedingAngle;
                     string description = breaklineSet.Description;
 
-                    var breaklineIds = surface.GetBreaklineEntityIds(breaklineSet);
+                    var breaklineIds = tinSurface.GetBreaklineEntityIds(breaklineSet);
 
                     for (var j = 0; j < breaklineIds.Count; j++)
                     {
@@ -293,17 +320,38 @@ namespace _3DS_CivilSurveySuite.CIVIL
                             if (breaklineIds[j].Handle == objectId.Handle)
                                 breaklinesToBeRemoved.Add(j); //Add index of handle match to remove list
                         }
-
-                        breaklineIds.RemoveAtIndexes(breaklinesToBeRemoved);
-
-                        // Remove current definition from surface
-                        surface.BreaklinesDefinition.RemoveAt(i);
-
-                        // Recreate the breakline set in the surface
-                        var newBreaklineSet = breaklineDefs.AddStandardBreaklines(breaklineIds, midOrd, maxDist, weedDist, weedAngle);
-                        newBreaklineSet.Description = description; //set description to old one.
                     }
+
+                    breaklineIds.RemoveAtIndexes(breaklinesToBeRemoved);
+
+                    if (breaklineIds.Count == 0)
+                        continue;
+
+                    var breakline = new BreaklineData
+                    {
+                        Description = description,
+                        MidOrdinateDistance = midOrd,
+                        MaximumDistance = maxDist,
+                        WeedingDistance = weedDist,
+                        WeedingAngle = weedAngle,
+                        ObjectIds = breaklineIds
+                    };
+
+                    breaklineList.Add(breakline);
                 }
+
+                for (var i = 0; i < breaklineDefs.Count; i++)
+                {
+                    // Remove current definition from surface
+                    tinSurface.BreaklinesDefinition.RemoveAt(i);
+                }
+
+                foreach (BreaklineData breaklineData in breaklineList)
+                {
+                    var newBreaklineSet = breaklineDefs.AddStandardBreaklines(breaklineData.ObjectIds, breaklineData.MidOrdinateDistance, breaklineData.MaximumDistance, breaklineData.WeedingDistance, breaklineData.WeedingAngle);
+                    newBreaklineSet.Description = breaklineData.Description; //set description to old one.*/
+                }
+
                 surface.Rebuild();
                 tr.Commit();
             }
