@@ -16,6 +16,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 using Autodesk.Civil.Settings;
+using Point = Autodesk.Civil.DatabaseServices.Point;
 
 namespace _3DS_CivilSurveySuite.CIVIL
 {
@@ -250,7 +251,20 @@ namespace _3DS_CivilSurveySuite.CIVIL
                 foreach (ObjectId id in objectIds)
                 {
                     var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
-                    var style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+
+                    LabelStyle style;
+
+                    if (pt.LabelStyleId.IsNull)
+                    {
+	                    // Check point group for LabelStyle
+	                    var pointGroup = (PointGroup) tr.GetObject(pt.PrimaryPointGroupId, OpenMode.ForRead);
+	                    style = pointGroup.PointLabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                    }
+                    else
+                    {
+	                    style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                    }
+
                     var textAngle = LabelUtils.GetFirstComponentAngle(style);
 
                     AcadApp.Editor.WriteMessage($"\n3DS> Point label style current rotation (radians): {textAngle}");
