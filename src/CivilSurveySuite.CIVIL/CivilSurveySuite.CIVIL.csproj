@@ -143,13 +143,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="3DS_CSS_CIVIL.cuix">
+    <None Include="CSS_CIVIL.cuix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="3DS_CSS_CIVIL.mnr">
+    <None Include="CSS_CIVIL.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="3DS_CSS_CIVIL_light.mnr">
+    <None Include="CSS_CIVIL_light.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
