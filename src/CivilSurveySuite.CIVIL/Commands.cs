@@ -10,7 +10,7 @@ namespace CivilSurveySuite.CIVIL
     {
         #region Menus
 
-        [CommandMethod("3DS", "_3DSLoadCivilMenu", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLoadCivilMenu", CommandFlags.Modal)]
         public static void LoadMenu()
         {
             C3DApp.LoadMenu();
@@ -19,145 +19,145 @@ namespace CivilSurveySuite.CIVIL
         #endregion
 
         #region CogoPoints
-        [CommandMethod("3DS", "_3DSCptBrgDist", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptBrgDist", CommandFlags.Modal)]
         public static void CptBrgDist()
         {
             PointUtils.Create_At_Angle_And_Distance(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptProdDist", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptProdDist", CommandFlags.Modal)]
         public static void CptProdDist()
         {
             PointUtils.Create_At_Production_Of_Line_And_Distance(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptOffsetLn", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptOffsetLn", CommandFlags.Modal)]
         public static void CptOffsetLn()
         {
             PointUtils.Create_At_Offset_Two_Lines(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptIntBrg", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptIntBrg", CommandFlags.Modal)]
         public static void CptIntBrg()
         {
             PointUtils.Create_At_Intersection_Two_Bearings(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptIntDist", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptIntDist", CommandFlags.Modal)]
         public static void CptIntDist()
         {
             PointUtils.Create_At_Intersection_Two_Distances(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptIntBrd", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptIntBrd", CommandFlags.Modal)]
         public static void CptIntBearingDist()
         {
             PointUtils.Create_At_Intersection_Of_Angle_And_Distance(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptIntFour", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptIntFour", CommandFlags.Modal)]
         public static void CptIntFourPoint()
         {
             PointUtils.Create_At_Intersection_Of_Four_Points(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptMidBetweenPoly", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptMidBetweenPoly", CommandFlags.Modal)]
         public static void CptMidBetweenPoly()
         {
             PolylineUtils.MidPointBetweenPolylines(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptSlope", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptSlope", CommandFlags.Modal)]
         public static void PtSlope()
         {
             PointUtils.Create_At_Slope_At_Point(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptLabelIns", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptLabelIns", CommandFlags.Modal)]
         public static void CptAtLabelIns()
         {
             PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint);
         }
 
-        [CommandMethod("3DS", "_3DSCptLabelInsText", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptLabelInsText", CommandFlags.Modal)]
         public static void CptAtLabelInsText()
         {
             PointUtils.Create_At_Label_Location(CogoPointUtils.CreatePoint, true);
         }
 
-        [CommandMethod("3DS", "_3DSCptLabelsReset", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        [CommandMethod("WMS", "CSSCptLabelsReset", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void CptResetLabels()
         {
             CogoPointUtils.LabelResetSelection();
         }
 
-        [CommandMethod("3DS", "_3DSCptLabelsMove", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptLabelsMove", CommandFlags.Modal)]
         public static void CptMoveLabels()
         {
             C3DApp.ShowDialog<CogoPointMoveLabelView>();
         }
 
-        [CommandMethod("3DS", "_3DSRawDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        [CommandMethod("WMS", "CSSRawDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void RawDesUpper()
         {
             CogoPointUtils.RawDescriptionToUpper();
         }
 
-        [CommandMethod("3DS", "_3DSFullDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        [CommandMethod("WMS", "CSSFullDesUpper", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void FullDesUpper()
         {
             CogoPointUtils.DescriptionFormatToUpper();
         }
 
-        [CommandMethod("3DS", "_3DSCptMatchLblRot", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptMatchLblRot", CommandFlags.Modal)]
         public static void CptMatchLblRot()
         {
             CogoPointUtils.LabelRotateMatch();
         }
 
-        [CommandMethod("3DS", "_3DSCptMatchMrkRot", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptMatchMrkRot", CommandFlags.Modal)]
         public static void CptMatchMrkRot()
         {
             CogoPointUtils.MarkerRotateMatch();
         }
 
-        [CommandMethod("3DS", "_3DSZoomToCpt", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSZoomToCpt", CommandFlags.Modal)]
         public static void ZoomToPt()
         {
             CogoPointUtils.ZoomPoint();
         }
 
-        [CommandMethod("3DS", "_3DSCptInverse", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptInverse", CommandFlags.Modal)]
         public static void InverseCogoPoint()
         {
             CogoPointUtils.Inverse_ByPointNumber();
         }
 
-        [CommandMethod("3DS", "_3DSCptUsedPts", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptUsedPts", CommandFlags.Modal)]
         public static void UsedPts()
         {
             CogoPointUtils.UsedPoints();
         }
 
-        [CommandMethod("3DS", "_3DSCptSetNext", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptSetNext", CommandFlags.Modal)]
         public static void CptSetNextPointNumber()
         {
             CogoPointUtils.SetNextPointNumber();
         }
 
-        [CommandMethod("3DS", "_3DSCptScaleElevations", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        [CommandMethod("WMS", "CSSCptScaleElevations", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void CptScaleElevations()
         {
             CogoPointUtils.ScaleElevations();
         }
 
-        [CommandMethod("3DS", "_3DSCptFullDescriptionToText", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptFullDescriptionToText", CommandFlags.Modal)]
         public static void CptFullDescriptionToText()
         {
             CogoPointUtils.FullDescriptionToTextEntity();
         }
 
-        [CommandMethod("3DS", "_3DSCptRawDescriptionToText", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptRawDescriptionToText", CommandFlags.Modal)]
         public static void CptRawDescriptionToText()
         {
             CogoPointUtils.RawDescriptionToTextEntity();
@@ -167,26 +167,26 @@ namespace CivilSurveySuite.CIVIL
 
         #region Surfaces
         // Surfaces
-        [CommandMethod("3DS", "_3DSSurfaceElAtPt", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSSurfaceElAtPt", CommandFlags.Modal)]
         public static void SurfaceElevationAtPoint()
         {
             SurfaceUtils.GetSurfaceElevationAtPoint();
         }
 
-        [CommandMethod("3DS", "3DSSurfaceAddBreaklines", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSSurfaceAddBreaklines", CommandFlags.Modal)]
         public static void SurfaceAddBreaklines()
         {
             SurfaceUtils.AddBreaklineToSurface();
         }
 
 
-        [CommandMethod("3DS", "3DSSurfaceRemoveBreaklines", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSSurfaceRemoveBreaklines", CommandFlags.Modal)]
         public static void SurfaceRemoveBreaklines()
         {
             SurfaceUtils.RemoveBreaklinesFromSurface();
         }
 
-        [CommandMethod("3DS", "3DSSurfaceSelAboveBelow", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSSurfaceSelAboveBelow", CommandFlags.Modal)]
         public static void SurfaceSelectAboveOrBelow()
         {
             SurfaceUtils.SelectPointsAboveOrBelowSurface();
@@ -196,25 +196,25 @@ namespace CivilSurveySuite.CIVIL
         #region Palettes
 
         // Palettes
-        [CommandMethod("3DS", "3DSShowConnectLineworkWindow", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSShowConnectLineworkWindow", CommandFlags.Modal)]
         public static void ShowConnectLinework()
         {
             C3DApp.ShowDialog<ConnectLineworkView>();
         }
 
-        [CommandMethod("3DS", "3DSShowCogoPointEditor", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSShowCogoPointEditor", CommandFlags.Modal)]
         public static void ShowCogoPointEditor()
         {
             C3DApp.ShowDialog<CogoPointEditorView>();
         }
 
-        [CommandMethod("3DS", "3DSShowCogoPointFindReplace", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSShowCogoPointFindReplace", CommandFlags.Modal)]
         public static void ShowCogoFindReplace()
         {
             C3DApp.ShowDialog<CogoPointReplaceDuplicateView>();
         }
 
-        [CommandMethod("3DS", "3DSShowCogoPointReporter", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSShowCogoPointReporter", CommandFlags.Modal)]
         public static void ShowCogoReporter()
         {
             C3DApp.ShowDialog<CogoPointSurfaceReportView>();
@@ -225,31 +225,31 @@ namespace CivilSurveySuite.CIVIL
         #region Labels
 
         // Labels
-        [CommandMethod("3DS", "3DSLabelMaskOff", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLabelMaskOff", CommandFlags.Modal)]
         public static void LabelMaskOff()
         {
             CogoPointUtils.LabelMaskToggle(false);
         }
 
-        [CommandMethod("3DS", "3DSLabelMaskOn", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLabelMaskOn", CommandFlags.Modal)]
         public static void LabelMaskOn()
         {
             CogoPointUtils.LabelMaskToggle(true);
         }
 
-        [CommandMethod("3DS", "3DSLabelLineBreak", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLabelLineBreak", CommandFlags.Modal)]
         public static void LabelLineBreak()
         {
             CogoPointUtils.AddLineBreakToDescription();
         }
 
-        [CommandMethod("3DS", "_3DSLabelStack", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLabelStack", CommandFlags.Modal)]
         public static void StackLabels()
         {
             CogoPointUtils.LabelStack();
         }
 
-        [CommandMethod("3DS", "_3DSLabelOverride", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSLabelOverride", CommandFlags.Modal)]
         public static void OverrideText()
         {
             LabelUtils.OverrideTextLabel();
@@ -259,13 +259,13 @@ namespace CivilSurveySuite.CIVIL
 
         #region Feature Lines
 
-        [CommandMethod("3DS", "_3DSFlattenFeatureLine", CommandFlags.Modal | CommandFlags.UsePickSet)]
+        [CommandMethod("WMS", "CSSFlattenFeatureLine", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void FlattenFeatureLine()
         {
             CommandHelpers.ExecuteCommand<FlattenFeatureLineCommand>();
         }
 
-        [CommandMethod("3DS", "_3DSFeatureLineSite", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSFeatureLineSite", CommandFlags.Modal)]
         public static void FeatureLineSite()
         {
             CommandHelpers.ExecuteCommand<FeatureLineSiteCommand>();
