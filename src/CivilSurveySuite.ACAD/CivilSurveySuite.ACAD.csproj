@@ -129,13 +129,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="3DS_CSS_ACAD.cuix">
+    <None Include="CSS_ACAD.cuix">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="3DS_CSS_ACAD.mnr">
+    <None Include="CSS_ACAD.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="3DS_CSS_ACAD_light.mnr">
+    <None Include="CSS_ACAD_light.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />
