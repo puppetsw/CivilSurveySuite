@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F79AD13-E23
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1A198AD-4A45-44E0-8703-49161569622A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3DS_CivilSurveySuiteTests", "tests\3DS_CivilSurveySuiteTests\3DS_CivilSurveySuiteTests.csproj", "{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CivilSurveySuiteTests", "tests\3DS_CivilSurveySuiteTests\CivilSurveySuiteTests.csproj", "{A0E46C63-19D0-4E09-9D67-0E81AE344B5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3DS_CivilSurveySuiteAcadCoreTests", "tests\3DS_CivilSurveySuiteAcadCoreTests\3DS_CivilSurveySuiteAcadCoreTests.csproj", "{784168B4-94E9-40E4-807E-BC1FAA1B81A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CivilSurveySuiteAcadCoreTests", "tests\3DS_CivilSurveySuiteAcadCoreTests\CivilSurveySuiteAcadCoreTests.csproj", "{784168B4-94E9-40E4-807E-BC1FAA1B81A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CivilSurveySuite.Loader", "src\CivilSurveySuite\CivilSurveySuite.Loader.csproj", "{DF0B7D55-F2D8-43C1-941B-E71BE2FE2FE7}"
 EndProject

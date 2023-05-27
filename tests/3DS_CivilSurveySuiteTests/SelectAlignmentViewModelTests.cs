@@ -10,7 +10,7 @@ using CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class SelectAlignmentViewModelTests

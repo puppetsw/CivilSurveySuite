@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <RootNamespace>_3DS_CivilSurveySuiteTests</RootNamespace>
+    <RootNamespace>CivilSurveySuiteTests</RootNamespace>
 
     <IsPackable>false</IsPackable>
 
