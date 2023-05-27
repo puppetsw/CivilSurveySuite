@@ -186,7 +186,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\3DS_DescriptionKeys.xml">
+    <Resource Include="Resources\CSS_DescriptionKeys.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -334,7 +334,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Strings\ResourceStrings.en-US.resx" />
     <EmbeddedResource Include="Strings\ResourceStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResourceStrings.Designer.cs</LastGenOutput>

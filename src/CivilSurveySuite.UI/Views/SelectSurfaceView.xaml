@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="Select Surface" Height="180" Width="280"  MinHeight="180" MaxHeight="180" MinWidth="280"
         ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen"
-        Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
+        Icon="/CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
         d:DataContext="{d:DesignInstance vm:SelectSurfaceViewModel}"
         >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

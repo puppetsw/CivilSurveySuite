@@ -36,12 +36,12 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Brushes.xaml" />
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/CoreStyles.xaml" />
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Controls/CardExpander.xaml" />
-                <ResourceDictionary Source="/3DS_CivilSurveySuite.UI;component/Resources/Controls/CardControl.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/Brushes.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/CoreStyles.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/Controls/CardExpander.xaml" />
+                <ResourceDictionary Source="/CivilSurveySuite.UI;component/Resources/Controls/CardControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

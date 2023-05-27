@@ -6,13 +6,13 @@
         xmlns:vm="clr-namespace:CivilSurveySuite.UI.ViewModels"
         mc:Ignorable="d"
         Title="Select Point Group" Height="180" Width="280" WindowStartupLocation="CenterScreen" MinHeight="180" MaxHeight="180" MinWidth="280" ResizeMode="CanResizeWithGrip"
-        Icon="/3DS_CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
+        Icon="/CivilSurveySuite.UI;component/Resources/Icons/C3DApp.ico"
         d:DataContext="{d:DesignInstance vm:SelectPointGroupViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
