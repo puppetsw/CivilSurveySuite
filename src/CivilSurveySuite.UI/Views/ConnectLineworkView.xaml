@@ -11,10 +11,10 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="AppSymbolFontFamily">pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
+            <FontFamily x:Key="AppSymbolFontFamily">pack://application:,,,/CivilSurveySuite.UI;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

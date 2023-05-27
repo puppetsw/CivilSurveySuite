@@ -9,8 +9,8 @@ namespace CivilSurveySuite
 {
     public class Loader : IExtensionApplication
     {
-        private const string ACAD_DLL = "3DS_CivilSurveySuite.ACAD";
-        private const string CIVIL_DLL = "3DS_CivilSurveySuite.CIVIL";
+        private const string ACAD_DLL = "CivilSurveySuite.ACAD";
+        private const string CIVIL_DLL = "CivilSurveySuite.CIVIL";
         private readonly string[] _supportDlls =
         {
             "Microsoft.Xaml.Behaviors"

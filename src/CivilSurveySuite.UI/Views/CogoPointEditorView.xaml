@@ -14,8 +14,8 @@
             <SolidColorBrush x:Key="BlueGridLine" Color="#7f9db9"/>
             <SolidColorBrush x:Key="YellowBackground" Color="#ffffeb"/>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

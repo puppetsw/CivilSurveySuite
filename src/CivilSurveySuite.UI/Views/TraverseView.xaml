@@ -22,9 +22,9 @@
             <converter:DistanceConverter x:Key="DistanceConverter" />
             <converter:BearingConverter x:Key="BearingConverter" />
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Styles.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/3DS_CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/Icons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/CivilSurveySuite.UI;component/Resources/ToolTips.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
