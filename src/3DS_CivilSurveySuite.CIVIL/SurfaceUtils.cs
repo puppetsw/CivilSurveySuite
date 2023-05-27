@@ -3,6 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,7 +35,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when <c>surfaceName</c> is null or empty.</exception>
-        public static TinSurface GetSurfaceByName(Transaction tr, string surfaceName)
+        public static TinSurface? GetSurfaceByName(Transaction tr, string surfaceName)
         {
             if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
@@ -66,7 +68,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="index">The index of the surface</param>
         /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> is null.</exception>
-        public static TinSurface GetSurfaceByIndex(Transaction tr, int index)
+        public static TinSurface? GetSurfaceByIndex(Transaction tr, int index)
         {
             if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
@@ -84,7 +86,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="objectId">The <see cref="ObjectId"/> of the <see cref="TinSurface"/>.</param>
         /// <returns>A <see cref="TinSurface"/> representing the surface data.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>tr</c> or <c>objectId</c> is null.</exception>
-        public static TinSurface GetSurfaceByObjectId(Transaction tr, ObjectId objectId)
+        public static TinSurface? GetSurfaceByObjectId(Transaction tr, ObjectId objectId)
         {
             if (tr == null)
                 throw new ArgumentNullException(nameof(tr));
@@ -120,18 +122,24 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <returns>A IEnumerable of <see cref="CivilSurface"/>.</returns>
         public static IEnumerable<CivilSurface> GetCivilSurfaces()
         {
-            var list = new List<CivilSurface>();
-            using (var tr = AcadApp.StartLockedTransaction())
-            {
-                var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
+            List<CivilSurface> list = new();
+            using var tr = AcadApp.StartLockedTransaction();
+            var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
 
-                foreach (ObjectId surfaceId in surfaceIds)
-                {
-                    var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
-                    list.Add(surface.ToCivilSurface());
-                }
-                tr.Commit();
+            foreach (ObjectId surfaceId in surfaceIds)
+            {
+	            var surface = tr.GetObject(surfaceId, OpenMode.ForRead) as TinSurface;
+
+	            if (surface == null)
+		            continue;
+
+	            var civilSurface = surface.ToCivilSurface();
+
+	            if (civilSurface != null)
+		            list.Add(civilSurface);
+
             }
+            tr.Commit();
             return list;
         }
 
@@ -357,13 +365,16 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="tr">The active <see cref="Transaction"/>.</param>
         /// <returns>A <see cref="TinSurface"/>.</returns>
         /// <remarks>Uses the C3D SelectSurface service to prompt the user if required.</remarks>
-        private static TinSurface SelectSurface(Transaction tr)
+        private static TinSurface? SelectSurface(Transaction tr)
         {
-            var surface = C3DApp.ActiveDocument.GetSurfaceIds().Count > 1
-                ? SelectionUtils.SelectSurface()
-                : GetSurfaceByIndex(tr, 0);
+	        var surfaceCount = C3DApp.ActiveDocument.GetSurfaceIds().Count;
 
-            return surface;
+	        return surfaceCount switch
+	        {
+		        > 1 => SelectionUtils.SelectSurface(),
+		        1 => GetSurfaceByIndex(tr, 0),
+		        _ => null
+	        };
         }
 
         /// <summary>
@@ -373,7 +384,8 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="point">The picked point.</param>
         /// <param name="calculatedPoint">The calculated point.</param>
         /// <param name="edge"></param>
-        private static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d edge)
+        // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Local
+        private static void FindPointNearSurface(TinSurface surface, Point3d point, out Point3d calculatedPoint, out LineSegment2d? edge)
         {
             try // Check if point is in surface.
             {
@@ -389,7 +401,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
             }
 
             var closestDistance = double.MaxValue;
-            LineSegment2d closestEdge = null;
+            LineSegment2d? closestEdge = null;
 
             foreach (var triangle in surface.Triangles)
             {
@@ -521,6 +533,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
 
                 if (surface == null)
                 {
+                    AcadApp.Editor.WriteMessage("\nNo surfaces in drawing.");
                     tr.Commit();
                     return;
                 }
@@ -583,13 +596,13 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// Selects a <see cref="CivilSurface"/> from the active document.
         /// </summary>
         /// <returns>A <see cref="CivilSurface"/>.</returns>
-        public static CivilSurface SelectCivilSurface()
+        public static CivilSurface? SelectCivilSurface()
         {
             if (!EditorUtils.TryGetEntityOfType<TinSurface>("\n3DS> Select Surface: ",
                     "\n3DS> Select Surface: ", out var objectId))
                 return null;
 
-            CivilSurface surface;
+            CivilSurface? surface;
 
             using (var tr = AcadApp.StartLockedTransaction())
             {
@@ -605,8 +618,11 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// </summary>
         /// <param name="surface">The <see cref="TinSurface"/> to convert.</param>
         /// <returns>A <see cref="CivilSurface"/>.</returns>
-        public static CivilSurface ToCivilSurface(this TinSurface surface)
+        public static CivilSurface? ToCivilSurface(this TinSurface? surface)
         {
+            if (surface == null)
+	            return null;
+
             return new CivilSurface
             {
                 ObjectId = surface.ObjectId.Handle.ToString(),
@@ -623,7 +639,7 @@ namespace _3DS_CivilSurveySuite.CIVIL
         /// <param name="surface">The <see cref="CivilSurface"/> to convert.</param>
         /// <param name="tr">The active <see cref="Transaction"/>.</param>
         /// <returns>A <see cref="TinSurface"/>.</returns>
-        public static TinSurface ToTinSurface(this CivilSurface surface, Transaction tr)
+        public static TinSurface? ToTinSurface(this CivilSurface surface, Transaction tr)
         {
             Handle h = new Handle(long.Parse(surface.ObjectId, NumberStyles.AllowHexSpecifier));
             AcadApp.ActiveDatabase.TryGetObjectId(h, out var id);//TryGetObjectId method
