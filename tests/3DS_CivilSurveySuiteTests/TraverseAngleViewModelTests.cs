@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using _3DS_CivilSurveySuite.Shared.Models;
-using _3DS_CivilSurveySuite.Shared.Services.Interfaces;
-using _3DS_CivilSurveySuite.UI.ViewModels;
+using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;
 

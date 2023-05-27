@@ -8,7 +8,7 @@
 // Author:   scott
 
 using System;
-using _3DS_CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests

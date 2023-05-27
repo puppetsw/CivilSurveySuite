@@ -3,8 +3,8 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using _3DS_CivilSurveySuite.Shared.Helpers;
-using _3DS_CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests

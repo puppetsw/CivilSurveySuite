@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using _3DS_CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Shared.Helpers;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests
