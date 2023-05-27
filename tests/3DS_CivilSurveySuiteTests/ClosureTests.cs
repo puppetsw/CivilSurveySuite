@@ -13,7 +13,7 @@ using CivilSurveySuite.Shared.Helpers;
 using CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class ClosureTests

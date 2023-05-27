@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <RootNamespace>_3DS_CivilSurveySuiteAcadCoreTests</RootNamespace>
+    <RootNamespace>CivilSurveySuiteAcadCoreTests</RootNamespace>
     <OutputType>Library</OutputType>
     <PlatformTarget>x64</PlatformTarget>
     <Configurations>Debug;Release;Debug 2023</Configurations>

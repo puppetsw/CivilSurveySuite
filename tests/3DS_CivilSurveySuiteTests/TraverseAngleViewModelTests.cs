@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 // ReSharper disable ExpressionIsAlwaysNull
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class TraverseAngleViewModelTests

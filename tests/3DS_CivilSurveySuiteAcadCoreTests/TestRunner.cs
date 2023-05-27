@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using _3DS_CivilSurveySuiteAcadCoreTests;
 using Autodesk.AutoCAD.Runtime;
+using CivilSurveySuiteAcadCoreTests;
 using NUnitLite;
 
 [assembly: CommandClass(typeof(TestRunner))]
-namespace _3DS_CivilSurveySuiteAcadCoreTests
+namespace CivilSurveySuiteAcadCoreTests
 {
     public static class TestRunner
     {

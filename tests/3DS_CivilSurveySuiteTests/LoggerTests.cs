@@ -3,7 +3,7 @@ using CivilSurveySuite.Shared.Services.Interfaces;
 using CivilSurveySuite.UI.Logger;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class LoggerTests
