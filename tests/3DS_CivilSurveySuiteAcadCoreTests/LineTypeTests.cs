@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using _3DS_CivilSurveySuite.ACAD;
+using CivilSurveySuite.ACAD;
 using Autodesk.AutoCAD.DatabaseServices;
 using NUnit.Framework;
 

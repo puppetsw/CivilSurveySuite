@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.UI\3DS_CivilSurveySuite.UI.csproj" />
+    <ProjectReference Include="..\..\src\CivilSurveySuite.Common\CivilSurveySuite.Common.csproj" />
+    <ProjectReference Include="..\..\src\CivilSurveySuite.UI\CivilSurveySuite.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

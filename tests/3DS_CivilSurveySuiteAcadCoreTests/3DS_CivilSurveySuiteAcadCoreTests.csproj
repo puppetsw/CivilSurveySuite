@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.ACAD\3DS_CivilSurveySuite.ACAD.csproj" />
-    <ProjectReference Include="..\..\src\3DS_CivilSurveySuite.CIVIL\3DS_CivilSurveySuite.CIVIL.csproj" />
+    <ProjectReference Include="..\..\src\CivilSurveySuite.CIVIL\CivilSurveySuite.CIVIL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

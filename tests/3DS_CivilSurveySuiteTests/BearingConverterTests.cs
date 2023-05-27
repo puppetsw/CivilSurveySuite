@@ -7,7 +7,7 @@
 // Date:     01/07/2021
 // Author:   scott
 
-using _3DS_CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Shared.Models;
 using NUnit.Framework;
 
 namespace _3DS_CivilSurveySuiteTests
