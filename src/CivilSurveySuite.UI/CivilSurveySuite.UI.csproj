@@ -148,9 +148,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="CivilSurveySuite.chm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Resource Include="Resources\Fonts\Segoe Fluent Icons.ttf" />
   </ItemGroup>
   <ItemGroup>
