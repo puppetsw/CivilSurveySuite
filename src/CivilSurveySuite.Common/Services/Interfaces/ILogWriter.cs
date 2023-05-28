@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CivilSurveySuite.Shared.Services.Interfaces
+namespace CivilSurveySuite.Common.Services.Interfaces
 {
     public interface ILogWriter
     {

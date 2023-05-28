@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Common.Helpers;
 
 namespace CivilSurveySuite.UI.Converters
 {

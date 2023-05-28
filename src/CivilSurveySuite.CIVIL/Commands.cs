@@ -1,6 +1,6 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Common.Helpers;
 using CivilSurveySuite.UI.Views;
 
 [assembly: CommandClass(typeof(CivilSurveySuite.CIVIL.Commands))]

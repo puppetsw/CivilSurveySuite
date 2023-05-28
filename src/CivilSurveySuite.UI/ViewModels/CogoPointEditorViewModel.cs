@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Data;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.UI.ViewModels
 {

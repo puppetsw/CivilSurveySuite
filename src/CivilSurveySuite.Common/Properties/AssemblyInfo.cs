@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("3DS_CivilSurveySuite.Shared")]
-[assembly: AssemblyDescription("Shared Component of 3DS CivilSurveySuite")]
+[assembly: AssemblyTitle("CivilSurveySuite Common")]
+[assembly: AssemblyDescription("Shared Component of CivilSurveySuite")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("3D Surveys")]
-[assembly: AssemblyProduct("3DS CivilSurveySuite")]
-[assembly: AssemblyCopyright("Copyright © 3D Surveys 2022")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CivilSurveySuite")]
+[assembly: AssemblyCopyright("Copyright © Scott Whitney 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

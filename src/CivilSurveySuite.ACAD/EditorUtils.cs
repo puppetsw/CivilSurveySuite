@@ -6,8 +6,8 @@ using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.Internal;
 using Autodesk.AutoCAD.Runtime;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.ACAD
 {

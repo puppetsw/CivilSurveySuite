@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CivilSurveySuite.Shared
+namespace CivilSurveySuite.Common
 {
 	public class Constants
 	{

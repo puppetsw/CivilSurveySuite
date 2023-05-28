@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Text;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     public static class DataTableHelpers
     {

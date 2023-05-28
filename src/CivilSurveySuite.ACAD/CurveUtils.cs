@@ -1,6 +1,6 @@
 ﻿using System;
 using Autodesk.AutoCAD.Geometry;
-using CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Common.Helpers;
 
 namespace CivilSurveySuite.ACAD
 {

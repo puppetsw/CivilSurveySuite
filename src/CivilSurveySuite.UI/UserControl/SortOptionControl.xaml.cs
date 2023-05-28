@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.UI.UserControl
 {

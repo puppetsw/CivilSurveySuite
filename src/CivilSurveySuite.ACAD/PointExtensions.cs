@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autodesk.AutoCAD.Geometry;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.ACAD
 {

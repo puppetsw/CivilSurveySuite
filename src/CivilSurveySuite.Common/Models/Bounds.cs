@@ -1,4 +1,4 @@
-﻿namespace CivilSurveySuite.Shared.Models
+﻿namespace CivilSurveySuite.Common.Models
 {
     public struct Bounds
     {

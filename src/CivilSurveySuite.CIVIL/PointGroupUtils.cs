@@ -4,8 +4,8 @@ using System.Linq;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.CIVIL
 {

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using CivilSurveySuite.ACAD.Services;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Logger;
 using CivilSurveySuite.UI.Services.Implementation;
 using CivilSurveySuite.UI.ViewModels;

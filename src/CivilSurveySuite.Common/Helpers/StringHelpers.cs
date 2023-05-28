@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     public static class StringHelpers
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 using NUnit.Framework;
 
 namespace CivilSurveySuiteTests

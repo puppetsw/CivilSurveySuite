@@ -25,10 +25,10 @@
                 <Grid.RenderTransform>
                     <RotateTransform Angle="0" />
                 </Grid.RenderTransform>
-                <!-- <controls:Icon -->
-                <!--     x:Name="Chevron" -->
-                <!--     FontSize="16" -->
-                <!--     Glyph="ChevronDown28" /> -->
+                <!--  <controls:Icon  -->
+                <!--  x:Name="Chevron"  -->
+                <!--  FontSize="16"  -->
+                <!--  Glyph="ChevronDown28" />  -->
             </Grid>
         </Grid>
         <ControlTemplate.Triggers>
@@ -102,14 +102,14 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <!-- <controls:Icon -->
-                                <!--     x:Name="CardIcon" -->
-                                <!--     Grid.Column="0" -->
-                                <!--     Margin="4,0,16,0" -->
-                                <!--     VerticalAlignment="Center" -->
-                                <!--     Filled="{TemplateBinding IconFilled}" -->
-                                <!--     FontSize="26" -->
-                                <!--     Glyph="{TemplateBinding Icon}" /> -->
+                                <!--  <controls:Icon  -->
+                                <!--  x:Name="CardIcon"  -->
+                                <!--  Grid.Column="0"  -->
+                                <!--  Margin="4,0,16,0"  -->
+                                <!--  VerticalAlignment="Center"  -->
+                                <!--  Filled="{TemplateBinding IconFilled}"  -->
+                                <!--  FontSize="26"  -->
+                                <!--  Glyph="{TemplateBinding Icon}" />  -->
                                 <Grid Grid.Column="1" VerticalAlignment="Center">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />

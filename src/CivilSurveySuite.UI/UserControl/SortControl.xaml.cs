@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.UI.UserControl
 {

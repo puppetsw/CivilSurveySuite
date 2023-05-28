@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     public static class CommandHelpers
     {

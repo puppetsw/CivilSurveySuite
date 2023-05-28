@@ -1,6 +1,6 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.ACAD
 {

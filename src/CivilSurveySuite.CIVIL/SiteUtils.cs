@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.CIVIL
 {

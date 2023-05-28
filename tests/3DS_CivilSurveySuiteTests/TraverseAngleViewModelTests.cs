@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.ViewModels;
 using Moq;
 using NUnit.Framework;

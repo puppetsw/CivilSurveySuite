@@ -1,4 +1,4 @@
-﻿namespace CivilSurveySuite.Shared.Enums
+﻿namespace CivilSurveySuite.Common.Enums
 {
     public enum ArcDirection
     {

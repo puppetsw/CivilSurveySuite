@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     public class DescriptionKey : INotifyPropertyChanged
     {

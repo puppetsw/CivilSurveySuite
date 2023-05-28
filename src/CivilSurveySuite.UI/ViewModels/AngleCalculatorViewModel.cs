@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
 namespace CivilSurveySuite.UI.ViewModels
 {

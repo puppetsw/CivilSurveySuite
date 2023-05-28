@@ -1,6 +1,6 @@
-﻿using CivilSurveySuite.Shared.Models;
+﻿using CivilSurveySuite.Common.Models;
 
-namespace CivilSurveySuite.Shared.Extensions
+namespace CivilSurveySuite.Common.Extensions
 {
     public static class PointExtensions
     {

@@ -1,4 +1,4 @@
-﻿using CivilSurveySuite.Shared.Services.Interfaces;
+﻿using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.ACAD
 {

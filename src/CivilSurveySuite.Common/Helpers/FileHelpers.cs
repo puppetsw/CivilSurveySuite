@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     public static class FileHelpers
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     /// <summary>
     /// Abstraction class for Civil 3D's CogoPoints.

@@ -1,4 +1,4 @@
-﻿using CivilSurveySuite.Shared.Services.Interfaces;
+﻿using CivilSurveySuite.Common.Services.Interfaces;
 using Microsoft.Win32;
 
 namespace CivilSurveySuite.UI.Services.Implementation
