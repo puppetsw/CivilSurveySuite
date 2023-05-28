@@ -76,7 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcadApp.cs" />
-    <Compile Include="AroFloUtils.cs" />
     <Compile Include="BlockUtils.cs" />
     <Compile Include="CircularArcExtensions.cs" />
     <Compile Include="Commands\ShowDebugCommand.cs" />
