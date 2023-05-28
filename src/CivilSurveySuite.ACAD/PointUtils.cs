@@ -17,22 +17,22 @@ namespace CivilSurveySuite.ACAD
         /// </summary>
         public static void Create_At_Angle_And_Distance(Action<Transaction, Point3d> createAction)
         {
-            if (!EditorUtils.TryGetPoint("\n3DS> Select a base point: ", out Point3d basePoint))
+            if (!EditorUtils.TryGetPoint("\nSelect a base point: ", out Point3d basePoint))
                 return;
 
-            if (!EditorUtils.TryGetAngle("\n3DS> Enter bearing (Format: DDD.MMSS): ", basePoint, out var angle))
+            if (!EditorUtils.TryGetAngle("\nEnter bearing (Format: DDD.MMSS): ", basePoint, out var angle))
                 return;
 
-            if (!EditorUtils.TryGetDistance("\n3DS> Distance: ", basePoint, out var dist))
+            if (!EditorUtils.TryGetDistance("\nDistance: ", basePoint, out var dist))
                 return;
 
             if (dist == null)
                 return;
 
-            AcadApp.Editor.WriteMessage($"\n3DS> Bearing: {angle}");
-            AcadApp.Editor.WriteMessage($"\n3DS> Distance: {dist}");
+            AcadApp.Editor.WriteMessage($"\nBearing: {angle}");
+            AcadApp.Editor.WriteMessage($"\nDistance: {dist}");
 
-            var pko = new PromptKeywordOptions("\n3DS> Flip bearing? ") { AppendKeywordsToMessage = true };
+            var pko = new PromptKeywordOptions("\nFlip bearing? ") { AppendKeywordsToMessage = true };
             pko.Keywords.Add(Keywords.ACCEPT);
             pko.Keywords.Add(Keywords.CANCEL);
             pko.Keywords.Add(Keywords.FLIP);
@@ -91,15 +91,15 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick starting point: ", out Point3d basePoint))
+                if (!EditorUtils.TryGetPoint("\nPick starting point: ", out Point3d basePoint))
                     return;
 
                 graphics.DrawX(basePoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetAngle("\n3DS> Enter angle: ", basePoint, out var angle))
+                if (!EditorUtils.TryGetAngle("\nEnter angle: ", basePoint, out var angle))
                     return;
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", basePoint, out var distance))
+                if (!EditorUtils.TryGetDistance("\nEnter distance: ", basePoint, out var distance))
                     return;
 
                 if (distance == null)
@@ -109,7 +109,7 @@ namespace CivilSurveySuite.ACAD
                 graphics.DrawX(point.ToPoint3d(), Settings.GraphicsSize);
                 graphics.DrawLine(basePoint, point.ToPoint3d());
 
-                if (!EditorUtils.TryGetDouble("\n3DS> Enter slope (%): ", out var slope))
+                if (!EditorUtils.TryGetDouble("\nEnter slope (%): ", out var slope))
                     return;
 
                 if (slope == null)
@@ -141,17 +141,17 @@ namespace CivilSurveySuite.ACAD
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Base point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nBase point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> New point location: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nNew point location: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDouble("\n3DS> Percent slope: ", out var slope, allowZero: false))
+                if (!EditorUtils.TryGetDouble("\nPercent slope: ", out var slope, allowZero: false))
                     return;
 
                 if (slope == null)
@@ -175,22 +175,22 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick the first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick the first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick the second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick the second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick the third point: ", out Point3d thirdPoint))
+                if (!EditorUtils.TryGetPoint("\nPick the third point: ", out Point3d thirdPoint))
                     return;
 
                 graphics.DrawPlus(thirdPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick the fourth point: ", out Point3d fourthPoint))
+                if (!EditorUtils.TryGetPoint("\nPick the fourth point: ", out Point3d fourthPoint))
                     return;
 
                 graphics.DrawPlus(fourthPoint, Settings.GraphicsSize);
@@ -231,23 +231,23 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetAngle("\n3DS> Enter first bearing: ", firstPoint, out var firstAngle))
+                if (!EditorUtils.TryGetAngle("\nEnter first bearing: ", firstPoint, out var firstAngle))
                     return;
 
                 var endPoint1 = PointHelpers.AngleAndDistanceToPoint(firstAngle, 1000, firstPoint.ToPoint());
                 graphics.DrawLine(firstPoint, endPoint1.ToPoint3d());
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetAngle("\n3DS> Enter second bearing: ", secondPoint, out var secondAngle))
+                if (!EditorUtils.TryGetAngle("\nEnter second bearing: ", secondPoint, out var secondAngle))
                     return;
 
                 var endPoint2 = PointHelpers.AngleAndDistanceToPoint(secondAngle, 1000, secondPoint.ToPoint());
@@ -257,11 +257,11 @@ namespace CivilSurveySuite.ACAD
 
                 if (!canIntersect)
                 {
-                    AcadApp.Editor.WriteMessage("\n3DS> No intersection found! ");
+                    AcadApp.Editor.WriteMessage("\nNo intersection found! ");
                     return;
                 }
 
-                AcadApp.Editor.WriteMessage($"\n3DS> Intersection found at X:{Math.Round(intersectionPoint.X, 4)} Y:{Math.Round(intersectionPoint.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\nIntersection found at X:{Math.Round(intersectionPoint.X, 4)} Y:{Math.Round(intersectionPoint.Y, 4)}");
 
                 graphics.DrawX(intersectionPoint.ToPoint3d(), Settings.GraphicsSize);
 
@@ -289,12 +289,12 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter first distance: ", firstPoint, out var dist1))
+                if (!EditorUtils.TryGetDistance("\nEnter first distance: ", firstPoint, out var dist1))
                     return;
 
                 if (dist1 == null)
@@ -302,12 +302,12 @@ namespace CivilSurveySuite.ACAD
 
                 graphics.DrawCircle(firstPoint, dist1.Value);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter second distance: ", secondPoint, out var dist2))
+                if (!EditorUtils.TryGetDistance("\nEnter second distance: ", secondPoint, out var dist2))
                     return;
 
                 if (dist2 == null)
@@ -320,16 +320,16 @@ namespace CivilSurveySuite.ACAD
 
                 if (!canIntersect)
                 {
-                    AcadApp.Editor.WriteMessage("\n3DS> No intersection found! ");
+                    AcadApp.Editor.WriteMessage("\nNo intersection found! ");
                     return;
                 }
 
                 graphics.DrawDot(firstInt.ToPoint3d(), Settings.GraphicsSize/2);
                 graphics.DrawDot(secondInt.ToPoint3d(), Settings.GraphicsSize/2);
-                AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
-                AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\nFirst intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\nSecond intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick near desired intersection: ", out Point3d pickedPoint))
+                if (!EditorUtils.TryGetPoint("\nPick near desired intersection: ", out Point3d pickedPoint))
                     return;
 
                 using (var tr = AcadApp.StartTransaction())
@@ -371,7 +371,7 @@ namespace CivilSurveySuite.ACAD
             {
                 using (Transaction tr = AcadApp.StartTransaction())
                 {
-                    AcadApp.Editor.WriteMessage("\n3DS> Select first line to offset.");
+                    AcadApp.Editor.WriteMessage("\nSelect first line to offset.");
                     Line firstLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
 
                     if (firstLineToOffset == null)
@@ -380,7 +380,7 @@ namespace CivilSurveySuite.ACAD
                     // Highlight line.
                     graphics.DrawLine(firstLineToOffset, TransientDrawingMode.Highlight);
 
-                    AcadApp.Editor.WriteMessage("\n3DS> Select second line to offset.");
+                    AcadApp.Editor.WriteMessage("\nSelect second line to offset.");
                     Line secondLineToOffset = LineUtils.GetLineOrPolylineSegment(tr);
 
                     if (secondLineToOffset == null)
@@ -461,23 +461,23 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetAngle("\n3DS> Enter angle: ", firstPoint, out var angle1))
+                if (!EditorUtils.TryGetAngle("\nEnter angle: ", firstPoint, out var angle1))
                     return;
 
                 var constructionPoint = PointHelpers.AngleAndDistanceToPoint(angle1, 32000, firstPoint.ToPoint());
                 graphics.DrawLine(firstPoint, constructionPoint.ToPoint3d());
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", secondPoint, out var dist))
+                if (!EditorUtils.TryGetDistance("\nEnter distance: ", secondPoint, out var dist))
                     return;
 
                 if (dist == null)
@@ -489,16 +489,16 @@ namespace CivilSurveySuite.ACAD
 
                 if (!canIntersect)
                 {
-                    AcadApp.Editor.WriteMessage("\n3DS> No intersection found! ");
+                    AcadApp.Editor.WriteMessage("\nNo intersection found! ");
                     return;
                 }
 
                 graphics.DrawDot(firstInt.ToPoint3d(), Settings.GraphicsSize/2);
                 graphics.DrawDot(secondInt.ToPoint3d(), Settings.GraphicsSize/2);
-                AcadApp.Editor.WriteMessage($"\n3DS> First intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
-                AcadApp.Editor.WriteMessage($"\n3DS> Second intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\nFirst intersection found at X:{Math.Round(firstInt.X, 4)} Y:{Math.Round(firstInt.Y, 4)}");
+                AcadApp.Editor.WriteMessage($"\nSecond intersection found at X:{Math.Round(secondInt.X, 4)} Y:{Math.Round(secondInt.Y, 4)}");
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick near desired intersection: ", out Point3d pickedPoint))
+                if (!EditorUtils.TryGetPoint("\nPick near desired intersection: ", out Point3d pickedPoint))
                     return;
 
                 using (var tr = AcadApp.StartTransaction())
@@ -623,8 +623,8 @@ namespace CivilSurveySuite.ACAD
         /// </summary>
         public static void Create_At_Label_Location(Action<Transaction, Point3d> createAction, bool useTextAsElevation = false)
         {
-            if (!EditorUtils.TryGetSelectionOfType<MText, DBText>("\n3DS> Select text entities: ",
-                    "\n3DS> Remove text entities: ", out var selectedTextIds))
+            if (!EditorUtils.TryGetSelectionOfType<MText, DBText>("\nSelect text entities: ",
+                    "\nRemove text entities: ", out var selectedTextIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -679,12 +679,12 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawX(secondPoint, Settings.GraphicsSize);
@@ -696,7 +696,7 @@ namespace CivilSurveySuite.ACAD
                 {
                     using (var tr = AcadApp.StartTransaction())
                     {
-                        if (!EditorUtils.TryGetDistance("\n3DS> Enter distance along line: ", firstPoint, out var horizontalDist))
+                        if (!EditorUtils.TryGetDistance("\nEnter distance along line: ", firstPoint, out var horizontalDist))
                             break;
 
                         if (horizontalDist == null)
@@ -704,7 +704,7 @@ namespace CivilSurveySuite.ACAD
 
                         var basePoint = PointHelpers.AngleAndDistanceToPoint(baseLine, horizontalDist.Value, firstPoint.ToPoint());
 
-                        if (!EditorUtils.TryGetDistance("\n3DS> Enter left offset: ", basePoint.ToPoint3d(), out var leftOffsetDist))
+                        if (!EditorUtils.TryGetDistance("\nEnter left offset: ", basePoint.ToPoint3d(), out var leftOffsetDist))
                             break;
 
                         if (leftOffsetDist == null)
@@ -714,7 +714,7 @@ namespace CivilSurveySuite.ACAD
                         graphics.DrawDot(leftOffsetPt.ToPoint3d(), Settings.GraphicsSize);
                         createAction(tr, leftOffsetPt.ToPoint3d());
 
-                        if (!EditorUtils.TryGetDistance("\n3DS> Enter right offset: ", basePoint.ToPoint3d(), out var rightOffsetDist))
+                        if (!EditorUtils.TryGetDistance("\nEnter right offset: ", basePoint.ToPoint3d(), out var rightOffsetDist))
                             break;
 
                         if (rightOffsetDist == null)
@@ -759,12 +759,12 @@ namespace CivilSurveySuite.ACAD
             using (var graphics = new TransientGraphics())
             using (var tr = AcadApp.StartTransaction())
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> First point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nFirst point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nSecond point: ", out Point3d secondPoint))
                     return;
 
                 var deltaZ = secondPoint.Z - firstPoint.Z;
@@ -776,11 +776,11 @@ namespace CivilSurveySuite.ACAD
                 graphics.DrawLine(firstPoint, secondPoint);
                 graphics.DrawArrow(midPoint.ToPoint3d(), angle, Settings.GraphicsSize);
 
-                AcadApp.Editor.WriteMessage($"\n3DS> Total distance: {Math.Round(distBetween, 3)}");
+                AcadApp.Editor.WriteMessage($"\nTotal distance: {Math.Round(distBetween, 3)}");
 
                 do
                 {
-                    if (!EditorUtils.TryGetDouble("\n3DS> Enter distance: ", out var distance, allowZero: false))
+                    if (!EditorUtils.TryGetDouble("\nEnter distance: ", out var distance, allowZero: false))
                         break;
 
                     if (distance == null)
@@ -807,12 +807,12 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
@@ -839,7 +839,7 @@ namespace CivilSurveySuite.ACAD
                         write own event and handler. to pass points etc.
                         */
 
-                        if (!EditorUtils.TryGetDistance("\n3DS> Enter distance: ", firstPoint, out var distance))
+                        if (!EditorUtils.TryGetDistance("\nEnter distance: ", firstPoint, out var distance))
                             cancelled = true;
 
                         if (distance == null)
@@ -875,10 +875,10 @@ namespace CivilSurveySuite.ACAD
             var delta = MathHelpers.DeltaPoint(firstPoint.ToPoint(), secondPoint.ToPoint(), decimalPlaces);
             var slope = Math.Round(Math.Abs(delta.Z / distance * 100), decimalPlaces);
 
-            AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle} ({angle.Flip()})");
-            AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
-            AcadApp.Editor.WriteMessage($"\n3DS> dX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
-            AcadApp.Editor.WriteMessage($"\n3DS> Slope:{slope}%");
+            AcadApp.Editor.WriteMessage($"\nAngle: {angle} ({angle.Flip()})");
+            AcadApp.Editor.WriteMessage($"\nDistance: {distance}");
+            AcadApp.Editor.WriteMessage($"\ndX:{delta.X} dY:{delta.Y} dZ:{delta.Z}");
+            AcadApp.Editor.WriteMessage($"\nSlope:{slope}%");
         }
 
 
@@ -892,14 +892,14 @@ namespace CivilSurveySuite.ACAD
             try
             {
                 // Pick first point.
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 // Highlight first point.
                 graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
                 // Pick second point.
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 Inverse(firstPoint, secondPoint);
@@ -924,7 +924,7 @@ namespace CivilSurveySuite.ACAD
             {
                 while (true)
                 {
-                    bool loopPick = EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint);
+                    bool loopPick = EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint);
 
                     if (!loopPick)
                         break;
@@ -933,7 +933,7 @@ namespace CivilSurveySuite.ACAD
                     graphics.DrawX(firstPoint, Settings.GraphicsSize);
 
                     // Pick second point.
-                    if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                    if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                         return;
 
                     var decimalPlaces = SystemVariables.LUPREC;
@@ -969,12 +969,12 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
@@ -982,14 +982,14 @@ namespace CivilSurveySuite.ACAD
 
                 do
                 {
-                    if (!EditorUtils.TryGetPoint("\n3DS> Pick offset point: ", out Point3d pickedPoint))
+                    if (!EditorUtils.TryGetPoint("\nPick offset point: ", out Point3d pickedPoint))
                         break;
 
                     var canIntersect = PointHelpers.PerpendicularIntersection(firstPoint.ToPoint(), secondPoint.ToPoint(), pickedPoint.ToPoint(), out Point intersectionPoint);
 
                     if (!canIntersect)
                     {
-                        AcadApp.Editor.WriteMessage("\n3DS> No intersection found. ");
+                        AcadApp.Editor.WriteMessage("\nNo intersection found. ");
                         continue;
                     }
 
@@ -1004,8 +1004,8 @@ namespace CivilSurveySuite.ACAD
 
                     graphics.DrawText(midPt.ToPoint3d(), $"bearing: {angle} \\P dist: {distance}", 1, angle);
 
-                    AcadApp.Editor.WriteMessage($"\n3DS> Angle: {angle}");
-                    AcadApp.Editor.WriteMessage($"\n3DS> Distance: {distance}");
+                    AcadApp.Editor.WriteMessage($"\nAngle: {angle}");
+                    AcadApp.Editor.WriteMessage($"\nDistance: {distance}");
 
                 } while (true);
             }

@@ -81,7 +81,7 @@ namespace CivilSurveySuite.ACAD
 
         public static Line GetLineOrPolylineSegment(Transaction tr)
         {
-            if (!EditorUtils.TryGetNestedEntity("\n3DS> Select Line or Polyline segment:", out var firstLineResult))
+            if (!EditorUtils.TryGetNestedEntity("\nSelect Line or Polyline segment:", out var firstLineResult))
                 return null;
 
             if (!firstLineResult.ObjectId.IsType(new[] { typeof(Polyline), typeof(Line) }))
@@ -170,17 +170,17 @@ namespace CivilSurveySuite.ACAD
             var graphics = new TransientGraphics();
             try
             {
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick first point on line: ", out Point3d firstPoint))
+                if (!EditorUtils.TryGetPoint("\nPick first point on line: ", out Point3d firstPoint))
                     return;
 
                 graphics.DrawPlus(firstPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetPoint("\n3DS> Pick second point on line: ", out Point3d secondPoint))
+                if (!EditorUtils.TryGetPoint("\nPick second point on line: ", out Point3d secondPoint))
                     return;
 
                 graphics.DrawPlus(secondPoint, Settings.GraphicsSize);
 
-                if (!EditorUtils.TryGetDistance("\n3DS> Enter leg distance: ", out var distance))
+                if (!EditorUtils.TryGetDistance("\nEnter leg distance: ", out var distance))
                     return;
 
                 if (distance == null)
@@ -192,7 +192,7 @@ namespace CivilSurveySuite.ACAD
 
                 graphics.DrawLine(firstPoint, newPoint.ToPoint3d());
 
-                var pko = new PromptKeywordOptions("\n3DS> Accept leg? ") { AppendKeywordsToMessage = true, AllowNone = true };
+                var pko = new PromptKeywordOptions("\nAccept leg? ") { AppendKeywordsToMessage = true, AllowNone = true };
                 pko.Keywords.Add(Keywords.ACCEPT);
                 pko.Keywords.Add(Keywords.FLIP);
                 pko.Keywords.Default = Keywords.ACCEPT;
@@ -218,7 +218,7 @@ namespace CivilSurveySuite.ACAD
             }
             catch (Exception e)
             {
-                AcadApp.Editor.WriteMessage($"\n3DS> Command exception: {e.Message}");
+                AcadApp.Editor.WriteMessage($"\nCommand exception: {e.Message}");
             }
             finally
             {

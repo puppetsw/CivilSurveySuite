@@ -197,8 +197,8 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void OverrideTextLabel()
         {
-            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoints label to override: ",
-                    "\n3DS> Please select CogoPoints only.", out var objectId))
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\nSelect CogoPoints label to override: ",
+                    "\nPlease select CogoPoints only.", out var objectId))
             {
                 return;
             }

@@ -201,8 +201,8 @@ namespace CivilSurveySuite.CIVIL
         /// <returns>A <see cref="CivilAlignment"/> representing the <see cref="Alignment"/>.</returns>
         public static CivilAlignment SelectCivilAlignment()
         {
-            if (!EditorUtils.TryGetEntityOfType<Alignment>("\n3DS> Select Alignment: ",
-                    "\n3DS> Select Alignmnet: ", out var objectId))
+            if (!EditorUtils.TryGetEntityOfType<Alignment>("\nSelect Alignment: ",
+                    "\nSelect Alignmnet: ", out var objectId))
                 return null;
 
             CivilAlignment alignment;

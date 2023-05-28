@@ -53,8 +53,8 @@ namespace CivilSurveySuite.ACAD
             {
                 Ioc.RegisterServices();
                 Logger = Ioc.Default.GetInstance<ILogger>();
-                Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
-                Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")} {Assembly.GetExecutingAssembly().GetName().Name}");
+                Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("ACAD_Loading")}");
+                Logger.Info($"{ResourceHelpers.GetLocalisedString("ACAD_Loading")}");
                 Logger.Info("ACAD Services registered successfully.");
             }
             catch (InvalidOperationException e)
@@ -159,7 +159,7 @@ namespace CivilSurveySuite.ACAD
 
             if (!File.Exists(filePath))
             {
-                Editor.WriteMessage($"\n3DS> Could not find CUI file: {filePath}");
+                Editor.WriteMessage($"\nCould not find CUI file: {filePath}");
                 Logger.Info($"Could not find CUI file: {filePath}");
                 return;
             }
@@ -198,13 +198,13 @@ namespace CivilSurveySuite.ACAD
 
         public static void WriteMessage(string message)
         {
-            Editor.WriteMessage($"\n3DS> {message}");
+            Editor.WriteMessage($"\n{message}");
         }
 
         public static void WriteErrorMessage(Exception e)
         {
-            Editor.WriteMessage($"\n3DS> Error: {e.ErrorStatus}");
-            Editor.WriteMessage($"\n3DS> Exception: {e.Message}");
+            Editor.WriteMessage($"\nError: {e.ErrorStatus}");
+            Editor.WriteMessage($"\nException: {e.Message}");
         }
     }
 }

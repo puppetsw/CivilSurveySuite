@@ -11,7 +11,7 @@ namespace CivilSurveySuite.CIVIL
         {
             if (!EditorUtils.TryGetImpliedSelectionOfType<FeatureLine>(out var featureLines))
             {
-                if (!EditorUtils.TryGetSelectionOfType<FeatureLine>("\n3DS> Select Feature Line: ", "\n3DS> Remove Feature Line: ", out featureLines))
+                if (!EditorUtils.TryGetSelectionOfType<FeatureLine>("\nSelect Feature Line: ", "\nRemove Feature Line: ", out featureLines))
                 {
                     return;
                 }

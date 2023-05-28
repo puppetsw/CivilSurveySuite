@@ -178,7 +178,7 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void GetSurfaceElevationAtPoint()
         {
-            if (!EditorUtils.TryGetPoint("\n3DS> Pick point: ", out Point3d pickedPoint))
+            if (!EditorUtils.TryGetPoint("\nPick point: ", out Point3d pickedPoint))
                 return;
 
             var surfaceIds = C3DApp.ActiveDocument.GetSurfaceIds();
@@ -193,7 +193,7 @@ namespace CivilSurveySuite.CIVIL
                         continue;
 
                     var surfaceElev = surface.FindElevationAtXY(pickedPoint.X, pickedPoint.Y);
-                    AcadApp.Editor.WriteMessage($"\n3DS> Surface Name: {surface.Name} Elevation: {Math.Round(surfaceElev, SystemVariables.LUPREC)}");
+                    AcadApp.Editor.WriteMessage($"\nSurface Name: {surface.Name} Elevation: {Math.Round(surfaceElev, SystemVariables.LUPREC)}");
                 }
 
                 tr.Commit();
@@ -205,8 +205,8 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void AddBreaklineToSurface()
         {
-            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\n3DS> Select breaklines: ",
-                    "\n3DS> Remove breaklines: ", out var objectIds))
+            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\nSelect breaklines: ",
+                    "\nRemove breaklines: ", out var objectIds))
                 return;
 
             // Which surface?
@@ -217,7 +217,7 @@ namespace CivilSurveySuite.CIVIL
                 if (surfaces == null || surfaces.Count == 0)
                 {
                     tr.Commit();
-                    AcadApp.Editor.WriteMessage("\n3DS> No surfaces in drawing.");
+                    AcadApp.Editor.WriteMessage("\nNo surfaces in drawing.");
                     return;
                 }
 
@@ -251,8 +251,8 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void RemoveBreaklinesFromSurface()
         {
-            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\n3DS> Select breaklines: ",
-                    "\n3DS> Remove breaklines: ", out var objectIds))
+            if (!EditorUtils.TryGetSelectionOfType<Line, Polyline, Polyline3d>("\nSelect breaklines: ",
+                    "\nRemove breaklines: ", out var objectIds))
                 return;
 
             using (var tr = AcadApp.StartTransaction())
@@ -262,7 +262,7 @@ namespace CivilSurveySuite.CIVIL
                 if (surfaces == null || surfaces.Count == 0)
                 {
                     tr.Commit();
-                    AcadApp.Editor.WriteMessage("\n3DS> No surfaces in drawing.");
+                    AcadApp.Editor.WriteMessage("\nNo surfaces in drawing.");
                     return;
                 }
 
@@ -536,14 +536,14 @@ namespace CivilSurveySuite.CIVIL
                 var selectionObjectIds = new ObjectIdCollection();
 
                 // Prompt for above or below surface.
-                var pko = new PromptKeywordOptions("\n3DS> Select points above or below surface: ");
+                var pko = new PromptKeywordOptions("\nSelect points above or below surface: ");
                 pko.Keywords.Add("Above");
                 pko.Keywords.Add("Below");
                 pko.AllowNone = true;
 
                 var pkr = AcadApp.Editor.GetKeywords(pko);
 
-                EditorUtils.TryGetDouble("\n3DS> Tolerance: ", out var tolerance, true, 0.001);
+                EditorUtils.TryGetDouble("\nTolerance: ", out var tolerance, true, 0.001);
 
                 if (tolerance == null)
                     return;
@@ -579,7 +579,7 @@ namespace CivilSurveySuite.CIVIL
                     }
                     catch (PointNotOnEntityException e)
                     {
-                        AcadApp.Editor.WriteMessage($"\n3DS> {e.Message} X:{cogoPoint.Easting},Y:{cogoPoint.Northing}");
+                        AcadApp.Editor.WriteMessage($"\n{e.Message} X:{cogoPoint.Easting},Y:{cogoPoint.Northing}");
                     }
                 }
                 AcadApp.Editor.SetImpliedSelection(selectionObjectIds.ToArray());
@@ -593,8 +593,8 @@ namespace CivilSurveySuite.CIVIL
         /// <returns>A <see cref="CivilSurface"/>.</returns>
         public static CivilSurface? SelectCivilSurface()
         {
-            if (!EditorUtils.TryGetEntityOfType<TinSurface>("\n3DS> Select Surface: ",
-                    "\n3DS> Select Surface: ", out var objectId))
+            if (!EditorUtils.TryGetEntityOfType<TinSurface>("\nSelect Surface: ",
+                    "\nSelect Surface: ", out var objectId))
                 return null;
 
             CivilSurface? surface;
