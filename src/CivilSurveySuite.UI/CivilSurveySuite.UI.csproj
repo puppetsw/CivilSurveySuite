@@ -112,7 +112,6 @@
     <Compile Include="ViewModels\SelectSurfaceViewModel.cs" />
     <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
-    <Compile Include="ViewState.cs" />
     <Compile Include="Views\AngleCalculatorView.xaml.cs">
       <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
     </Compile>
