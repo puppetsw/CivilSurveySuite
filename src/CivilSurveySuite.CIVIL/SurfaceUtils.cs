@@ -499,14 +499,12 @@ namespace CivilSurveySuite.CIVIL
             }
         }
 
-        /// <summary>
-        /// The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
-        /// After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare,
-        /// select the 2 surfaces to use, and the 2 UserDefinedProperties(these must be pre-defined as elevation types).
-        /// Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to
-        /// the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to
-        /// also include station/offset information, use the DL_Points tool to link the points to alignment(s).
-        /// </summary>
+        // The PointElevationsFromSurface command allows the user to show point tables with elevations from 2 surfaces, along with the point elevation.
+        // Start the PointElevationsFromSurface command to access the form for point and surface selection.
+	    // Select the points or PointGroups to compare, as well as the 2 surfaces to use.
+	    // Pre-define 2 UserDefinedProperties (UDP) as elevation types and choose them in the form.
+	    // After completing the selection, the selected points will have the UDPs assigned with the corresponding surface elevations.
+	    // Assign a label style to the points to display the UDPs.
         public static void PointElevationsFromSurface()
         {
             // This will have to be a service.
