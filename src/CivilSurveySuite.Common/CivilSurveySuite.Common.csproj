@@ -101,7 +101,6 @@
     <Compile Include="Services\Interfaces\ICogoPointService.cs" />
     <Compile Include="Services\Interfaces\ICogoPointSurfaceReportService.cs" />
     <Compile Include="Services\Interfaces\ICommand.cs" />
-    <Compile Include="Services\Interfaces\IConnectLineworkService.cs" />
     <Compile Include="Services\Interfaces\IDialogService.cs" />
     <Compile Include="Services\Interfaces\IFolderBrowserDialogService.cs" />
     <Compile Include="Services\Interfaces\IInputDialogService.cs" />
