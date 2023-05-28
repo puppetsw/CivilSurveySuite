@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.UI.Logger
 {

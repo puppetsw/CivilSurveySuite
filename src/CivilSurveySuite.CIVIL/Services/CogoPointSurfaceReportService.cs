@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Helpers;
 using DataTable = System.Data.DataTable;
 

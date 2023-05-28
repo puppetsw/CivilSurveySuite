@@ -1,4 +1,4 @@
-﻿using CivilSurveySuite.Shared.Models;
+﻿using CivilSurveySuite.Common.Models;
 using NUnit.Framework;
 
 namespace CivilSurveySuiteTests

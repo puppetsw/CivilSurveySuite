@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.UI.Services.Implementation
 {

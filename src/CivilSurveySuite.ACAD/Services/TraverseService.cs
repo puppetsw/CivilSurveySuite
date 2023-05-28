@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.AutoCAD.Internal;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
-using Point = CivilSurveySuite.Shared.Models.Point;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
+using Point = CivilSurveySuite.Common.Models.Point;
 
 namespace CivilSurveySuite.ACAD.Services
 {
@@ -26,7 +26,7 @@ namespace CivilSurveySuite.ACAD.Services
     {
         private readonly TransientGraphics _graphics;
 
-        private Shared.Models.Point _basePoint;
+        private Common.Models.Point _basePoint;
 
         public TraverseService()
         {
@@ -160,7 +160,7 @@ namespace CivilSurveySuite.ACAD.Services
             throw new NotImplementedException();
         }
 
-        private void DrawTraverseLines(IEnumerable<Shared.Models.Point> coordinates)
+        private void DrawTraverseLines(IEnumerable<Common.Models.Point> coordinates)
         {
             _graphics?.ClearGraphics();
 
@@ -172,7 +172,7 @@ namespace CivilSurveySuite.ACAD.Services
             }
         }
 
-        private static void DrawTraverseGraphics(TransientGraphics graphics, IReadOnlyList<Shared.Models.Point> coordinates)
+        private static void DrawTraverseGraphics(TransientGraphics graphics, IReadOnlyList<Common.Models.Point> coordinates)
         {
             // Clear existing graphics
             graphics.ClearGraphics();

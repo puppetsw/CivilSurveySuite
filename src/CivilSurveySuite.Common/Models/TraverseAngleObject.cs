@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     public class TraverseAngleObject : TraverseObject
     {

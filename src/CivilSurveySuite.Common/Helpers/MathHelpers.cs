@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     /// <summary>
     /// A Math helper class for converting units, angles and coordinates.

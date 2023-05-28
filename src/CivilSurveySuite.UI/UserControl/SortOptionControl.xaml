@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CivilSurveySuite.UI.UserControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:CivilSurveySuite.Shared.Models;assembly=3DS_CivilSurveySuite.Shared"
+    xmlns:models="clr-namespace:CivilSurveySuite.Common.Models;assembly=CivilSurveySuite.Common"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     MinWidth="250"
     MinHeight="25"

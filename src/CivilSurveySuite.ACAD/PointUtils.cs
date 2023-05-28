@@ -3,8 +3,8 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.GraphicsInterface;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 using CivilSurveySuite.UI.Helpers;
 using Exception = Autodesk.AutoCAD.Runtime.Exception;
 

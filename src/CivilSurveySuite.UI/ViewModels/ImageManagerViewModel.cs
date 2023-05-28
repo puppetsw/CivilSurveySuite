@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Models;
 
 namespace CivilSurveySuite.UI.ViewModels

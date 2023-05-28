@@ -10,8 +10,8 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
 
@@ -452,7 +452,7 @@ namespace CivilSurveySuite.CIVIL
         {
             FindPointNearSurface(surface, new Point3d(x, y, 0), out Point3d calculatedPoint, out _);
 
-            if (PointHelpers.GetDistanceBetweenPoints(new Shared.Models.Point(x, y), calculatedPoint.ToPoint()) > maxInterpolateDistance)
+            if (PointHelpers.GetDistanceBetweenPoints(new Common.Models.Point(x, y), calculatedPoint.ToPoint()) > maxInterpolateDistance)
             {
                 return 0;
             }

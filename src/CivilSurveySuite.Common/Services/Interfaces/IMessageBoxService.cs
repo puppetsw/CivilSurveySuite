@@ -1,4 +1,4 @@
-﻿namespace CivilSurveySuite.Shared.Services.Interfaces
+﻿namespace CivilSurveySuite.Common.Services.Interfaces
 {
     public interface IMessageBoxService
     {

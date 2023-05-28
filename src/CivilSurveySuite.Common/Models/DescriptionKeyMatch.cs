@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     /// <summary>
     /// DescriptionKeyMatch class

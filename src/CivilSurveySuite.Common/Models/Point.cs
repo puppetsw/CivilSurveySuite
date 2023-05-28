@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     [DebuggerDisplay("{X}"+ "," + "{Y}" + "," + "{Z}")]
     public readonly struct Point

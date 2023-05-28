@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
-namespace CivilSurveySuite.Shared.Services.Interfaces
+namespace CivilSurveySuite.Common.Services.Interfaces
 {
     /// <summary>
     /// Interface ITraverseService

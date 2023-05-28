@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Logger;
 using NUnit.Framework;
 

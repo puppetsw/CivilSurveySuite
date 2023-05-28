@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CivilSurveySuite.Shared.Extensions;
+using CivilSurveySuite.Common.Extensions;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.Civil;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.CIVIL.Services
 {

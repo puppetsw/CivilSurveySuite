@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CivilSurveySuite.ACAD;
 using CivilSurveySuite.CIVIL.Services;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Services.Implementation;
 using CivilSurveySuite.UI.ViewModels;
 using CivilSurveySuite.UI.Views;

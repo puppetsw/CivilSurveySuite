@@ -9,8 +9,8 @@ using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.DatabaseServices.Styles;
 using Autodesk.Civil.Settings;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
 using Point = Autodesk.Civil.DatabaseServices.Point;
 
 namespace CivilSurveySuite.CIVIL

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CivilSurveySuite.UI.Extensions;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.ViewModels;
 
 namespace CivilSurveySuite.UI.Views

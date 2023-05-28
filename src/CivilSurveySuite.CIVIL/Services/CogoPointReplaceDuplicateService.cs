@@ -7,7 +7,7 @@ using System;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
 
 namespace CivilSurveySuite.CIVIL.Services

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     public sealed class CivilSite : CivilObject, IEquatable<CivilSite>
     {

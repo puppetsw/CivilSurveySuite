@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using CivilSurveySuite.Shared;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.ACAD
 {

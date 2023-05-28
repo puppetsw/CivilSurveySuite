@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.UI.ViewModels
 {

@@ -1,8 +1,8 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices.Core;
 using Autodesk.Civil.DatabaseServices;
 using CivilSurveySuite.ACAD;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 using CivilSurveySuite.UI.Views;
 
 namespace CivilSurveySuite.CIVIL

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CivilSurveySuite.Shared.Helpers;
+using CivilSurveySuite.Common.Helpers;
 using NUnit.Framework;
 
 namespace CivilSurveySuiteTests

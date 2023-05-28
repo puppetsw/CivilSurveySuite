@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CivilSurveySuite.UI.Extensions;
-using CivilSurveySuite.Shared.Helpers;
-using CivilSurveySuite.Shared.Models;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Helpers;
+using CivilSurveySuite.Common.Models;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.UI.ViewModels
 {

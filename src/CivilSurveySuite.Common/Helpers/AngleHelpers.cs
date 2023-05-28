@@ -1,7 +1,7 @@
 ﻿using System;
-using CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 
-namespace CivilSurveySuite.Shared.Helpers
+namespace CivilSurveySuite.Common.Helpers
 {
     public static class AngleHelpers
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace CivilSurveySuite.Shared.Models
+namespace CivilSurveySuite.Common.Models
 {
     public class CivilSurfaceProperties : ObservableObject
     {

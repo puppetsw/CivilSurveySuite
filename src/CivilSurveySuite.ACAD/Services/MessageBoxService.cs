@@ -1,5 +1,5 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices.Core;
-using CivilSurveySuite.Shared.Services.Interfaces;
+using CivilSurveySuite.Common.Services.Interfaces;
 
 namespace CivilSurveySuite.ACAD.Services
 {
