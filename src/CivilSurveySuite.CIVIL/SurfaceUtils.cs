@@ -13,7 +13,6 @@ using CivilSurveySuite.ACAD;
 using CivilSurveySuite.Shared.Helpers;
 using CivilSurveySuite.Shared.Models;
 using DBObject = Autodesk.AutoCAD.DatabaseServices.DBObject;
-using Point = CivilSurveySuite.Shared.Models.Point;
 using Surface = Autodesk.Civil.DatabaseServices.Surface;
 
 namespace CivilSurveySuite.CIVIL
