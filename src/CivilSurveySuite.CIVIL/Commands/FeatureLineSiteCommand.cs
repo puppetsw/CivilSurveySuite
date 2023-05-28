@@ -12,7 +12,7 @@ namespace CivilSurveySuite.CIVIL
         {
             if (!EditorUtils.TryGetEntityOfType<FeatureLine>("", "", out var featureLineId, true))
             {
-                AcadApp.Editor.WriteMessage("\n3DS> Please select a Feature Line.");
+                AcadApp.Editor.WriteMessage("\nPlease select a Feature Line.");
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace CivilSurveySuite.CIVIL
                 var styleId = featureLine.StyleId;
                 var style = (FeatureLineStyle)tr.GetObject(styleId, OpenMode.ForRead);
 
-                AcadApp.Editor.WriteMessage($"\n3DS> SiteId: {siteId}, SiteName: {site.Name}, StyleName: {style.Name}");
+                AcadApp.Editor.WriteMessage($"\nSiteId: {siteId}, SiteName: {site.Name}, StyleName: {style.Name}");
 
                 tr.Commit();
             }

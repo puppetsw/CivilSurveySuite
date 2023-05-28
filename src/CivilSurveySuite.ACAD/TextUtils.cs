@@ -26,7 +26,7 @@ namespace CivilSurveySuite.ACAD
 
             objectIds = new ObjectIdCollection();
 
-            if (!EditorUtils.TryGetSelection("\n3DS> Select text entities: ", "\n>3DS Remove text entities: ",
+            if (!EditorUtils.TryGetSelection("\nSelect text entities: ", "\n>3DS Remove text entities: ",
                     typedValue, out var selectedTextIds))
                 return false;
 
@@ -130,7 +130,7 @@ namespace CivilSurveySuite.ACAD
         /// </summary>
         public static void AddPrefixToText()
         {
-            if (!EditorUtils.TryGetString("\n3DS> Enter prefix text: ", out string prefixText, allowSpaces: true))
+            if (!EditorUtils.TryGetString("\nEnter prefix text: ", out string prefixText, allowSpaces: true))
                 return;
 
             if (!TrySelectText(out var objectIds))
@@ -159,7 +159,7 @@ namespace CivilSurveySuite.ACAD
         /// </summary>
         public static void AddSuffixToText()
         {
-            if (!EditorUtils.TryGetString("\n3DS> Enter suffix text: ", out string suffixText))
+            if (!EditorUtils.TryGetString("\nEnter suffix text: ", out string suffixText))
                 return;
 
             if (!TrySelectText(out var objectIds))
@@ -274,7 +274,7 @@ namespace CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to add to text: ", out var addValue))
+            if (!EditorUtils.TryGetDouble("\nEnter amount to add to text: ", out var addValue))
                 return;
 
             if (addValue == null)
@@ -320,7 +320,7 @@ namespace CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter amount to subtract from text: ", out var subtractValue))
+            if (!EditorUtils.TryGetDouble("\nEnter amount to subtract from text: ", out var subtractValue))
                 return;
 
             if (subtractValue == null)
@@ -366,7 +366,7 @@ namespace CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to multiply by text: ", out var multiplyValue))
+            if (!EditorUtils.TryGetDouble("\nEnter value to multiply by text: ", out var multiplyValue))
                 return;
 
             if (multiplyValue == null)
@@ -412,7 +412,7 @@ namespace CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetDouble("\n3DS> Enter value to divide by text: ", out var divideValue))
+            if (!EditorUtils.TryGetDouble("\nEnter value to divide by text: ", out var divideValue))
                 return;
 
             if (divideValue == null)
@@ -458,7 +458,7 @@ namespace CivilSurveySuite.ACAD
             if (!TrySelectText(out var objectIds))
                 return;
 
-            if (!EditorUtils.TryGetInt("\n3DS> Enter number of decimal places: ", out int decimalPlaces))
+            if (!EditorUtils.TryGetInt("\nEnter number of decimal places: ", out int decimalPlaces))
                 return;
 
             using (var tr = AcadApp.StartTransaction())

@@ -32,8 +32,8 @@ namespace CivilSurveySuite.CIVIL
         /// return a valid <see cref="CogoPoint"/></exception>
         public static CivilPointGroup SelectCivilPointGroup()
         {
-            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\n3DS> Select CogoPoint to obtain Point Group: ",
-                    "\n3DS> Select CogoPoint: ", out var objectId))
+            if (!EditorUtils.TryGetEntityOfType<CogoPoint>("\nSelect CogoPoint to obtain Point Group: ",
+                    "\nSelect CogoPoint: ", out var objectId))
                 return null;
 
             CivilPointGroup pointGroup;

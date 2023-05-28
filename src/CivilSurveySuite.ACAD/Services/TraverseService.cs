@@ -37,7 +37,7 @@ namespace CivilSurveySuite.ACAD.Services
         {
             if (!_basePoint.IsValid())
             {
-                AcadApp.Editor.WriteMessage("\n3DS> No base point set. ");
+                AcadApp.Editor.WriteMessage("\nNo base point set. ");
                 return;
             }
 
@@ -58,10 +58,10 @@ namespace CivilSurveySuite.ACAD.Services
         {
             Utils.SetFocusToDwgView();
 
-            if (!EditorUtils.TryGetPoint("\n3DS> Select base point: ", out Point3d basePoint))
+            if (!EditorUtils.TryGetPoint("\nSelect base point: ", out Point3d basePoint))
                 return;
 
-            AcadApp.Editor.WriteMessage($"\n3DS> Base point: X:{Math.Round(_basePoint.X, 4)}, Y:{Math.Round(_basePoint.Y, 4)}");
+            AcadApp.Editor.WriteMessage($"\nBase point: X:{Math.Round(_basePoint.X, 4)}, Y:{Math.Round(_basePoint.Y, 4)}");
             AcadApp.Editor.WriteMessage("\n");
 
             _basePoint = basePoint.ToPoint();
@@ -125,7 +125,7 @@ namespace CivilSurveySuite.ACAD.Services
 
                     if (!lastEndPoint.Equals(Point.Origin) && !line.StartPoint.ToPoint().Equals(lastEndPoint))
                     {
-                        AcadApp.Editor.WriteMessage("\n3DS> Line was not connected to previous.");
+                        AcadApp.Editor.WriteMessage("\nLine was not connected to previous.");
                         continue;
                     }
 

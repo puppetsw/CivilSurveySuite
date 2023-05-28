@@ -77,7 +77,7 @@ namespace CivilSurveySuite.ACAD
                     if (pdoResult.StringResult != Keywords.PICK)
                         break;
 
-                    if (TryPickAngle("\n3DS> Pick bearing on screen: ", basePoint, out angle))
+                    if (TryPickAngle("\nPick bearing on screen: ", basePoint, out angle))
                         break;
                 }
                 else if (pdoResult.Status == PromptStatus.OK)
@@ -138,7 +138,7 @@ namespace CivilSurveySuite.ACAD
         public static Point3d? GetBasePoint3d()
         {
             Utils.SetFocusToDwgView();
-            var ppo = new PromptPointOptions("\n3DS> Select a base point: ");
+            var ppo = new PromptPointOptions("\nSelect a base point: ");
             var ppr = AcadApp.Editor.GetPoint(ppo);
 
             if (ppr.Status != PromptStatus.OK)
@@ -472,7 +472,7 @@ namespace CivilSurveySuite.ACAD
         public static bool TryGetEntityOfType<T>(string addMessage, bool exactMatch, string[] keywords, string defaultKeyword, out string selectedKeyword, out ObjectId objectId)
         {
             var peo = new PromptEntityOptions(addMessage);
-            peo.SetRejectMessage("\n3DS> Invalid entity type.");
+            peo.SetRejectMessage("\nInvalid entity type.");
             selectedKeyword = string.Empty;
 
             if (keywords != null)

@@ -30,8 +30,8 @@ namespace CivilSurveySuite.CIVIL
         {
             // Check if ACAD is loaded.
 
-            AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
-            AcadApp.Logger?.Info($"{ResourceHelpers.GetLocalisedString("C3D_Loading")} {System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
+            AcadApp.Editor.WriteMessage($"\n{ResourceHelpers.GetLocalisedString("C3D_Loading")}");
+            AcadApp.Logger?.Info($"{ResourceHelpers.GetLocalisedString("C3D_Loading")}");
 
             try
             {
