@@ -149,7 +149,9 @@
     <None Include="CSS_CIVIL.mnr">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="CSS_CIVIL_light.mnr" />
+    <None Include="CSS_CIVIL_light.mnr">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
