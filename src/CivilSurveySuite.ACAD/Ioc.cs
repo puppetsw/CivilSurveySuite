@@ -35,7 +35,6 @@ namespace CivilSurveySuite.ACAD
             Default.Register<IFolderBrowserDialogService, FolderBrowserDialogService>();
 
             // Views
-            Default.Register<AngleCalculatorView>();
             Default.Register<ImageManagerView>();
             Default.Register<TraverseAngleView>();
             Default.Register<TraverseView>();
@@ -43,7 +42,6 @@ namespace CivilSurveySuite.ACAD
             Default.Register<InputDialogView>();
 
             // ViewModels
-            Default.Register<AngleCalculatorViewModel>();
             Default.Register<ImageManagerViewModel>();
             Default.Register<TraverseViewModel>();
             Default.Register<TraverseAngleViewModel>();

@@ -269,11 +269,6 @@ namespace CivilSurveySuite.ACAD
 
         #region Palettes/Windows
 
-        [CommandMethod("WMS", "CSSShowAngleCalculator", CommandFlags.Modal)]
-        public void ShowAngleCalculator()
-        {
-            AcadApp.ShowModelessDialog<AngleCalculatorView>();
-        }
 
         [CommandMethod("WMS", "CSSShowTraverseWindow", CommandFlags.Modal)]
         public void ShowTraversePalette()

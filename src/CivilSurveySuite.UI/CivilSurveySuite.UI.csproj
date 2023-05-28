@@ -100,7 +100,6 @@
       <DependentUpon>SortOptionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Validation\NumberValidationRule.cs" />
-    <Compile Include="ViewModels\AngleCalculatorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointMoveLabelViewModel.cs" />
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
@@ -112,9 +111,6 @@
     <Compile Include="ViewModels\SelectSurfaceViewModel.cs" />
     <Compile Include="ViewModels\TraverseAngleViewModel.cs" />
     <Compile Include="ViewModels\TraverseViewModel.cs" />
-    <Compile Include="Views\AngleCalculatorView.xaml.cs">
-      <DependentUpon>AngleCalculatorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CogoPointMoveLabelView.xaml.cs">
       <DependentUpon>CogoPointMoveLabelView.xaml</DependentUpon>
     </Compile>
@@ -260,10 +256,6 @@
     <Page Include="UserControl\SortOptionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AngleCalculatorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CogoPointMoveLabelView.xaml">
       <SubType>Designer</SubType>
