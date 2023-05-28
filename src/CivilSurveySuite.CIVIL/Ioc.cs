@@ -22,7 +22,6 @@ namespace CivilSurveySuite.CIVIL
             Default.Register<ICivilSelectService, CivilSelectService>();
             Default.Register<ICogoPointService, CogoPointService>();
 
-            Default.Register<IConnectLineworkService, ConnectLineworkService>();
             Default.Register<ICogoPointSurfaceReportService, CogoPointSurfaceReportService>();
             Default.Register<ICogoPointReplaceDuplicateService, CogoPointReplaceDuplicateService>();
 
@@ -40,8 +39,6 @@ namespace CivilSurveySuite.CIVIL
             Default.Register<SelectAlignmentViewModel>();
             Default.Register<CogoPointMoveLabelView>();
             Default.Register<CogoPointMoveLabelViewModel>();
-            Default.Register<ConnectLineworkView>();
-            Default.Register<ConnectLineworkViewModel>();
             Default.Register<CogoPointEditorView>();
             Default.Register<CogoPointEditorViewModel>();
             Default.Register<CogoPointSurfaceReportView>();

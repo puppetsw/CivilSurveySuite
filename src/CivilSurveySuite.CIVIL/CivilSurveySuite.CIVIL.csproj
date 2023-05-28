@@ -126,7 +126,6 @@
     <Compile Include="SiteUtils.cs" />
     <Compile Include="StyleUtils.cs" />
     <Compile Include="SurfaceUtils.cs" />
-    <Compile Include="Services\ConnectLineworkService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CivilSurveySuite.ACAD\CivilSurveySuite.ACAD.csproj">

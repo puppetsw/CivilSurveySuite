@@ -196,11 +196,6 @@ namespace CivilSurveySuite.CIVIL
         #region Palettes
 
         // Palettes
-        [CommandMethod("WMS", "CSSShowConnectLineworkWindow", CommandFlags.Modal)]
-        public static void ShowConnectLinework()
-        {
-            C3DApp.ShowDialog<ConnectLineworkView>();
-        }
 
         [CommandMethod("WMS", "CSSShowCogoPointEditor", CommandFlags.Modal)]
         public static void ShowCogoPointEditor()

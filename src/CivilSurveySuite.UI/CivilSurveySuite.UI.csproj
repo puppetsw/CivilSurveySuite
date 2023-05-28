@@ -104,7 +104,6 @@
     <Compile Include="ViewModels\CogoPointEditorViewModel.cs" />
     <Compile Include="ViewModels\CogoPointReplaceDuplicateViewModel.cs" />
     <Compile Include="ViewModels\CogoPointSurfaceReportViewModel.cs" />
-    <Compile Include="ViewModels\ConnectLineworkViewModel.cs" />
     <Compile Include="ViewModels\ImageManagerViewModel.cs" />
     <Compile Include="ViewModels\SelectAlignmentViewModel.cs" />
     <Compile Include="ViewModels\SelectPointGroupViewModel.cs" />
@@ -122,9 +121,6 @@
     </Compile>
     <Compile Include="Views\CogoPointSurfaceReportView.xaml.cs">
       <DependentUpon>CogoPointSurfaceReportView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ConnectLineworkView.xaml.cs">
-      <DependentUpon>ConnectLineworkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImageManagerView.xaml.cs">
       <DependentUpon>ImageManagerView.xaml</DependentUpon>
@@ -272,10 +268,6 @@
     <Page Include="Views\CogoPointSurfaceReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConnectLineworkView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ImageManagerView.xaml" />
     <Page Include="Views\SelectPointGroupView.xaml">
