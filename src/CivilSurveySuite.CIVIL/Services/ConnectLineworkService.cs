@@ -15,6 +15,7 @@ namespace CivilSurveySuite.CIVIL.Services
 {
     public class SurveyPointList : List<SurveyPoint> { }
 
+    [Obsolete("Use StringMaster project")]
     public class ConnectLineworkService : IConnectLineworkService
     {
         public string DescriptionKeyFile { get; set; }
