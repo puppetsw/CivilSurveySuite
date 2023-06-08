@@ -64,19 +64,19 @@
 
 ## Building From Source
 
-### 1. Prerequisites
+### Prerequisites
 
 * AutoCAD Civil 3D (not tested below release 21.0)
 * Visual Studio 2022
 * .NET Framework 4.6.1
 
-### 2. Clone The Repository
+### Clone The Repository
 
 ```sh
 git clone https://github.com/puppetsw/CivilSurveySuite
 ```
 
-### 3. Building The Project
+### Building The Project
 
 To build Civil Survey Suite, open the CivilSurveySuite.sln solution file in Visual Studio. Right-click on the CivilSurveySuite.Loader project in solution explorer and select `Set as Startup Project`.
 
