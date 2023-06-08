@@ -30,15 +30,7 @@ namespace CivilSurveySuite.ACAD
 
         #endregion
 
-        #region Menus
-        [CommandMethod("WMS", "CSSLoadAcadMenu", CommandFlags.Modal)]
-        public static void LoadMenu()
-        {
-            AcadApp.LoadCuiFile(AcadApp.ACAD_TOOLBAR_FILE);
-        }
-        #endregion
-
-        #region Help Commands
+	    #region Help Commands
 
         // DEBUG
         [CommandMethod("WMS", "CSSShowDebug", CommandFlags.Modal)]
