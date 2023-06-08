@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{27174B74-79D3-4579-8AAE-D4EAECB04B3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CivilSurveySuite.ACAD</RootNamespace>
+    <AssemblyName>CivilSurveySuite.ACAD</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\CivilSurveySuite\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\CivilSurveySuite\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug 2023|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\CivilSurveySuite\bin\Debug 2023\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="accoremgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\accoremgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="AcCui">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\AcCui.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acdbmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2017\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AcadApp.cs" />
+    <Compile Include="BlockUtils.cs" />
+    <Compile Include="CircularArcExtensions.cs" />
+    <Compile Include="Commands\ShowDebugCommand.cs" />
+    <Compile Include="Commands\ShowHelpCommand.cs" />
+    <Compile Include="Commands\TestCommands\TestingCommand.cs" />
+    <Compile Include="Commands\TestCommands\TransientGraphicsTestCommand.cs" />
+    <Compile Include="Commands\TestCommands\TransientGraphicsUndoTestCommand.cs" />
+    <Compile Include="CurveUtils.cs" />
+    <Compile Include="DxfNames.cs" />
+    <Compile Include="EditorUtils.cs" />
+    <Compile Include="Commands.cs" />
+    <Compile Include="GeometryUtils.cs" />
+    <Compile Include="Ioc.cs" />
+    <Compile Include="LineTypeUtils.cs" />
+    <Compile Include="ObjectIdExtensions.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RasterUtils.cs" />
+    <Compile Include="Services\BlockService.cs" />
+    <Compile Include="Services\MessageBoxService.cs" />
+    <Compile Include="Services\ProcessService.cs" />
+    <Compile Include="Services\RasterImageService.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="TransientDrawable.cs" />
+    <Compile Include="Commands\TraverseCommand.cs" />
+    <Compile Include="Keywords.cs" />
+    <Compile Include="LayerUtils.cs" />
+    <Compile Include="LineUtils.cs" />
+    <Compile Include="LockedTransaction.cs" />
+    <Compile Include="PointExtensions.cs" />
+    <Compile Include="PointUtils.cs" />
+    <Compile Include="PolylineUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemVariables.cs" />
+    <Compile Include="TextUtils.cs" />
+    <Compile Include="TransactionExtensions.cs" />
+    <Compile Include="TransientGraphics.cs" />
+    <Compile Include="Services\TraverseService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CivilSurveySuite.Common\CivilSurveySuite.Common.csproj">
+      <Project>{0a9643c4-a65b-4d1c-820a-bec5a3b1a8f7}</Project>
+      <Name>CivilSurveySuite.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CivilSurveySuite.UI\CivilSurveySuite.UI.csproj">
+      <Project>{0431e86d-1a04-4f76-8afc-193f84fa7965}</Project>
+      <Name>CivilSurveySuite.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector">
+      <Version>5.3.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
