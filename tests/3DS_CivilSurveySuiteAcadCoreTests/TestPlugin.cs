@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using _3DS_CivilSurveySuiteAcadCoreTests;
 using Autodesk.AutoCAD.Runtime;
+using CivilSurveySuiteAcadCoreTests;
 
 [assembly: ExtensionApplication(typeof(TestPlugin))]
-namespace _3DS_CivilSurveySuiteAcadCoreTests
+namespace CivilSurveySuiteAcadCoreTests
 {
     public class TestPlugin : IExtensionApplication
     {
