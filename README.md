@@ -1,86 +1,129 @@
-# TODO
+<a name="readme-top"></a>
 
+# Civil Survey Suite
 
-### General
-* Error detection method.
-* Settings
-* Link CogoPoint Labels (for moving)
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#required-software">Required Software</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#building-from-source">Building From Source</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#clone-the-repository">Clone The Repository</a></li>
+        <li><a href="#building-the-project">Building The Project</a></li>
+      </ul>
+    </li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
-### Setout Tool
-* Create block with point and text entities.
-* Export to CSV or Excel.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-### Point Reports
-> Generates detailed point reports with user controlled columns.  Includes Lat/Lon and alignment station/offset fields. 
-Save entire report as HTML or data table only to CSV, DBF, XML, etc.  Also include extended point data columns (Civil3D UDP)!
-* point report /w alignments
-* station format
-* edit multiple
-* hide non-adjacent
-* zoom to point
-* option to add cut/fill between surfaces
-* Sorting order to report screen
-* decimal places on report screen
-* export to csv
-* Create point at extension distance on grade between 2 points.
-* Quickly add/remove points by description match, elevation range, inside linear object or window, number range, etc.
+![CSS Ribbon](./images/cssribbon.png)
 
-### Compare Two Surfaces
-> The SPPointElevationsFromSurfaces command allows the user to show point tables with the elevations from 2 surfaces, in addition to the point elevation.
-After starting the SPPointElevationsFromSurfaces command, you will be presented with a form from which you select the points, or PointGroups, to compare,
-select the 2 surfaces to use, and the 2 UserDefinedProperties (these must be pre-defined as elevation types).
-Once the selection is complete the selected points will have the respective UDP's assigned the surface elevations. You can now assign a label style to
-the points which displays those UDP's, use the DisplayPoints Sincpac tool to create a report, or export the points out to a text file. If you need to
-also include station/offset information, use the DL_Points tool to link the points to alignment(s).
+`Civil Survey Suite` a passion project of mine. It was designed to enhance surveying tasks for both surveyors and survey drafters in Autodesk Civil 3D, this plugin brings powerful enhancements tailored specifically for the surveying field. Simplify point creation, work with CogoPoint labels, tools for surfaces, generate reports and more. Civil Survey Suite is the result of a labour of love, created with a passion for improving the survey drafting experience within Civil 3D.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Window Visibility States
+<!-- GETTING STARTED -->
+## Getting Started
 
+### Required Software
+
+* AutoCAD Civil 3D (not tested below release 21.0)
+* .NET Framework 4.6.1
+
+### Installation
+
+1. Download the latest version from [releases]([releases](https://github.com/puppetsw/CivilSurveySuite/releases)).
+2. Extract the archive to the following directory.
+
+    ```sh
+    C:\Users\{username}\AppData\Roaming\Autodesk\ApplicationPlugins
+    ```
+
+3. Launch Autodesk Civil 3D and run the `cssloadcivilmenu` to load the ribbon and menu.
+
+4. That's it!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Building From Source
+
+### 1. Prerequisites
+
+* AutoCAD Civil 3D (not tested below release 21.0)
+* Visual Studio 2022
+* .NET Framework 4.6.1
+
+### 2. Clone The Repository
+
+```sh
+git clone https://github.com/puppetsw/CivilSurveySuite
 ```
-   <StackPanel>
-        <StackPanel.Style>
-            <Style TargetType="StackPanel">
-                <Setter Property="Visibility" Value="Collapsed" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=ViewState}" Value="{x:Static local:ViewState.State1}">
-                        <Setter Property="Visibility" Value="Visible" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </StackPanel.Style>
-    </StackPanel>
-```
-# Notes
 
-> When you apply the CommandMethod attribute to a non-static method, AutoCAD's
-managed runtime will create multiple instances of your class, one for each
-document that you invoke the command in. Those instances are not created until
-you invoke the command.
+### 3. Building The Project
 
-> The problem you have is that AutoCAD's managed runtime also creates an instance
-of the class with the IExtensionApplication attribute on it as well, so multiple
-instances of your class are getting created, which obviously wasn't your
-intention.
+To build Civil Survey Suite, open the CivilSurveySuite.sln solution file in Visual Studio. Right-click on the CivilSurveySuite.Loader project in solution explorer and select `Set as Startup Project`.
 
-> For one thing, it's not wise to implement commands in the same class that
-implements IExtensionApplication, but if you really wanted to do that, you could
-if you make the command handler methods static. If you're not sure about the
-difference between static and non-static (or 'instance') methods, get a hold of
-some basic C# learning materials, and try to become more familiar with the basic
-concepts that underlie the tools you're working with.
+Make sure that following projects have references to the corresponding Autodesk DLLs from your Autodesk Civil 3D installation directories.
 
-> As can be seen, it is not necessary to commit transactions for object reading access, 
-but for performance sake, we had better commit such transactions as well. In addition, 
-as can be seen again from the output, it took about twice long for the second command 
-to get the same work done. It is clear now that committing transactions is more efficient 
-than aborting them even for reading operations.
+#### 1. CivilSurveySuite.ACAD
 
-> Therefore, another good practice comes out, always committing transactions after they started.
+* accoremgd.dll
+* acdbmgd.dll
+* acmgd.dll
+* accui.dll
 
-> For an instance command method, the method's enclosing type is instantiated separately for each open document. 
-> This means that each document gets a private copy of the command's instance data. Thus there is no danger 
-> of overwriting document-specific data when the user switches documents. If an instance method needs to share 
-> data globally, it can do so by declaring static or Shared member variables. For a static command method, 
-> the managed wrapper runtime module does not need to instantiate the enclosing type.
-> A single copy of the method's data is used, regardless of the document context. Static commands normally do 
-> not use per-document data and do not require special consideration for MDI mode.
+#### 2. CivilSurveySuite.CIVIL
+
+* accoremgd.dll
+* acdbmgd.dll
+* acmgd.dll
+* aecbasemgd.dll
+* aeccdbmgd.dll
+
+#### 3. CivilSurveySuite.Loader
+
+* acdbmgd.dll
+
+Make sure to set the `Copy Local` property of each Autodesk reference to `False`.
+
+## Roadmap
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.md` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
