@@ -105,6 +105,21 @@ Make sure to set the `Copy Local` property of each Autodesk reference to `False`
 
 ## Roadmap
 
+* [ ] More options/settings for commands to give more control.
+* [ ] Point Report (compare to surface - in progress)
+  * [ ] Compare with Alignment(s)
+    * [ ] Control Station Format
+    * [ ] Hide Non-Adjacent Points
+  * [ ] Zoom to Point
+  * [ ] Cut/Fill Between Surfaces at Point(s)
+  * [ ] Sorting & Decimal Places
+  * [ ] Export to CSV
+  * [ ] Filter Points
+* [ ] Comparing Two or More Surfaces
+* [ ] Link CogoPoint Labels
+
+See the [open issues](https://github.com/puppetsw/CivilSurveySuite/issues) for a full list of proposed features (and known issues).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
