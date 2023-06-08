@@ -49,7 +49,7 @@
 
 ### Installation
 
-1. Download the latest version from [releases]([releases](https://github.com/puppetsw/CivilSurveySuite/releases)).
+1. Download the latest version from [releases](https://github.com/puppetsw/CivilSurveySuite/releases).
 2. Extract the archive to the following directory.
 
     ```sh
