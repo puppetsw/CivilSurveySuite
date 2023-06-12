@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class WildcardTests

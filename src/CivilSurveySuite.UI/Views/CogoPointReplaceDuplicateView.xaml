@@ -1,0 +1,77 @@
+﻿<Window x:Class="CivilSurveySuite.UI.Views.CogoPointReplaceDuplicateView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:vm="clr-namespace:CivilSurveySuite.UI.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:CogoPointReplaceDuplicateViewModel}"
+        Title="Replace &amp; Duplicate" Height="430" Width="500" >
+    <Window.Resources>
+
+    </Window.Resources>
+    <Grid  ShowGridLines="False" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0">Find code:</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Height="25" Text="{Binding FindCode}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="LostFocus">
+                    <b:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.FindCodeCommand}" />
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+        </TextBox>
+
+        <Label Grid.Row="1" Grid.Column="1" FontSize="11" HorizontalAlignment="Right" Content="{Binding FoundCountString}"/>
+
+        <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding ShouldReplaceCode}">Replace Code</CheckBox>
+        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding ShouldReplaceCode}">
+            <StackPanel Margin="5">
+                <TextBox Height="25" Margin="0,5" Text="{Binding ReplaceCode}" />
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldApplyDescriptionKey}">Apply Description Key</CheckBox>
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldOverwriteStyle}">Overwrite Point Style</CheckBox>
+                <ComboBox Height="25" Margin="0,5"
+                          IsEnabled="{Binding ShouldOverwriteStyle}"
+                          ItemsSource="{Binding Symbols}"
+                          SelectedItem="{Binding ReplaceSymbol}"
+                          />
+            </StackPanel>
+        </GroupBox>
+
+        <CheckBox Grid.Row="4" Grid.Column="0" Margin="0,5,0,0" IsChecked="{Binding ShouldDuplicateCode}">Duplicate Code</CheckBox>
+        <GroupBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" IsEnabled="{Binding ShouldDuplicateCode}">
+            <StackPanel Margin="5">
+                <TextBox Height="25" Margin="0,5" Text="{Binding DuplicateCode}" />
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldDuplicateApplyDescriptionKey}">Apply Description Key</CheckBox>
+                <CheckBox Margin="0,5" IsChecked="{Binding ShouldDuplicateOverwriteStyle}">Overwrite Point Style</CheckBox>
+                <ComboBox Height="25" Margin="0,5"
+                          IsEnabled="{Binding ShouldDuplicateOverwriteStyle}"
+                          ItemsSource="{Binding Symbols}"
+                          SelectedItem="{Binding DuplicateSymbol}"
+                          />
+            </StackPanel>
+        </GroupBox>
+
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" Width="100" Height="25" Margin="5"
+                    Click="BtnOk_Click" Command="{Binding FindReplaceCommand}" />
+            <Button Content="Cancel" Width="100" Height="25" Margin="5"
+                    Click="BtnCancel_Click" />
+        </StackPanel>
+
+    </Grid>
+</Window>

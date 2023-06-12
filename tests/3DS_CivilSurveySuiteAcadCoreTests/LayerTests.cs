@@ -1,9 +1,9 @@
 ﻿using System.Threading;
-using _3DS_CivilSurveySuite.ACAD;
 using Autodesk.AutoCAD.DatabaseServices;
+using CivilSurveySuite.ACAD;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteAcadCoreTests
+namespace CivilSurveySuiteAcadCoreTests
 {
     [TestFixture, Apartment(ApartmentState.STA)]
     public class LayerTests : TestBase

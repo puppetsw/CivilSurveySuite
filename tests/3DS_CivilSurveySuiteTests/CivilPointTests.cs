@@ -3,10 +3,10 @@
 // means, electronic, mechanical or otherwise, is prohibited without the
 // prior written consent of the copyright owner.
 
-using _3DS_CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class CivilPointTests

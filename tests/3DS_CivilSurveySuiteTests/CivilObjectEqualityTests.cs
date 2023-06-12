@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using _3DS_CivilSurveySuite.Shared.Models;
+using CivilSurveySuite.Common.Models;
 using NUnit.Framework;
 
-namespace _3DS_CivilSurveySuiteTests
+namespace CivilSurveySuiteTests
 {
     [TestFixture]
     public class CivilObjectEqualityTests
