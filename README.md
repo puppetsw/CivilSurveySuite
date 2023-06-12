@@ -22,6 +22,7 @@
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#clone-the-repository">Clone The Repository</a></li>
         <li><a href="#building-the-project">Building The Project</a></li>
+        <li><a href="#debugging-the-project">Debugging The Project</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -118,6 +119,8 @@ Command line arguments:
 ```
 
 After clicking the `green` play button or pressing `F5` in Visual Studio, Autodesk Civil 3D will launch. After it has loaded type `netload` in the command line and select the `CivilSurveySuite.dll` from the debug directory of the project. 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
 
