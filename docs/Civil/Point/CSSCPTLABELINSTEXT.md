@@ -1,0 +1,3 @@
+# CSSCPTLABELINSTEXT
+
+[See AutoCAD Command](../../AutoCAD/Point/3DSPTLABELINSTEXT.md)
