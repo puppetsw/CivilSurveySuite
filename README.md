@@ -35,7 +35,7 @@
 
 ![CSS Ribbon](./images/cssribbon.png)
 
-`Civil Survey Suite` a passion project of mine. It was designed to enhance surveying tasks for both surveyors and survey drafters in Autodesk Civil 3D, this plugin brings powerful enhancements tailored specifically for the surveying field. Simplify point creation, work with CogoPoint labels, tools for surfaces, generate reports and more. Civil Survey Suite is the result of a labour of love, created with a passion for improving the survey drafting experience within Civil 3D.
+`Civil Survey Suite` a passion project of mine. It was designed to enhance surveying tasks for both surveyors and survey drafters in Autodesk Civil 3D, this plugin brings powerful enhancements tailored specifically for the surveying field. Simplify point creation, work with CogoPoint labels, tools for surfaces, generate reports and more. Civil Survey Suite was created with a passion for improving the survey drafting experience within Civil 3D.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -102,6 +102,22 @@ Make sure that following projects have references to the corresponding Autodesk 
 * acdbmgd.dll
 
 Make sure to set the `Copy Local` property of each Autodesk reference to `False`.
+
+### Debugging The Project
+
+Inside Visual Studio right-click on the `CivilSurveySuite.Loader` project and select properties. Goto the Debug tab and enter the following details. Note that the version of Civil 3D should be replaced with what is installed on your system. 
+
+Start external program:
+```sh
+C:\Program Files\Autodesk\AutoCAD 2017\acad.exe
+```
+
+Command line arguments:
+```sh
+/ld "C:\Program Files\Autodesk\AutoCAD 2017\\AecBase.dbx" /p "<<C3D_Metric>>" /product "C3D" /language "en-US"
+```
+
+After clicking the `green` play button or pressing `F5` in Visual Studio, Autodesk Civil 3D will launch. After it has loaded type `netload` in the command line and select the `CivilSurveySuite.dll` from the debug directory of the project. 
 
 ## Roadmap
 
