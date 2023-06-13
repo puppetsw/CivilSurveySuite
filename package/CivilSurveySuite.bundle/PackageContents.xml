@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
      HelpFile=""
-     AppVersion="0.0.3.0"
+     AppVersion="1.0.0.0"
      OnlineDocumentation=""
      Name="CivilSurveySuite"
      Description=""
