@@ -7,7 +7,7 @@
      Description=""
      Icon="./Application/app.ico"
      Author="Scott Whitney">
- <CompanyDetails Name="3DS"
+ <CompanyDetails Name="WMS"
      Url="https://github.com/puppetsw/CivilSurveySuite"
      Email="scottwhits@gmail.com">
  </CompanyDetails>
