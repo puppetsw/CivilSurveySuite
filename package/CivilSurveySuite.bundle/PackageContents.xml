@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     HelpFile=""
+     AppVersion="0.0.3.0"
+     OnlineDocumentation=""
+     Name="CivilSurveySuite"
+     Description=""
+     Icon="./Application/app.ico"
+     Author="Scott Whitney">
+ <CompanyDetails Name="3DS"
+     Url="https://github.com/puppetsw/CivilSurveySuite"
+     Email="scottwhits@gmail.com">
+ </CompanyDetails>
+ <Components>
+  <RuntimeRequirements OS="Win64" Platform="Civil3D" SeriesMin="R21.0" SeriesMax="R24.2" />
+  <ComponentEntry
+   ModuleName=".\Application\CivilSurveySuite.dll"
+   LoadOnAutoCADStartup="true"
+   LoadOnCommandInvocation="false"
+   AppDescription="Survey enhancement tools for Autodesk Civil 3D."
+   AppName="CivilSurveySuite"
+   AppType=".NET">
+  </ComponentEntry>
+ </Components>
+</ApplicationPackage>
