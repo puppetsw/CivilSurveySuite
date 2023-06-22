@@ -118,6 +118,8 @@ Command line arguments:
 /ld "C:\Program Files\Autodesk\AutoCAD 2017\\AecBase.dbx" /p "<<C3D_Metric>>" /product "C3D" /language "en-US"
 ```
 
+Make sure to `Enable native code debugging`.
+
 After clicking the `green` play button or pressing `F5` in Visual Studio, Autodesk Civil 3D will launch. After it has loaded type `netload` in the command line and select the `CivilSurveySuite.dll` from the debug directory of the project. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
