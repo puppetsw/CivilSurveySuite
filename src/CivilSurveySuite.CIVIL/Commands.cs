@@ -109,7 +109,7 @@ namespace CivilSurveySuite.CIVIL
             CogoPointUtils.DescriptionFormatToUpper();
         }
 
-        [CommandMethod("WMS", "CSSCptMatchLblRot", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptMatchLblRot", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void CptMatchLblRot()
         {
             CogoPointUtils.LabelRotateMatch();
