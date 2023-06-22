@@ -184,12 +184,11 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void LabelRotateMatch()
         {
-            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>("\nSelect points: ",
-                    "\nRemove points: ", out var objectIds))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var objectIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>("\nSelect points: ", "\nRemove points: ", out objectIds))
                 return;
 
-            if (!EditorUtils.TryGetEntity("\nSelect line or polyline: ",
-                    "\nNot a valid line or a polyline: ",
+            if (!EditorUtils.TryGetEntity("\nSelect line or polyline: ", "\nNot a valid line or a polyline: ",
                 new[]
                 {
                     typeof(Line),
@@ -200,80 +199,80 @@ namespace CivilSurveySuite.CIVIL
                 return;
 
             string lineType = perId.ObjectClass.DxfName;
-            using (var tr = AcadApp.StartTransaction())
+
+            using var tr = AcadApp.StartTransaction();
+
+            double angle = 0;
+
+            switch (lineType)
             {
-                double angle = 0;
-
-                switch (lineType)
-                {
-                    case DxfNames.LWPOLYLINE:
-                    case DxfNames.POLYLINE:
-                        var poly = perId.GetObject(OpenMode.ForRead) as Polyline;
-                        if (poly != null)
-                        {
-                            angle = PolylineUtils.GetPolylineSegmentAngle(poly, pickedPoint);
-                            break;
-                        }
-
-                        var poly3d = perId.GetObject(OpenMode.ForRead) as Polyline3d;
-                        if (poly3d != null)
-                        {
-                            angle = PolylineUtils.GetPolyline3dSegmentAngle(poly3d, pickedPoint);
-                        }
-
-                        break;
-                    case DxfNames.LINE:
-                        var line = (Line) perId.GetObject(OpenMode.ForRead);
-
-                        // Check if the points of the line form and ordinary angle.
-                        if (MathHelpers.IsOrdinaryAngle(line.StartPoint.ToPoint(), line.EndPoint.ToPoint()))
-                        {
-                            angle = line.Angle;
-                        }
-                        else
-                        {
-                            // if it isn't an ordinary angle, we flip it.
-                            // because we don't really care if the radians are in clockwise or not
-                            // we can just flip the angle without it being in the correct system.
-                            angle = AngleHelpers.RadiansToAngle(line.Angle).Flip().ToRadians();
-                        }
-
-                        break;
-                }
-
-                AcadApp.Editor.WriteMessage("\nPolyline segment angle (radians): " + angle);
-
-                foreach (ObjectId id in objectIds)
-                {
-                    var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
-
-                    LabelStyle style;
-
-                    if (pt.LabelStyleId.IsNull)
+                case DxfNames.LWPOLYLINE:
+                case DxfNames.POLYLINE:
+                    var poly = perId.GetObject(OpenMode.ForRead) as Polyline;
+                    if (poly != null)
                     {
-	                    // Check point group for LabelStyle
-	                    var pointGroup = (PointGroup) tr.GetObject(pt.PrimaryPointGroupId, OpenMode.ForRead);
-	                    style = pointGroup.PointLabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                        angle = PolylineUtils.GetPolylineSegmentAngle(poly, pickedPoint);
+                        break;
+                    }
+
+                    var poly3d = perId.GetObject(OpenMode.ForRead) as Polyline3d;
+                    if (poly3d != null)
+                    {
+                        angle = PolylineUtils.GetPolyline3dSegmentAngle(poly3d, pickedPoint);
+                    }
+
+                    break;
+                case DxfNames.LINE:
+                    var line = (Line) perId.GetObject(OpenMode.ForRead);
+
+                    // Check if the points of the line form and ordinary angle.
+                    if (MathHelpers.IsOrdinaryAngle(line.StartPoint.ToPoint(), line.EndPoint.ToPoint()))
+                    {
+                        angle = line.Angle;
                     }
                     else
                     {
-	                    style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                        // if it isn't an ordinary angle, we flip it.
+                        // because we don't really care if the radians are in clockwise or not
+                        // we can just flip the angle without it being in the correct system.
+                        angle = AngleHelpers.RadiansToAngle(line.Angle).Flip().ToRadians();
                     }
 
-                    var textAngle = LabelUtils.GetFirstComponentAngle(style);
-
-                    AcadApp.Editor.WriteMessage($"\nPoint label style current rotation (radians): {textAngle}");
-                    AcadApp.Editor.WriteMessage($"\nRotating label to {angle} to match polyline segment");
-
-                    pt.UpgradeOpen();
-                    pt.LabelRotation = 0;
-                    pt.ResetLabelLocation();
-                    pt.LabelRotation -= textAngle;
-                    pt.LabelRotation += angle;
-                    pt.DowngradeOpen();
-                }
-                tr.Commit();
+                    break;
             }
+
+            AcadApp.Editor.WriteMessage("\nPolyline segment angle (radians): " + angle);
+
+            foreach (ObjectId id in objectIds)
+            {
+                var pt = (CogoPoint) id.GetObject(OpenMode.ForRead);
+
+                LabelStyle style;
+
+                if (pt.LabelStyleId.IsNull)
+                {
+                    // Check point group for LabelStyle
+                    var pointGroup = (PointGroup) tr.GetObject(pt.PrimaryPointGroupId, OpenMode.ForRead);
+                    style = pointGroup.PointLabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                }
+                else
+                {
+                    style = pt.LabelStyleId.GetObject(OpenMode.ForRead) as LabelStyle;
+                }
+
+                var textAngle = LabelUtils.GetFirstComponentAngle(style);
+
+                // AcadApp.Editor.WriteMessage($"\nPoint label style current rotation (radians): {textAngle}");
+                // AcadApp.Editor.WriteMessage($"\nRotating label to {angle} to match polyline segment");
+
+                pt.UpgradeOpen();
+                pt.LabelRotation = 0;
+                pt.ResetLabelLocation();
+                pt.LabelRotation -= textAngle;
+                pt.LabelRotation += angle;
+                pt.DowngradeOpen();
+            }
+            tr.Commit();
         }
 
         public static void LabelRotateMatchNear()
