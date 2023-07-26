@@ -26,7 +26,7 @@ namespace CivilSurveySuite.ACAD
 
             objectIds = new ObjectIdCollection();
 
-            if (!EditorUtils.TryGetSelection("\nSelect text entities: ", "\n>3DS Remove text entities: ",
+            if (!EditorUtils.TryGetSelection("\nSelect text entities: ", "\nRemove text entities: ",
                     typedValue, out var selectedTextIds))
                 return false;
 
