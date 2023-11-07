@@ -400,13 +400,13 @@ namespace CivilSurveySuite.CIVIL
         /// </summary>
         public static void MarkerRotateMatch()
         {
-            if (!EditorUtils.TryGetSelectionOfType<CogoPoint>(
-                "\nSelect points: ", "\nRemove points: ", out var objectIds))
+            if (!EditorUtils.TryGetImpliedSelectionOfType<CogoPoint>(out var objectIds) &&
+                !EditorUtils.TryGetSelectionOfType<CogoPoint>("\nSelect points: ", "\nRemove points: ", out objectIds))
                 return;
 
             if (!EditorUtils.TryGetEntity(
-	                "\nSelect line or polyline: ",
-	                "\nNot a valid line or a polyline: ",
+                    "\nSelect line or polyline: ",
+                    "\nNot a valid line or a polyline: ",
                     new[]
                     {
                         typeof(Line),
