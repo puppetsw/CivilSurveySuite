@@ -115,7 +115,7 @@ namespace CivilSurveySuite.CIVIL
             CogoPointUtils.LabelRotateMatch();
         }
 
-        [CommandMethod("WMS", "CSSCptMatchMrkRot", CommandFlags.Modal)]
+        [CommandMethod("WMS", "CSSCptMatchMrkRot", CommandFlags.Modal | CommandFlags.UsePickSet)]
         public static void CptMatchMrkRot()
         {
             CogoPointUtils.MarkerRotateMatch();
