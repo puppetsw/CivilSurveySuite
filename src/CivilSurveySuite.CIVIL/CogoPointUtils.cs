@@ -115,6 +115,7 @@ namespace CivilSurveySuite.CIVIL
                     var pt = (CogoPoint)objectId.GetObject(OpenMode.ForWrite);
                     pt.RawDescription = pt.RawDescription.ToUpper();
                     pt.DowngradeOpen();
+                    pt.ApplyDescriptionKeys();
                 }
                 tr.Commit();
             }
